@@ -11,8 +11,8 @@ import org.beam.common.utils.StringUtil;
 public abstract class DateUtil {
 
 	public static String getDateStr(DateFormatStyle style) {
-		SimpleDateFormat yyyyMMdd = new SimpleDateFormat(style.getPattern());
-		return yyyyMMdd.format(new Date());
+		SimpleDateFormat formater = new SimpleDateFormat(style.getPattern());
+		return formater.format(new Date());
 	}
 
 	public static Date strToDate(String str, DateFormatStyle style) {
