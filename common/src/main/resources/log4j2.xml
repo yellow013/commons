@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="WARN">
 	<appenders>
@@ -21,4 +22,30 @@
 			<appender-ref ref="rollingFile"></appender-ref>
 		</root>
 	</loggers>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration status="WARN">
+	<appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSS} %-5level | %l | %msg%n" />
+		</Console>
+		<RollingFile name="rollingFile" fileName="/log4j/Jet-${sys:jet.id}.log"
+			filePattern="/log4j/Jet-${sys:jet.id}.%d{yyyy-MM-dd}.log" append="true">
+			<!-- 日志输出格式 -->
+			<PatternLayout pattern="%d{HH:mm:ss.SSSS} %-5level | %l | %msg%n" />
+			<!-- 设置日志文件分割策略 -->
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+		</RollingFile>
+	</appenders>
+	<loggers>
+		<root level="debug">
+			<appender-ref ref="console"></appender-ref>
+			<appender-ref ref="rollingFile"></appender-ref>
+		</root>
+	</loggers>
+>>>>>>> 39f864dd7169a8f3deba89d36ab679cf8f017634
 </configuration>

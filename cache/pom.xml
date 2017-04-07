@@ -21,7 +21,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.cygnus</groupId>
+			<groupId>org.beam</groupId>
 			<artifactId>common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
