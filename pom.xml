@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- This is parent commons pom.xml -->
 
-	<groupId>org.beam</groupId>
+	<groupId>io.ffreedom</groupId>
 	<artifactId>commons</artifactId>
 	<version>0.1</version>
-	
+
 	<packaging>pom</packaging>
 
 	<name>commons</name>
 
 	<modules>
-		<module>cache</module>
 		<module>common</module>
 		<module>transport</module>
 	</modules>
@@ -23,17 +23,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version>0.1</version>
+		<commons.version>0.1</commons.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
@@ -47,21 +40,47 @@
 	</dependencies>
 
 	<dependencyManagement>
+
 		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+			</dependency>
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<version>3.0</version>
+				<version>4.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>21.0</version>
+				<version>24.1-jre</version>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>
 				<version>1.2.24</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.collections</groupId>
+				<artifactId>eclipse-collections-api</artifactId>
+				<version>9.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.collections</groupId>
+				<artifactId>eclipse-collections</artifactId>
+				<version>9.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>io.ffreedom</groupId>
+				<artifactId>common</artifactId>
+				<version>${commons.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

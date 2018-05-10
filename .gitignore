@@ -1,10 +1,38 @@
-﻿*.classpath
-*.project
+# Compiled class file
+*.class
+
+# Log file
 *.log
 
-*/target/
+# BlueJ files
+*.ctxt
 
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Eclipse
+*.classpath
+*.project
 .settings/
 */.settings/
 
+# Maven
+*/target/
+
+# Git
 */.gitignore
+
+# IDEA
+.idea/
+*/.idea/
+*.iml
+*/*.iml
+
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*

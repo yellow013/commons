@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.beam</groupId>
+		<groupId>io.ffreedom</groupId>
 		<artifactId>commons</artifactId>
 		<version>0.1</version>
 	</parent>
@@ -19,13 +20,31 @@
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
-			<version>3.3.6</version>
+			<version>3.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 		<!-- IO Utils -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.5</version>
+		</dependency>
+		<!-- Eclipse Collections -->
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections</artifactId>
+		</dependency>
+		<!-- Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 
 	</dependencies>
