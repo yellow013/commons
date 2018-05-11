@@ -43,8 +43,9 @@ public class CacheMap<K, V> {
 		}
 	}
 
-	public void setUnavailable(K key) {
+	public CacheMap<K, V> setUnavailable(K key) {
 		availableMap.put(key, false);
+		return this;
 	}
 
 }
