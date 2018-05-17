@@ -4,6 +4,6 @@ import io.ffreedom.transport.base.TransportModule;
 
 public interface Sender<T> extends TransportModule{
 
-	void send(T msg);
+	void sent(T msg);
 
 }

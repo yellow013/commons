@@ -64,7 +64,7 @@ public class SocketSender implements Sender<byte[]> {
 	}
 
 	@Override
-	public void send(byte[] msg) {
+	public void sent(byte[] msg) {
 		innerQueue.enQueue(msg);
 	}
 
@@ -95,7 +95,7 @@ public class SocketSender implements Sender<byte[]> {
 
 		SocketSender sender = new SocketSender(configurator);
 
-		sender.send("hello".getBytes());
+		sender.sent("hello".getBytes());
 
 	}
 

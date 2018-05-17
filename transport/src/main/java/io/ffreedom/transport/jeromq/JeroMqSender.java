@@ -32,7 +32,7 @@ public class JeroMqSender implements Sender<byte[]> {
 
 	@ThreadUnsafe
 	@Override
-	public void send(byte[] msg) {
+	public void sent(byte[] msg) {
 		requester.send(msg);
 		requester.recv();
 	}
@@ -54,7 +54,7 @@ public class JeroMqSender implements Sender<byte[]> {
 
 		JeroMqSender requester = new JeroMqSender(configurator);
 
-		requester.send("TEST MSG".getBytes());
+		requester.sent("TEST MSG".getBytes());
 
 		requester.destroy();
 	}
