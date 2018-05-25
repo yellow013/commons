@@ -31,7 +31,7 @@ public class Timestamp {
 		return instant.getNano();
 	}
 
-	public long toEpochMicrosecond() {
+	public long getEpochMicrosecond() {
 		return epochMicrosecond;
 	}
 
