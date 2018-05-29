@@ -2,9 +2,9 @@ package io.ffreedom.common.collect.list;
 
 import java.util.List;
 
-public abstract class LimitedLine<E> {
+public abstract class LimitedList<L extends List<E>, E> {
 
-	private List<E> innerList;
+	private L innerList;
 
 	private int head = 0;
 	private int tail = 0;
@@ -12,12 +12,12 @@ public abstract class LimitedLine<E> {
 
 	private int capacity;
 
-	public LimitedLine(int capacity) {
+	public LimitedList(int capacity) {
 		this.capacity = capacity;
 		this.innerList = initList(capacity);
 	}
 
-	protected abstract List<E> initList(int capacity);
+	protected abstract L initList(int capacity);
 
 	public void addTail(E e) {
 		updateTail();
