@@ -42,5 +42,11 @@ public class Timestamp {
 	public LocalDateTime getDateTime() {
 		return dateTime;
 	}
+	
+	public static void main(String[] args) {
+		
+		System.out.println(10000 >> 1);
+		
+	}
 
 }
