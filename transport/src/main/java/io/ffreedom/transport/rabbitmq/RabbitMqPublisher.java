@@ -1,4 +1,4 @@
-package io.ffreedom.transport.rabbit;
+package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
 import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
 
-public class RabbitPublisher extends BaseRabbitTransport implements Publisher<byte[]> {
+public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publisher<byte[]> {
 
 	// 发布消息使用的routingKey
 	private String routingKey;
@@ -19,7 +19,7 @@ public class RabbitPublisher extends BaseRabbitTransport implements Publisher<by
 	 * 
 	 * @param configurator
 	 */
-	public RabbitPublisher(String tag, RabbitConfigurator configurator) {
+	public RabbitMqPublisher(String tag, RabbitConfigurator configurator) {
 		super(tag, configurator);
 		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getQueue()
 				: configurator.getRoutingKey();
@@ -72,7 +72,7 @@ public class RabbitPublisher extends BaseRabbitTransport implements Publisher<by
 		RabbitConfigurator configurator = RabbitConfigurator.builder().setHost("192.168.1.152").setPort(5672)
 				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
 
-		RabbitPublisher rabbitMqRequester = new RabbitPublisher("TEST_PUB", configurator);
+		RabbitMqPublisher rabbitMqRequester = new RabbitMqPublisher("TEST_PUB", configurator);
 
 		ThreadUtil.startNewThread(() -> {
 			int count = 0;

@@ -1,9 +1,7 @@
 package io.ffreedom.common.callback;
 
-public interface FunctionParam {
+public interface FunctionParam<T> {
 
-	default Object getParamObj() {
-		return this;
-	}
+	T getParamObj();
 
 }

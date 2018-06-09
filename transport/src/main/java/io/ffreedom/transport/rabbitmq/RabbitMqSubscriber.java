@@ -1,4 +1,4 @@
-package io.ffreedom.transport.rabbit;
+package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Subscriber;
 import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
 
-public class RabbitSubscriber extends BaseRabbitTransport implements Subscriber {
+public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscriber {
 
 	// 接收消息时使用的回调函数
 	private Callback<byte[]> callback;
@@ -24,7 +24,7 @@ public class RabbitSubscriber extends BaseRabbitTransport implements Subscriber 
 	 * @param configurator
 	 * @param callback
 	 */
-	public RabbitSubscriber(String tag, RabbitConfigurator configurator, Callback<byte[]> callback) {
+	public RabbitMqSubscriber(String tag, RabbitConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
 		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + configurator.getQueue();
@@ -88,7 +88,7 @@ public class RabbitSubscriber extends BaseRabbitTransport implements Subscriber 
 		RabbitConfigurator configurator = RabbitConfigurator.builder().setHost("192.168.1.152").setPort(5672)
 				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
 
-		RabbitSubscriber subscriber = new RabbitSubscriber("TEST_SUB", configurator, (byte[] msg) -> {
+		RabbitMqSubscriber subscriber = new RabbitMqSubscriber("TEST_SUB", configurator, (byte[] msg) -> {
 			System.out.println(new String(msg, Charsets.UTF8));
 		});
 

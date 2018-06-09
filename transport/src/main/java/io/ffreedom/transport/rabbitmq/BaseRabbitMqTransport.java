@@ -1,4 +1,4 @@
-package io.ffreedom.transport.rabbit;
+package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -13,7 +13,7 @@ import io.ffreedom.common.callback.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
 
-public abstract class BaseRabbitTransport {
+public abstract class BaseRabbitMqTransport {
 
 	// 连接RabbitMQ Server使用的组件
 	protected ConnectionFactory connectionFactory;
@@ -34,7 +34,7 @@ public abstract class BaseRabbitTransport {
 	 * @param tag
 	 * @param configurator
 	 */
-	public BaseRabbitTransport(String tag, RabbitConfigurator configurator) {
+	public BaseRabbitMqTransport(String tag, RabbitConfigurator configurator) {
 		if (configurator == null) {
 			throw new NullPointerException(tag + ":configurator is null.");
 		}

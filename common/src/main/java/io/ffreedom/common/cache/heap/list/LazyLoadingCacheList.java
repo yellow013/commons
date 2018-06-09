@@ -3,21 +3,21 @@ package io.ffreedom.common.cache.heap.list;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CacheList<T> {
+public class LazyLoadingCacheList<T> {
 
 	private volatile List<T> value;
 	private AtomicBoolean available = new AtomicBoolean(false);
 	
 	private CacheListRefresh<T> cacheRefresh;
 	
-	public CacheList(CacheListRefresh<T> cacheRefresh) {
-		if (cacheRefresh == null || !(cacheRefresh instanceof CacheListRefresh)) {
-			throw new IllegalArgumentException("cacheRefresh illegalArgumentException");
+	public LazyLoadingCacheList(CacheListRefresh<T> cacheRefresh) {
+		if (cacheRefresh == null) {
+			throw new IllegalArgumentException("cacheRefresh illegalArgumentException.");
 		}
 		this.cacheRefresh = cacheRefresh;
 	}
 
-	public CacheList<T> set(List<T> value) {
+	public LazyLoadingCacheList<T> set(List<T> value) {
 		this.value = value;
 		this.available.set(true);
 		return this;
@@ -32,7 +32,7 @@ public class CacheList<T> {
 				return null;
 			}
 			set(value);
-			return value;
+			return get();
 		}
 	}
 
@@ -40,7 +40,7 @@ public class CacheList<T> {
 		return available.get();
 	}
 
-	public CacheList<T> setUnavailable() {
+	public LazyLoadingCacheList<T> setUnavailable() {
 		this.available.set(false);
 		return this;
 	}

@@ -1,10 +1,10 @@
-package io.ffreedom.transport.rabbit;
+package io.ffreedom.transport.rabbitmq;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
 
-public class RabbitConnectTest {
+public class RabbitMqConnectTest {
 
 	// 鲁证cole: 58.246.96.190:5672
 	// 广发cole: 222.66.0.195:62102
@@ -23,7 +23,7 @@ public class RabbitConnectTest {
 				.setUsername(username).setPassword(password).setQueue(queue0).setAutomaticRecovery(automaticRecovery)
 				.build();
 
-		RabbitPublisher publisher = new RabbitPublisher("PUB_TEST", configurator0);
+		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", configurator0);
 
 		ThreadUtil.startNewThread(() -> {
 			int count = 0;
@@ -40,7 +40,7 @@ public class RabbitConnectTest {
 				.setUsername(username).setPassword(password).setQueue(queue1).setAutomaticRecovery(automaticRecovery)
 				.build();
 
-		RabbitSubscriber subscriber = new RabbitSubscriber("SUB_TEST", configurator1, (msg) -> {
+		RabbitMqSubscriber subscriber = new RabbitMqSubscriber("SUB_TEST", configurator1, (msg) -> {
 			System.out.println("Recv msg -> " + new String(msg, Charsets.UTF8));
 		});
 
