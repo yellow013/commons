@@ -1,4 +1,4 @@
-package io.ffreedom.common.collect.list;
+package io.ffreedom.common.collect;
 
 import java.util.List;
 
