@@ -1,9 +1,9 @@
-package io.ffreedom.transport.rabbit.config;
+package io.ffreedom.transport.rabbitmq.config;
 
 import io.ffreedom.common.callback.ShutdownEvent;
 import io.ffreedom.transport.base.config.TransportConfigurator;
 
-public class RabbitConfigurator implements TransportConfigurator {
+public class RabbitMqConfigurator implements TransportConfigurator {
 
 	private String host;
 	private int port;
@@ -30,7 +30,7 @@ public class RabbitConfigurator implements TransportConfigurator {
 
 	private String configuratorName = "RabbitMqConfigurator";
 
-	private RabbitConfigurator(ConfiguratorBuilder builder) {
+	private RabbitMqConfigurator(ConfiguratorBuilder builder) {
 		this.host = builder.host;
 		this.port = builder.port;
 		this.exchange = builder.exchange;
@@ -246,8 +246,8 @@ public class RabbitConfigurator implements TransportConfigurator {
 			return this;
 		}
 
-		public RabbitConfigurator build() {
-			return new RabbitConfigurator(this);
+		public RabbitMqConfigurator build() {
+			return new RabbitMqConfigurator(this);
 		}
 
 	}

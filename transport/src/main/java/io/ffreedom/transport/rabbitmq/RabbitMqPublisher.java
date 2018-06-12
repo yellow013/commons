@@ -6,7 +6,7 @@ import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
-import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
 public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publisher<byte[]> {
 
@@ -19,7 +19,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	 * 
 	 * @param configurator
 	 */
-	public RabbitMqPublisher(String tag, RabbitConfigurator configurator) {
+	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
 		super(tag, configurator);
 		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getQueue()
 				: configurator.getRoutingKey();
@@ -69,7 +69,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		RabbitConfigurator configurator = RabbitConfigurator.builder().setHost("192.168.1.152").setPort(5672)
+		RabbitMqConfigurator configurator = RabbitMqConfigurator.builder().setHost("192.168.1.152").setPort(5672)
 				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
 
 		RabbitMqPublisher rabbitMqRequester = new RabbitMqPublisher("TEST_PUB", configurator);

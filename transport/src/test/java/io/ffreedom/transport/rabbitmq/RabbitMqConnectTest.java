@@ -2,7 +2,7 @@ package io.ffreedom.transport.rabbitmq;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.ThreadUtil;
-import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
 public class RabbitMqConnectTest {
 
@@ -19,7 +19,7 @@ public class RabbitMqConnectTest {
 
 	public static void main(String[] args) {
 
-		RabbitConfigurator configurator0 = RabbitConfigurator.builder().setHost(host).setPort(port)
+		RabbitMqConfigurator configurator0 = RabbitMqConfigurator.builder().setHost(host).setPort(port)
 				.setUsername(username).setPassword(password).setQueue(queue0).setAutomaticRecovery(automaticRecovery)
 				.build();
 
@@ -36,7 +36,7 @@ public class RabbitMqConnectTest {
 
 		System.out.println(publisher.getName() + " statred....");
 
-		RabbitConfigurator configurator1 = RabbitConfigurator.builder().setHost(host).setPort(port)
+		RabbitMqConfigurator configurator1 = RabbitMqConfigurator.builder().setHost(host).setPort(port)
 				.setUsername(username).setPassword(password).setQueue(queue1).setAutomaticRecovery(automaticRecovery)
 				.build();
 

@@ -10,7 +10,7 @@ import io.ffreedom.common.callback.Callback;
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Subscriber;
-import io.ffreedom.transport.rabbit.config.RabbitConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
 public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscriber {
 
@@ -24,7 +24,7 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 	 * @param configurator
 	 * @param callback
 	 */
-	public RabbitMqSubscriber(String tag, RabbitConfigurator configurator, Callback<byte[]> callback) {
+	public RabbitMqSubscriber(String tag, RabbitMqConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
 		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + configurator.getQueue();
@@ -85,7 +85,7 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 
 	public static void main(String[] args) {
 
-		RabbitConfigurator configurator = RabbitConfigurator.builder().setHost("192.168.1.152").setPort(5672)
+		RabbitMqConfigurator configurator = RabbitMqConfigurator.builder().setHost("192.168.1.152").setPort(5672)
 				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
 
 		RabbitMqSubscriber subscriber = new RabbitMqSubscriber("TEST_SUB", configurator, (byte[] msg) -> {
