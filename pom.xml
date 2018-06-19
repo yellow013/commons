@@ -8,7 +8,7 @@
 
 	<groupId>io.ffreedom</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.1</version>
+	<version>1.0</version>
 
 	<packaging>pom</packaging>
 
@@ -23,7 +23,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<commons.version>0.1</commons.version>
+		<ec.version>9.2.0</ec.version>
 	</properties>
 
 	<dependencies>
@@ -40,7 +40,6 @@
 	</dependencies>
 
 	<dependencyManagement>
-
 		<dependencies>
 			<dependency>
 				<groupId>junit</groupId>
@@ -48,19 +47,9 @@
 				<version>4.12</version>
 			</dependency>
 			<dependency>
-				<groupId>com.google.inject</groupId>
-				<artifactId>guice</artifactId>
-				<version>4.2.0</version>
-			</dependency>
-			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>24.1-jre</version>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>1.2.24</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -70,17 +59,17 @@
 			<dependency>
 				<groupId>org.eclipse.collections</groupId>
 				<artifactId>eclipse-collections-api</artifactId>
-				<version>9.1.0</version>
+				<version>${ec.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.collections</groupId>
 				<artifactId>eclipse-collections</artifactId>
-				<version>9.1.0</version>
+				<version>${ec.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.ffreedom</groupId>
 				<artifactId>common</artifactId>
-				<version>${commons.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

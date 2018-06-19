@@ -15,7 +15,6 @@ public class LoggerFactory {
 		String logLevel = System.getProperty(LoggerConstant.LOG_LEVEL);
 		if (logLevel == null || logLevel.equals("")) {
 			LoggerSetter.setLogLevel(LogLevel.INFO);
-
 		}
 		String projectName = System.getProperty(LoggerConstant.PROJECT_NAME);
 		if (projectName == null || projectName.equals("")) {

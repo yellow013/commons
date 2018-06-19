@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>io.ffreedom</groupId>
 		<artifactId>commons</artifactId>
-		<version>0.1</version>
+		<version>1.0</version>
 	</parent>
 
 	<name>transport</name>
@@ -23,7 +23,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
@@ -39,20 +38,10 @@
 			<artifactId>amqp-client</artifactId>
 			<version>5.2.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.ffreedom</groupId>
