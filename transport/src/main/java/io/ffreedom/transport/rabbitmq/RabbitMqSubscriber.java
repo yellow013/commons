@@ -6,8 +6,8 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
-import io.ffreedom.common.callback.Callback;
 import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Subscriber;
 import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
@@ -27,7 +27,8 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 	public RabbitMqSubscriber(String tag, RabbitMqConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
-		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + configurator.getQueue();
+		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$"
+				+ configurator.getQueue();
 		createConnection();
 	}
 
@@ -51,18 +52,20 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 						channel.basicReject(envelope.getDeliveryTag(), true);
 						destroy();
 					}
-					try {
-						int ack = 0;
-						while (!isConnected()) {
-							logger.error("isConnected() == false, ack " + (++ack));
-							destroy();
-							createConnection();
-							ThreadUtil.sleep(configurator.getRecoveryInterval());
+					if (!configurator.isAutoAck()) {
+						try {
+							int ack = 0;
+							while (!isConnected()) {
+								logger.error("isConnected() == false, ack " + (++ack));
+								destroy();
+								createConnection();
+								ThreadUtil.sleep(configurator.getRecoveryInterval());
+							}
+							channel.basicAck(envelope.getDeliveryTag(), false);
+						} catch (IOException e) {
+							logger.error("Channel#basicAck() -> " + e.getMessage());
+							logger.error(e.getStackTrace());
 						}
-						channel.basicAck(envelope.getDeliveryTag(), false);
-					} catch (IOException e) {
-						logger.error("Channel#basicAck() -> " + e.getMessage());
-						logger.error(e.getStackTrace());
 					}
 				}
 			});

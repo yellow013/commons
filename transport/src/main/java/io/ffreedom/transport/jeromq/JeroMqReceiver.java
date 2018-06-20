@@ -2,7 +2,7 @@ package io.ffreedom.transport.jeromq;
 
 import org.zeromq.ZMQ;
 
-import io.ffreedom.common.callback.Callback;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;

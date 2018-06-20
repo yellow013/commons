@@ -3,7 +3,7 @@ package io.ffreedom.transport.socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import io.ffreedom.common.callback.Callback;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.transport.socket.config.SocketConfigurator;
 
 public class LocalSocketManager {

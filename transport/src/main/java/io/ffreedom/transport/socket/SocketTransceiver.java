@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.IOUtils;
 
-import io.ffreedom.common.callback.Callback;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.queue.disruptor.SPSCQueue;
 import io.ffreedom.common.utils.ThreadUtil;

@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 
-import io.ffreedom.common.callback.Callback;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;

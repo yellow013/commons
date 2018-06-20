@@ -1,6 +1,6 @@
 package io.ffreedom.transport.rabbitmq.config;
 
-import io.ffreedom.common.callback.ShutdownEvent;
+import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.transport.base.config.TransportConfigurator;
 
 public class RabbitMqConfigurator implements TransportConfigurator {
@@ -26,7 +26,7 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 	private int shutdownTimeout;
 	private int requestedHeartbeat;
 
-	private ShutdownEvent shutdownEvent;
+	private ShutdownEvent<Exception> shutdownEvent;
 
 	private String configuratorName = "RabbitMqConfigurator";
 
@@ -123,7 +123,7 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		return requestedHeartbeat;
 	}
 
-	public ShutdownEvent getShutdownEvent() {
+	public ShutdownEvent<Exception> getShutdownEvent() {
 		return shutdownEvent;
 	}
 
@@ -151,7 +151,7 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		private int handshakeTimeout = 10 * 1000;
 		private int shutdownTimeout = 10 * 1000;
 		private int requestedHeartbeat = 20;
-		private ShutdownEvent shutdownEvent;
+		private ShutdownEvent<Exception> shutdownEvent;
 
 		private ConfiguratorBuilder() {
 		}
@@ -241,7 +241,7 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 			return this;
 		}
 
-		public ConfiguratorBuilder setShutdownEvent(ShutdownEvent shutdownEvent) {
+		public ConfiguratorBuilder setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 			this.shutdownEvent = shutdownEvent;
 			return this;
 		}

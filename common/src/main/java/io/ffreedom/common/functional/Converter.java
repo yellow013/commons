@@ -1,8 +1,12 @@
 package io.ffreedom.common.functional;
 
-@FunctionalInterface
-public interface Converter<FROM, TO> {
+import java.util.function.Function;
 
-	TO convert(FROM from);
+@FunctionalInterface
+public interface Converter<FROM, TO> extends Function<FROM, TO> {
+
+	default TO convert(FROM from) {
+		return apply(from);
+	}
 
 }

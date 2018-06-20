@@ -2,7 +2,7 @@ package io.ffreedom.transport.netty.config;
 
 import java.util.concurrent.TimeUnit;
 
-import io.ffreedom.common.callback.ShutdownEvent;
+import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.transport.base.config.TransportConfigurator;
 
 public class NettyConfigurator implements TransportConfigurator {
@@ -17,7 +17,7 @@ public class NettyConfigurator implements TransportConfigurator {
 	private int writeByteBufSize;
 	private char separator;
 
-	private ShutdownEvent shutdownEvent;
+	private ShutdownEvent<Exception> shutdownEvent;
 
 	private String configuratorName = "NettyConfigurator";
 
@@ -74,7 +74,7 @@ public class NettyConfigurator implements TransportConfigurator {
 		return separator;
 	}
 
-	public ShutdownEvent getShutdownEvent() {
+	public ShutdownEvent<Exception> getShutdownEvent() {
 		return shutdownEvent;
 	}
 
@@ -94,7 +94,7 @@ public class NettyConfigurator implements TransportConfigurator {
 		private TimeUnit sendIntervalTimeUnit;
 		private int writeByteBufSize = 1024 * 8;
 		private char separator = ';';
-		private ShutdownEvent shutdownEvent;
+		private ShutdownEvent<Exception> shutdownEvent;
 
 		private Builder() {
 		}
@@ -140,7 +140,7 @@ public class NettyConfigurator implements TransportConfigurator {
 			return this;
 		}
 
-		public Builder setShutdownEvent(ShutdownEvent shutdownEvent) {
+		public Builder setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 			this.shutdownEvent = shutdownEvent;
 			return this;
 		}

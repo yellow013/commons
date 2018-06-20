@@ -9,7 +9,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-import io.ffreedom.common.callback.ShutdownEvent;
+import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
@@ -24,7 +24,7 @@ public abstract class BaseRabbitMqTransport {
 	protected RabbitMqConfigurator configurator;
 
 	// 停机事件, 在监听到ShutdownSignalException时调用
-	protected ShutdownEvent shutdownEvent;
+	protected ShutdownEvent<Exception> shutdownEvent;
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
