@@ -36,9 +36,9 @@ public abstract class BaseRabbitMqTransport {
 	 */
 	public BaseRabbitMqTransport(String tag, RabbitMqConfigurator configurator) {
 		if (configurator == null) {
-			throw new NullPointerException(tag + ":configurator is null.");
+			throw new NullPointerException(tag + ": configurator is null.");
 		}
-		this.tag = tag;
+		this.tag = (tag == null) ? "unnamed-" + System.currentTimeMillis() : tag;
 		this.configurator = configurator;
 		this.shutdownEvent = configurator.getShutdownEvent();
 	}
@@ -70,8 +70,6 @@ public abstract class BaseRabbitMqTransport {
 			});
 			channel = connection.createChannel();
 			logger.info("createChannel() finsh, channel number is : " + channel.getChannelNumber());
-			channel.queueDeclare(configurator.getQueue(), configurator.isDurable(), configurator.isExclusive(),
-					configurator.isAutoDelete(), null);
 			logger.info("all connection call successful...");
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());

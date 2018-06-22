@@ -21,8 +21,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	 */
 	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
 		super(tag, configurator);
-		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getQueue()
-				: configurator.getRoutingKey();
+		this.routingKey = StringUtil.isNullOrEmpty(configurator.getPubRoutingKey()) ? configurator.getQueue()
+				: configurator.getPubRoutingKey();
 		this.publisherName = "Pub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 		createConnection();
 	}
@@ -48,7 +48,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			// param2: routingKey
 			// param3: properties
 			// param4: msgBody
-			channel.basicPublish(configurator.getExchange(), target, null, msg);
+			channel.basicPublish(configurator.getPubExchange(), target, null, msg);
 		} catch (IOException e) {
 			logger.error("Channel#basicPublish -> " + e.getMessage());
 			logger.error(e.getStackTrace());

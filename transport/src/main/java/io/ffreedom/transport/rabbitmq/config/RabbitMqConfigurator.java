@@ -8,8 +8,8 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 	private String host;
 	private int port;
 
-	private String exchange;
-	private String routingKey;
+	private String pubExchange;
+	private String pubRoutingKey;
 	private String queue;
 	private String username;
 	private String password;
@@ -33,8 +33,8 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 	private RabbitMqConfigurator(ConfiguratorBuilder builder) {
 		this.host = builder.host;
 		this.port = builder.port;
-		this.exchange = builder.exchange;
-		this.routingKey = builder.routingKey;
+		this.pubExchange = builder.pubExchange;
+		this.pubRoutingKey = builder.pubRoutingKey;
 		this.queue = builder.queue;
 		this.username = builder.username;
 		this.password = builder.password;
@@ -63,12 +63,12 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		return port;
 	}
 
-	public String getExchange() {
-		return exchange;
+	public String getPubExchange() {
+		return pubExchange;
 	}
 
-	public String getRoutingKey() {
-		return routingKey;
+	public String getPubRoutingKey() {
+		return pubRoutingKey;
 	}
 
 	public String getQueue() {
@@ -136,8 +136,8 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 
 		private String host;
 		private int port;
-		private String exchange = "";
-		private String routingKey;
+		private String pubExchange = "";
+		private String pubRoutingKey;
 		private String queue;
 		private String username;
 		private String password;
@@ -166,13 +166,13 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 			return this;
 		}
 
-		public ConfiguratorBuilder setExchange(String exchange) {
-			this.exchange = exchange;
+		public ConfiguratorBuilder setPubExchange(String pubExchange) {
+			this.pubExchange = pubExchange;
 			return this;
 		}
 
-		public ConfiguratorBuilder setRoutingKey(String routingKey) {
-			this.routingKey = routingKey;
+		public ConfiguratorBuilder setPubRoutingKey(String pubRoutingKey) {
+			this.pubRoutingKey = pubRoutingKey;
 			return this;
 		}
 

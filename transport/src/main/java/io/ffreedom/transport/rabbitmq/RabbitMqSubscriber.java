@@ -30,6 +30,19 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$"
 				+ configurator.getQueue();
 		createConnection();
+		init();
+	}
+
+	private void init() {
+		try {
+			channel.queueDeclare(configurator.getQueue(), configurator.isDurable(), configurator.isExclusive(),
+					configurator.isAutoDelete(), null);
+		} catch (IOException e) {
+			logger.error("IOException ->" + e.getMessage());
+			logger.error(e.getStackTrace());
+			destroy();
+			logger.error("call destroy() method.");
+		}
 	}
 
 	@Override
