@@ -56,7 +56,7 @@ public class SocketReceiver implements Receiver {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		this.isRun.set(false);
 		try {
 			if (socket != null) {
@@ -65,6 +65,7 @@ public class SocketReceiver implements Receiver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 	@Override

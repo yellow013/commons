@@ -45,10 +45,11 @@ public class JeroMqSubscriber implements Subscriber {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		this.isRun = false;
 		subscriber.close();
 		context.term();
+		return true;
 	}
 
 	@Override

@@ -5,32 +5,47 @@ import io.ffreedom.transport.base.config.TransportConfigurator;
 
 public class RabbitMqConfigurator implements TransportConfigurator {
 
+	// 连接参数
 	private String host;
 	private int port;
-
-	private String pubExchange;
-	private String pubRoutingKey;
-	private String queue;
 	private String username;
 	private String password;
 
+	// 发布订阅参数
+	private String pubExchange;
+	private String pubRoutingKey;
+	private String queue;
+
+	// 自动ACK
 	private boolean autoAck;
+	// 最大自动重试次数
+	private int ackMaxTotal;
+	// 队列持久化
 	private boolean durable;
+	// 连接独占此队列
 	private boolean exclusive;
+	// channel关闭后自动删除队列
 	private boolean autoDelete;
+	// 自动恢复连接
 	private boolean automaticRecovery;
+	// 重试连接间隔
 	private long recoveryInterval;
 
+	// 连接超时时间
 	private int connectionTimeout;
+	// 握手通信超时时间
 	private int handshakeTimeout;
+	// 关闭超时时间
 	private int shutdownTimeout;
+	// 请求心跳超时时间
 	private int requestedHeartbeat;
 
+	// 停机处理回调函数
 	private ShutdownEvent<Exception> shutdownEvent;
 
 	private String configuratorName = "RabbitMqConfigurator";
 
-	private RabbitMqConfigurator(ConfiguratorBuilder builder) {
+	private RabbitMqConfigurator(Builder builder) {
 		this.host = builder.host;
 		this.port = builder.port;
 		this.pubExchange = builder.pubExchange;
@@ -51,8 +66,8 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		this.shutdownEvent = builder.shutdownEvent;
 	}
 
-	public static ConfiguratorBuilder builder() {
-		return new ConfiguratorBuilder();
+	public static Builder builder() {
+		return new Builder();
 	}
 
 	public String getHost() {
@@ -61,6 +76,14 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 
 	public int getPort() {
 		return port;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 	public String getPubExchange() {
@@ -75,16 +98,12 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		return queue;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
 	public boolean isAutoAck() {
 		return autoAck;
+	}
+
+	public int getAckMaxTotal() {
+		return ackMaxTotal;
 	}
 
 	public boolean isDurable() {
@@ -132,15 +151,15 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		return configuratorName;
 	}
 
-	public static class ConfiguratorBuilder {
+	public static class Builder {
 
 		private String host;
 		private int port;
-		private String pubExchange = "";
-		private String pubRoutingKey;
-		private String queue;
 		private String username;
 		private String password;
+		private String pubExchange = "";
+		private String pubRoutingKey = "";
+		private String queue;
 		private boolean autoAck = false;
 		private boolean durable = true;
 		private boolean exclusive = false;
@@ -153,95 +172,95 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		private int requestedHeartbeat = 20;
 		private ShutdownEvent<Exception> shutdownEvent;
 
-		private ConfiguratorBuilder() {
+		private Builder() {
 		}
 
-		public ConfiguratorBuilder setHost(String host) {
+		public Builder setHost(String host) {
 			this.host = host;
 			return this;
 		}
 
-		public ConfiguratorBuilder setPort(int port) {
+		public Builder setPort(int port) {
 			this.port = port;
 			return this;
 		}
 
-		public ConfiguratorBuilder setPubExchange(String pubExchange) {
-			this.pubExchange = pubExchange;
-			return this;
-		}
-
-		public ConfiguratorBuilder setPubRoutingKey(String pubRoutingKey) {
-			this.pubRoutingKey = pubRoutingKey;
-			return this;
-		}
-
-		public ConfiguratorBuilder setQueue(String queue) {
-			this.queue = queue;
-			return this;
-		}
-
-		public ConfiguratorBuilder setUsername(String username) {
+		public Builder setUsername(String username) {
 			this.username = username;
 			return this;
 		}
 
-		public ConfiguratorBuilder setPassword(String password) {
+		public Builder setPassword(String password) {
 			this.password = password;
 			return this;
 		}
 
-		public ConfiguratorBuilder setAutoAck(boolean autoAck) {
+		public Builder setPubExchange(String pubExchange) {
+			this.pubExchange = pubExchange;
+			return this;
+		}
+
+		public Builder setPubRoutingKey(String pubRoutingKey) {
+			this.pubRoutingKey = pubRoutingKey;
+			return this;
+		}
+
+		public Builder setQueue(String queue) {
+			this.queue = queue;
+			return this;
+		}
+
+		public Builder setAutoAck(boolean autoAck) {
 			this.autoAck = autoAck;
 			return this;
 		}
 
-		public ConfiguratorBuilder setDurable(boolean durable) {
+		public Builder setDurable(boolean durable) {
 			this.durable = durable;
 			return this;
 		}
 
-		public ConfiguratorBuilder setExclusive(boolean exclusive) {
+		public Builder setExclusive(boolean exclusive) {
 			this.exclusive = exclusive;
 			return this;
 		}
 
-		public ConfiguratorBuilder setAutoDelete(boolean autoDelete) {
+		public Builder setAutoDelete(boolean autoDelete) {
 			this.autoDelete = autoDelete;
 			return this;
 		}
 
-		public ConfiguratorBuilder setAutomaticRecovery(boolean automaticRecovery) {
+		public Builder setAutomaticRecovery(boolean automaticRecovery) {
 			this.automaticRecovery = automaticRecovery;
 			return this;
 		}
 
-		public ConfiguratorBuilder setRecoveryInterval(long recoveryInterval) {
+		public Builder setRecoveryInterval(long recoveryInterval) {
 			this.recoveryInterval = recoveryInterval;
 			return this;
 		}
 
-		public ConfiguratorBuilder setConnectionTimeout(int connectionTimeout) {
+		public Builder setConnectionTimeout(int connectionTimeout) {
 			this.connectionTimeout = connectionTimeout;
 			return this;
 		}
 
-		public ConfiguratorBuilder setHandshakeTimeout(int handshakeTimeout) {
+		public Builder setHandshakeTimeout(int handshakeTimeout) {
 			this.handshakeTimeout = handshakeTimeout;
 			return this;
 		}
 
-		public ConfiguratorBuilder setShutdownTimeout(int shutdownTimeout) {
+		public Builder setShutdownTimeout(int shutdownTimeout) {
 			this.shutdownTimeout = shutdownTimeout;
 			return this;
 		}
 
-		public ConfiguratorBuilder setRequestedHeartbeat(int requestedHeartbeat) {
+		public Builder setRequestedHeartbeat(int requestedHeartbeat) {
 			this.requestedHeartbeat = requestedHeartbeat;
 			return this;
 		}
 
-		public ConfiguratorBuilder setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
+		public Builder setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 			this.shutdownEvent = shutdownEvent;
 			return this;
 		}

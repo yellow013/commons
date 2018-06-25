@@ -46,7 +46,7 @@ public class SocketSender implements Sender<byte[]> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		this.isRun.set(false);
 		try {
 			outputStream.close();
@@ -56,6 +56,7 @@ public class SocketSender implements Sender<byte[]> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 	@Override

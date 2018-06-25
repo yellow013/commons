@@ -38,9 +38,10 @@ public class JeroMqSender implements Sender<byte[]> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		requester.close();
 		context.term();
+		return true;
 	}
 
 	@Override

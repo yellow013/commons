@@ -52,9 +52,10 @@ public class NettyClient extends NettyTransport implements TransportClient {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		logger.info("NettyClient call method destroy().");
 		workerGroup.shutdownGracefully();
+		return true;
 	}
 
 }

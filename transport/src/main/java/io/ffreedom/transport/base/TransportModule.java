@@ -6,6 +6,6 @@ public interface TransportModule {
 
 	boolean isConnected();
 
-	void destroy();
+	boolean destroy();
 
 }

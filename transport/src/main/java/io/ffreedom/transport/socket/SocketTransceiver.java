@@ -58,7 +58,7 @@ public class SocketTransceiver extends BaseTransceiver<String> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		this.isReceiving.set(false);
 		try {
 			if (writer != null) {
@@ -70,7 +70,7 @@ public class SocketTransceiver extends BaseTransceiver<String> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		return true;
 	}
 
 	@Override

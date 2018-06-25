@@ -9,25 +9,25 @@ import com.rabbitmq.client.Envelope;
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.utils.ThreadUtil;
-import io.ffreedom.transport.base.role.Subscriber;
+import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
-public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscriber {
+public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver {
 
 	// 接收消息时使用的回调函数
 	private Callback<byte[]> callback;
 
-	private String subscriberName;
+	private String receiverName;
 
 	/**
 	 * 
 	 * @param configurator
 	 * @param callback
 	 */
-	public RabbitMqSubscriber(String tag, RabbitMqConfigurator configurator, Callback<byte[]> callback) {
+	public RabbitMqReceiver(String tag, RabbitMqConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
-		this.subscriberName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$"
+		this.receiverName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$"
 				+ configurator.getQueue();
 		createConnection();
 		init();
@@ -45,8 +45,9 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 		}
 	}
 
+
 	@Override
-	public void subscribe() {
+	public void receive() {
 		try {
 			// param1: queue
 			// param2: autoAck
@@ -89,14 +90,15 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		logger.info("call method -> RabbitSubscriber.destroy()");
 		closeConnection();
+		return true;
 	}
 
 	@Override
 	public String getName() {
-		return subscriberName;
+		return receiverName;
 	}
 
 	public static void main(String[] args) {
@@ -104,11 +106,11 @@ public class RabbitMqSubscriber extends BaseRabbitMqTransport implements Subscri
 		RabbitMqConfigurator configurator = RabbitMqConfigurator.builder().setHost("192.168.1.152").setPort(5672)
 				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
 
-		RabbitMqSubscriber subscriber = new RabbitMqSubscriber("TEST_SUB", configurator, (byte[] msg) -> {
+		RabbitMqReceiver receiver = new RabbitMqReceiver("TEST_SUB", configurator, (byte[] msg) -> {
 			System.out.println(new String(msg, Charsets.UTF8));
 		});
 
-		subscriber.subscribe();
+		receiver.receive();
 
 	}
 

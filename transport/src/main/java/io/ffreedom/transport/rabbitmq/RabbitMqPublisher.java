@@ -13,6 +13,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	// 发布消息使用的routingKey
 	private String routingKey;
 
+	// 发布消息使用的exchange
+	private String exchange;
+
 	private String publisherName;
 
 	/**
@@ -21,10 +24,16 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	 */
 	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
 		super(tag, configurator);
+		this.exchange = configurator.getPubExchange();
 		this.routingKey = StringUtil.isNullOrEmpty(configurator.getPubRoutingKey()) ? configurator.getQueue()
 				: configurator.getPubRoutingKey();
 		this.publisherName = "Pub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 		createConnection();
+		init();
+	}
+
+	private void init() {
+		
 	}
 
 	@Override
@@ -48,7 +57,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			// param2: routingKey
 			// param3: properties
 			// param4: msgBody
-			channel.basicPublish(configurator.getPubExchange(), target, null, msg);
+			channel.basicPublish(exchange, target, null, msg);
 		} catch (IOException e) {
 			logger.error("Channel#basicPublish -> " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -57,9 +66,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		logger.info("call method -> RabbitPublisher.destroy()");
 		closeConnection();
+		return true;
 	}
 
 	@Override

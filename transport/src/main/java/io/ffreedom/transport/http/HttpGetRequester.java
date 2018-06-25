@@ -64,9 +64,9 @@ public class HttpGetRequester implements Requester<String> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

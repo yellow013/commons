@@ -46,9 +46,10 @@ public class JeroMqPublisher implements Publisher<byte[]> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		publisher.close();
 		context.term();
+		return true;
 	}
 
 	@Override

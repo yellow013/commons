@@ -6,9 +6,6 @@ import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
 
 public class RabbitMqConnectTest {
 
-	// 鲁证cole: 58.246.96.190:5672
-	// 广发cole: 222.66.0.195:62102
-	// 建信期货: 118.126.16.205
 	private static String host = "192.168.1.48";
 	private static int port = 5672;
 	private static String username = "mq_user";
@@ -40,13 +37,13 @@ public class RabbitMqConnectTest {
 				.setUsername(username).setPassword(password).setQueue(queue1).setAutomaticRecovery(automaticRecovery)
 				.build();
 
-		RabbitMqSubscriber subscriber = new RabbitMqSubscriber("SUB_TEST", configurator1, (msg) -> {
+		RabbitMqReceiver receiver = new RabbitMqReceiver("SUB_TEST", configurator1, (msg) -> {
 			System.out.println("Recv msg -> " + new String(msg, Charsets.UTF8));
 		});
 
-		subscriber.subscribe();
+		receiver.receive();
 
-		System.out.println(subscriber.getName() + " statred....");
+		System.out.println(receiver.getName() + " statred....");
 		
 	}
 

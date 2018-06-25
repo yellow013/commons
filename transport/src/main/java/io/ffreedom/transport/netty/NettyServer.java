@@ -60,10 +60,11 @@ public class NettyServer extends NettyTransport implements TransportServer {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		logger.info("NettyServer call method destroy().");
 		workerGroup.shutdownGracefully();
 		bossGroup.shutdownGracefully();
+		return true;
 	}
 
 	@Override

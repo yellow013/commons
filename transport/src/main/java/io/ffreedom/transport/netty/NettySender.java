@@ -35,10 +35,11 @@ public class NettySender implements Sender<byte[]> {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		// byteBuf.release();
 		context.disconnect();
 		context.close();
+		return true;
 	}
 
 	@Override

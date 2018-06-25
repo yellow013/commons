@@ -46,10 +46,11 @@ public class JeroMqReceiver implements Receiver {
 	}
 
 	@Override
-	public void destroy() {
+	public boolean destroy() {
 		this.isRun = false;
 		receiver.close();
 		context.term();
+		return true;
 	}
 
 	@Override
