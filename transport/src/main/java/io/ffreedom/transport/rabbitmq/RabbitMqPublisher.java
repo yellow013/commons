@@ -1,8 +1,11 @@
 package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.StringUtil;
@@ -30,7 +33,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
 		super(tag, configurator);
 		this.exchange = configurator.getExchange();
-		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getQueue()
+		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getReceiveQueue()
 				: configurator.getRoutingKey();
 		this.msgProperties = configurator.getMsgProperties();
 		this.publisherName = "Pub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
@@ -39,7 +42,24 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	}
 
 	private void init() {
-
+		try {
+			List<String> queues = Arrays.asList(configurator.getQueues());
+			for (String queue : queues) {
+				channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
+						configurator.isAutoDelete(), null);
+			}
+			if (StringUtil.isNullOrEmpty(exchange)) {
+				channel.exchangeDeclare(exchange, BuiltinExchangeType.FANOUT);
+				for (String queue : queues) {
+					channel.queueBind(queue, exchange, routingKey);
+				}
+			}
+		} catch (IOException e) {
+			logger.error("IOException ->" + e.getMessage());
+			logger.error(e.getStackTrace());
+			destroy();
+			logger.error("call destroy() method.");
+		}
 	}
 
 	@Override
@@ -90,16 +110,17 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		RabbitMqConfigurator configurator = RabbitMqConfigurator.builder().setHost("192.168.1.152").setPort(5672)
-				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
+		RabbitMqConfigurator configurator = RabbitMqConfigurator.publisherBuilder().setHost("192.168.1.152")
+				.setPort(5672).setUsername("thadmq").setPassword("root").setQueues("hello").setAutomaticRecovery(true)
+				.build();
 
-		RabbitMqPublisher rabbitMqRequester = new RabbitMqPublisher("TEST_PUB", configurator);
+		RabbitMqPublisher publisher = new RabbitMqPublisher("TEST_PUB", configurator);
 
 		ThreadUtil.startNewThread(() -> {
 			int count = 0;
 			while (true) {
 				ThreadUtil.sleep(5000);
-				rabbitMqRequester.publish(String.valueOf(++count).getBytes(Charsets.UTF8));
+				publisher.publish(String.valueOf(++count).getBytes(Charsets.UTF8));
 				System.out.println(count);
 			}
 		});

@@ -16,8 +16,8 @@ public class RabbitMqConnectTest {
 
 	public static void main(String[] args) {
 
-		RabbitMqConfigurator configurator0 = RabbitMqConfigurator.builder().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setQueue(queue0).setAutomaticRecovery(automaticRecovery)
+		RabbitMqConfigurator configurator0 = RabbitMqConfigurator.publisherBuilder().setHost(host).setPort(port)
+				.setUsername(username).setPassword(password).setQueues(queue0).setAutomaticRecovery(automaticRecovery)
 				.build();
 
 		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", configurator0);
@@ -33,8 +33,8 @@ public class RabbitMqConnectTest {
 
 		System.out.println(publisher.getName() + " statred....");
 
-		RabbitMqConfigurator configurator1 = RabbitMqConfigurator.builder().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setQueue(queue1).setAutomaticRecovery(automaticRecovery)
+		RabbitMqConfigurator configurator1 = RabbitMqConfigurator.receiverBuilder().setHost(host).setPort(port)
+				.setUsername(username).setPassword(password).setReceiveQueue(queue1).setAutomaticRecovery(automaticRecovery)
 				.build();
 
 		RabbitMqReceiver receiver = new RabbitMqReceiver("SUB_TEST", configurator1, (msg) -> {

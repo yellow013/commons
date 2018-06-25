@@ -28,14 +28,14 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		super(tag, configurator);
 		this.callback = callback;
 		this.receiverName = "Sub->" + configurator.getHost() + ":" + configurator.getPort() + "$"
-				+ configurator.getQueue();
+				+ configurator.getReceiveQueue();
 		createConnection();
 		init();
 	}
 
 	private void init() {
 		try {
-			channel.queueDeclare(configurator.getQueue(), configurator.isDurable(), configurator.isExclusive(),
+			channel.queueDeclare(configurator.getReceiveQueue(), configurator.isDurable(), configurator.isExclusive(),
 					configurator.isAutoDelete(), null);
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());
@@ -51,37 +51,38 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 			// param1: queue
 			// param2: autoAck
 			// param3: consumeCallback
-			channel.basicConsume(configurator.getQueue(), configurator.isAutoAck(), new DefaultConsumer(channel) {
-				@Override
-				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
-						byte[] body) throws IOException {
-					try {
-						callback.onEvent(body);
-					} catch (Exception e) {
-						logger.error("Callback#onEvent -> " + e.getMessage());
-						logger.error(e.getStackTrace());
-						// 退回消息->关闭连接
-						logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
-						channel.basicReject(envelope.getDeliveryTag(), true);
-						destroy();
-					}
-					if (!configurator.isAutoAck()) {
-						try {
-							int ack = 0;
-							while (!isConnected()) {
-								logger.error("isConnected() == false, ack " + (++ack));
+			channel.basicConsume(configurator.getReceiveQueue(), configurator.isAutoAck(),
+					new DefaultConsumer(channel) {
+						@Override
+						public void handleDelivery(String consumerTag, Envelope envelope,
+								AMQP.BasicProperties properties, byte[] body) throws IOException {
+							try {
+								callback.onEvent(body);
+							} catch (Exception e) {
+								logger.error("Callback#onEvent -> " + e.getMessage());
+								logger.error(e.getStackTrace());
+								// 退回消息->关闭连接
+								logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
+								channel.basicReject(envelope.getDeliveryTag(), true);
 								destroy();
-								createConnection();
-								ThreadUtil.sleep(configurator.getRecoveryInterval());
 							}
-							channel.basicAck(envelope.getDeliveryTag(), false);
-						} catch (IOException e) {
-							logger.error("Channel#basicAck() -> " + e.getMessage());
-							logger.error(e.getStackTrace());
+							if (!configurator.isAutoAck()) {
+								try {
+									int ack = 0;
+									while (!isConnected()) {
+										logger.error("isConnected() == false, ack " + (++ack));
+										destroy();
+										createConnection();
+										ThreadUtil.sleep(configurator.getRecoveryInterval());
+									}
+									channel.basicAck(envelope.getDeliveryTag(), false);
+								} catch (IOException e) {
+									logger.error("Channel#basicAck() -> " + e.getMessage());
+									logger.error(e.getStackTrace());
+								}
+							}
 						}
-					}
-				}
-			});
+					});
 		} catch (IOException e) {
 			logger.error("Channel#basicConsume() -> " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -102,8 +103,9 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 
 	public static void main(String[] args) {
 
-		RabbitMqConfigurator configurator = RabbitMqConfigurator.builder().setHost("192.168.1.152").setPort(5672)
-				.setUsername("thadmq").setPassword("root").setQueue("hello").setAutomaticRecovery(true).build();
+		RabbitMqConfigurator configurator = RabbitMqConfigurator.receiverBuilder().setHost("192.168.1.152")
+				.setPort(5672).setUsername("thadmq").setPassword("root").setReceiveQueue("hello")
+				.setAutomaticRecovery(true).build();
 
 		RabbitMqReceiver receiver = new RabbitMqReceiver("TEST_SUB", configurator, (byte[] msg) -> {
 			System.out.println(new String(msg, Charsets.UTF8));
