@@ -1,5 +1,8 @@
 package io.ffreedom.transport.rabbitmq.config;
 
+import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.MessageProperties;
+
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.transport.base.config.TransportConfigurator;
 
@@ -11,10 +14,11 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 	private String username;
 	private String password;
 
-	// 发布订阅参数
-	private String pubExchange;
-	private String pubRoutingKey;
+	// 发布接收参数
+	private String exchange;
+	private String routingKey;
 	private String queue;
+	private BasicProperties msgProperties;
 
 	// 自动ACK
 	private boolean autoAck;
@@ -48,9 +52,10 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 	private RabbitMqConfigurator(Builder builder) {
 		this.host = builder.host;
 		this.port = builder.port;
-		this.pubExchange = builder.pubExchange;
-		this.pubRoutingKey = builder.pubRoutingKey;
+		this.exchange = builder.exchange;
+		this.routingKey = builder.routingKey;
 		this.queue = builder.queue;
+		this.msgProperties = builder.msgProperties;
 		this.username = builder.username;
 		this.password = builder.password;
 		this.autoAck = builder.autoAck;
@@ -86,16 +91,20 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		return password;
 	}
 
-	public String getPubExchange() {
-		return pubExchange;
+	public String getExchange() {
+		return exchange;
 	}
 
-	public String getPubRoutingKey() {
-		return pubRoutingKey;
+	public String getRoutingKey() {
+		return routingKey;
 	}
 
 	public String getQueue() {
 		return queue;
+	}
+
+	public BasicProperties getMsgProperties() {
+		return msgProperties;
 	}
 
 	public boolean isAutoAck() {
@@ -157,9 +166,10 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 		private int port;
 		private String username;
 		private String password;
-		private String pubExchange = "";
-		private String pubRoutingKey = "";
+		private String exchange = "";
+		private String routingKey = "";
 		private String queue;
+		private BasicProperties msgProperties = MessageProperties.PERSISTENT_BASIC;
 		private boolean autoAck = false;
 		private boolean durable = true;
 		private boolean exclusive = false;
@@ -195,18 +205,23 @@ public class RabbitMqConfigurator implements TransportConfigurator {
 			return this;
 		}
 
-		public Builder setPubExchange(String pubExchange) {
-			this.pubExchange = pubExchange;
+		public Builder setExchange(String exchange) {
+			this.routingKey = exchange;
 			return this;
 		}
 
-		public Builder setPubRoutingKey(String pubRoutingKey) {
-			this.pubRoutingKey = pubRoutingKey;
+		public Builder setRoutingKey(String routingKey) {
+			this.routingKey = routingKey;
 			return this;
 		}
 
 		public Builder setQueue(String queue) {
 			this.queue = queue;
+			return this;
+		}
+
+		public Builder setMsgBasicProperties(BasicProperties msgProperties) {
+			this.msgProperties = msgProperties;
 			return this;
 		}
 

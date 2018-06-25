@@ -2,6 +2,8 @@ package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
 
+import com.rabbitmq.client.AMQP.BasicProperties;
+
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -16,6 +18,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	// 发布消息使用的exchange
 	private String exchange;
 
+	// 发布消息使用的参数
+	private BasicProperties msgProperties;
+
 	private String publisherName;
 
 	/**
@@ -24,16 +29,17 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	 */
 	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
 		super(tag, configurator);
-		this.exchange = configurator.getPubExchange();
-		this.routingKey = StringUtil.isNullOrEmpty(configurator.getPubRoutingKey()) ? configurator.getQueue()
-				: configurator.getPubRoutingKey();
+		this.exchange = configurator.getExchange();
+		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getQueue()
+				: configurator.getRoutingKey();
+		this.msgProperties = configurator.getMsgProperties();
 		this.publisherName = "Pub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 		createConnection();
 		init();
 	}
 
 	private void init() {
-		
+
 	}
 
 	@Override
@@ -57,12 +63,17 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			// param2: routingKey
 			// param3: properties
 			// param4: msgBody
-			channel.basicPublish(exchange, target, null, msg);
+
+			channel.basicPublish(exchange, target, msgProperties, msg);
 		} catch (IOException e) {
 			logger.error("Channel#basicPublish -> " + e.getMessage());
 			logger.error(e.getStackTrace());
 			destroy();
 		}
+	}
+
+	class A extends BasicProperties {
+
 	}
 
 	@Override

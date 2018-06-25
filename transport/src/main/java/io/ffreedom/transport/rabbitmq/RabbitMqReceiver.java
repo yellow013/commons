@@ -45,7 +45,6 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		}
 	}
 
-
 	@Override
 	public void receive() {
 		try {
