@@ -17,6 +17,10 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	// 接收消息时使用的回调函数
 	private Callback<byte[]> callback;
 
+	// 绑定的Exchange
+	@SuppressWarnings("unused")
+	// 暂时没有使用
+	private String exchange;
 	// 连接的Queue
 	private String receiveQueue;
 
@@ -35,6 +39,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	public RabbitMqReceiver(String tag, ReceiverConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
+		this.exchange = configurator.getExchange();
 		this.receiveQueue = configurator.getReceiveQueue();
 		this.isAutoAck = configurator.isAutoAck();
 		this.maxAckTotal = configurator.getMaxAckTotal();

@@ -12,6 +12,7 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 	protected int port;
 	protected String username;
 	protected String password;
+	protected String virtualHost = "/";
 	// 连接超时时间
 	protected int connectionTimeout = 60 * 1000;
 	/**
@@ -24,7 +25,7 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 	// channel关闭后自动删除队列
 	protected boolean autoDelete = false;
 	// 自动恢复连接
-	protected boolean automaticRecovery = false;
+	protected boolean automaticRecovery = true;
 	// 重试连接间隔
 	protected long recoveryInterval = 10 * 1000;
 	// 握手通信超时时间
@@ -49,6 +50,8 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 	abstract public T setUsername(String username);
 
 	abstract public T setPassword(String password);
+
+	abstract public T setVirtualHost(String virtualHost);
 
 	abstract public T setConnectionTimeout(int connectionTimeout);
 
@@ -84,6 +87,10 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getVirtualHost() {
+		return virtualHost;
 	}
 
 	public int getConnectionTimeout() {

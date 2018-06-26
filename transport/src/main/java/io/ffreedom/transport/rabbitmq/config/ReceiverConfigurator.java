@@ -7,6 +7,7 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 	/**
 	 * 接收者参数
 	 */
+	private String exchange;
 	private String receiveQueue;
 	// 自动ACK
 	private boolean autoAck = true;
@@ -15,13 +16,21 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 
 	private ReceiverConfigurator() {
 		super("RabbitMqReceiverConfigurator");
-		// TODO Auto-generated constructor stub
 	}
 
 	public static ReceiverConfigurator configuration() {
 		return new ReceiverConfigurator();
 	}
-	
+
+	public String getExchange() {
+		return exchange;
+	}
+
+	public ReceiverConfigurator setExchange(String exchange) {
+		this.exchange = exchange;
+		return this;
+	}
+
 	public String getReceiveQueue() {
 		return receiveQueue;
 	}
@@ -52,81 +61,97 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 	/**
 	 * 配置连接信息 START
 	 */
-
+	@Override
 	public ReceiverConfigurator setHost(String host) {
 		this.host = host;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setPort(int port) {
 		this.port = port;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setUsername(String username) {
 		this.username = username;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setPassword(String password) {
 		this.password = password;
 		return this;
 	}
 
+	@Override
+	public ReceiverConfigurator setVirtualHost(String virtualHost) {
+		this.virtualHost = virtualHost;
+		return this;
+	}
+
+	@Override
 	public ReceiverConfigurator setConnectionTimeout(int connectionTimeout) {
 		this.connectionTimeout = connectionTimeout;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setDurable(boolean durable) {
 		this.durable = durable;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setAutoDelete(boolean autoDelete) {
 		this.autoDelete = autoDelete;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setAutomaticRecovery(boolean automaticRecovery) {
 		this.automaticRecovery = automaticRecovery;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setRecoveryInterval(long recoveryInterval) {
 		this.recoveryInterval = recoveryInterval;
 		return this;
 	}
+
+	@Override
 
 	public ReceiverConfigurator setHandshakeTimeout(int handshakeTimeout) {
 		this.handshakeTimeout = handshakeTimeout;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setShutdownTimeout(int shutdownTimeout) {
 		this.shutdownTimeout = shutdownTimeout;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
 		this.requestedHeartbeat = requestedHeartbeat;
 		return this;
 	}
 
+	@Override
 	public ReceiverConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 		this.shutdownEvent = shutdownEvent;
 		return this;
 	}
 
-	public ReceiverConfigurator setConfiguratorName(String configuratorName) {
-		this.configuratorName = configuratorName;
-		return this;
-	}
 	/**
 	 * 配置连接信息 END
 	 */

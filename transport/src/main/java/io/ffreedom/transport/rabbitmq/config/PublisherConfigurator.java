@@ -77,81 +77,97 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 	/**
 	 * 配置连接信息 START
 	 */
-
+	@Override
 	public PublisherConfigurator setHost(String host) {
 		this.host = host;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setPort(int port) {
 		this.port = port;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setUsername(String username) {
 		this.username = username;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setPassword(String password) {
 		this.password = password;
 		return this;
 	}
 
+	@Override
+	public PublisherConfigurator setVirtualHost(String virtualHost) {
+		this.virtualHost = virtualHost;
+		return this;
+	}
+
+	@Override
 	public PublisherConfigurator setConnectionTimeout(int connectionTimeout) {
 		this.connectionTimeout = connectionTimeout;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setDurable(boolean durable) {
 		this.durable = durable;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setAutoDelete(boolean autoDelete) {
 		this.autoDelete = autoDelete;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setAutomaticRecovery(boolean automaticRecovery) {
 		this.automaticRecovery = automaticRecovery;
 		return this;
 	}
+
+	@Override
 
 	public PublisherConfigurator setRecoveryInterval(long recoveryInterval) {
 		this.recoveryInterval = recoveryInterval;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setHandshakeTimeout(int handshakeTimeout) {
 		this.handshakeTimeout = handshakeTimeout;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setShutdownTimeout(int shutdownTimeout) {
 		this.shutdownTimeout = shutdownTimeout;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
 		this.requestedHeartbeat = requestedHeartbeat;
 		return this;
 	}
 
+	@Override
 	public PublisherConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 		this.shutdownEvent = shutdownEvent;
 		return this;
 	}
 
-	public PublisherConfigurator setConfiguratorName(String configuratorName) {
-		this.configuratorName = configuratorName;
-		return this;
-	}
 	/**
 	 * 配置连接信息 END
 	 */
