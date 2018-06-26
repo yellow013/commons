@@ -1,17 +1,14 @@
 package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
-import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
-import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
+import io.ffreedom.transport.rabbitmq.config.PublisherConfigurator;
 
 public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publisher<byte[]> {
 
@@ -26,40 +23,59 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private String publisherName;
 
+	private String[] bindQueues;
+
+	private String directQueue;
+
+	private BuiltinExchangeType exchangeType;
+
 	/**
 	 * 
 	 * @param configurator
 	 */
-	public RabbitMqPublisher(String tag, RabbitMqConfigurator configurator) {
+	public RabbitMqPublisher(String tag, PublisherConfigurator configurator) {
 		super(tag, configurator);
 		this.exchange = configurator.getExchange();
-		this.routingKey = StringUtil.isNullOrEmpty(configurator.getRoutingKey()) ? configurator.getReceiveQueue()
-				: configurator.getRoutingKey();
+		this.routingKey = configurator.getRoutingKey();
 		this.msgProperties = configurator.getMsgProperties();
-		this.publisherName = "Pub->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
+		this.bindQueues = configurator.getBindQueues();
+		this.exchangeType = configurator.getExchangeType();
+		this.directQueue = configurator.getDirectQueue();
 		createConnection();
 		init();
 	}
 
 	private void init() {
 		try {
-			List<String> queues = Arrays.asList(configurator.getQueues());
-			for (String queue : queues) {
-				channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
+			switch (exchangeType) {
+			case DIRECT:
+				this.routingKey = directQueue;
+				channel.queueDeclare(directQueue, configurator.isDurable(), configurator.isExclusive(),
 						configurator.isAutoDelete(), null);
-			}
-			if (StringUtil.isNullOrEmpty(exchange)) {
+				break;
+			case FANOUT:
 				channel.exchangeDeclare(exchange, BuiltinExchangeType.FANOUT);
-				for (String queue : queues) {
+				for (String queue : bindQueues) {
+					channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
+							configurator.isAutoDelete(), null);
 					channel.queueBind(queue, exchange, routingKey);
 				}
+				break;
+			case TOPIC:
+				// TODO 扩展TOPIC模式
+				break;
+			default:
+				break;
 			}
+
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());
 			logger.error(e.getStackTrace());
+			e.printStackTrace();
 			destroy();
 			logger.error("call destroy() method.");
 		}
+		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 	}
 
 	@Override
@@ -83,17 +99,12 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			// param2: routingKey
 			// param3: properties
 			// param4: msgBody
-
 			channel.basicPublish(exchange, target, msgProperties, msg);
 		} catch (IOException e) {
 			logger.error("Channel#basicPublish -> " + e.getMessage());
 			logger.error(e.getStackTrace());
 			destroy();
 		}
-	}
-
-	class A extends BasicProperties {
-
 	}
 
 	@Override
@@ -110,9 +121,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		RabbitMqConfigurator configurator = RabbitMqConfigurator.publisherBuilder().setHost("192.168.1.152")
-				.setPort(5672).setUsername("thadmq").setPassword("root").setQueues("hello").setAutomaticRecovery(true)
-				.build();
+		PublisherConfigurator configurator = PublisherConfigurator.configuration().setHost("192.168.1.152")
+				.setPort(5672).setUsername("thadmq").setPassword("root").setDirectMode("hello")
+				.setAutomaticRecovery(true);
 
 		RabbitMqPublisher publisher = new RabbitMqPublisher("TEST_PUB", configurator);
 

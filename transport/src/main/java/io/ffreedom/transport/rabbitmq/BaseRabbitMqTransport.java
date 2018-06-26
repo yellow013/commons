@@ -11,7 +11,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
+import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
 
 public abstract class BaseRabbitMqTransport {
 
@@ -21,7 +21,7 @@ public abstract class BaseRabbitMqTransport {
 	protected Channel channel;
 
 	// 存储配置信息对象
-	protected RabbitMqConfigurator configurator;
+	protected ConnectionConfigurator<?> configurator;
 
 	// 停机事件, 在监听到ShutdownSignalException时调用
 	protected ShutdownEvent<Exception> shutdownEvent;
@@ -34,7 +34,7 @@ public abstract class BaseRabbitMqTransport {
 	 * @param tag
 	 * @param configurator
 	 */
-	public BaseRabbitMqTransport(String tag, RabbitMqConfigurator configurator) {
+	public BaseRabbitMqTransport(String tag, ConnectionConfigurator<?> configurator) {
 		if (configurator == null) {
 			throw new NullPointerException(tag + ": configurator is null.");
 		}

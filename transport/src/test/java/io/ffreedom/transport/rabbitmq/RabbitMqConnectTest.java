@@ -2,25 +2,30 @@ package io.ffreedom.transport.rabbitmq;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.ThreadUtil;
-import io.ffreedom.transport.rabbitmq.config.RabbitMqConfigurator;
+import io.ffreedom.transport.rabbitmq.config.PublisherConfigurator;
+import io.ffreedom.transport.rabbitmq.config.ReceiverConfigurator;
 
 public class RabbitMqConnectTest {
 
-	private static String host = "192.168.1.48";
+	private static String host = "192.168.1.165";
 	private static int port = 5672;
-	private static String username = "mq_user";
-	private static String password = "mquser";
+	private static String username = "kafangMQ";
+	private static String password = "kafangMQpass";
 	private static String queue0 = "test1";
 	private static String queue1 = "test2";
 	private static boolean automaticRecovery = true;
 
 	public static void main(String[] args) {
 
-		RabbitMqConfigurator configurator0 = RabbitMqConfigurator.publisherBuilder().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setQueues(queue0).setAutomaticRecovery(automaticRecovery)
-				.build();
+		// PublisherConfigurator pubConfigurator0 =
+		// PublisherConfigurator.configuration().setHost(host).setPort(port)
+		// .setUsername(username).setPassword(password).setDirectMode(queue0).setAutomaticRecovery(automaticRecovery);
 
-		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", configurator0);
+		PublisherConfigurator pubConfigurator0 = PublisherConfigurator.configuration().setHost(host).setPort(port)
+				.setUsername(username).setPassword(password).setFanoutMode("TestExchange", "TestKey", queue0, queue1)
+				.setAutomaticRecovery(automaticRecovery);
+
+		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", pubConfigurator0);
 
 		ThreadUtil.startNewThread(() -> {
 			int count = 0;
@@ -33,18 +38,30 @@ public class RabbitMqConnectTest {
 
 		System.out.println(publisher.getName() + " statred....");
 
-		RabbitMqConfigurator configurator1 = RabbitMqConfigurator.receiverBuilder().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setReceiveQueue(queue1).setAutomaticRecovery(automaticRecovery)
-				.build();
+		ReceiverConfigurator recvConfigurator0 = ReceiverConfigurator.configuration().setHost(host).setPort(port)
+				.setUsername(username).setPassword(password).setReceiveQueue(queue0)
+				.setAutomaticRecovery(automaticRecovery);
 
-		RabbitMqReceiver receiver = new RabbitMqReceiver("SUB_TEST", configurator1, (msg) -> {
-			System.out.println("Recv msg -> " + new String(msg, Charsets.UTF8));
+		RabbitMqReceiver receiver0 = new RabbitMqReceiver("SUB_TEST", recvConfigurator0, (msg) -> {
+			System.out.println("receiver_0 msg -> " + new String(msg, Charsets.UTF8));
 		});
 
-		receiver.receive();
+		ReceiverConfigurator recvConfigurator1 = ReceiverConfigurator.configuration().setHost(host).setPort(port)
+				.setUsername(username).setPassword(password).setReceiveQueue(queue1)
+				.setAutomaticRecovery(automaticRecovery);
 
-		System.out.println(receiver.getName() + " statred....");
-		
+		RabbitMqReceiver receiver1 = new RabbitMqReceiver("SUB_TEST", recvConfigurator1, (msg) -> {
+			System.out.println("receiver_1 msg -> " + new String(msg, Charsets.UTF8));
+		});
+
+		receiver0.receive();
+
+		receiver1.receive();
+
+		System.out.println(receiver0.getName() + " statred....");
+
+		System.out.println(receiver1.getName() + " statred....");
+
 	}
 
 }
