@@ -69,7 +69,7 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return this;
 	}
 
-	public PublisherConfigurator setTopicMode() {
+	public PublisherConfigurator setModeTopic() {
 		this.exchangeType = BuiltinExchangeType.TOPIC;
 		return this;
 	}

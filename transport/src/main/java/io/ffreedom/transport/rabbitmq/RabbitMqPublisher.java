@@ -6,6 +6,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
 import io.ffreedom.transport.rabbitmq.config.PublisherConfigurator;
@@ -55,10 +56,14 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				break;
 			case FANOUT:
 				channel.exchangeDeclare(exchange, BuiltinExchangeType.FANOUT);
-				for (String queue : bindQueues) {
-					channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
-							configurator.isAutoDelete(), null);
-					channel.queueBind(queue, exchange, routingKey);
+				if (bindQueues != null) {
+					for (String queue : bindQueues) {
+						if (!StringUtil.isNullOrEmpty(queue)) {
+							channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
+									configurator.isAutoDelete(), null);
+							channel.queueBind(queue, exchange, routingKey);
+						}
+					}
 				}
 				break;
 			case TOPIC:
