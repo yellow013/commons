@@ -19,10 +19,10 @@ public class RabbitMqConnectTest {
 
 		// PublisherConfigurator pubConfigurator0 =
 		// PublisherConfigurator.configuration().setHost(host).setPort(port)
-		// .setUsername(username).setPassword(password).setDirectMode(queue0).setAutomaticRecovery(automaticRecovery);
+		// .setUsername(username).setPassword(password).setModeDirect(queue0).setAutomaticRecovery(automaticRecovery);
 
 		PublisherConfigurator pubConfigurator0 = PublisherConfigurator.configuration().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setFanoutMode("TestExchange", "TestKey", queue0, queue1)
+				.setUsername(username).setPassword(password).setModeFanout("TestExchange", "TestKey", queue0, queue1)
 				.setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", pubConfigurator0);

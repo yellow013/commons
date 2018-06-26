@@ -55,13 +55,13 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return exchangeType;
 	}
 
-	public PublisherConfigurator setDirectMode(String directQueue) {
+	public PublisherConfigurator setModeDirect(String directQueue) {
 		this.exchangeType = BuiltinExchangeType.DIRECT;
 		this.directQueue = directQueue;
 		return this;
 	}
 
-	public PublisherConfigurator setFanoutMode(String exchange, String routingKey, String... bindQueues) {
+	public PublisherConfigurator setModeFanout(String exchange, String routingKey, String... bindQueues) {
 		this.exchangeType = BuiltinExchangeType.FANOUT;
 		this.exchange = exchange;
 		this.routingKey = routingKey;
