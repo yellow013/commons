@@ -40,7 +40,7 @@ public class JeroMqSubscriber implements Subscriber {
 		while (isRun) {
 			subscriber.recv();
 			byte[] msgBytes = subscriber.recv();
-			callback.onEvent(msgBytes);
+			callback.accept(msgBytes);
 		}
 	}
 

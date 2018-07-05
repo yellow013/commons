@@ -104,7 +104,7 @@ public class SocketTransceiver extends BaseTransceiver<String> {
 					}
 					byte[] bytes = new byte[available];
 					IOUtils.read(inputStream, bytes);
-					callback.onEvent(bytes);
+					callback.accept(bytes);
 				} catch (IOException e) {
 					e.printStackTrace();
 					destroy();

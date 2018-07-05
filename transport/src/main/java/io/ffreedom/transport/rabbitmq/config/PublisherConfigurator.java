@@ -61,7 +61,10 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return this;
 	}
 
-	public PublisherConfigurator setModeFanout(String exchange, String routingKey, String... bindQueues) {
+	public PublisherConfigurator setModeFanout(String exchange, String routingKey, String[] bindQueues) {
+		if (bindQueues == null) {
+			throw new IllegalArgumentException("Bind queues not nullable.");
+		}
 		this.exchangeType = BuiltinExchangeType.FANOUT;
 		this.exchange = exchange;
 		this.routingKey = routingKey;

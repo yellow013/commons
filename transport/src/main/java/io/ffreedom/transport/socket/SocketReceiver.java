@@ -104,7 +104,7 @@ public class SocketReceiver implements Receiver {
 					}
 					byte[] bytes = new byte[available];
 					IOUtils.read(inputStream, bytes);
-					callback.onEvent(bytes);
+					callback.accept(bytes);
 				} catch (IOException e) {
 					logger.error(e.getMessage());
 					logger.error(e.getStackTrace());

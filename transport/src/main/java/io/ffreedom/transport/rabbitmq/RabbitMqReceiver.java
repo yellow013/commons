@@ -71,7 +71,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 						byte[] body) throws IOException {
 					try {
-						callback.onEvent(body);
+						callback.accept(body);
 					} catch (Exception e) {
 						logger.error("Callback#onEvent -> " + e.getMessage());
 						logger.error(e.getStackTrace());

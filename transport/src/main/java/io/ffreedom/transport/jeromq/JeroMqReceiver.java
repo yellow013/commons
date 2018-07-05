@@ -40,7 +40,7 @@ public class JeroMqReceiver implements Receiver {
 		while (isRun) {
 			byte[] msgBytes = receiver.recv();
 			receiver.send(new byte[0]);
-			callback.onEvent(msgBytes);
+			callback.accept(msgBytes);
 		}
 		return;
 	}
