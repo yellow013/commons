@@ -3,12 +3,15 @@ package io.ffreedom.common.queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.logging.log4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.LoadContainer;
 import io.ffreedom.common.queue.base.MCQueue;
 
+@ThreadSafe
 public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 
 	private LoadContainer<T>[] containers;
@@ -86,7 +89,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	public static void main(String[] args) {
-
+		
 	}
 
 }
