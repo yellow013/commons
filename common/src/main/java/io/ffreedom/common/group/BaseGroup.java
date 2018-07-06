@@ -12,7 +12,7 @@ public abstract class BaseGroup<K, V> implements Group<K, V> {
 	protected Map<K, V> group = new ConcurrentHashMap<>();
 
 	@Override
-	public V getMember(K k) {
+	public synchronized V getMember(K k) {
 		if (group.containsKey(k)) {
 			return group.get(k);
 		}
