@@ -1,11 +1,13 @@
 package io.ffreedom.transport.jeromq;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 import org.zeromq.ZMQ;
 
-import io.ffreedom.common.annotation.thread.ThreadUnsafe;
 import io.ffreedom.transport.base.role.Sender;
 import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;
 
+@NotThreadSafe
 public class JeroMqSender implements Sender<byte[]> {
 
 	private ZMQ.Context context;
@@ -30,7 +32,6 @@ public class JeroMqSender implements Sender<byte[]> {
 		this.requesterName = "JeroMQ.REQ$" + configurator.getHost();
 	}
 
-	@ThreadUnsafe
 	@Override
 	public void sent(byte[] msg) {
 		requester.send(msg);

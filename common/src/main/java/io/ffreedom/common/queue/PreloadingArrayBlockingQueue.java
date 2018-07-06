@@ -9,7 +9,7 @@ import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.LoadContainer;
 import io.ffreedom.common.queue.base.MCQueue;
 
-public class ArrayBlockingQueueNoGC<T> implements MCQueue<T> {
+public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 
 	private LoadContainer<T>[] containers;
 
@@ -27,11 +27,14 @@ public class ArrayBlockingQueueNoGC<T> implements MCQueue<T> {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@SuppressWarnings("unchecked")
-	public ArrayBlockingQueueNoGC(int size) {
+	public PreloadingArrayBlockingQueue(int size) {
 		if (size <= 0) {
 			throw new IllegalArgumentException("size is too big.");
 		}
 		this.containers = new LoadContainer[size];
+		for (int i = 0; i < size; i++) {
+			containers[i] = new LoadContainer<>();
+		}
 		this.size = size;
 		this.lock = new ReentrantLock();
 		this.notEmpty = lock.newCondition();
@@ -53,7 +56,7 @@ public class ArrayBlockingQueueNoGC<T> implements MCQueue<T> {
 			notEmpty.signal();
 			return true;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingQueueNoGC.enQueue(t) : " + e.getMessage());
+			logger.error("ArrayBlockingQueue.enQueue(t) : " + e.getMessage());
 			return false;
 		} finally {
 			lock.unlock();
@@ -75,7 +78,7 @@ public class ArrayBlockingQueueNoGC<T> implements MCQueue<T> {
 			notFull.signal();
 			return t;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingQueueNoGC.deQueue() : " + e.getMessage());
+			logger.error("ArrayBlockingQueue.deQueue() : " + e.getMessage());
 			return null;
 		} finally {
 			lock.unlock();

@@ -3,9 +3,9 @@ package io.ffreedom.common.queue;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import io.ffreedom.common.annotation.thread.ThreadUnsafe;
+import javax.annotation.concurrent.NotThreadSafe;
 
-@ThreadUnsafe
+@NotThreadSafe
 public class PreloadingQueue<T> {
 
 	private LinkedList<T> objs = new LinkedList<>();

@@ -2,15 +2,16 @@ package io.ffreedom.common.queue;
 
 import java.util.Collection;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
-public class PriorityDoubleQueue<T> {
+@NotThreadSafe
+public class PriorityQueue<T> {
 
 	private MutableSortedSet<T> prioritySet = TreeSortedSet.newSet();
 	private MutableSortedSet<T> secondarySet = TreeSortedSet.newSet();
-
-	private int waitSignal = 0;
 
 	public boolean addAllToPrioritySet(Collection<T> collection) {
 		return prioritySet.addAll(collection);
@@ -29,29 +30,11 @@ public class PriorityDoubleQueue<T> {
 	}
 
 	public boolean isEmpty() {
-		return prioritySet.isEmpty() || secondarySet.isEmpty();
+		return prioritySet.notEmpty() || secondarySet.notEmpty();
 	}
 
 	public T next() {
-		if (!prioritySet.isEmpty()) {
-			T firstPriority = prioritySet.first();
-			calculateWaitSignal(firstPriority);
-			if (waitSignal == 0) {
-				return firstPriority;
-			} else {
-				return secondarySet.first();
-			}
-		} else {
-			if (!secondarySet.isEmpty()) {
-				return secondarySet.first();
-			}
-		}
-		return null;
-	}
-
-	private void calculateWaitSignal(T firstPriority) {
-		MutableSortedSet<T> select = secondarySet.select(secondary -> secondary != firstPriority);
-		waitSignal = select.size();
+		return prioritySet.notEmpty() ? prioritySet.first() : secondarySet.notEmpty() ? secondarySet.first() : null;
 	}
 
 }

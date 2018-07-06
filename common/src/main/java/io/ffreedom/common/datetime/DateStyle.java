@@ -1,11 +1,12 @@
 package io.ffreedom.common.datetime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
-import io.ffreedom.common.annotation.thread.ThreadSafe;
-import io.ffreedom.common.annotation.thread.ThreadUnsafe;
+import io.ffreedom.common.utils.StringUtil;
 
 public enum DateStyle {
 
@@ -57,24 +58,29 @@ public enum DateStyle {
 		return pattern;
 	}
 
-	@ThreadSafe
 	public DateFormat newDateFormat() {
 		return new SimpleDateFormat(pattern);
 	}
 
-	@ThreadSafe
 	public DateTimeFormatter newDateTimeFormatter() {
 		return DateTimeFormatter.ofPattern(pattern);
 	}
 
-	@ThreadUnsafe
 	public DateFormat getDateFormat() {
 		return dateFormat;
 	}
 
-	@ThreadUnsafe
 	public DateTimeFormatter getDateTimeFormatter() {
 		return dateTimeFormatter;
+	}
+
+	public Date toDate(String str) {
+		try {
+			return !StringUtil.isNullOrEmpty(str) ? dateFormat.parse(str) : null;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

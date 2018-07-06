@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import io.ffreedom.common.annotation.thread.ThreadUnsafe;
+import javax.annotation.concurrent.NotThreadSafe;
 
+@NotThreadSafe
 public abstract class BaseGroup<K, V> implements Group<K, V> {
 
 	protected Map<K, V> group = new ConcurrentHashMap<>();
@@ -34,7 +35,6 @@ public abstract class BaseGroup<K, V> implements Group<K, V> {
 		return group.containsKey(k);
 	}
 
-	@ThreadUnsafe
 	protected abstract V createMember(K k);
 
 }
