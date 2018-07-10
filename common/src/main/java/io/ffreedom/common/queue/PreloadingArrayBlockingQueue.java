@@ -59,7 +59,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 			notEmpty.signal();
 			return true;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingQueue.enQueue(t) : " + e.getMessage());
+			logger.error("PreloadingArrayBlockingQueue.enQueue(t) : " + e.getMessage());
 			return false;
 		} finally {
 			lock.unlock();
@@ -81,7 +81,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 			notFull.signal();
 			return t;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingQueue.deQueue() : " + e.getMessage());
+			logger.error("PreloadingArrayBlockingQueue.deQueue() : " + e.getMessage());
 			return null;
 		} finally {
 			lock.unlock();

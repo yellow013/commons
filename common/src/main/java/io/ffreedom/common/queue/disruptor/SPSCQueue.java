@@ -25,6 +25,8 @@ public class SPSCQueue<T> implements SCQueue<T> {
 
 	private QueueProcessor<T> processor;
 
+	private volatile boolean isStop = false;
+
 	public SPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor) {
 		this(queueSize, autoRun, processor, WaitStrategyOption.BusySpin);
 	}
@@ -88,6 +90,9 @@ public class SPSCQueue<T> implements SCQueue<T> {
 	@Override
 	public boolean enQueue(T t) {
 		try {
+			if (isStop) {
+				return false;
+			}
 			this.producer.onData(t);
 			return true;
 		} catch (Exception e) {
@@ -102,8 +107,9 @@ public class SPSCQueue<T> implements SCQueue<T> {
 
 	@Override
 	public void stop() {
+		this.isStop = true;
 		while (disruptor.getBufferSize() != 0) {
-			ThreadUtil.sleep(1000);
+			ThreadUtil.sleep(1);
 		}
 		disruptor.shutdown();
 	}
@@ -111,7 +117,7 @@ public class SPSCQueue<T> implements SCQueue<T> {
 	public static void main(String[] args) {
 
 		SPSCQueue<Integer> queue = new SPSCQueue<>(64, true, (integer) -> {
-			System.out.println(integer);
+			System.out.println("********************************************");
 		});
 
 		ThreadUtil.startNewThread(() -> {
@@ -122,6 +128,8 @@ public class SPSCQueue<T> implements SCQueue<T> {
 		});
 
 		ThreadUtil.sleep(10000);
+
+		queue.stop();
 
 	}
 

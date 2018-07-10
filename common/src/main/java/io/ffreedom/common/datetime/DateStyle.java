@@ -3,6 +3,8 @@ package io.ffreedom.common.datetime;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -45,12 +47,16 @@ public enum DateStyle {
 	;
 
 	private String pattern;
-	private final DateFormat dateFormat;
+
+	// TODO Delete
+	private final ThreadLocal<DateFormat> threadLocalDateFormat;
+
 	private final DateTimeFormatter dateTimeFormatter;
 
 	private DateStyle(String pattern) {
 		this.pattern = pattern;
-		this.dateFormat = new SimpleDateFormat(pattern);
+		this.threadLocalDateFormat = new ThreadLocal<>();
+		this.threadLocalDateFormat.set(new SimpleDateFormat(pattern));
 		this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
 	}
 
@@ -67,7 +73,7 @@ public enum DateStyle {
 	}
 
 	public DateFormat getDateFormat() {
-		return dateFormat;
+		return threadLocalDateFormat.get();
 	}
 
 	public DateTimeFormatter getDateTimeFormatter() {
@@ -76,11 +82,27 @@ public enum DateStyle {
 
 	public Date toDate(String str) {
 		try {
-			return !StringUtil.isNullOrEmpty(str) ? dateFormat.parse(str) : null;
+			return !StringUtil.isNullOrEmpty(str) ? threadLocalDateFormat.get().parse(str) : null;
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public LocalDateTime toLocalDateTime(String str) {
+		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, dateTimeFormatter) : null;
+	}
+
+	public LocalDateTime toLocalDateTime(Date str) {
+		return toLocalDateTime(str, TimeZone.SYSTEM_DEFAULT);
+	}
+
+	public LocalDateTime toLocalDateTime(Date str, ZoneId zoneId) {
+		return LocalDateTime.ofInstant(str.toInstant(), zoneId);
+	}
+
+	public String getNowStr() {
+		return dateTimeFormatter.format(LocalDateTime.now());
 	}
 
 }
