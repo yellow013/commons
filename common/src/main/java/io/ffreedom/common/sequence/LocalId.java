@@ -1,7 +1,9 @@
-package io.ffreedom.common.utils;
+package io.ffreedom.common.sequence;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+
+import io.ffreedom.common.utils.ThreadUtil;
 
 public class LocalId {
 

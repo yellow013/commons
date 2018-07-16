@@ -1,4 +1,4 @@
-package io.ffreedom.common.utils;
+package io.ffreedom.common.sequence;
 
 import java.util.concurrent.atomic.AtomicLong;
 
