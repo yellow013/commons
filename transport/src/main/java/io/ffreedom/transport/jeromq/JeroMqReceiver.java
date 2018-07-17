@@ -1,46 +1,51 @@
 package io.ffreedom.transport.jeromq;
 
+import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Socket;
 
-import io.ffreedom.common.functional.Callback;
+import io.ffreedom.common.functional.MsgPipeline;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;
 
 public class JeroMqReceiver implements Receiver {
 
-	private ZMQ.Context context;
-	private ZMQ.Socket receiver;
+	private ZContext context;
+	private Socket socket;
 
 	private String receiverName;
 
-	private Callback<byte[]> callback;
+	private MsgPipeline<byte[], byte[]> pipeline;
 	private JeroMqConfigurator configurator;
 
 	private volatile boolean isRun = true;
 
-	public JeroMqReceiver(JeroMqConfigurator configurator, Callback<byte[]> callback) {
+	public JeroMqReceiver(JeroMqConfigurator configurator, MsgPipeline<byte[], byte[]> pipeline) {
 		if (configurator == null) {
 			throw new NullPointerException("configurator is null in JeroMQReceiver init mothed !");
 		}
 		this.configurator = configurator;
-		this.callback = callback;
+		this.pipeline = pipeline;
 		init();
 	}
 
 	private void init() {
-		this.context = ZMQ.context(configurator.getIoThreads());
-		this.receiver = context.socket(ZMQ.REP);
-		this.receiver.bind(configurator.getHost());
+		this.context = new ZContext(configurator.getIoThreads());
+		this.socket = context.createSocket(ZMQ.REP);
+		this.socket.bind(configurator.getHost());
 		this.receiverName = "JeroMQ.REP$" + configurator.getHost();
 	}
 
 	@Override
 	public void receive() {
 		while (isRun) {
-			byte[] msgBytes = receiver.recv();
-			receiver.send(new byte[0]);
-			callback.accept(msgBytes);
+			byte[] recvBytes = socket.recv();
+			byte[] bytes = pipeline.apply(recvBytes);
+			if (bytes == null) {
+				bytes = new byte[0];
+			}
+			socket.send(bytes);
 		}
 		return;
 	}
@@ -48,8 +53,9 @@ public class JeroMqReceiver implements Receiver {
 	@Override
 	public boolean destroy() {
 		this.isRun = false;
-		receiver.close();
-		context.term();
+		ThreadUtil.sleep(50);
+		socket.close();
+		context.close();
 		return true;
 	}
 
@@ -60,10 +66,11 @@ public class JeroMqReceiver implements Receiver {
 
 	public static void main(String[] args) {
 
-		JeroMqConfigurator configurator = JeroMqConfigurator.builder().setIoThreads(1).setHost("tcp://*:5551").build();
-
-		JeroMqReceiver receiver = new JeroMqReceiver(configurator,
-				(byte[] byteMsg) -> System.out.println(new String(byteMsg)));
+		JeroMqReceiver receiver = new JeroMqReceiver(
+				JeroMqConfigurator.builder().setIoThreads(10).setHost("tcp://*:5551").build(), (byte[] byteMsg) -> {
+					System.out.println(new String(byteMsg));
+					return null;
+				});
 
 		ThreadUtil.startNewThread(() -> receiver.receive());
 
@@ -75,8 +82,7 @@ public class JeroMqReceiver implements Receiver {
 
 	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
+		return !context.isClosed();
 	}
 
 }

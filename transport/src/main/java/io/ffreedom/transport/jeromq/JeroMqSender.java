@@ -11,7 +11,7 @@ import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;
 public class JeroMqSender implements Sender<byte[]> {
 
 	private ZMQ.Context context;
-	private ZMQ.Socket requester;
+	private ZMQ.Socket socket;
 
 	private String requesterName;
 	
@@ -27,20 +27,20 @@ public class JeroMqSender implements Sender<byte[]> {
 	
 	private void init(){
 		this.context = ZMQ.context(configurator.getIoThreads());
-		this.requester = context.socket(ZMQ.REQ);
-		this.requester.connect(configurator.getHost());
+		this.socket = context.socket(ZMQ.REQ);
+		this.socket.connect(configurator.getHost());
 		this.requesterName = "JeroMQ.REQ$" + configurator.getHost();
 	}
 
 	@Override
 	public void sent(byte[] msg) {
-		requester.send(msg);
-		requester.recv();
+		socket.send(msg);
+		socket.recv();
 	}
 
 	@Override
 	public boolean destroy() {
-		requester.close();
+		socket.close();
 		context.term();
 		return true;
 	}
