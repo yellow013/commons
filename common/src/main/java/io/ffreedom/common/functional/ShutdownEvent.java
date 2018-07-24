@@ -1,12 +1,8 @@
 package io.ffreedom.common.functional;
 
-import java.util.function.Consumer;
-
 @FunctionalInterface
-public interface ShutdownEvent<E extends Throwable> extends Consumer<E> {
+public interface ShutdownEvent<E extends Throwable> {
 
-	default void shutdownHandle(E exception) {
-		accept(exception);
-	}
+	void shutdownHandle(E exception);
 
 }

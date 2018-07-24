@@ -41,7 +41,7 @@ public class JeroMqReceiver implements Receiver {
 	public void receive() {
 		while (isRun) {
 			byte[] recvBytes = socket.recv();
-			byte[] bytes = pipeline.apply(recvBytes);
+			byte[] bytes = pipeline.stream(recvBytes);
 			if (bytes == null) {
 				bytes = new byte[0];
 			}
