@@ -21,8 +21,8 @@ public class RabbitMqConnectTest {
 		// PublisherConfigurator.configuration().setHost(host).setPort(port)
 		// .setUsername(username).setPassword(password).setModeDirect(queue0).setAutomaticRecovery(automaticRecovery);
 
-		PublisherConfigurator pubConfigurator0 = PublisherConfigurator.configuration().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password)
+		PublisherConfigurator pubConfigurator0 = PublisherConfigurator.configuration().setConnectionParam(host, port)
+				.setUserParam(username, password)
 				.setModeFanout("TestExchange", "TestKey", new String[] { queue0, queue1 })
 				.setAutomaticRecovery(automaticRecovery);
 
@@ -39,17 +39,15 @@ public class RabbitMqConnectTest {
 
 		System.out.println(publisher.getName() + " statred....");
 
-		ReceiverConfigurator recvConfigurator0 = ReceiverConfigurator.configuration().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setReceiveQueue(queue0)
-				.setAutomaticRecovery(automaticRecovery);
+		ReceiverConfigurator recvConfigurator0 = ReceiverConfigurator.configuration().setConnectionParam(host, port)
+				.setUserParam(username, password).setReceiveQueue(queue0).setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqReceiver receiver0 = new RabbitMqReceiver("SUB_TEST", recvConfigurator0, (msg) -> {
 			System.out.println("receiver_0 msg -> " + new String(msg, Charsets.UTF8));
 		});
 
-		ReceiverConfigurator recvConfigurator1 = ReceiverConfigurator.configuration().setHost(host).setPort(port)
-				.setUsername(username).setPassword(password).setReceiveQueue(queue1)
-				.setAutomaticRecovery(automaticRecovery);
+		ReceiverConfigurator recvConfigurator1 = ReceiverConfigurator.configuration().setConnectionParam(host, port)
+				.setUserParam(username, password).setReceiveQueue(queue1).setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqReceiver receiver1 = new RabbitMqReceiver("SUB_TEST", recvConfigurator1, (msg) -> {
 			System.out.println("receiver_1 msg -> " + new String(msg, Charsets.UTF8));

@@ -15,6 +15,7 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 	protected String virtualHost = "/";
 	// 连接超时时间
 	protected int connectionTimeout = 60 * 1000;
+	
 	/**
 	 * 队列定义参数
 	 */

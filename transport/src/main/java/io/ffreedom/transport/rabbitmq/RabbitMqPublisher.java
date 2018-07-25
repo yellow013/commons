@@ -100,11 +100,16 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				createConnection();
 				ThreadUtil.sleep(configurator.getRecoveryInterval());
 			}
-			// param1: exchange
-			// param2: routingKey
-			// param3: properties
-			// param4: msgBody
-			channel.basicPublish(exchange, target, msgProperties, msg);
+
+			channel.basicPublish(
+					// param1: exchange
+					exchange,
+					// param2: routingKey
+					target,
+					// param3: properties
+					msgProperties,
+					// param4: msgBody
+					msg);
 		} catch (IOException e) {
 			logger.error("Channel#basicPublish -> " + e.getMessage());
 			logger.error(e.getStackTrace());
