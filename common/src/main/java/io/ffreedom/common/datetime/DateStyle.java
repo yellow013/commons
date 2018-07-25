@@ -104,5 +104,12 @@ public enum DateStyle {
 	public String getNowStr() {
 		return dateTimeFormatter.format(LocalDateTime.now());
 	}
+	
+	public static void main(String[] args) {
+		
+		System.out.println(DateStyle.HH_MM_SS_MILLISECOND.getNowStr());
+		
+	}
+
 
 }

@@ -2,7 +2,6 @@ package io.ffreedom.common.datetime;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 public class Timestamp {
 
@@ -15,7 +14,7 @@ public class Timestamp {
 	 */
 	private Timestamp(Instant instant) {
 		this.instant = instant;
-		this.dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+		this.dateTime = LocalDateTime.ofInstant(instant, TimeZone.SYSTEM_DEFAULT);
 		this.epochMicrosecond = instant.getEpochSecond() * 1000000 + instant.getNano();
 	}
 
