@@ -61,29 +61,6 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 	/**
 	 * 配置连接信息 START
 	 */
-	@Override
-	public ReceiverConfigurator setHost(String host) {
-		this.host = host;
-		return this;
-	}
-
-	@Override
-	public ReceiverConfigurator setPort(int port) {
-		this.port = port;
-		return this;
-	}
-
-	@Override
-	public ReceiverConfigurator setUsername(String username) {
-		this.username = username;
-		return this;
-	}
-
-	@Override
-	public ReceiverConfigurator setPassword(String password) {
-		this.password = password;
-		return this;
-	}
 
 	@Override
 	public ReceiverConfigurator setVirtualHost(String virtualHost) {

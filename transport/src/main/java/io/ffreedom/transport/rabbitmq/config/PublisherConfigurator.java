@@ -80,29 +80,6 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 	/**
 	 * 配置连接信息 START
 	 */
-	@Override
-	public PublisherConfigurator setHost(String host) {
-		this.host = host;
-		return this;
-	}
-
-	@Override
-	public PublisherConfigurator setPort(int port) {
-		this.port = port;
-		return this;
-	}
-
-	@Override
-	public PublisherConfigurator setUsername(String username) {
-		this.username = username;
-		return this;
-	}
-
-	@Override
-	public PublisherConfigurator setPassword(String password) {
-		this.password = password;
-		return this;
-	}
 
 	@Override
 	public PublisherConfigurator setVirtualHost(String virtualHost) {

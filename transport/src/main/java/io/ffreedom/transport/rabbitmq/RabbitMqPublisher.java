@@ -126,8 +126,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		PublisherConfigurator configurator = PublisherConfigurator.configuration().setHost("192.168.1.152")
-				.setPort(5672).setUsername("thadmq").setPassword("root").setModeDirect("hello")
+		PublisherConfigurator configurator = PublisherConfigurator.configuration()
+				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setModeDirect("hello")
 				.setAutomaticRecovery(true);
 
 		RabbitMqPublisher publisher = new RabbitMqPublisher("TEST_PUB", configurator);

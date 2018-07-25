@@ -43,13 +43,19 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 		this.configuratorName = configuratorName;
 	}
 
-	abstract public T setHost(String host);
+	@SuppressWarnings("unchecked")
+	public T setConnectionParam(String host, int port) {
+		this.host = host;
+		this.port = port;
+		return (T) this;
+	}
 
-	abstract public T setPort(int port);
-
-	abstract public T setUsername(String username);
-
-	abstract public T setPassword(String password);
+	@SuppressWarnings("unchecked")
+	public T setUserParam(String username, String password) {
+		this.username = username;
+		this.password = password;
+		return (T) this;
+	}
 
 	abstract public T setVirtualHost(String virtualHost);
 

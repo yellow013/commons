@@ -121,8 +121,9 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 
 	public static void main(String[] args) {
 
-		ReceiverConfigurator configurator = ReceiverConfigurator.configuration().setHost("192.168.1.152").setPort(5672)
-				.setUsername("thadmq").setPassword("root").setReceiveQueue("hello").setAutomaticRecovery(true);
+		ReceiverConfigurator configurator = ReceiverConfigurator.configuration()
+				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setReceiveQueue("hello")
+				.setAutomaticRecovery(true);
 
 		RabbitMqReceiver receiver = new RabbitMqReceiver("TEST_SUB", configurator, (byte[] msg) -> {
 			System.out.println(new String(msg, Charsets.UTF8));
