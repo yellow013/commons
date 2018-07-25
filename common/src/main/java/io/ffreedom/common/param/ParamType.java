@@ -1,9 +1,11 @@
-package io.ffreedom.common.init.param;
+package io.ffreedom.common.param;
 
 public enum ParamType {
 
 	STRING,
 
+	BOOLEAN,
+	
 	DOUBLE,
 
 	INTEGER,
