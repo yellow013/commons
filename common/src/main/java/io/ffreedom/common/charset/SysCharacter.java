@@ -1,6 +1,6 @@
 package io.ffreedom.common.charset;
 
-public interface SysCharset {
+public interface SysCharacter {
 
 	String LINE_SEPARATOR = System.getProperty("line.separator");
 	
