@@ -1,5 +1,8 @@
 package io.ffreedom.common.param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.Temporal;
 
 import org.eclipse.collections.api.map.MutableMap;
@@ -27,33 +30,37 @@ public final class ParamMap<K extends ParamKey> {
 		initMap.keySet().forEach(key -> {
 			switch (key.getParamType()) {
 			case BOOLEAN:
-				putBoolean(key, (boolean) initMap.get(key));
+				putParam(key, (boolean) initMap.get(key));
 				break;
 			case INTEGER:
-				putInteger(key, (int) initMap.get(key));
+				putParam(key, (int) initMap.get(key));
 				break;
 			case DOUBLE:
-				putDouble(key, (double) initMap.get(key));
+				putParam(key, (double) initMap.get(key));
 				break;
 			case STRING:
-				putString(key, (String) initMap.get(key));
+				putParam(key, (String) initMap.get(key));
+				break;
+			case DATETIME:
+			case DATE:
+			case TIME:
+				putParam(key, (Temporal) initMap.get(key));
 				break;
 			default:
-				putTemporal(key, (Temporal) initMap.get(key));
-				break;
+				throw new IllegalArgumentException("");
 			}
 		});
 	}
 
-	public Boolean getBoolean(K key) {
+	public boolean getBoolean(K key) {
 		return booleanParamMap.get(key.getKeyId());
 	}
 
-	public Integer getInteger(K key) {
+	public int getInteger(K key) {
 		return integerParamMap.get(key.getKeyId());
 	}
 
-	public Double getDouble(K key) {
+	public double getDouble(K key) {
 		return doubleParamMap.get(key.getKeyId());
 	}
 
@@ -61,23 +68,44 @@ public final class ParamMap<K extends ParamKey> {
 		return stringParamMap.get(key.getKeyId());
 	}
 
-	private void putBoolean(K key, boolean value) {
+	public LocalDateTime getDateTime(K key) {
+		if (key.getParamType() == ParamType.DATETIME) {
+			return (LocalDateTime) temporalParamMap.get(key.getKeyId());
+		}
+		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not DATETIME");
+	}
+
+	public LocalDate getDate(K key) {
+		if (key.getParamType() == ParamType.DATE) {
+			return (LocalDate) temporalParamMap.get(key.getKeyId());
+		}
+		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not DATE");
+	}
+
+	public LocalTime getTime(K key) {
+		if (key.getParamType() == ParamType.TIME) {
+			return (LocalTime) temporalParamMap.get(key.getKeyId());
+		}
+		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not TIME");
+	}
+
+	private void putParam(K key, boolean value) {
 		booleanParamMap.put(key.getKeyId(), value);
 	}
 
-	private void putInteger(K key, int value) {
+	private void putParam(K key, int value) {
 		integerParamMap.put(key.getKeyId(), value);
 	}
 
-	private void putDouble(K key, double value) {
+	private void putParam(K key, double value) {
 		doubleParamMap.put(key.getKeyId(), value);
 	}
 
-	private void putString(K key, String value) {
+	private void putParam(K key, String value) {
 		stringParamMap.put(key.getKeyId(), value);
 	}
 
-	private void putTemporal(K key, Temporal value) {
+	private void putParam(K key, Temporal value) {
 		temporalParamMap.put(key.getKeyId(), value);
 	}
 
