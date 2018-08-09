@@ -14,8 +14,10 @@ public final class StringUtil {
 	}
 
 	public final static boolean isNumber(String str) {
-		char[] chars = str.toCharArray();
-		for (char c : chars) {
+		if (isNullOrEmpty(str)) {
+			return false;
+		}
+		for (char c : str.toCharArray()) {
 			if (!Character.isDigit(c)) {
 				return false;
 			}
