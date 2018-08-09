@@ -6,7 +6,7 @@ import com.rabbitmq.client.MessageProperties;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 
-public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfigurator> {
+public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublisherConfigurator> {
 
 	/**
 	 * 发布者参数
@@ -18,12 +18,12 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 	private BasicProperties msgProperties = MessageProperties.PERSISTENT_BASIC;
 	private BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
 
-	private PublisherConfigurator() {
+	private RmqPublisherConfigurator() {
 		super("RabbitMqPublisherConfigurator");
 	}
 
-	public static PublisherConfigurator configuration() {
-		return new PublisherConfigurator();
+	public static RmqPublisherConfigurator configuration() {
+		return new RmqPublisherConfigurator();
 	}
 
 	public String getExchange() {
@@ -46,7 +46,7 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return msgProperties;
 	}
 
-	public PublisherConfigurator setMsgProperties(BasicProperties msgProperties) {
+	public RmqPublisherConfigurator setMsgProperties(BasicProperties msgProperties) {
 		this.msgProperties = msgProperties;
 		return this;
 	}
@@ -55,13 +55,13 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return exchangeType;
 	}
 
-	public PublisherConfigurator setModeDirect(String directQueue) {
+	public RmqPublisherConfigurator setModeDirect(String directQueue) {
 		this.exchangeType = BuiltinExchangeType.DIRECT;
 		this.directQueue = directQueue;
 		return this;
 	}
 
-	public PublisherConfigurator setModeFanout(String exchange, String routingKey, String[] bindQueues) {
+	public RmqPublisherConfigurator setModeFanout(String exchange, String routingKey, String[] bindQueues) {
 		if (bindQueues == null) {
 			throw new IllegalArgumentException("Bind queues not nullable.");
 		}
@@ -72,7 +72,7 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 		return this;
 	}
 
-	public PublisherConfigurator setModeTopic() {
+	public RmqPublisherConfigurator setModeTopic() {
 		this.exchangeType = BuiltinExchangeType.TOPIC;
 		return this;
 	}
@@ -82,68 +82,68 @@ public class PublisherConfigurator extends ConnectionConfigurator<PublisherConfi
 	 */
 
 	@Override
-	public PublisherConfigurator setVirtualHost(String virtualHost) {
+	public RmqPublisherConfigurator setVirtualHost(String virtualHost) {
 		this.virtualHost = virtualHost;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setConnectionTimeout(int connectionTimeout) {
+	public RmqPublisherConfigurator setConnectionTimeout(int connectionTimeout) {
 		this.connectionTimeout = connectionTimeout;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setDurable(boolean durable) {
+	public RmqPublisherConfigurator setDurable(boolean durable) {
 		this.durable = durable;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setExclusive(boolean exclusive) {
+	public RmqPublisherConfigurator setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setAutoDelete(boolean autoDelete) {
+	public RmqPublisherConfigurator setAutoDelete(boolean autoDelete) {
 		this.autoDelete = autoDelete;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setAutomaticRecovery(boolean automaticRecovery) {
+	public RmqPublisherConfigurator setAutomaticRecovery(boolean automaticRecovery) {
 		this.automaticRecovery = automaticRecovery;
 		return this;
 	}
 
 	@Override
 
-	public PublisherConfigurator setRecoveryInterval(long recoveryInterval) {
+	public RmqPublisherConfigurator setRecoveryInterval(long recoveryInterval) {
 		this.recoveryInterval = recoveryInterval;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setHandshakeTimeout(int handshakeTimeout) {
+	public RmqPublisherConfigurator setHandshakeTimeout(int handshakeTimeout) {
 		this.handshakeTimeout = handshakeTimeout;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setShutdownTimeout(int shutdownTimeout) {
+	public RmqPublisherConfigurator setShutdownTimeout(int shutdownTimeout) {
 		this.shutdownTimeout = shutdownTimeout;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
+	public RmqPublisherConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
 		this.requestedHeartbeat = requestedHeartbeat;
 		return this;
 	}
 
 	@Override
-	public PublisherConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
+	public RmqPublisherConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 		this.shutdownEvent = shutdownEvent;
 		return this;
 	}

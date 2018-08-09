@@ -2,7 +2,7 @@ package io.ffreedom.transport.rabbitmq.config;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 
-public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverConfigurator> {
+public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqReceiverConfigurator> {
 
 	/**
 	 * 接收者参数
@@ -14,19 +14,19 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 	// 最大自动重试次数
 	private int maxAckTotal = 32;
 
-	private ReceiverConfigurator() {
+	private RmqReceiverConfigurator() {
 		super("RabbitMqReceiverConfigurator");
 	}
 
-	public static ReceiverConfigurator configuration() {
-		return new ReceiverConfigurator();
+	public static RmqReceiverConfigurator configuration() {
+		return new RmqReceiverConfigurator();
 	}
 
 	public String getExchange() {
 		return exchange;
 	}
 
-	public ReceiverConfigurator setExchange(String exchange) {
+	public RmqReceiverConfigurator setExchange(String exchange) {
 		this.exchange = exchange;
 		return this;
 	}
@@ -35,7 +35,7 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 		return receiveQueue;
 	}
 
-	public ReceiverConfigurator setReceiveQueue(String receiveQueue) {
+	public RmqReceiverConfigurator setReceiveQueue(String receiveQueue) {
 		this.receiveQueue = receiveQueue;
 		return this;
 	}
@@ -44,7 +44,7 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 		return autoAck;
 	}
 
-	public ReceiverConfigurator setAutoAck(boolean autoAck) {
+	public RmqReceiverConfigurator setAutoAck(boolean autoAck) {
 		this.autoAck = autoAck;
 		return this;
 	}
@@ -53,7 +53,7 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 		return maxAckTotal;
 	}
 
-	public ReceiverConfigurator setMaxAckTotal(int maxAckTotal) {
+	public RmqReceiverConfigurator setMaxAckTotal(int maxAckTotal) {
 		this.maxAckTotal = maxAckTotal;
 		return this;
 	}
@@ -63,68 +63,68 @@ public final class ReceiverConfigurator extends ConnectionConfigurator<ReceiverC
 	 */
 
 	@Override
-	public ReceiverConfigurator setVirtualHost(String virtualHost) {
+	public RmqReceiverConfigurator setVirtualHost(String virtualHost) {
 		this.virtualHost = virtualHost;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setConnectionTimeout(int connectionTimeout) {
+	public RmqReceiverConfigurator setConnectionTimeout(int connectionTimeout) {
 		this.connectionTimeout = connectionTimeout;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setDurable(boolean durable) {
+	public RmqReceiverConfigurator setDurable(boolean durable) {
 		this.durable = durable;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setExclusive(boolean exclusive) {
+	public RmqReceiverConfigurator setExclusive(boolean exclusive) {
 		this.exclusive = exclusive;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setAutoDelete(boolean autoDelete) {
+	public RmqReceiverConfigurator setAutoDelete(boolean autoDelete) {
 		this.autoDelete = autoDelete;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setAutomaticRecovery(boolean automaticRecovery) {
+	public RmqReceiverConfigurator setAutomaticRecovery(boolean automaticRecovery) {
 		this.automaticRecovery = automaticRecovery;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setRecoveryInterval(long recoveryInterval) {
+	public RmqReceiverConfigurator setRecoveryInterval(long recoveryInterval) {
 		this.recoveryInterval = recoveryInterval;
 		return this;
 	}
 
 	@Override
 
-	public ReceiverConfigurator setHandshakeTimeout(int handshakeTimeout) {
+	public RmqReceiverConfigurator setHandshakeTimeout(int handshakeTimeout) {
 		this.handshakeTimeout = handshakeTimeout;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setShutdownTimeout(int shutdownTimeout) {
+	public RmqReceiverConfigurator setShutdownTimeout(int shutdownTimeout) {
 		this.shutdownTimeout = shutdownTimeout;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
+	public RmqReceiverConfigurator setRequestedHeartbeat(int requestedHeartbeat) {
 		this.requestedHeartbeat = requestedHeartbeat;
 		return this;
 	}
 
 	@Override
-	public ReceiverConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
+	public RmqReceiverConfigurator setShutdownEvent(ShutdownEvent<Exception> shutdownEvent) {
 		this.shutdownEvent = shutdownEvent;
 		return this;
 	}

@@ -9,7 +9,7 @@ import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
-import io.ffreedom.transport.rabbitmq.config.PublisherConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RmqPublisherConfigurator;
 
 public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publisher<byte[]> {
 
@@ -34,7 +34,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	 * 
 	 * @param configurator
 	 */
-	public RabbitMqPublisher(String tag, PublisherConfigurator configurator) {
+	public RabbitMqPublisher(String tag, RmqPublisherConfigurator configurator) {
 		super(tag, configurator);
 		this.exchange = configurator.getExchange();
 		this.routingKey = configurator.getRoutingKey();
@@ -131,7 +131,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		PublisherConfigurator configurator = PublisherConfigurator.configuration()
+		RmqPublisherConfigurator configurator = RmqPublisherConfigurator.configuration()
 				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setModeDirect("hello")
 				.setAutomaticRecovery(true);
 

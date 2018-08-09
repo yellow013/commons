@@ -2,8 +2,8 @@ package io.ffreedom.transport.rabbitmq;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.ThreadUtil;
-import io.ffreedom.transport.rabbitmq.config.PublisherConfigurator;
-import io.ffreedom.transport.rabbitmq.config.ReceiverConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RmqPublisherConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
 
 public class RabbitMqConnectTest {
 
@@ -21,7 +21,7 @@ public class RabbitMqConnectTest {
 		// PublisherConfigurator.configuration().setHost(host).setPort(port)
 		// .setUsername(username).setPassword(password).setModeDirect(queue0).setAutomaticRecovery(automaticRecovery);
 
-		PublisherConfigurator pubConfigurator0 = PublisherConfigurator.configuration().setConnectionParam(host, port)
+		RmqPublisherConfigurator pubConfigurator0 = RmqPublisherConfigurator.configuration().setConnectionParam(host, port)
 				.setUserParam(username, password)
 				.setModeFanout("TestExchange", "TestKey", new String[] { queue0, queue1 })
 				.setAutomaticRecovery(automaticRecovery);
@@ -39,14 +39,14 @@ public class RabbitMqConnectTest {
 
 		System.out.println(publisher.getName() + " statred....");
 
-		ReceiverConfigurator recvConfigurator0 = ReceiverConfigurator.configuration().setConnectionParam(host, port)
+		RmqReceiverConfigurator recvConfigurator0 = RmqReceiverConfigurator.configuration().setConnectionParam(host, port)
 				.setUserParam(username, password).setReceiveQueue(queue0).setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqReceiver receiver0 = new RabbitMqReceiver("SUB_TEST", recvConfigurator0, (msg) -> {
 			System.out.println("receiver_0 msg -> " + new String(msg, Charsets.UTF8));
 		});
 
-		ReceiverConfigurator recvConfigurator1 = ReceiverConfigurator.configuration().setConnectionParam(host, port)
+		RmqReceiverConfigurator recvConfigurator1 = RmqReceiverConfigurator.configuration().setConnectionParam(host, port)
 				.setUserParam(username, password).setReceiveQueue(queue1).setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqReceiver receiver1 = new RabbitMqReceiver("SUB_TEST", recvConfigurator1, (msg) -> {

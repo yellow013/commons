@@ -10,7 +10,7 @@ import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
-import io.ffreedom.transport.rabbitmq.config.ReceiverConfigurator;
+import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
 
 public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver {
 
@@ -36,7 +36,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	 * @param configurator
 	 * @param callback
 	 */
-	public RabbitMqReceiver(String tag, ReceiverConfigurator configurator, Callback<byte[]> callback) {
+	public RabbitMqReceiver(String tag, RmqReceiverConfigurator configurator, Callback<byte[]> callback) {
 		super(tag, configurator);
 		this.callback = callback;
 		this.exchange = configurator.getExchange();
@@ -121,7 +121,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 
 	public static void main(String[] args) {
 
-		ReceiverConfigurator configurator = ReceiverConfigurator.configuration()
+		RmqReceiverConfigurator configurator = RmqReceiverConfigurator.configuration()
 				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setReceiveQueue("hello")
 				.setAutomaticRecovery(true);
 
