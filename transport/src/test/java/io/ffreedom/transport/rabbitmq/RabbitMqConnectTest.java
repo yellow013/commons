@@ -7,10 +7,10 @@ import io.ffreedom.transport.rabbitmq.config.ReceiverConfigurator;
 
 public class RabbitMqConnectTest {
 
-	private static String host = "192.168.1.165";
+	private static String host = "116.62.228.4";
 	private static int port = 5672;
-	private static String username = "kafangMQ";
-	private static String password = "kafangMQpass";
+	private static String username = "reduser";
+	private static String password = "Centos123";
 	private static String queue0 = "test1";
 	private static String queue1 = "test2";
 	private static boolean automaticRecovery = true;
