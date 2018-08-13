@@ -11,9 +11,10 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
 
-public abstract class BaseRabbitMqTransport {
+abstract class BaseRabbitMqTransport implements TransportModule{
 
 	// 连接RabbitMQ Server使用的组件
 	protected ConnectionFactory connectionFactory;
@@ -34,7 +35,7 @@ public abstract class BaseRabbitMqTransport {
 	 * @param tag
 	 * @param configurator
 	 */
-	public BaseRabbitMqTransport(String tag, ConnectionConfigurator<?> configurator) {
+	protected BaseRabbitMqTransport(String tag, ConnectionConfigurator<?> configurator) {
 		if (configurator == null) {
 			throw new NullPointerException(tag + ": configurator is null.");
 		}
@@ -80,6 +81,7 @@ public abstract class BaseRabbitMqTransport {
 		}
 	}
 
+	@Override
 	public boolean isConnected() {
 		return (connection != null && connection.isOpen()) && (channel != null && channel.isOpen());
 	}
