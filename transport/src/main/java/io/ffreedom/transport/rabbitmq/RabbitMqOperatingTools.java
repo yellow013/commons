@@ -17,12 +17,14 @@ public final class RabbitMqOperatingTools {
 		private ConnectionFactory connectionFactory = new ConnectionFactory();
 		private Connection connection;
 		private Channel channel;
+		private boolean isAutoClose;
 
-		private OperationalChannel(String host, int port, String username, String password) {
+		private OperationalChannel(String host, int port, String username, String password, boolean isAutoClose) {
 			connectionFactory.setHost(host);
 			connectionFactory.setPort(port);
 			connectionFactory.setUsername(username);
 			connectionFactory.setPassword(password);
+			this.isAutoClose = isAutoClose;
 			try {
 				this.connection = connectionFactory.newConnection();
 				this.channel = connection.createChannel();
@@ -33,15 +35,95 @@ public final class RabbitMqOperatingTools {
 			try {
 				channel.exchangeDeclare("", BuiltinExchangeType.FANOUT);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
+
+		/**
+		 * 
+		 * @param queueName
+		 * @param DefaultParameter
+		 *            -> isDurable == true, isExclusive == false, isAutoDelete == false
+		 */
+		public boolean declareQueueUseDefaultParameter(String queue) {
+			return declareQueue(queue, true, false, false);
+		}
+
+		public boolean declareQueue(String queue, boolean isDurable, boolean isExclusive, boolean isAutoDelete) {
+			try {
+				channel.queueDeclare(queue, isDurable, isExclusive, isAutoDelete, null);
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			} finally {
+				if (isAutoClose) {
+					autoClose();
+				}
+			}
+		}
+
+		public boolean declareFanoutExchange(String exchange) {
+			return declareExchange(exchange, BuiltinExchangeType.FANOUT);
+		}
+
+		public boolean declareDirectExchange(String exchange) {
+			return declareExchange(exchange, BuiltinExchangeType.DIRECT);
+		}
+
+		private boolean declareExchange(String exchange, BuiltinExchangeType type) {
+			try {
+				channel.exchangeDeclare(exchange, type);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				if (isAutoClose) {
+					autoClose();
+				}
+			}
+		}
+
+		public boolean bindQueue(String queue, String exchange, String routingKey) {
+			try {
+				channel.queueBind(queue, exchange, routingKey);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		private void autoClose() {
+			int retry = 0;
+			while (close()) {
+				retry++;
+				if (retry == 5)
+					break;
+			}
+		}
+
+		public boolean close() {
+			try {
+				channel.close();
+				connection.close();
+				return true;
+			} catch (IOException | TimeoutException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
 	}
 
-	public static OperationalChannel openChannel(String host, int port, String username, String password) {
-		return new OperationalChannel(host, port, username, password);
+	public static OperationalChannel autoCloseChannel(String host, int port, String username, String password) {
+		return new OperationalChannel(host, port, username, password, true);
+	}
+
+	public static OperationalChannel manualCloseChannel(String host, int port, String username, String password) {
+		return new OperationalChannel(host, port, username, password, false);
 	}
 
 	static class TestBean {
@@ -99,9 +181,16 @@ public final class RabbitMqOperatingTools {
 
 		list.collectDouble(bean -> {
 			return bean.getD();
-		}).forEach(d -> {
-			System.out.println(d);
+		}).distinct().forEach(d -> {
+			System.out.println(d * 2);
 		});
+
+		MutableList<TestBean> collect = list.distinctBy(TestBean::getS);
+
+		collect.forEach(bean -> {
+			System.out.println(bean.getS());
+		});
+
 	}
 
 }
