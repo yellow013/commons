@@ -72,6 +72,7 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
+	@Deprecated
 	public RmqPublisherConfigurator setModeTopic() {
 		this.exchangeType = BuiltinExchangeType.TOPIC;
 		return this;
