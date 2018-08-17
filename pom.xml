@@ -9,6 +9,8 @@
 	<groupId>io.ffreedom</groupId>
 	<artifactId>commons</artifactId>
 	<version>1.0</version>
+	
+	<url>https://github.com/yellow013/commons.git</url>
 
 	<packaging>pom</packaging>
 
