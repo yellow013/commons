@@ -191,7 +191,7 @@ public final class RabbitMqOperatingTools {
 			System.out.println(bean.getS());
 		});
 
-		OperationalChannel manualCloseChannel = manualCloseChannel("116.62.228.4", 5672, "reduser", "Centos123");
+		OperationalChannel manualCloseChannel = manualCloseChannel("127.0.0.1", 5672, "guest", "guest");
 
 		System.out.println(manualCloseChannel.isOpen());
 
@@ -199,6 +199,7 @@ public final class RabbitMqOperatingTools {
 
 		manualCloseChannel.close();
 
+		System.out.println(manualCloseChannel.isOpen());
 	}
 
 }
