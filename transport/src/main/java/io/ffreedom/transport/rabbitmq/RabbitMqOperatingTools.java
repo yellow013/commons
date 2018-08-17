@@ -31,17 +31,12 @@ public final class RabbitMqOperatingTools {
 			} catch (IOException | TimeoutException e) {
 				e.printStackTrace();
 			}
-
-			try {
-				channel.exchangeDeclare("", BuiltinExchangeType.FANOUT);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 
 		/**
 		 * 
-		 * @param queueName
+		 * @param String
+		 *            -> queue name
 		 * @param DefaultParameter
 		 *            -> isDurable == true, isExclusive == false, isAutoDelete == false
 		 */
@@ -58,9 +53,8 @@ public final class RabbitMqOperatingTools {
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (isAutoClose) {
+				if (isAutoClose)
 					autoClose();
-				}
 			}
 		}
 
@@ -74,15 +68,14 @@ public final class RabbitMqOperatingTools {
 
 		private boolean declareExchange(String exchange, BuiltinExchangeType type) {
 			try {
-				channel.exchangeDeclare(exchange, type);
+				channel.exchangeDeclare(exchange, type, true, false, false, null);
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (isAutoClose) {
+				if (isAutoClose)
 					autoClose();
-				}
 			}
 		}
 
@@ -93,6 +86,9 @@ public final class RabbitMqOperatingTools {
 			} catch (IOException e) {
 				e.printStackTrace();
 				return false;
+			} finally {
+				if (isAutoClose)
+					autoClose();
 			}
 		}
 
@@ -103,6 +99,10 @@ public final class RabbitMqOperatingTools {
 				if (retry == 5)
 					break;
 			}
+		}
+
+		public boolean isOpen() {
+			return channel.isOpen();
 		}
 
 		public boolean close() {
@@ -190,6 +190,14 @@ public final class RabbitMqOperatingTools {
 		collect.forEach(bean -> {
 			System.out.println(bean.getS());
 		});
+
+		OperationalChannel manualCloseChannel = manualCloseChannel("116.62.228.4", 5672, "reduser", "Centos123");
+
+		System.out.println(manualCloseChannel.isOpen());
+
+		manualCloseChannel.declareFanoutExchange("MarketData");
+
+		manualCloseChannel.close();
 
 	}
 
