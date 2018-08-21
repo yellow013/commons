@@ -21,8 +21,6 @@
 		<module>transport</module>
 	</modules>
 
-	<url></url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ec.version>9.2.0</ec.version>
