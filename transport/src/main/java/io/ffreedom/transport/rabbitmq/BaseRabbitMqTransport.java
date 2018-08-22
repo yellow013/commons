@@ -14,7 +14,7 @@ import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
 
-abstract class BaseRabbitMqTransport implements TransportModule{
+abstract class BaseRabbitMqTransport implements TransportModule {
 
 	// 连接RabbitMQ Server使用的组件
 	protected ConnectionFactory connectionFactory;
@@ -61,12 +61,12 @@ abstract class BaseRabbitMqTransport implements TransportModule{
 		try {
 			connection = connectionFactory.newConnection();
 			logger.info("newConnection() finsh, tag : " + tag + ", connection hash code : " + connection.hashCode());
-			connection.addShutdownListener((shutdownSignalException) -> {
+			connection.addShutdownListener((exception) -> {
 				// 输出错误信息到控制台
-				logger.info("ShutdownListener -> " + shutdownSignalException.getMessage());
+				logger.info("ShutdownListener -> " + exception.getMessage());
 				// 如果回调函数不为null, 则执行此函数
 				if (shutdownEvent != null) {
-					shutdownEvent.shutdownHandle(shutdownSignalException);
+					shutdownEvent.accept(exception);
 				}
 			});
 			channel = connection.createChannel();

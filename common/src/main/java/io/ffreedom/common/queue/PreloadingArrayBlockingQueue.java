@@ -1,5 +1,6 @@
 package io.ffreedom.common.queue;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,8 +17,8 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 
 	private LoadContainer<T>[] containers;
 
-	private volatile int size;
-	private volatile int arrayCount;
+	private final int size;
+	private volatile AtomicInteger arrayCount = new AtomicInteger();
 
 	private int readOffset;
 	private int writeOffset;
@@ -48,14 +49,14 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	public boolean enQueue(T t) {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount == size) {
+			while (arrayCount.get() == size) {
 				notFull.await();
 			}
 			containers[writeOffset].loading(t);
 			if (++writeOffset == size) {
 				writeOffset = 0;
 			}
-			arrayCount++;
+			arrayCount.incrementAndGet();
 			notEmpty.signal();
 			return true;
 		} catch (InterruptedException e) {
@@ -70,14 +71,14 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	public T deQueue() {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount == 0) {
+			while (arrayCount.get() == 0) {
 				notEmpty.await();
 			}
 			T t = containers[readOffset].unloading();
 			if (++readOffset == size) {
 				readOffset = 0;
 			}
-			arrayCount--;
+			arrayCount.decrementAndGet();
 			notFull.signal();
 			return t;
 		} catch (InterruptedException e) {

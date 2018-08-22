@@ -20,8 +20,11 @@ public final class FileUtil {
 	}
 
 	private static void loadAllChildFile(List<File> loadList, File parentFile, FileFilter fileFilter) {
+		if(parentFile == null || fileFilter == null) {
+			return;
+		}
 		File[] listFiles = parentFile.listFiles();
-		if (listFiles.length != 0) {
+		if (listFiles != null && listFiles.length != 0) {
 			for (File file : listFiles) {
 				if (file.isDirectory()) {
 					loadAllChildFile(loadList, file, fileFilter);
