@@ -22,28 +22,28 @@ public final class DateTimeUtil {
 		return time.getHour() * 10000 + time.getMinute() * 100 + time.getSecond();
 	}
 
-	public final static int timeAccurateToMillisecond() {
-		return timeAccurateToMillisecond(LocalTime.now());
+	public final static int timeToMillisecond() {
+		return timeToMillisecond(LocalTime.now());
 	}
 
-	public final static int timeAccurateToMillisecond(LocalTime time) {
+	public final static int timeToMillisecond(LocalTime time) {
 		return intHourMinuteSecond(time) * 1000 + time.getNano() / 1000000;
 	}
 
-	public final static long datetimeAccurateToSecond() {
-		return datetimeAccurateToSecond(LocalDateTime.now());
+	public final static long datetimeToSecond() {
+		return datetimeToSecond(LocalDateTime.now());
 	}
 
-	public final static long datetimeAccurateToSecond(LocalDateTime dateTime) {
+	public final static long datetimeToSecond(LocalDateTime dateTime) {
 		return intYearMonthDay(dateTime.toLocalDate()) * 1000000L + intHourMinuteSecond(dateTime.toLocalTime());
 	}
 
-	public final static long datetimeAccurateToMillisecond() {
-		return datetimeAccurateToMillisecond(LocalDateTime.now());
+	public final static long datetimeToMillisecond() {
+		return datetimeToMillisecond(LocalDateTime.now());
 	}
 
-	public final static long datetimeAccurateToMillisecond(LocalDateTime dateTime) {
-		return datetimeAccurateToSecond(dateTime) * 1000L + dateTime.toLocalTime().getNano() / 1000000;
+	public final static long datetimeToMillisecond(LocalDateTime dateTime) {
+		return datetimeToSecond(dateTime) * 1000L + dateTime.toLocalTime().getNano() / 1000000;
 	}
 
 	public static void main(String[] args) {
@@ -52,9 +52,9 @@ public final class DateTimeUtil {
 		System.out.println(Long.MAX_VALUE);
 		System.out.println(intYearMonthDay());
 		System.out.println(intHourMinuteSecond());
-		System.out.println(timeAccurateToMillisecond());
-		System.out.println(datetimeAccurateToSecond());
-		System.out.println(datetimeAccurateToMillisecond());
+		System.out.println(timeToMillisecond());
+		System.out.println(datetimeToSecond());
+		System.out.println(datetimeToMillisecond());
 
 	}
 
