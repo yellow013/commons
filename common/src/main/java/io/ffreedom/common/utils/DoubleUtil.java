@@ -43,14 +43,12 @@ public final class DoubleUtil {
 
 		double d = 1.0D;
 		for (;;) {
-			d = correction
-					(d + 0.01);
+			d = correction(d + 0.01);
 			System.out.println(d);
 			if (d > 3) {
 				break;
 			}
 		}
-
 
 	}
 
