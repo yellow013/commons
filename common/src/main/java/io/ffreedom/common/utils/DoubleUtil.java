@@ -1,16 +1,18 @@
 package io.ffreedom.common.utils;
 
-import java.math.MathContext;
-
 public final class DoubleUtil {
 
-	private final static long DOUBLE_TO_LONG_MULTIPLIER = 10_000_000_00L;
+	private final static long PRECISION_8_MULTIPLIER = 1_000_000_000L;
 
-	private final static long DOUBLE_TO_LONG_CORRECTION_FACTOR = 1L;
+	private final static double PRECISION_8_DIVISOR = 100_000_000D;
 
-	private final static long DOUBLE_TO_LONG_DIVISOR = 10L;
+	private final static long PRECISION_4_MULTIPLIER = 100_000L;
 
-	private final static double LONG_TO_DOUBLE_DIVISOR = 1_000_000_00D;
+	private final static double PRECISION_4_DIVISOR = 10_000D;
+
+	private final static long CORRECTION_FACTOR = 1L;
+
+	private final static long CORRECTION_DIVISOR = 10L;
 
 	/**
 	 * 保留小数点后8位的精度
@@ -18,8 +20,8 @@ public final class DoubleUtil {
 	 * @param d1
 	 * @return
 	 */
-	private static long doubleToLong(double d1) {
-		return ((long) (d1 * DOUBLE_TO_LONG_MULTIPLIER) + DOUBLE_TO_LONG_CORRECTION_FACTOR) / DOUBLE_TO_LONG_DIVISOR;
+	private static long doubleToLong8(double d1) {
+		return ((long) (d1 * PRECISION_8_MULTIPLIER) + CORRECTION_FACTOR) / CORRECTION_DIVISOR;
 	}
 
 	/**
@@ -28,47 +30,114 @@ public final class DoubleUtil {
 	 * @param l1
 	 * @return
 	 */
-	private static double longToDouble(long l1) {
-		return l1 / LONG_TO_DOUBLE_DIVISOR;
+	private static double longToDouble8(long l1) {
+		return l1 / PRECISION_8_DIVISOR;
 	}
 
 	/**
+	 * 保留小数点后4位的精度
 	 * 
 	 * @param d1
 	 * @return
 	 */
-	public static double correction(double d1) {
-		return longToDouble(doubleToLong(d1));
+	private static long doubleToLong4(double d1) {
+		return ((long) (d1 * PRECISION_4_MULTIPLIER) + CORRECTION_FACTOR) / CORRECTION_DIVISOR;
 	}
 
-	public static double add(double d1, double d2) {
-		return correction(d1 + d2);
+	/**
+	 * 小数点左移4位
+	 * 
+	 * @param l1
+	 * @return
+	 */
+	private static double longToDouble4(long l1) {
+		return l1 / PRECISION_4_DIVISOR;
 	}
 
+	/**
+	 * 修正double保留8位精度
+	 * 
+	 * @param d1
+	 * @return
+	 */
+	public static double correction8(double d1) {
+		return longToDouble8(doubleToLong8(d1));
+	}
+
+	/**
+	 * 修正double保留4位精度
+	 * 
+	 * @param d1
+	 * @return
+	 */
+	public static double correction4(double d1) {
+		return longToDouble4(doubleToLong4(d1));
+	}
+
+	/**
+	 * 8位精度相加
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double add8(double d1, double d2) {
+		return correction8(d1 + d2);
+	}
+
+	/**
+	 * 4位精度相加
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double add4(double d1, double d2) {
+		return correction4(d1 + d2);
+	}
+
+	/**
+	 * 8位精度相减
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
 	public static double subtraction(double d1, double d2) {
-		return correction(d1 - d2);
+		return correction8(d1 - d2);
 	}
 
-	public static double multiply(double d1, double d2) {
-		return correction(d1 * d2);
+	/**
+	 * 8位精度乘法
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double multiply8(double d1, double d2) {
+		return correction8(d1 * d2);
 	}
 
+	/**
+	 * 4位精度乘法
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double multiply4(double d1, double d2) {
+		return correction4(d1 * d2);
+	}
+
+	/**
+	 * 8位精度除法
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
 	public static double division(double d1, double d2) {
-		return correction(d1 / d2);
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Long.MAX_VALUE);
-		System.out.println(Math.PI);
-		double d = 1.0D;
-		for (;;) {
-			d = multiply(d, 1.1);
-			System.out.println(d);
-			if (d > 10) {
-				break;
-			}
-		}
-
+		return correction8(d1 / d2);
 	}
 
 }
