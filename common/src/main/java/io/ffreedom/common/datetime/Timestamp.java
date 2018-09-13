@@ -2,24 +2,24 @@ package io.ffreedom.common.datetime;
 
 import java.time.Instant;
 
-public class Timestamp {
+public class EpochTimestamp {
 
 	private Instant instant;
 	private long epochMicrosecond;
 
-	public Timestamp(Instant instant) {
+	public EpochTimestamp(Instant instant) {
 		this(instant, true);
 	}
 
-	public Timestamp(Instant instant, boolean lazyEvaluation) {
+	public EpochTimestamp(Instant instant, boolean lazyEvaluation) {
 		this.instant = instant;
 		if (!lazyEvaluation) {
 			getEpochMicrosecond();
 		}
 	}
 
-	public static Timestamp now() {
-		return new Timestamp(Instant.now());
+	public static EpochTimestamp now() {
+		return new EpochTimestamp(Instant.now());
 	}
 
 	public Instant getInstant() {
@@ -43,7 +43,7 @@ public class Timestamp {
 
 	public static void main(String[] args) {
 
-		Timestamp now = Timestamp.now();
+		EpochTimestamp now = EpochTimestamp.now();
 		System.out.println(now.getEpochSecond());
 		System.out.println(now.getNanoOfSecond());
 		System.out.println(now.getEpochMicrosecond());
