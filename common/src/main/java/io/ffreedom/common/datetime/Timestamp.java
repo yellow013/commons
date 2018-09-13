@@ -1,21 +1,21 @@
 package io.ffreedom.common.datetime;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public class Timestamp {
 
 	private Instant instant;
 	private long epochMicrosecond;
-	private LocalDateTime dateTime;
 
-	/**
-	 * @param instant
-	 */
-	private Timestamp(Instant instant) {
+	public Timestamp(Instant instant) {
+		this(instant, true);
+	}
+
+	public Timestamp(Instant instant, boolean lazyEvaluation) {
 		this.instant = instant;
-		this.dateTime = LocalDateTime.ofInstant(instant, TimeZone.SYSTEM_DEFAULT);
-		this.epochMicrosecond = instant.getEpochSecond() * 1000000 + instant.getNano();
+		if (!lazyEvaluation) {
+			getEpochMicrosecond();
+		}
 	}
 
 	public static Timestamp now() {
@@ -35,17 +35,19 @@ public class Timestamp {
 	}
 
 	public long getEpochMicrosecond() {
+		if (epochMicrosecond == 0L) {
+			epochMicrosecond = instant.getEpochSecond() * 1000000 + instant.getNano() / 1000;
+		}
 		return epochMicrosecond;
 	}
 
-	public LocalDateTime getDateTime() {
-		return dateTime;
-	}
-	
 	public static void main(String[] args) {
-		
-		System.out.println(10000 >> 1);
-		
+
+		Timestamp now = Timestamp.now();
+		System.out.println(now.getEpochSecond());
+		System.out.println(now.getNanoOfSecond());
+		System.out.println(now.getEpochMicrosecond());
+
 	}
 
 }

@@ -3,7 +3,7 @@ package io.ffreedom.common.datetime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-public final class TimeZone {
+public final class TimeZones {
 
 	/**
 	 * 系统默认时区

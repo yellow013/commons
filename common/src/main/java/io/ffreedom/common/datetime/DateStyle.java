@@ -94,7 +94,7 @@ public enum DateStyle {
 	}
 
 	public LocalDateTime toLocalDateTime(Date str) {
-		return toLocalDateTime(str, TimeZone.SYSTEM_DEFAULT);
+		return toLocalDateTime(str, TimeZones.SYSTEM_DEFAULT);
 	}
 
 	public LocalDateTime toLocalDateTime(Date str, ZoneId zoneId) {
