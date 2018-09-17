@@ -1,6 +1,8 @@
 package io.ffreedom.common.datetime;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalTime;
 
 public class EpochTimestamp {
 
@@ -43,11 +45,31 @@ public class EpochTimestamp {
 
 	public static void main(String[] args) {
 
-		EpochTimestamp now = EpochTimestamp.now();
-		System.out.println(now.getEpochSecond());
-		System.out.println(now.getNanoOfSecond());
-		System.out.println(now.getEpochMicrosecond());
+//		EpochTimestamp now = EpochTimestamp.now();
+//		System.out.println(now.getEpochSecond());
+//		System.out.println(now.getNanoOfSecond());
+//		System.out.println(now.getEpochMicrosecond());
 
+		long l0 = System.nanoTime();
+		LocalTime now = LocalTime.now();
+		Duration between = Duration.between(LocalTime.MIN, now);
+		long r = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
+		
+		long l1 = System.nanoTime();
+		long l = l1 - l0;
+		
+		System.out.println(l);
+		System.out.println(r);
+		System.out.println(between.getSeconds());
+		
+		
+		//201099700
+		//167711000
+		System.out.println(Long.MAX_VALUE);
+//			1536917333323
+		//9223372036854775807
+		//  YYMMDDhhmmssSSS
+	//	  9220123123595999999
 	}
 
 }
