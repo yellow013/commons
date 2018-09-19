@@ -9,10 +9,6 @@ public class EpochTimestamp {
 	private Instant instant;
 	private long epochMicrosecond;
 
-	public EpochTimestamp(Instant instant) {
-		this(instant, true);
-	}
-
 	public EpochTimestamp(Instant instant, boolean lazyEvaluation) {
 		this.instant = instant;
 		if (!lazyEvaluation) {
@@ -21,7 +17,11 @@ public class EpochTimestamp {
 	}
 
 	public static EpochTimestamp now() {
-		return new EpochTimestamp(Instant.now());
+		return now(true);
+	}
+
+	public static EpochTimestamp now(boolean lazyEvaluation) {
+		return new EpochTimestamp(Instant.now(), lazyEvaluation);
 	}
 
 	public Instant getInstant() {
@@ -32,8 +32,8 @@ public class EpochTimestamp {
 		return instant.getEpochSecond();
 	}
 
-	public int getNanoOfSecond() {
-		return instant.getNano();
+	public long getEpochMillisecond() {
+		return getEpochMicrosecond() / 1000;
 	}
 
 	public long getEpochMicrosecond() {
@@ -45,10 +45,10 @@ public class EpochTimestamp {
 
 	public static void main(String[] args) {
 
-//		EpochTimestamp now = EpochTimestamp.now();
-//		System.out.println(now.getEpochSecond());
-//		System.out.println(now.getNanoOfSecond());
-//		System.out.println(now.getEpochMicrosecond());
+		// EpochTimestamp now = EpochTimestamp.now();
+		// System.out.println(now.getEpochSecond());
+		// System.out.println(now.getNanoOfSecond());
+		// System.out.println(now.getEpochMicrosecond());
 
 		long l0 = System.nanoTime();
 		LocalTime now = LocalTime.now();
@@ -57,19 +57,18 @@ public class EpochTimestamp {
 		
 		long l1 = System.nanoTime();
 		long l = l1 - l0;
-		
+
 		System.out.println(l);
 		//System.out.println(r);
 		System.out.println(between.getSeconds());
-		
-		
-		//201099700
-		//167711000
+
+		// 201099700
+		// 167711000
 		System.out.println(Long.MAX_VALUE);
-//			1536917333323
-		//9223372036854775807
-		//  YYMMDDhhmmssSSS
-	//	  9220123123595999999
+		// 1536917333323
+		// 9223372036854775807
+		// YYMMDDhhmmssSSS
+		// 9220123123595999999
 	}
 
 }
