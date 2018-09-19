@@ -53,13 +53,13 @@ public class EpochTimestamp {
 		long l0 = System.nanoTime();
 		LocalTime now = LocalTime.now();
 		Duration between = Duration.between(LocalTime.MIN, now);
-		long r = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
+		//long r = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
 		
 		long l1 = System.nanoTime();
 		long l = l1 - l0;
 		
 		System.out.println(l);
-		System.out.println(r);
+		//System.out.println(r);
 		System.out.println(between.getSeconds());
 		
 		

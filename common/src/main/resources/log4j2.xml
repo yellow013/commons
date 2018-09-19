@@ -19,7 +19,6 @@
 		</RollingFile>
 	</appenders>
 	<loggers>
-
 		<root level="debug">
 			<!-- <appender-ref ref="console"></appender-ref> -->
 			<appender-ref ref="rollingFile"></appender-ref>
