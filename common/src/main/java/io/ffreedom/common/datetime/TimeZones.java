@@ -5,19 +5,18 @@ import java.time.ZoneOffset;
 
 public interface TimeZones {
 
-	/**
-	 * 系统默认时区
-	 */
-	ZoneId SYSTEM_DEFAULT = ZoneOffset.systemDefault();
+	ZoneId SYSTEM_DEFAULT = ZoneId.systemDefault();
 
-	/**
-	 * UTC时间
-	 */
 	ZoneOffset UTC = ZoneOffset.UTC;
 
 	/**
-	 * 中国标准时间
+	 * Chinese Standard Time
 	 */
-	ZoneId CTT = ZoneId.of("Asia/Shanghai");
+	ZoneId CST = ZoneId.of("Asia/Shanghai");
+
+	/**
+	 * Japan Standard Time
+	 */
+	ZoneId JST = ZoneId.of("Asia/Tokyo");
 
 }
