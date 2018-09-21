@@ -61,7 +61,7 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public RmqPublisherConfigurator setModeFanout(String exchange, String routingKey, String[] bindQueues) {
+	public RmqPublisherConfigurator setModeFanout(String exchange, String routingKey, String... bindQueues) {
 		if (bindQueues == null) {
 			throw new IllegalArgumentException("Bind queues not nullable.");
 		}
@@ -72,9 +72,14 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	@Deprecated
-	public RmqPublisherConfigurator setModeTopic() {
+	public RmqPublisherConfigurator setModeTopic(String exchange, String routingKey, String... bindQueues) {
+		if (bindQueues == null) {
+			throw new IllegalArgumentException("Bind queues not nullable.");
+		}
 		this.exchangeType = BuiltinExchangeType.TOPIC;
+		this.exchange = exchange;
+		this.routingKey = routingKey;
+		this.bindQueues = bindQueues;
 		return this;
 	}
 

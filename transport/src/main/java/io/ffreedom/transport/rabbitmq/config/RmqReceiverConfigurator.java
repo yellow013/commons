@@ -9,6 +9,7 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 	 */
 	private String exchange;
 	private String receiveQueue;
+	private String errorMsgToExchange;
 	// 自动ACK
 	private boolean autoAck = true;
 	// 最大自动重试次数
@@ -28,6 +29,15 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 
 	public RmqReceiverConfigurator setExchange(String exchange) {
 		this.exchange = exchange;
+		return this;
+	}
+
+	public String getErrorMsgToExchange() {
+		return errorMsgToExchange;
+	}
+
+	public RmqReceiverConfigurator setErrorMsgToExchange(String errorMsgToExchange) {
+		this.errorMsgToExchange = errorMsgToExchange;
 		return this;
 	}
 

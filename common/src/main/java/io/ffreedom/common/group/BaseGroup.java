@@ -14,16 +14,15 @@ public abstract class BaseGroup<K, V> implements Group<K, V> {
 
 	@Override
 	public synchronized V getMember(K k) {
-		if (group.containsKey(k)) {
-			return group.get(k);
-		}
-		V member = createMember(k);
-		if (member != null) {
-			group.put(k, member);
+		V returnMember = group.get(k);
+		if (returnMember != null) {
+			return returnMember;
 		} else {
+			if (registerMember(k)) {
+				return getMember(k);
+			}
 			throw new RuntimeException("Call method -> createMember(" + k + ") return null, throw RuntimeException.");
 		}
-		return getMember(k);
 	}
 
 	@Override
@@ -36,5 +35,15 @@ public abstract class BaseGroup<K, V> implements Group<K, V> {
 	}
 
 	protected abstract V createMember(K k);
+
+	public synchronized boolean registerMember(K k) {
+		V member = createMember(k);
+		if (member != null) {
+			group.put(k, member);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

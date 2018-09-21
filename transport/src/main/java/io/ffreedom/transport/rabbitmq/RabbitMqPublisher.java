@@ -55,7 +55,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 						configurator.isAutoDelete(), null);
 				break;
 			case FANOUT:
-				channel.exchangeDeclare(exchange, BuiltinExchangeType.FANOUT);
+			case TOPIC:
+				channel.exchangeDeclare(exchange, exchangeType);
 				if (bindQueues != null) {
 					for (String queue : bindQueues) {
 						if (!StringUtil.isNullOrEmpty(queue)) {
@@ -66,13 +67,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					}
 				}
 				break;
-			case TOPIC:
-				// TODO 扩展TOPIC模式
-				break;
 			default:
 				break;
 			}
-
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -100,7 +97,6 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				createConnection();
 				ThreadUtil.sleep(configurator.getRecoveryInterval());
 			}
-
 			channel.basicPublish(
 					// param1: exchange
 					exchange,

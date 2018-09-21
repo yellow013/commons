@@ -18,17 +18,19 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	private Callback<byte[]> callback;
 
 	// 绑定的Exchange
-	@SuppressWarnings("unused")
 	// 暂时没有使用
+	@SuppressWarnings("unused")
 	private String exchange;
 	// 连接的Queue
 	private String receiveQueue;
+
+	//
+	private String errorMsgToExchange;
 
 	// 自动ACK
 	private boolean isAutoAck;
 	// 最大自动重试次数
 	private int maxAckTotal;
-
 	private String receiverName;
 
 	/**
@@ -43,6 +45,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		this.receiveQueue = configurator.getReceiveQueue();
 		this.isAutoAck = configurator.isAutoAck();
 		this.maxAckTotal = configurator.getMaxAckTotal();
+		this.errorMsgToExchange = configurator.getErrorMsgToExchange();
 		createConnection();
 		init();
 	}
@@ -77,8 +80,12 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 						logger.error(e.getStackTrace());
 						// 退回消息->关闭连接
 						logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
-						channel.basicReject(envelope.getDeliveryTag(), true);
-						destroy();
+						if (errorMsgToExchange != null) {
+							channel.basicPublish(errorMsgToExchange, "", null, body);
+						} else {
+							channel.basicReject(envelope.getDeliveryTag(), true);
+							destroy();
+						}
 					}
 					if (!isAutoAck) {
 						try {
