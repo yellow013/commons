@@ -11,12 +11,14 @@ import com.rabbitmq.client.ConnectionFactory;
 public final class RabbitMqOperatingTools {
 
 	public static class OperationalChannel {
-		private ConnectionFactory connectionFactory = new ConnectionFactory();
+		private ConnectionFactory connectionFactory;
 		private Connection connection;
 		private Channel channel;
 		private boolean isAutoClose;
 
 		private OperationalChannel(String host, int port, String username, String password, boolean isAutoClose) {
+			this(null, isAutoClose);
+			this.connectionFactory = new ConnectionFactory();
 			connectionFactory.setHost(host);
 			connectionFactory.setPort(port);
 			connectionFactory.setUsername(username);
@@ -28,6 +30,11 @@ public final class RabbitMqOperatingTools {
 			} catch (IOException | TimeoutException e) {
 				e.printStackTrace();
 			}
+		}
+
+		private OperationalChannel(Channel channel, boolean isAutoClose) {
+			this.channel = channel;
+			this.isAutoClose = isAutoClose;
 		}
 
 		/**
@@ -45,12 +52,10 @@ public final class RabbitMqOperatingTools {
 				channel.queueDeclare(queue, isDurable, isExclusive, isAutoDelete, null);
 				return true;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (isAutoClose)
-					autoClose();
+				autoClose();
 			}
 		}
 
@@ -70,8 +75,7 @@ public final class RabbitMqOperatingTools {
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (isAutoClose)
-					autoClose();
+				autoClose();
 			}
 		}
 
@@ -87,17 +91,42 @@ public final class RabbitMqOperatingTools {
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (isAutoClose)
-					autoClose();
+				autoClose();
+			}
+		}
+
+		public boolean deleteQueue(String queue, boolean isForce) {
+			try {
+				channel.queueDelete(queue, !isForce, !isForce);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				autoClose();
+			}
+		}
+
+		public boolean deleteExchange(String exchange, boolean isForce) {
+			try {
+				channel.exchangeDelete(exchange, !isForce);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} finally {
+				autoClose();
 			}
 		}
 
 		private void autoClose() {
-			int retry = 0;
-			while (close()) {
-				retry++;
-				if (retry == 5)
-					break;
+			if (isAutoClose) {
+				int retry = 0;
+				while (close()) {
+					retry++;
+					if (retry == 5)
+						break;
+				}
 			}
 		}
 
@@ -115,7 +144,6 @@ public final class RabbitMqOperatingTools {
 				return false;
 			}
 		}
-
 	}
 
 	public static OperationalChannel autoCloseChannel(String host, int port, String username, String password) {
@@ -124,6 +152,10 @@ public final class RabbitMqOperatingTools {
 
 	public static OperationalChannel manualCloseChannel(String host, int port, String username, String password) {
 		return new OperationalChannel(host, port, username, password, false);
+	}
+
+	public static OperationalChannel manualCloseChannel(Channel channel) {
+		return new OperationalChannel(channel, false);
 	}
 
 //	static class TestBean {
