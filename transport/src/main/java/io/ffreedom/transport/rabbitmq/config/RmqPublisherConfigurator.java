@@ -61,7 +61,7 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public RmqPublisherConfigurator setModeFanout(String exchange, String... bindQueues) {
+	public RmqPublisherConfigurator setModeFanout(String exchange, String[] bindQueues) {
 		if (bindQueues == null) {
 			throw new IllegalArgumentException("Bind queues not nullable.");
 		}
@@ -71,7 +71,7 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public RmqPublisherConfigurator setModeTopic(String exchange, String routingKey, String... bindQueues) {
+	public RmqPublisherConfigurator setModeTopic(String exchange, String routingKey, String[] bindQueues) {
 		if (bindQueues == null) {
 			throw new IllegalArgumentException("Bind queues not nullable.");
 		}

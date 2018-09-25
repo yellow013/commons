@@ -23,7 +23,7 @@ public class RabbitMqConnectTest {
 
 		RmqPublisherConfigurator pubConfigurator0 = RmqPublisherConfigurator.configuration()
 				.setConnectionParam(host, port).setUserParam(username, password)
-				.setModeFanout("TestExchange", queue0, queue1).setAutomaticRecovery(automaticRecovery);
+				.setModeFanout("TestExchange", new String[] { queue0, queue1 }).setAutomaticRecovery(automaticRecovery);
 
 		RabbitMqPublisher publisher = new RabbitMqPublisher("PUB_TEST", pubConfigurator0);
 
