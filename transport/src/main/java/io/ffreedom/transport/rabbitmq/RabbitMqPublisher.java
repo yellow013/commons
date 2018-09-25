@@ -9,6 +9,7 @@ import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
+import io.ffreedom.transport.rabbitmq.RabbitMqOperatingTools.OperationalChannel;
 import io.ffreedom.transport.rabbitmq.config.RmqPublisherConfigurator;
 
 public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publisher<byte[]> {
@@ -48,21 +49,33 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private void init() {
 		try {
+			OperationalChannel operationalChannel = RabbitMqOperatingTools.ofChannel(channel);
 			switch (exchangeType) {
 			case DIRECT:
 				this.routingKey = directQueue;
-				channel.queueDeclare(directQueue, configurator.isDurable(), configurator.isExclusive(),
-						configurator.isAutoDelete(), null);
+				operationalChannel.declareQueue(directQueue, configurator.isDurable(), configurator.isExclusive(),
+						configurator.isAutoDelete());
 				break;
 			case FANOUT:
-			case TOPIC:
-				channel.exchangeDeclare(exchange, exchangeType);
+				operationalChannel.declareFanoutExchange(exchange);
 				if (bindQueues != null) {
 					for (String queue : bindQueues) {
 						if (!StringUtil.isNullOrEmpty(queue)) {
-							channel.queueDeclare(queue, configurator.isDurable(), configurator.isExclusive(),
-									configurator.isAutoDelete(), null);
-							channel.queueBind(queue, exchange, routingKey);
+							operationalChannel.declareQueue(queue, configurator.isDurable(), configurator.isExclusive(),
+									configurator.isAutoDelete());
+							operationalChannel.bindQueue(queue, exchange);
+						}
+					}
+				}
+				break;
+			case TOPIC:
+				operationalChannel.declareTopicExchange(exchange);
+				if (bindQueues != null) {
+					for (String queue : bindQueues) {
+						if (!StringUtil.isNullOrEmpty(queue)) {
+							operationalChannel.declareQueue(queue, configurator.isDurable(), configurator.isExclusive(),
+									configurator.isAutoDelete());
+							operationalChannel.bindQueue(queue, exchange, routingKey);
 						}
 					}
 				}

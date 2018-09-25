@@ -14,27 +14,20 @@ public final class RabbitMqOperatingTools {
 		private ConnectionFactory connectionFactory;
 		private Connection connection;
 		private Channel channel;
-		private boolean isAutoClose;
 
-		private OperationalChannel(String host, int port, String username, String password, boolean isAutoClose) {
-			this(null, isAutoClose);
+		private OperationalChannel(String host, int port, String username, String password)
+				throws IOException, TimeoutException {
 			this.connectionFactory = new ConnectionFactory();
 			connectionFactory.setHost(host);
 			connectionFactory.setPort(port);
 			connectionFactory.setUsername(username);
 			connectionFactory.setPassword(password);
-			this.isAutoClose = isAutoClose;
-			try {
-				this.connection = connectionFactory.newConnection();
-				this.channel = connection.createChannel();
-			} catch (IOException | TimeoutException e) {
-				e.printStackTrace();
-			}
+			this.connection = connectionFactory.newConnection();
+			this.channel = connection.createChannel();
 		}
 
-		private OperationalChannel(Channel channel, boolean isAutoClose) {
+		private OperationalChannel(Channel channel) {
 			this.channel = channel;
-			this.isAutoClose = isAutoClose;
 		}
 
 		/**
@@ -42,120 +35,72 @@ public final class RabbitMqOperatingTools {
 		 * @param String           -> queue name
 		 * @param DefaultParameter -> isDurable == true, isExclusive == false,
 		 *                         isAutoDelete == false
+		 * @throws IOException
 		 */
-		public boolean declareQueueUseDefaultParameter(String queue) {
+		public boolean declareQueueUseDefaultParameter(String queue) throws IOException {
 			return declareQueue(queue, true, false, false);
 		}
 
-		public boolean declareQueue(String queue, boolean isDurable, boolean isExclusive, boolean isAutoDelete) {
-			try {
-				channel.queueDeclare(queue, isDurable, isExclusive, isAutoDelete, null);
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				autoClose();
-			}
+		public boolean declareQueue(String queue, boolean isDurable, boolean isExclusive, boolean isAutoDelete)
+				throws IOException {
+			channel.queueDeclare(queue, isDurable, isExclusive, isAutoDelete, null);
+			return true;
 		}
 
-		public boolean declareFanoutExchange(String exchange) {
+		public boolean declareFanoutExchange(String exchange) throws IOException {
 			return declareExchange(exchange, BuiltinExchangeType.FANOUT);
 		}
 
-		public boolean declareDirectExchange(String exchange) {
+		public boolean declareTopicExchange(String exchange) throws IOException {
+			return declareExchange(exchange, BuiltinExchangeType.TOPIC);
+		}
+
+		public boolean declareDirectExchange(String exchange) throws IOException {
 			return declareExchange(exchange, BuiltinExchangeType.DIRECT);
 		}
 
-		private boolean declareExchange(String exchange, BuiltinExchangeType type) {
-			try {
-				channel.exchangeDeclare(exchange, type, true, false, false, null);
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				autoClose();
-			}
+		private boolean declareExchange(String exchange, BuiltinExchangeType type) throws IOException {
+			channel.exchangeDeclare(exchange, type, true, false, false, null);
+			return true;
 		}
 
-		public boolean bindQueue(String queue, String exchange) {
+		public boolean bindQueue(String queue, String exchange) throws IOException {
 			return bindQueue(queue, exchange, "");
 		}
 
-		public boolean bindQueue(String queue, String exchange, String routingKey) {
-			try {
-				channel.queueBind(queue, exchange, routingKey);
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				autoClose();
-			}
+		public boolean bindQueue(String queue, String exchange, String routingKey) throws IOException {
+			channel.queueBind(queue, exchange, routingKey);
+			return true;
 		}
 
-		public boolean deleteQueue(String queue, boolean isForce) {
-			try {
-				channel.queueDelete(queue, !isForce, !isForce);
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				autoClose();
-			}
+		public boolean deleteQueue(String queue, boolean isForce) throws IOException {
+			channel.queueDelete(queue, !isForce, !isForce);
+			return true;
 		}
 
-		public boolean deleteExchange(String exchange, boolean isForce) {
-			try {
-				channel.exchangeDelete(exchange, !isForce);
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			} finally {
-				autoClose();
-			}
-		}
-
-		private void autoClose() {
-			if (isAutoClose) {
-				int retry = 0;
-				while (close()) {
-					retry++;
-					if (retry == 5)
-						break;
-				}
-			}
+		public boolean deleteExchange(String exchange, boolean isForce) throws IOException {
+			channel.exchangeDelete(exchange, !isForce);
+			return true;
 		}
 
 		public boolean isOpen() {
 			return channel.isOpen();
 		}
 
-		public boolean close() {
-			try {
-				channel.close();
-				connection.close();
-				return true;
-			} catch (IOException | TimeoutException e) {
-				e.printStackTrace();
-				return false;
-			}
+		public boolean close() throws IOException, TimeoutException {
+			channel.close();
+			connection.close();
+			return true;
 		}
 	}
 
-	public static OperationalChannel autoCloseChannel(String host, int port, String username, String password) {
-		return new OperationalChannel(host, port, username, password, true);
+	public static OperationalChannel createChannel(String host, int port, String username, String password)
+			throws IOException, TimeoutException {
+		return new OperationalChannel(host, port, username, password);
 	}
 
-	public static OperationalChannel manualCloseChannel(String host, int port, String username, String password) {
-		return new OperationalChannel(host, port, username, password, false);
-	}
-
-	public static OperationalChannel manualCloseChannel(Channel channel) {
-		return new OperationalChannel(channel, false);
+	public static OperationalChannel ofChannel(Channel channel) {
+		return new OperationalChannel(channel);
 	}
 
 //	static class TestBean {
@@ -223,15 +168,18 @@ public final class RabbitMqOperatingTools {
 //			System.out.println(bean.getS());
 //		});
 
-		OperationalChannel manualCloseChannel = manualCloseChannel("127.0.0.1", 5672, "guest", "guest");
+		OperationalChannel manualCloseChannel;
+		try {
+			manualCloseChannel = createChannel("127.0.0.1", 5672, "guest", "guest");
+			System.out.println(manualCloseChannel.isOpen());
+			manualCloseChannel.declareFanoutExchange("MarketData");
+			manualCloseChannel.close();
+			System.out.println(manualCloseChannel.isOpen());
+		} catch (IOException | TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		System.out.println(manualCloseChannel.isOpen());
-
-		manualCloseChannel.declareFanoutExchange("MarketData");
-
-		manualCloseChannel.close();
-
-		System.out.println(manualCloseChannel.isOpen());
 	}
 
 }
