@@ -61,10 +61,11 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public RmqPublisherConfigurator setModeFanout(String exchange, String[] bindQueues) {
-		if (bindQueues == null) {
-			throw new IllegalArgumentException("Bind queues not nullable.");
-		}
+	public RmqPublisherConfigurator setModeFanout(String exchange) {
+		return setModeFanoutAndBindQueues(exchange, null);
+	}
+	
+	public RmqPublisherConfigurator setModeFanoutAndBindQueues(String exchange, String[] bindQueues) {
 		this.exchangeType = BuiltinExchangeType.FANOUT;
 		this.exchange = exchange;
 		this.bindQueues = bindQueues;
