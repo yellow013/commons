@@ -32,10 +32,9 @@ public final class RabbitMqOperatingTools {
 
 		/**
 		 * 
-		 * @param String
-		 *            -> queue name
-		 * @param DefaultParameter
-		 *            -> isDurable == true, isExclusive == false, isAutoDelete == false
+		 * @param String           -> queue name
+		 * @param DefaultParameter -> isDurable == true, isExclusive == false,
+		 *                         isAutoDelete == false
 		 */
 		public boolean declareQueueUseDefaultParameter(String queue) {
 			return declareQueue(queue, true, false, false);
@@ -74,6 +73,10 @@ public final class RabbitMqOperatingTools {
 				if (isAutoClose)
 					autoClose();
 			}
+		}
+
+		public boolean bindQueue(String queue, String exchange) {
+			return bindQueue(queue, exchange, "");
 		}
 
 		public boolean bindQueue(String queue, String exchange, String routingKey) {
