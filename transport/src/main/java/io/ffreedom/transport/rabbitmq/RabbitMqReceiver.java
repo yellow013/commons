@@ -51,16 +51,16 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	}
 
 	private void init() {
+		this.receiverName = "Receiver->" + configurator.getHost() + ":" + configurator.getPort() + "$" + receiveQueue;
 		try {
 			channel.queueDeclare(receiveQueue, configurator.isDurable(), configurator.isExclusive(),
 					configurator.isAutoDelete(), null);
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());
-			logger.error(e.getStackTrace());
-			destroy();
+			logger.error("throws IOException -> ", e);
 			logger.error("call destroy() method.");
+			destroy();
 		}
-		this.receiverName = "Receiver->" + configurator.getHost() + ":" + configurator.getPort() + "$" + receiveQueue;
 	}
 
 	@Override
@@ -76,13 +76,15 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 					try {
 						callback.accept(body);
 					} catch (Exception e) {
-						logger.error("Callback#onEvent -> " + e.getMessage());
-						logger.error(e.getStackTrace());
-						// 退回消息->关闭连接
-						logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
+						logger.error("callback#accept -> " + e.getMessage());
+						logger.error("throws Exception is -> " + e.getClass().getSimpleName(), e);
 						if (errorMsgToExchange != null) {
+							// message to errorMsgExchange
+							logger.info("Msg sent to errorMsgExchange : " + new String(body, Charsets.UTF8));
 							channel.basicPublish(errorMsgToExchange, "", null, body);
 						} else {
+							// 退回消息->关闭连接
+							logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
 							channel.basicReject(envelope.getDeliveryTag(), true);
 							destroy();
 						}
@@ -96,27 +98,27 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 								createConnection();
 								ThreadUtil.sleep(configurator.getRecoveryInterval());
 								if (ack == maxAckTotal) {
-									logger.error("Channel#basicAck() -> failure...");
+									logger.error("channel#basicAck() -> failure...");
 									break;
 								}
 							}
 							channel.basicAck(envelope.getDeliveryTag(), false);
 						} catch (IOException e) {
-							logger.error("Channel#basicAck() -> " + e.getMessage());
-							logger.error(e.getStackTrace());
+							logger.error("channel#basicAck() -> " + e.getMessage());
+							logger.error("throws IOException -> ", e);
 						}
 					}
 				}
 			});
 		} catch (IOException e) {
-			logger.error("Channel#basicConsume() -> " + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("channel#basicConsume() -> " + e.getMessage());
+			logger.error("throws IOException -> ", e);
 		}
 	}
 
 	@Override
 	public boolean destroy() {
-		logger.info("call method -> RabbitSubscriber.destroy()");
+		logger.info("call method -> RabbitMqReceiver.destroy()");
 		closeConnection();
 		return true;
 	}
@@ -127,14 +129,11 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	}
 
 	public static void main(String[] args) {
-
-		RmqReceiverConfigurator configurator = RmqReceiverConfigurator.configuration()
-				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setReceiveQueue("hello")
-				.setAutomaticRecovery(true);
-
-		RabbitMqReceiver receiver = new RabbitMqReceiver("TEST_SUB", configurator, (byte[] msg) -> {
-			System.out.println(new String(msg, Charsets.UTF8));
-		});
+		RabbitMqReceiver receiver = new RabbitMqReceiver("", RmqReceiverConfigurator.configuration()
+				.setConnectionParam("", 0).setUserParam("", "").setReceiveQueue("").setAutomaticRecovery(true),
+				(byte[] msg) -> {
+					System.out.println(new String(msg, Charsets.UTF8));
+				});
 
 		receiver.receive();
 

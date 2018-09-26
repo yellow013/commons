@@ -48,6 +48,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	}
 
 	private void init() {
+		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 		try {
 			OperationalChannel operationalChannel = RabbitMqOperatingTools.ofChannel(channel);
 			switch (exchangeType) {
@@ -84,13 +85,11 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				break;
 			}
 		} catch (IOException e) {
-			logger.error("IOException ->" + e.getMessage());
-			logger.error(e.getStackTrace());
-			e.printStackTrace();
-			destroy();
+			logger.error("throws IOException ->" + e.getMessage(), e);
 			logger.error("call destroy() method.");
+			destroy();
 		}
-		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
+
 	}
 
 	@Override
@@ -120,8 +119,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					// param4: msgBody
 					msg);
 		} catch (IOException e) {
-			logger.error("Channel#basicPublish -> " + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("channel#basicPublish -> " + e.getMessage());
+			logger.error("throws IOException -> ", e);
 			destroy();
 		}
 	}
@@ -140,11 +139,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	public static void main(String[] args) {
 
-		RmqPublisherConfigurator configurator = RmqPublisherConfigurator.configuration()
-				.setConnectionParam("192.168.1.152", 5672).setUserParam("thadmq", "root").setModeDirect("hello")
-				.setAutomaticRecovery(true);
-
-		RabbitMqPublisher publisher = new RabbitMqPublisher("TEST_PUB", configurator);
+		RabbitMqPublisher publisher = new RabbitMqPublisher("", RmqPublisherConfigurator.configuration()
+				.setConnectionParam("", 5672).setUserParam("", "").setModeDirect("").setAutomaticRecovery(true));
 
 		ThreadUtil.startNewThread(() -> {
 			int count = 0;

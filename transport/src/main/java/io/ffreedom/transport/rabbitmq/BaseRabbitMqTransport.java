@@ -61,7 +61,7 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		try {
 			connection = connectionFactory.newConnection();
 			logger.info("newConnection() finsh, tag : " + tag + ", connection hash code : " + connection.hashCode());
-			connection.addShutdownListener((exception) -> {
+			connection.addShutdownListener(exception -> {
 				// 输出错误信息到控制台
 				logger.info("ShutdownListener -> " + exception.getMessage());
 				// 如果回调函数不为null, 则执行此函数
@@ -74,10 +74,10 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 			logger.info("all connection call successful...");
 		} catch (IOException e) {
 			logger.error("IOException ->" + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e);
 		} catch (TimeoutException e) {
 			logger.error("TimeoutException ->" + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e);
 		}
 	}
 
@@ -95,11 +95,11 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 				connection.close();
 			}
 		} catch (IOException e) {
-			logger.error("method closeConnection ->" + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("method closeConnection throws IOException ->" + e.getMessage());
+			logger.error(e);
 		} catch (TimeoutException e) {
-			logger.error("method closeConnection ->" + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("method closeConnection throws TimeoutException ->" + e.getMessage());
+			logger.error(e);
 		}
 	}
 
