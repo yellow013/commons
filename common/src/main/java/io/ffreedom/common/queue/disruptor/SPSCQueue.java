@@ -17,13 +17,11 @@ import io.ffreedom.common.utils.ThreadUtil;
  * @param <T>
  */
 
-public class SPSCQueue<T> implements SCQueue<T> {
+public class SPSCQueue<T> extends SCQueue<T> {
 
 	private Disruptor<LoadContainer<T>> disruptor;
 
 	private LoadContainerEventProducer producer;
-
-	private QueueProcessor<T> processor;
 
 	private volatile boolean isStop = false;
 
@@ -32,10 +30,10 @@ public class SPSCQueue<T> implements SCQueue<T> {
 	}
 
 	public SPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor, WaitStrategyOption option) {
+		super(processor);
 		if (queueSize == 0 || queueSize % 2 != 0) {
 			throw new IllegalArgumentException("queueSize set error...");
 		}
-		this.processor = processor;
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory<LoadContainer<>>的Lambda
 				LoadContainer::new,
@@ -50,9 +48,7 @@ public class SPSCQueue<T> implements SCQueue<T> {
 				// Waiting策略
 				WaitStrategyFactory.newWaitStrategy(option));
 		this.disruptor.handleEventsWith((LoadContainer<T> event, long sequence, boolean endOfBatch) -> {
-			if (this.processor != null) {
-				this.processor.process(event.unloading());
-			}
+			callProcessor(event.unloading());
 		});
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun) {
@@ -60,14 +56,12 @@ public class SPSCQueue<T> implements SCQueue<T> {
 		}
 	}
 
-	public SPSCQueue(int queueSize) {
-		this(queueSize, false, null);
+	private void callProcessor(T t) {
+		processor.process(t);
 	}
 
-	@Override
-	public SPSCQueue<T> setProcessor(QueueProcessor<T> processor) {
-		this.processor = processor;
-		return this;
+	public SPSCQueue(int queueSize) {
+		this(queueSize, false, null);
 	}
 
 	private class LoadContainerEventProducer {

@@ -11,19 +11,19 @@ import io.ffreedom.common.queue.base.QueueProcessor;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
-public class ArrayBlockingMPSCQueue<T> implements SCQueue<T> {
+public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private ArrayBlockingQueue<T> queue;
-	private QueueProcessor<T> processor;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
+	
+	private AtomicBoolean isClose = new AtomicBoolean(true);
 
 	public ArrayBlockingMPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor) {
-		super();
+		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
-		this.processor = processor;
 		if (autoRun) {
 			start();
 		}
@@ -31,6 +31,10 @@ public class ArrayBlockingMPSCQueue<T> implements SCQueue<T> {
 
 	public boolean enQueue(T t) {
 		try {
+			if(!isClose.get()) {
+				logger.error("ArrayBlockingMPSCQueue.enQueue(t) failure, This queue is closed...");
+				return false;
+			}
 			queue.put(t);
 			return true;
 		} catch (InterruptedException e) {
@@ -40,11 +44,10 @@ public class ArrayBlockingMPSCQueue<T> implements SCQueue<T> {
 	}
 
 	public void start() {
-		if (isRun.get()) {
+		if (isRun.compareAndSet(false, true)) {
 			logger.error("error call : queue is started.");
 			return;
 		}
-		isRun.set(true);
 		ThreadUtil.startNewThread(() -> {
 			try {
 				while (isRun.get() || !queue.isEmpty()) {
@@ -62,6 +65,7 @@ public class ArrayBlockingMPSCQueue<T> implements SCQueue<T> {
 	@Override
 	public void stop() {
 		this.isRun.set(false);
+		this.isClose.set(true);
 	}
 
 	public static void main(String[] args) {
@@ -79,12 +83,6 @@ public class ArrayBlockingMPSCQueue<T> implements SCQueue<T> {
 			queue.enQueue(++i);
 		}
 
-	}
-
-	@Override
-	public SCQueue<T> setProcessor(QueueProcessor<T> processor) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
