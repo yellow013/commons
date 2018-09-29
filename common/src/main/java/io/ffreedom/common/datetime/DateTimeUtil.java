@@ -3,7 +3,11 @@ package io.ffreedom.common.datetime;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.concurrent.ThreadSafe;
+
+@ThreadSafe
 public final class DateTimeUtil {
 
 	public final static int intDate() {
@@ -65,6 +69,28 @@ public final class DateTimeUtil {
 
 	public final static LocalDateTime toLocalDateTime(long datetime) {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
+	}
+
+	private static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
+	private static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(currentDate.get().minusDays(1));
+	private static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
+
+	public static LocalDate getCurrentDate() {
+		return currentDate.get();
+	}
+
+	public static LocalDate getYesterdayDate() {
+		return yesterdayDate.get();
+	}
+
+	public static LocalDate getTomorrowDate() {
+		return tomorrowDate.get();
+	}
+
+	public static void setCurrentDate(LocalDate date) {
+		currentDate.set(date);
+		yesterdayDate.set(date.minusDays(1));
+		tomorrowDate.set(date.plusDays(1));
 	}
 
 	public static void main(String[] args) {
