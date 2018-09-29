@@ -11,15 +11,14 @@ import io.ffreedom.common.queue.base.QueueProcessor;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
-public class SPSCQueue2<T> implements SCQueue<T> {
+public class SPSCQueue2<T> extends SCQueue<T> {
 
 	private Disruptor<T> disruptor;
 
 	private LoadContainerEventProducer producer;
 
-	private QueueProcessor<T> processor;
-
 	public SPSCQueue2(int queueSize, boolean autoRun, EventFactory<T> eventFactory, QueueProcessor<T> processor) {
+		super(processor);
 		if (queueSize == 0 || queueSize % 2 != 0) {
 			throw new IllegalArgumentException("queueSize set error...");
 		}
@@ -38,20 +37,12 @@ public class SPSCQueue2<T> implements SCQueue<T> {
 				// Waiting策略
 				new BusySpinWaitStrategy());
 		this.disruptor.handleEventsWith((T event, long sequence, boolean endOfBatch) -> {
-			if (this.processor != null) {
-				this.processor.process(event);
-			}
+			this.processor.process(event);
 		});
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun) {
 			start();
 		}
-	}
-
-	@Override
-	public SPSCQueue2<T> setProcessor(QueueProcessor<T> processor) {
-		this.processor = processor;
-		return this;
 	}
 
 	private class LoadContainerEventProducer {
@@ -67,7 +58,6 @@ public class SPSCQueue2<T> implements SCQueue<T> {
 				@Override
 				public void translateTo(T event, long sequence) {
 					// TODO 实现未完成
-
 				}
 			});
 		}

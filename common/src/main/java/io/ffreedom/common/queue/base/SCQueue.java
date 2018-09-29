@@ -1,12 +1,19 @@
 package io.ffreedom.common.queue.base;
 
-public interface SCQueue<T> extends Queue<T> {
+public abstract class SCQueue<T> implements Queue<T> {
 
-	void start();
+	protected QueueProcessor<T> processor;
 
-	void stop();
-	
-	SCQueue<T> setProcessor(QueueProcessor<T> processor);
+	public SCQueue(QueueProcessor<T> processor) {
+		if (processor == null) {
+			throw new IllegalArgumentException("processor is null...");
+		}
+		this.processor = processor;
+	}
+
+	public abstract void start();
+
+	public abstract void stop();
 
 	public enum RunMode {
 		Auto, Manual, Delay
