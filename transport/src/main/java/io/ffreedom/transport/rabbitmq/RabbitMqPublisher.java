@@ -45,7 +45,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.directQueue = configurator.getDirectQueue();
 		createConnection();
 		init();
-	}
+	} 
 
 	private void init() {
 		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;

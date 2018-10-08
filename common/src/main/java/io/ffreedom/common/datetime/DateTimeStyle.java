@@ -11,7 +11,7 @@ public enum DateTimeStyle {
 	HHMMSS(DatePattern.HHMMSS),
 
 	HH_MM_SS(DatePattern.HH_MM_SS),
-
+	
 	YYYYMMDD(DatePattern.YYYYMMDD),
 
 	YYYYMMDD_HHMMSS(DatePattern.YYYYMMDD_HHMMSS),

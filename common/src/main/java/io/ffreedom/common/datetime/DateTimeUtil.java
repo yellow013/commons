@@ -78,7 +78,7 @@ public final class DateTimeUtil {
 
 	public final static Date strToDate(DateTimeStyle style, String str) {
 		try {
-			return !StringUtil.isNullOrEmpty(str) ? style.getDateFormat().parse(str) : null;
+			return str.length() == style.getPattern().length() ? style.getDateFormat().parse(str) : null;
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -101,12 +101,8 @@ public final class DateTimeUtil {
 		return style.getDateTimeFormatter().format(LocalDateTime.now());
 	}
 
-	public final static Date now() {
-		return new Date();
-	}
-
 	private final static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
-	
+
 	private final static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(
 			currentDate.get().minusDays(1));
 	private final static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
