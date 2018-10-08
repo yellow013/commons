@@ -10,7 +10,7 @@ import java.util.Date;
 
 import io.ffreedom.common.utils.StringUtil;
 
-public enum DateStyle {
+public enum TimeStyle {
 
 	HHMM(DatePattern.HHMM),
 
@@ -53,7 +53,7 @@ public enum DateStyle {
 
 	private final DateTimeFormatter dateTimeFormatter;
 
-	private DateStyle(String pattern) {
+	private TimeStyle(String pattern) {
 		this.pattern = pattern;
 		this.threadLocalDateFormat = new ThreadLocal<>();
 		this.threadLocalDateFormat.set(new SimpleDateFormat(pattern));
@@ -107,7 +107,7 @@ public enum DateStyle {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(DateStyle.HH_MM_SS_MILLISECOND.getNowStr());
+		System.out.println(TimeStyle.HH_MM_SS_MILLISECOND.getNowStr());
 		
 	}
 

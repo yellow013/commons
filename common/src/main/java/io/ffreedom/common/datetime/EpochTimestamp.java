@@ -17,7 +17,7 @@ public class EpochTimestamp {
 	}
 
 	public static EpochTimestamp now() {
-		return now(true);
+		return now(false);
 	}
 
 	public static EpochTimestamp now(boolean lazyEvaluation) {

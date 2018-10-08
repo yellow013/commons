@@ -13,7 +13,6 @@ public abstract class AbsMooreFSM<E> implements MooreFSM<E> {
     public void reset() {
         isInitialState = false;
         clear();
-		
     }
 
     protected abstract void clear();

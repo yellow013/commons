@@ -1,8 +1,13 @@
 package io.ffreedom.common.datetime;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
+
+import io.ffreedom.common.utils.StringUtil;
 
 public final class DateTimeUtil {
 
@@ -65,6 +70,35 @@ public final class DateTimeUtil {
 
 	public final static LocalDateTime toLocalDateTime(long datetime) {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
+	}
+
+	public Date strToDate(DateTimeStyle style, String str) {
+		try {
+			return !StringUtil.isNullOrEmpty(str) ? style.getDateFormat().parse(str) : null;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public LocalDateTime strToLocalDateTime(DateTimeStyle style, String str) {
+		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getDateTimeFormatter()) : null;
+	}
+
+	public LocalDateTime dateToLocalDateTime(Date date) {
+		return dateToLocalDateTime(date, TimeZones.SYSTEM_DEFAULT);
+	}
+
+	public LocalDateTime dateToLocalDateTime(Date date, ZoneId zoneId) {
+		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
+	}
+
+	public String now(DateTimeStyle style) {
+		return style.getDateTimeFormatter().format(LocalDateTime.now());
+	}
+	
+	public Date now() {
+		return new Date();
 	}
 
 	public static void main(String[] args) {

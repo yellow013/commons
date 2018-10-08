@@ -35,9 +35,8 @@ public final class WaitStrategyFactory {
 		case Yielding:
 			return new YieldingWaitStrategy();
 		default:
-			break;
+			throw new RuntimeException("option -> (" + option + ") does not support.");
 		}
-		return null;
 	}
 
 }
