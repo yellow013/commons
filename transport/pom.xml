@@ -26,22 +26,23 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<version>4.1.27.Final</version>
+			<version>4.1.30.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.zeromq</groupId>
 			<artifactId>jeromq</artifactId>
 			<version>0.4.3</version>
 		</dependency>
+		<!-- rabbitmq amqp-client -->
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
-			<version>5.2.0</version>
+			<version>5.4.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
+			<version>4.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>io.ffreedom</groupId>

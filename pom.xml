@@ -23,7 +23,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec.version>9.2.0</ec.version>
+		<eclipse.collections.version>9.2.0</eclipse.collections.version>
+		<guava.version>26.0-jre</guava.version>
 	</properties>
 
 	<dependencies>
@@ -54,7 +55,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>24.1-jre</version>
+				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -64,12 +65,12 @@
 			<dependency>
 				<groupId>org.eclipse.collections</groupId>
 				<artifactId>eclipse-collections-api</artifactId>
-				<version>${ec.version}</version>
+				<version>${eclipse.collections.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.collections</groupId>
 				<artifactId>eclipse-collections</artifactId>
-				<version>${ec.version}</version>
+				<version>${eclipse.collections.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.ffreedom</groupId>
