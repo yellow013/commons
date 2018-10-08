@@ -10,6 +10,7 @@ import java.util.Date;
 import io.ffreedom.common.utils.StringUtil;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.ThreadSafe;
 
 @ThreadSafe
@@ -76,6 +77,7 @@ public final class DateTimeUtil {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
 	}
 
+	@CheckForNull
 	public final static Date strToDate(DateTimeStyle style, String str) {
 		try {
 			return str.length() == style.getPattern().length() ? style.getDateFormat().parse(str) : null;
