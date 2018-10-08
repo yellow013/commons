@@ -1,14 +1,8 @@
 package io.ffreedom.common.datetime;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import io.ffreedom.common.utils.StringUtil;
 
 public enum DateTimeStyle {
 
@@ -48,7 +42,6 @@ public enum DateTimeStyle {
 
 	private String pattern;
 
-	// TODO Delete
 	private final ThreadLocal<DateFormat> threadLocalDateFormat;
 
 	private final DateTimeFormatter dateTimeFormatter;
@@ -80,36 +73,8 @@ public enum DateTimeStyle {
 		return dateTimeFormatter;
 	}
 
-	public Date toDate(String str) {
-		try {
-			return !StringUtil.isNullOrEmpty(str) ? threadLocalDateFormat.get().parse(str) : null;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public LocalDateTime toLocalDateTime(String str) {
-		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, dateTimeFormatter) : null;
-	}
-
-	public LocalDateTime toLocalDateTime(Date str) {
-		return toLocalDateTime(str, TimeZones.SYSTEM_DEFAULT);
-	}
-
-	public LocalDateTime toLocalDateTime(Date str, ZoneId zoneId) {
-		return LocalDateTime.ofInstant(str.toInstant(), zoneId);
-	}
-
-	public String getNowStr() {
-		return dateTimeFormatter.format(LocalDateTime.now());
-	}
-	
 	public static void main(String[] args) {
-		
-		System.out.println(DateTimeStyle.HH_MM_SS_MILLISECOND.getNowStr());
-		
+		System.out.println(DateTimeUtil.now(HH_MM_SS_MICROSECOND));
 	}
-
 
 }
