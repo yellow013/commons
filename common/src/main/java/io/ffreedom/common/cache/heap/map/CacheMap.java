@@ -8,9 +8,9 @@ public class CacheMap<K, V> {
 	private Map<K, Boolean> availableMap = new ConcurrentHashMap<>();
 	private Map<K, V> valueMap = new ConcurrentHashMap<>();
 
-	private CacheMapRefresher<K, V> refresher;
+	private CacheRefresher<K, V> refresher;
 
-	public CacheMap(CacheMapRefresher<K, V> refresher) {
+	public CacheMap(CacheRefresher<K, V> refresher) {
 		if (refresher == null) {
 			throw new NullPointerException("CacheMapRefresher is null...");
 		}

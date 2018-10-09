@@ -13,7 +13,6 @@
 	<url>https://github.com/yellow013/commons.git</url>
 
 	<packaging>pom</packaging>
-
 	<name>commons</name>
 
 	<modules>
@@ -25,24 +24,33 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<eclipse.collections.version>9.2.0</eclipse.collections.version>
 		<guava.version>26.0-jre</guava.version>
+		<log4j2.version>2.11.1</log4j2.version>
+		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
 
 	<dependencies>
+		<!-- Logs dependency -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.11.1</version>
+			<version>${log4j2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.11.1</version>
+			<version>${log4j2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>2.11.1</version>
+			<version>${log4j2.version}</version>
 		</dependency>
+		<!-- Logs dependency end -->
 	</dependencies>
 
 	<dependencyManagement>

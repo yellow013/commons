@@ -16,11 +16,17 @@
 	<name>common</name>
 
 	<dependencies>
-		<!-- lmax disruptor package -->
+		<!-- LMAX Disruptor -->
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
 			<version>3.4.2</version>
+		</dependency>
+		<!-- jsr305 -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 		<!-- IO Utils -->
 		<dependency>
@@ -36,11 +42,11 @@
 			<groupId>org.eclipse.collections</groupId>
 			<artifactId>eclipse-collections</artifactId>
 		</dependency>
+
 		<!-- Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
-
 	</dependencies>
 </project>

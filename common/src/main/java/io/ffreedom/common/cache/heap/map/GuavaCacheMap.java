@@ -14,7 +14,7 @@ import io.ffreedom.common.log.LoggerFactory;
 public class GuavaCacheMap<K, V> {
 
 	private LoadingCache<K, V> loadingCache;
-	private CacheMapRefresher<K, V> refresher;
+	private CacheRefresher<K, V> refresher;
 
 	private long maximumSize;
 	private long duration;
@@ -22,7 +22,7 @@ public class GuavaCacheMap<K, V> {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private GuavaCacheMap(CacheMapBuilder builder, CacheMapRefresher<K, V> refresher) {
+	private GuavaCacheMap(CacheMapBuilder builder, CacheRefresher<K, V> refresher) {
 		this.maximumSize = builder.maximumSize;
 		this.duration = builder.duration;
 		this.timeUnit = builder.timeUnit;
@@ -57,7 +57,7 @@ public class GuavaCacheMap<K, V> {
 	/**
 	 * Builder for GuavaCacheMap
 	 * 
-	 * @author peng.j
+	 * @author phoenix
 	 *
 	 */
 	public static class CacheMapBuilder {
@@ -76,7 +76,7 @@ public class GuavaCacheMap<K, V> {
 			return this;
 		}
 
-		public <K, V> GuavaCacheMap<K, V> build(CacheMapRefresher<K, V> refresher) {
+		public <K, V> GuavaCacheMap<K, V> build(CacheRefresher<K, V> refresher) {
 			return new GuavaCacheMap<>(this, refresher);
 		}
 
