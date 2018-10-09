@@ -20,6 +20,9 @@ public final class LogSequence {
 		System.out.println(LogSequence.sysMicrosecond());
 		System.out.println(LogSequence.sysMillisecond());
 
+		
+		
+		
 	}
 
 }

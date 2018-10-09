@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.slf4j.Log4jLogger;
+import org.apache.logging.slf4j.Log4jLoggerFactory;
 
 public class LoggerFactory {
 
@@ -20,6 +22,7 @@ public class LoggerFactory {
 		if (projectName == null || projectName.equals("")) {
 			LoggerSetter.setProjectName("unset");
 		}
+		org.slf4j.Logger
 		return LogManager.getLogger(clazz);
 	}
 
