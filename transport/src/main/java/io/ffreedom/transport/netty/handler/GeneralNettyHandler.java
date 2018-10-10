@@ -1,6 +1,7 @@
 package io.ffreedom.transport.netty.handler;
 
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.netty.buffer.ByteBuf;
@@ -30,8 +31,7 @@ public abstract class GeneralNettyHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		logger.error(cause.getMessage());
-		logger.error(cause.getStackTrace());
+		logger.error(cause.getMessage() , cause);
 		ctx.close();
 	}
 

@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.log.LoggerFactory;
@@ -106,8 +106,7 @@ public class SocketReceiver implements Receiver {
 					IOUtils.read(inputStream, bytes);
 					callback.accept(bytes);
 				} catch (IOException e) {
-					logger.error(e.getMessage());
-					logger.error(e.getStackTrace());
+					logger.error(e.getMessage(), e);
 					try {
 						inputStream.close();
 					} catch (IOException e1) {

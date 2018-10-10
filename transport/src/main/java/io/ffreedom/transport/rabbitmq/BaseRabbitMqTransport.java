@@ -3,7 +3,7 @@ package io.ffreedom.transport.rabbitmq;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -63,21 +63,19 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 			logger.info("newConnection() finsh, tag : " + tag + ", connection hash code : " + connection.hashCode());
 			connection.addShutdownListener(exception -> {
 				// 输出错误信息到控制台
-				logger.info("ShutdownListener -> " + exception.getMessage());
+				logger.info("ShutdownListener -> {}", exception.getMessage());
 				// 如果回调函数不为null, 则执行此函数
 				if (shutdownEvent != null) {
 					shutdownEvent.accept(exception);
 				}
 			});
 			channel = connection.createChannel();
-			logger.info("createChannel() finsh, channel number is : " + channel.getChannelNumber());
+			logger.info("createChannel() finsh, channel number is : {}", channel.getChannelNumber());
 			logger.info("all connection call successful...");
 		} catch (IOException e) {
-			logger.error("IOException ->" + e.getMessage());
-			logger.error(e);
+			logger.error("IOException -> {}", e.getMessage(), e);
 		} catch (TimeoutException e) {
-			logger.error("TimeoutException ->" + e.getMessage());
-			logger.error(e);
+			logger.error("TimeoutException -> {}" + e.getMessage(), e);
 		}
 	}
 
@@ -95,11 +93,9 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 				connection.close();
 			}
 		} catch (IOException e) {
-			logger.error("method closeConnection throws IOException ->" + e.getMessage());
-			logger.error(e);
+			logger.error("method closeConnection throws IOException -> {}", e.getMessage(), e);
 		} catch (TimeoutException e) {
-			logger.error("method closeConnection throws TimeoutException ->" + e.getMessage());
-			logger.error(e);
+			logger.error("method closeConnection throws TimeoutException -> {}", e.getMessage(), e);
 		}
 	}
 

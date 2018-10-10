@@ -6,7 +6,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.log.LoggerFactory;

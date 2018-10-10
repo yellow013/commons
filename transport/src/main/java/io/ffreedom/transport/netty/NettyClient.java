@@ -40,8 +40,7 @@ public class NettyClient extends NettyTransport implements TransportClient {
 					// Wait until the connection is closed.
 					.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
-			logger.error("NettyClient method connection() -> " + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("NettyClient method connection() -> {}", e.getMessage(), e);
 			destroy();
 		}
 	}

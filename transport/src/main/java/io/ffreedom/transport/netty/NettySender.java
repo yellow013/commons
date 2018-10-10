@@ -2,7 +2,7 @@ package io.ffreedom.transport.netty;
 
 import static io.ffreedom.common.log.LogSequence.sysMicrosecond;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.transport.base.role.Sender;

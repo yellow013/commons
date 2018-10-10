@@ -1,6 +1,6 @@
 package io.ffreedom.transport.netty;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.transport.netty.config.NettyConfigurator;

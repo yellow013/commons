@@ -53,8 +53,7 @@ public class NettyServer extends NettyTransport implements TransportServer {
 					// Wait close.
 					.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
-			logger.error("NettyServer method startup() -> " + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("NettyServer method startup() -> {}", e.getMessage(), e);
 			destroy();
 		}
 	}

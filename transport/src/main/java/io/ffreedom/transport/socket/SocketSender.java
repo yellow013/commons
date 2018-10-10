@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.ArrayBlockingMPSCQueue;
@@ -80,8 +80,7 @@ public class SocketSender implements Sender<byte[]> {
 				outputStream.write(msg);
 			}
 		} catch (IOException e) {
-			logger.error(e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e.getMessage(), e);
 			destroy();
 		}
 	}
