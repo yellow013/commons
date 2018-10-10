@@ -1,5 +1,7 @@
 package io.ffreedom.common.log;
 
+import org.slf4j.Logger;
+
 public final class LogSequence {
 
 	public static long sysMillisecond() {
@@ -16,13 +18,11 @@ public final class LogSequence {
 
 	public static void main(String[] args) {
 
-		System.out.println(LogSequence.sysNanosecond());
-		System.out.println(LogSequence.sysMicrosecond());
-		System.out.println(LogSequence.sysMillisecond());
+		Logger log = LoggerFactory.getLogger(LogSequence.class);
+		
+		for(int i = 0; i < 20; i++)
+			log.debug(String.valueOf(LogSequence.sysMicrosecond()));
 
-		
-		
-		
 	}
 
 }
