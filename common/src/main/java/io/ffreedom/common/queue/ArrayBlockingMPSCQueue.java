@@ -4,7 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.QueueProcessor;
@@ -18,7 +18,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
-	
+
 	private AtomicBoolean isClose = new AtomicBoolean(true);
 
 	public ArrayBlockingMPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor) {
@@ -31,14 +31,14 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public boolean enQueue(T t) {
 		try {
-			if(!isClose.get()) {
+			if (!isClose.get()) {
 				logger.error("ArrayBlockingMPSCQueue.enQueue(t) failure, This queue is closed...");
 				return false;
 			}
 			queue.put(t);
 			return true;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingMPSCQueue.enQueue(t) : " + e.getMessage());
+			logger.error("ArrayBlockingMPSCQueue.enQueue(t) : {}", e.getMessage());
 			return false;
 		}
 	}
@@ -74,10 +74,10 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			System.out.println(value);
 		});
 
-		int i=0;
-		
+		int i = 0;
+
 		for (;;) {
-			if(i == 100000) {
+			if (i == 100000) {
 				queue.stop();
 			}
 			queue.enQueue(++i);

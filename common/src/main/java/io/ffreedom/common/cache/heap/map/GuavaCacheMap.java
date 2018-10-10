@@ -3,7 +3,7 @@ package io.ffreedom.common.cache.heap.map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -48,8 +48,7 @@ public class GuavaCacheMap<K, V> {
 		try {
 			return loadingCache.get(k);
 		} catch (ExecutionException e) {
-			logger.error("GuavaCacheMap.get -> [" + k + "] : " + e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error("GuavaCacheMap.get -> [{}] : {}", k, e.getMessage(), e);
 			return null;
 		}
 	}

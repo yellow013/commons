@@ -9,7 +9,7 @@ public final class GlobalId {
 	private GlobalId(long initialValue) {
 	}
 
-	public static long genId() {
+	public static long generate() {
 		return globalId.incrementAndGet();
 	}
 

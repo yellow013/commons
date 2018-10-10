@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.LoadContainer;
@@ -90,7 +90,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	public static void main(String[] args) {
-		
+
 	}
 
 }

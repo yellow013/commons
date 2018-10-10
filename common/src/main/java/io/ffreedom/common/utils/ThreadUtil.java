@@ -2,7 +2,7 @@ package io.ffreedom.common.utils;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
 
@@ -17,8 +17,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			logger.error(e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -26,8 +25,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			logger.error(e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -35,8 +33,7 @@ public final class ThreadUtil {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
-			logger.error(e.getMessage());
-			logger.error(e.getStackTrace());
+			logger.error(e.getMessage(), e);
 		}
 	}
 

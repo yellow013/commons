@@ -2,10 +2,7 @@ package io.ffreedom.common.log;
 
 import java.time.LocalDateTime;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.slf4j.Log4jLogger;
-import org.apache.logging.slf4j.Log4jLoggerFactory;
+import org.slf4j.Logger;
 
 public class LoggerFactory {
 
@@ -22,8 +19,7 @@ public class LoggerFactory {
 		if (projectName == null || projectName.equals("")) {
 			LoggerSetter.setProjectName("unset");
 		}
-		org.slf4j.Logger
-		return LogManager.getLogger(clazz);
+		return org.slf4j.LoggerFactory.getLogger(clazz);
 	}
 
 	public static void main(String[] args) {
