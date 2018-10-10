@@ -19,10 +19,11 @@ public final class LogSequence {
 	public static void main(String[] args) {
 
 		Logger log = LoggerFactory.getLogger(LogSequence.class);
-		
-		for(int i = 0; i < 20; i++)
-			log.debug(String.valueOf(LogSequence.sysMicrosecond()));
 
+		for (int i = 0; i < 20; i++) {
+			log.debug(String.valueOf(LogSequence.sysMicrosecond()));
+		}
+		
 	}
 
 }

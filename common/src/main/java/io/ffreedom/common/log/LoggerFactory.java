@@ -4,26 +4,38 @@ import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.utils.StringUtil;
+
 public class LoggerFactory {
 
+	private static boolean isLogFilenameSetted;
+	private static boolean isLogLevelSetted;
+	private static boolean isLogFolderSetted;
+
 	public static Logger getLogger(Class<?> clazz) {
-		String logFilename = System.getProperty(LoggerConstant.LOG_FILENAME);
-		if (logFilename == null || logFilename.equals("")) {
-			LoggerSetter.setLogFileName("java.runtime");
+		if (!isLogFolderSetted) {
+			String logFolder = System.getProperty(LoggerConstant.LOG_FOLDER);
+			if (StringUtil.isNullOrEmpty(logFolder)) {
+				LoggerSetter.setLogFolder("default");
+			}
 		}
-		String logLevel = System.getProperty(LoggerConstant.LOG_LEVEL);
-		if (logLevel == null || logLevel.equals("")) {
-			LoggerSetter.setLogLevel(LogLevel.INFO);
+		if (!isLogFilenameSetted) {
+			String logFilename = System.getProperty(LoggerConstant.LOG_FILENAME);
+			if (StringUtil.isNullOrEmpty(logFilename)) {
+				LoggerSetter.setLogFileName("java.runtime");
+			}
 		}
-		String projectName = System.getProperty(LoggerConstant.PROJECT_NAME);
-		if (projectName == null || projectName.equals("")) {
-			LoggerSetter.setProjectName("unset");
+		if (!isLogLevelSetted) {
+			String logLevel = System.getProperty(LoggerConstant.LOG_LEVEL);
+			if (StringUtil.isNullOrEmpty(logLevel)) {
+				LoggerSetter.setLogLevel(LogLevel.INFO);
+			}
 		}
 		return org.slf4j.LoggerFactory.getLogger(clazz);
 	}
 
 	public static void main(String[] args) {
-		
+
 		System.out.println(System.getProperty("user.home"));
 
 		LoggerSetter.setLogFileName("new");
@@ -38,7 +50,7 @@ public class LoggerFactory {
 
 		logger.debug("779");
 
-		System.out.println(System.getProperty(LoggerConstant.PROJECT_NAME));
+		System.out.println(System.getProperty(LoggerConstant.LOG_FOLDER));
 
 		System.out.println(LocalDateTime.now());
 	}

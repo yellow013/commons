@@ -10,8 +10,8 @@ public class LoggerSetter {
 		System.setProperty(LoggerConstant.LOG_LEVEL, logLevel.name());
 	}
 
-	public static void setProjectName(String projectName) {
-		System.setProperty(LoggerConstant.PROJECT_NAME, projectName);
+	public static void setLogFolder(String logFolder) {
+		System.setProperty(LoggerConstant.LOG_FOLDER, logFolder);
 	}
 
 }
