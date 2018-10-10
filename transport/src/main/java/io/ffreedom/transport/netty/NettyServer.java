@@ -1,6 +1,6 @@
 package io.ffreedom.transport.netty;
 
-import io.ffreedom.common.annotation.mark.TestMain;
+import io.ffreedom.common.mark.TestMain;
 import io.ffreedom.transport.base.role.TransportServer;
 import io.ffreedom.transport.netty.config.NettyConfigurator;
 import io.ffreedom.transport.netty.handler.GeneralNettyHandler;
@@ -72,7 +72,7 @@ public class NettyServer extends NettyTransport implements TransportServer {
 		return bossGroup.isShutdown() && workerGroup.isShutdown();
 	}
 
-	@TestMain
+	@TestMain(type = NettyServer.class, args = "")
 	public static void main(String[] args) throws Exception {
 
 		NettyConfigurator configurator = NettyConfigurator.builder().setHost("192.168.1.138").setPort(7901).build();

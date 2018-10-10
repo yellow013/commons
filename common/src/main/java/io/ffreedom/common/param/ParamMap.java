@@ -19,11 +19,11 @@ import io.ffreedom.common.functional.Initializer;
 
 public final class ParamMap<K extends ParamKey> {
 
-	private MutableIntBooleanMap booleanParamMap = new IntBooleanHashMap(16);
-	private MutableIntIntMap integerParamMap = new IntIntHashMap(16);
-	private MutableIntDoubleMap doubleParamMap = new IntDoubleHashMap(16);
-	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>(16);
-	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>(16);
+	private MutableIntBooleanMap booleanParamMap = new IntBooleanHashMap(32);
+	private MutableIntIntMap integerParamMap = new IntIntHashMap(32);
+	private MutableIntDoubleMap doubleParamMap = new IntDoubleHashMap(32);
+	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>(32);
+	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>(32);
 
 	public ParamMap(Initializer<MutableMap<K, Object>> initializer) {
 		MutableMap<K, Object> initMap = initializer.initialize();
@@ -42,9 +42,13 @@ public final class ParamMap<K extends ParamKey> {
 				putParam(key, (String) initMap.get(key));
 				break;
 			case DATETIME:
+				putParam(key, (LocalDateTime) initMap.get(key));
+				break;
 			case DATE:
+				putParam(key, (LocalDate) initMap.get(key));
+				break;
 			case TIME:
-				putParam(key, (Temporal) initMap.get(key));
+				putParam(key, (LocalTime) initMap.get(key));
 				break;
 			default:
 				throw new IllegalArgumentException("");
