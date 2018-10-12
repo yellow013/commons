@@ -38,13 +38,13 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			queue.put(t);
 			return true;
 		} catch (InterruptedException e) {
-			logger.error("ArrayBlockingMPSCQueue.enQueue(t) : {}", e.getMessage());
+			logger.error("queue.put(t) throw InterruptedException : {}", e.getMessage());
 			return false;
 		}
 	}
 
 	public void start() {
-		if (isRun.compareAndSet(false, true)) {
+		if (!isRun.compareAndSet(false, true)) {
 			logger.error("error call : queue is started.");
 			return;
 		}
@@ -57,7 +57,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 					}
 				}
 			} catch (InterruptedException e) {
-				logger.error("ArrayBlockingMPSCQueue.poll : " + e.getMessage());
+				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e.getMessage());
 			}
 		});
 	}
@@ -77,7 +77,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		int i = 0;
 
 		for (;;) {
-			if (i == 100000) {
+			if (i == 1000) {
 				queue.stop();
 			}
 			queue.enQueue(++i);

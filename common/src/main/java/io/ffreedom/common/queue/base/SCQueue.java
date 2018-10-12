@@ -1,5 +1,12 @@
 package io.ffreedom.common.queue.base;
 
+/**
+ * 
+ * 
+ * @author Phoneix
+ *
+ * @param <T> Single Consumer Queue
+ */
 public abstract class SCQueue<T> implements Queue<T> {
 
 	protected QueueProcessor<T> processor;
