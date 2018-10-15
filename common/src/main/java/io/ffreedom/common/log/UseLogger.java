@@ -9,13 +9,13 @@ public final class UseLogger {
 	}
 
 	public static void error(Logger logger, Exception e, String msg) {
-		error(logger, e);
 		logger.error(msg);
+		error(logger, e);
 	}
 
 	public static void error(Logger logger, Exception e, String msgTemplate, Object... args) {
-		error(logger, e);
 		logger.error(msgTemplate, args);
+		error(logger, e);
 	}
 
 	public static void main(String[] args) {
