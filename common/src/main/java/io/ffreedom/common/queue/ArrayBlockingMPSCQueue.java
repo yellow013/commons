@@ -45,7 +45,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public void start() {
 		if (!isRun.compareAndSet(false, true)) {
-			logger.error("error call : queue is started.");
+			logger.error("Error call ->  This queue is started.");
 			return;
 		}
 		ThreadUtil.startNewThread(() -> {
