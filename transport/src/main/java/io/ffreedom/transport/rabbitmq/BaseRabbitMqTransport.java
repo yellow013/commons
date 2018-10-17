@@ -11,6 +11,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
 
@@ -60,22 +61,25 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		}
 		try {
 			connection = connectionFactory.newConnection();
-			logger.info("newConnection() finsh, tag : " + tag + ", connection hash code : " + connection.hashCode());
+			logger.info("Call method connectionFactory.newConnection() finished, tag -> {}, connection id -> {}.", tag,
+					connection.getId());
+
 			connection.addShutdownListener(exception -> {
 				// 输出错误信息到控制台
-				logger.info("ShutdownListener -> {}", exception.getMessage());
+				logger.info("Call ShutdownListener -> {}", exception.getMessage());
 				// 如果回调函数不为null, 则执行此函数
 				if (shutdownEvent != null) {
 					shutdownEvent.accept(exception);
 				}
 			});
 			channel = connection.createChannel();
-			logger.info("createChannel() finsh, channel number is : {}", channel.getChannelNumber());
-			logger.info("all connection call successful...");
+			logger.info("Call method connection.createChannel() finished, tag -> {}, channel number -> {}", tag,
+					channel.getChannelNumber());
+			logger.info("All connection call method successful...");
 		} catch (IOException e) {
-			logger.error("IOException -> {}", e.getMessage(), e);
+			UseLogger.error(logger, e, "Call method createConnection() IOException -> {}", e.getMessage());
 		} catch (TimeoutException e) {
-			logger.error("TimeoutException -> {}" + e.getMessage(), e);
+			UseLogger.error(logger, e, "Call method createConnection() TimeoutException -> {}", e.getMessage());
 		}
 	}
 
@@ -88,14 +92,16 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		try {
 			if (channel != null && channel.isOpen()) {
 				channel.close();
+				logger.info("Channel is closeed!");
 			}
 			if (connection != null && connection.isOpen()) {
 				connection.close();
+				logger.info("Connection is closeed!");
 			}
 		} catch (IOException e) {
-			logger.error("method closeConnection throws IOException -> {}", e.getMessage(), e);
+			logger.error("Call method closeConnection() IOException -> {}", e.getMessage(), e);
 		} catch (TimeoutException e) {
-			logger.error("method closeConnection throws TimeoutException -> {}", e.getMessage(), e);
+			logger.error("Call method closeConnection() TimeoutException -> {}", e.getMessage(), e);
 		}
 	}
 

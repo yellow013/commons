@@ -8,6 +8,7 @@ import com.rabbitmq.client.Envelope;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
+import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
@@ -56,9 +57,10 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 			channel.queueDeclare(receiveQueue, configurator.isDurable(), configurator.isExclusive(),
 					configurator.isAutoDelete(), null);
 		} catch (IOException e) {
-			logger.error("IOException ->" + e.getMessage());
-			logger.error("throws IOException -> ", e);
-			logger.error("call destroy() method.");
+			UseLogger.error(logger, e,
+					"Method channel.queueDeclare(queue==[{}], durable==[{]}, exclusive==[{}], autoDelete==[{}], arguments==null) IOException message -> {}",
+					receiveQueue, configurator.isDurable(), configurator.isExclusive(), configurator.isAutoDelete(),
+					e.getMessage());
 			destroy();
 		}
 	}
@@ -76,16 +78,18 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 					try {
 						callback.accept(body);
 					} catch (Exception e) {
-						logger.error("callback#accept -> " + e.getMessage());
-						logger.error("throws Exception is -> " + e.getClass().getSimpleName(), e);
+						UseLogger.error(logger, e, "Call method callback.accept(body) Exception -> {}", e.getMessage());
 						if (errorMsgToExchange != null) {
 							// message to errorMsgExchange
-							logger.info("Msg sent to errorMsgExchange : " + new String(body, Charsets.UTF8));
+							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange!",
+									new String(body, Charsets.UTF8));
 							channel.basicPublish(errorMsgToExchange, "", null, body);
+							logger.info("Exception handling -> Sent to ErrorMsgExchange finished.");
 						} else {
 							// 退回消息->关闭连接
-							logger.info("Reject Msg : " + new String(body, Charsets.UTF8));
+							logger.info("Exception handling -> Reject Msg [{}]", new String(body, Charsets.UTF8));
 							channel.basicReject(envelope.getDeliveryTag(), true);
+							logger.info("Exception handling -> Reject Msg finished.");
 							destroy();
 						}
 					}
@@ -93,32 +97,39 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 						try {
 							int ack = 0;
 							while (!isConnected()) {
-								logger.error("isConnected() == false, ack " + (++ack));
+								logger.error("Detect connection isConnected() == false, ack {}", (++ack));
+								ThreadUtil.sleep(configurator.getRecoveryInterval());
 								destroy();
 								createConnection();
-								ThreadUtil.sleep(configurator.getRecoveryInterval());
 								if (ack == maxAckTotal) {
-									logger.error("channel#basicAck() -> failure...");
+									logger.error("Retry createConnection count -> {}, Quit ack.", ack);
 									break;
 								}
 							}
-							channel.basicAck(envelope.getDeliveryTag(), false);
+							if (isConnected()) {
+								logger.error("Last detect connection isConnected() == true, ack {}", ack);
+								channel.basicAck(envelope.getDeliveryTag(), false);
+								logger.info("Method channel.basicAck() finished.");
+							} else {
+								logger.error("Last detect connection isConnected() == false, ack {}", ack);
+								logger.error("Unable to call method channel.basicAck()");
+							}
 						} catch (IOException e) {
-							logger.error("channel#basicAck() -> " + e.getMessage());
-							logger.error("throws IOException -> ", e);
+							UseLogger.error(logger, e,
+									"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) IOException -> {}",
+									envelope.getDeliveryTag(), e.getMessage());
 						}
 					}
 				}
 			});
 		} catch (IOException e) {
-			logger.error("channel#basicConsume() -> " + e.getMessage());
-			logger.error("throws IOException -> ", e);
+			UseLogger.error(logger, e, "Call method channel.basicConsume() IOException message -> {}", e.getMessage());
 		}
 	}
 
 	@Override
 	public boolean destroy() {
-		logger.info("call method -> RabbitMqReceiver.destroy()");
+		logger.info("Call method RabbitMqReceiver.destroy()");
 		closeConnection();
 		return true;
 	}

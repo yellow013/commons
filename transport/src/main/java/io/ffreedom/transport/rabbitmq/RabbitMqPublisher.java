@@ -104,10 +104,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			int retry = 0;
 			// 调用isConnected()检查channel和connection是否打开, 如果没有打开, 先销毁连接, 再重新创建连接.
 			while (!isConnected()) {
+				ThreadUtil.sleep(configurator.getRecoveryInterval());
 				logger.error("isConnected() == false, retry " + (++retry));
 				destroy();
 				createConnection();
-				ThreadUtil.sleep(configurator.getRecoveryInterval());
 			}
 			channel.basicPublish(
 					// param1: exchange
