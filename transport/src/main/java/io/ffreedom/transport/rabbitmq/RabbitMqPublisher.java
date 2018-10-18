@@ -86,7 +86,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				break;
 			}
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method init() IOException -> {}", e.getMessage());
+			UseLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
 		}
 
@@ -120,7 +120,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					msg);
 		} catch (IOException e) {
 			UseLogger.error(logger, e,
-					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) IOException -> {}",
+					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
 					exchange, target, msgProperties, e.getMessage());
 			destroy();
 		}

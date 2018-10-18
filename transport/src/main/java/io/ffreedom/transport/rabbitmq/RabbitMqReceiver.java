@@ -79,7 +79,8 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 					try {
 						callback.accept(body);
 					} catch (Exception e) {
-						UseLogger.error(logger, e, "Call method callback.accept(body) Exception -> {}", e.getMessage());
+						UseLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
+								e.getMessage());
 						if (StringUtil.isNullOrEmpty(errorMsgToExchange)) {
 							// message to errorMsgExchange
 							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange!",
@@ -117,7 +118,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 							}
 						} catch (IOException e) {
 							UseLogger.error(logger, e,
-									"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) IOException -> {}",
+									"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) throw IOException -> {}",
 									envelope.getDeliveryTag(), e.getMessage());
 						}
 					}
