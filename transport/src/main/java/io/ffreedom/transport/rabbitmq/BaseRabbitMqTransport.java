@@ -19,8 +19,8 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 
 	// 连接RabbitMQ Server使用的组件
 	protected ConnectionFactory connectionFactory;
-	protected Connection connection;
-	protected Channel channel;
+	protected volatile Connection connection;
+	protected volatile Channel channel;
 
 	// 存储配置信息对象
 	protected ConnectionConfigurator<?> configurator;

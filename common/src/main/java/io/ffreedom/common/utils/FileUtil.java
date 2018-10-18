@@ -20,7 +20,7 @@ public final class FileUtil {
 	}
 
 	private static void loadAllChildFile(List<File> loadList, File parentFile, FileFilter fileFilter) {
-		if(parentFile == null || fileFilter == null) {
+		if (parentFile == null || fileFilter == null) {
 			return;
 		}
 		File[] listFiles = parentFile.listFiles();
@@ -39,6 +39,7 @@ public final class FileUtil {
 		}
 	}
 
+	@FunctionalInterface
 	public interface FileFilter {
 
 		boolean filter(File file);

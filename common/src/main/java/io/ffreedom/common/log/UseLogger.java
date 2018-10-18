@@ -4,6 +4,22 @@ import org.slf4j.Logger;
 
 public final class UseLogger {
 
+	public static void debug(Logger logger, String msg) {
+		logger.debug(msg);
+	}
+
+	public static void debug(Logger logger, String msgTemplate, Object... args) {
+		logger.debug(msgTemplate, args);
+	}
+
+	public static void info(Logger logger, String msg) {
+		logger.info(msg);
+	}
+
+	public static void info(Logger logger, String msgTemplate, Object... args) {
+		logger.info(msgTemplate, args);
+	}
+
 	public static void error(Logger logger, Exception e) {
 		logger.error("***Throw Exception -> {}, Exception Message : [{}]", e.getClass().getSimpleName(), e.getMessage(),
 				e);
