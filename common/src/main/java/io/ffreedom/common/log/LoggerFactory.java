@@ -8,9 +8,9 @@ import io.ffreedom.common.utils.StringUtil;
 
 public class LoggerFactory {
 
-	private static boolean isLogFilenameSetted;
-	private static boolean isLogLevelSetted;
-	private static boolean isLogFolderSetted;
+	private static volatile boolean isLogFilenameSetted;
+	private static volatile boolean isLogLevelSetted;
+	private static volatile boolean isLogFolderSetted;
 
 	public static Logger getLogger(Class<?> clazz) {
 		if (!isLogFolderSetted) {
