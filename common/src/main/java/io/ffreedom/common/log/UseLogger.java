@@ -5,7 +5,8 @@ import org.slf4j.Logger;
 public final class UseLogger {
 
 	public static void error(Logger logger, Exception e) {
-		logger.error("***Throw Exception -> {}, Exception Message : [{}]", e.getClass(), e.getMessage(), e);
+		logger.error("***Throw Exception -> {}, Exception Message : [{}]", e.getClass().getSimpleName(), e.getMessage(),
+				e);
 	}
 
 	public static void error(Logger logger, Exception e, String msg) {

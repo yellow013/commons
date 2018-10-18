@@ -6,6 +6,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
@@ -45,7 +46,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.directQueue = configurator.getDirectQueue();
 		createConnection();
 		init();
-	} 
+	}
 
 	private void init() {
 		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
@@ -85,8 +86,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				break;
 			}
 		} catch (IOException e) {
-			logger.error("throws IOException ->" + e.getMessage(), e);
-			logger.error("call destroy() method.");
+			UseLogger.error(logger, e, "Call method init() IOException -> {}", e.getMessage());
 			destroy();
 		}
 
@@ -104,9 +104,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			int retry = 0;
 			// 调用isConnected()检查channel和connection是否打开, 如果没有打开, 先销毁连接, 再重新创建连接.
 			while (!isConnected()) {
-				ThreadUtil.sleep(configurator.getRecoveryInterval());
-				logger.error("isConnected() == false, retry " + (++retry));
+				logger.error("Detect connection isConnected() == false, retry {}", (++retry));
 				destroy();
+				ThreadUtil.sleep(configurator.getRecoveryInterval());
 				createConnection();
 			}
 			channel.basicPublish(
@@ -119,15 +119,16 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					// param4: msgBody
 					msg);
 		} catch (IOException e) {
-			logger.error("channel#basicPublish -> " + e.getMessage());
-			logger.error("throws IOException -> ", e);
+			UseLogger.error(logger, e,
+					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) IOException -> {}",
+					exchange, target, msgProperties, e.getMessage());
 			destroy();
 		}
 	}
 
 	@Override
 	public boolean destroy() {
-		logger.info("call method -> RabbitPublisher.destroy()");
+		logger.info("Call method -> RabbitPublisher.destroy()");
 		closeConnection();
 		return true;
 	}

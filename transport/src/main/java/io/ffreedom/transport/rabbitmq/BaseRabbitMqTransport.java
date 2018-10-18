@@ -63,7 +63,6 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 			connection = connectionFactory.newConnection();
 			logger.info("Call method connectionFactory.newConnection() finished, tag -> {}, connection id -> {}.", tag,
 					connection.getId());
-
 			connection.addShutdownListener(exception -> {
 				// 输出错误信息到控制台
 				logger.info("Call ShutdownListener -> {}", exception.getMessage());
@@ -99,9 +98,9 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 				logger.info("Connection is closeed!");
 			}
 		} catch (IOException e) {
-			logger.error("Call method closeConnection() IOException -> {}", e.getMessage(), e);
+			UseLogger.error(logger, e, "Call method closeConnection() IOException -> {}", e.getMessage());
 		} catch (TimeoutException e) {
-			logger.error("Call method closeConnection() TimeoutException -> {}", e.getMessage(), e);
+			UseLogger.error(logger, e, "Call method closeConnection() TimeoutException -> {}", e.getMessage());
 		}
 	}
 

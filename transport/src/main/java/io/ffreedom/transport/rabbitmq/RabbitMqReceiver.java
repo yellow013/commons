@@ -9,6 +9,7 @@ import com.rabbitmq.client.Envelope;
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.log.UseLogger;
+import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
@@ -79,7 +80,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 						callback.accept(body);
 					} catch (Exception e) {
 						UseLogger.error(logger, e, "Call method callback.accept(body) Exception -> {}", e.getMessage());
-						if (errorMsgToExchange != null) {
+						if (StringUtil.isNullOrEmpty(errorMsgToExchange)) {
 							// message to errorMsgExchange
 							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange!",
 									new String(body, Charsets.UTF8));
@@ -98,8 +99,8 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 							int ack = 0;
 							while (!isConnected()) {
 								logger.error("Detect connection isConnected() == false, ack {}", (++ack));
-								ThreadUtil.sleep(configurator.getRecoveryInterval());
 								destroy();
+								ThreadUtil.sleep(configurator.getRecoveryInterval());
 								createConnection();
 								if (ack == maxAckTotal) {
 									logger.error("Retry createConnection count -> {}, Quit ack.", ack);
