@@ -17,7 +17,7 @@ import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
 public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver {
 
 	// 接收消息时使用的回调函数
-	private Callback<byte[]> callback;
+	private Callback<byte[]> callback;                                                                                                                                                                                                                                              
 
 	// 绑定的Exchange
 	// 暂时没有使用
@@ -72,7 +72,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 			// param1: queue
 			// param2: autoAck
 			// param3: consumeCallback
-			channel.basicConsume(receiveQueue, isAutoAck, new DefaultConsumer(channel) {
+			channel.basicConsume(receiveQueue, isAutoAck, tag, new DefaultConsumer(channel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 						byte[] body) throws IOException {
@@ -109,7 +109,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 								}
 							}
 							if (isConnected()) {
-								logger.error("Last detect connection isConnected() == true, ack {}", ack);
+								logger.info("Last detect connection isConnected() == true, ack {}", ack);
 								channel.basicAck(envelope.getDeliveryTag(), false);
 								logger.info("Method channel.basicAck() finished.");
 							} else {
@@ -147,9 +147,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				(byte[] msg) -> {
 					System.out.println(new String(msg, Charsets.UTF8));
 				});
-
 		receiver.receive();
-
 	}
 
 }

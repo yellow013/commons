@@ -30,7 +30,7 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	private String tag;
+	protected String tag;
 
 	/**
 	 * @param tag
@@ -40,7 +40,7 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		if (configurator == null) {
 			throw new NullPointerException(tag + ": configurator is null.");
 		}
-		this.tag = (tag == null) ? "unnamed-" + System.currentTimeMillis() : tag;
+		this.tag = (tag == null) ? "start_time_" + System.currentTimeMillis() : tag;
 		this.configurator = configurator;
 		this.shutdownEvent = configurator.getShutdownEvent();
 	}
