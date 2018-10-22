@@ -26,7 +26,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	// 连接的Queue
 	private String receiveQueue;
 
-	// 消息无法处理是发送到的错误队列
+	// 消息无法处理时发送到的错误队列
 	private String errorMsgToExchange;
 
 	// 自动ACK
