@@ -17,6 +17,8 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	private String directQueue;
 	private BasicProperties msgProperties = MessageProperties.PERSISTENT_BASIC;
 	private BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
+	private boolean isOpenTx = false;
+	private boolean isOpenConfirm = false;
 
 	private RmqPublisherConfigurator() {
 		super("RabbitMqPublisherConfigurator");
@@ -51,6 +53,24 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
+	public boolean isOpenTx() {
+		return isOpenTx;
+	}
+
+	public RmqPublisherConfigurator setOpenTx(boolean isOpenTx) {
+		this.isOpenTx = isOpenTx;
+		return this;
+	}
+
+	public boolean isOpenConfirm() {
+		return isOpenConfirm;
+	}
+
+	public RmqPublisherConfigurator setOpenConfirm(boolean isOpenConfirm) {
+		this.isOpenConfirm = isOpenConfirm;
+		return this;
+	}
+
 	public BuiltinExchangeType getExchangeType() {
 		return exchangeType;
 	}
@@ -64,7 +84,7 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	public RmqPublisherConfigurator setModeFanout(String exchange) {
 		return setModeFanoutAndBindQueues(exchange, null);
 	}
-	
+
 	public RmqPublisherConfigurator setModeFanoutAndBindQueues(String exchange, String[] bindQueues) {
 		this.exchangeType = BuiltinExchangeType.FANOUT;
 		this.exchange = exchange;

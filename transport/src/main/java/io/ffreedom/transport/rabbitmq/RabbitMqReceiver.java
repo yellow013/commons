@@ -81,7 +81,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 					} catch (Exception e) {
 						UseLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
 								e.getMessage());
-						if (StringUtil.isNullOrEmpty(errorMsgToExchange)) {
+						if (StringUtil.notNullAndEmpty(errorMsgToExchange)) {
 							// message to errorMsgExchange
 							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange!",
 									new String(body, Charsets.UTF8));

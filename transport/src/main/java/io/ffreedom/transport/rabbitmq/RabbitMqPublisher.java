@@ -6,6 +6,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -32,11 +33,24 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private BuiltinExchangeType exchangeType;
 
+	private boolean isOpenTx;
+
+	private boolean isOpenConfirm;
+
+	private Callback<Long> ackCallback;
+
+	private Callback<Long> noAckCallback;
+
 	/**
 	 * 
 	 * @param configurator
 	 */
 	public RabbitMqPublisher(String tag, RmqPublisherConfigurator configurator) {
+		this(tag, configurator, null, null);
+	}
+
+	public RabbitMqPublisher(String tag, RmqPublisherConfigurator configurator, Callback<Long> ackCallback,
+			Callback<Long> noAckCallback) {
 		super(tag, configurator);
 		this.exchange = configurator.getExchange();
 		this.routingKey = configurator.getRoutingKey();
@@ -44,6 +58,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.bindQueues = configurator.getBindQueues();
 		this.exchangeType = configurator.getExchangeType();
 		this.directQueue = configurator.getDirectQueue();
+		this.isOpenTx = configurator.isOpenTx();
+		this.isOpenConfirm = configurator.isOpenConfirm();
 		createConnection();
 		init();
 	}
@@ -89,7 +105,24 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			UseLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
 		}
-
+		if (isOpenConfirm) {
+			try {
+				channel.confirmSelect();
+				channel.addConfirmListener((deliveryTag, multiple) -> {
+					UseLogger.info(logger, "Ack Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag, multiple);
+					if (ackCallback != null)
+						ackCallback.onEvent(deliveryTag);
+				}, (deliveryTag, multiple) -> {
+					UseLogger.info(logger, "NoAck Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag,
+							multiple);
+					if (noAckCallback != null)
+						noAckCallback.onEvent(deliveryTag);
+				});
+			} catch (IOException e) {
+				UseLogger.error(logger, e, "init() Call method channel.confirmSelect() throw IOException -> {}",
+						e.getMessage());
+			}
+		}
 	}
 
 	@Override
@@ -109,6 +142,20 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				ThreadUtil.sleep(configurator.getRecoveryInterval());
 				createConnection();
 			}
+			if (isOpenTx) {
+				txPublish(target, msg);
+			} else {
+				basicPublish(target, msg);
+			}
+		} catch (IOException e) {
+			UseLogger.error(logger, e, "Call method publish() isOpenTx==[{}] throw IOException -> {} ", isOpenTx,
+					e.getMessage());
+			destroy();
+		}
+	}
+
+	private void basicPublish(String target, byte[] msg) throws IOException {
+		try {
 			channel.basicPublish(
 					// param1: exchange
 					exchange,
@@ -120,9 +167,37 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					msg);
 		} catch (IOException e) {
 			UseLogger.error(logger, e,
-					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
+					"basicPublish() Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
 					exchange, target, msgProperties, e.getMessage());
-			destroy();
+			throw new IOException(e.getMessage());
+		}
+	}
+
+	private void txPublish(String target, byte[] msg) throws IOException {
+		try {
+			channel.txSelect();
+			channel.basicPublish(
+					// param1: exchange
+					exchange,
+					// param2: routingKey
+					target,
+					// param3: properties
+					msgProperties,
+					// param4: msgBody
+					msg);
+			channel.txCommit();
+		} catch (IOException e) {
+			try {
+				channel.txRollback();
+			} catch (IOException te) {
+				UseLogger.error(logger, e, "txPublish() Call method channel.txRollback() throw IOException -> {}",
+						te.getMessage());
+				throw new IOException(e.getMessage());
+			}
+			UseLogger.error(logger, e,
+					"txPublish() Call method channel.txSelect() or channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) or channel.txCommit() throw IOException -> {}",
+					exchange, target, msgProperties, e.getMessage());
+			throw new IOException(e.getMessage());
 		}
 	}
 
