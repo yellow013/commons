@@ -40,8 +40,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private int confirmRetry;
 
+	@SuppressWarnings("unused")
 	private Callback<Long> ackCallback;
 
+	@SuppressWarnings("unused")
 	private Callback<Long> noAckCallback;
 
 	/**
@@ -109,24 +111,24 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			UseLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
 		}
-		if (isConfirm) {
-			try {
-				channel.confirmSelect();
-				channel.addConfirmListener((deliveryTag, multiple) -> {
-					UseLogger.info(logger, "Ack Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag, multiple);
-					if (ackCallback != null)
-						ackCallback.onEvent(deliveryTag);
-				}, (deliveryTag, multiple) -> {
-					UseLogger.info(logger, "NoAck Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag,
-							multiple);
-					if (noAckCallback != null)
-						noAckCallback.onEvent(deliveryTag);
-				});
-			} catch (IOException e) {
-				UseLogger.error(logger, e, "init() Call method channel.confirmSelect() throw IOException -> {}",
-						e.getMessage());
-			}
-		}
+//		if (isConfirm) {
+//			try {
+//				channel.confirmSelect();
+//				channel.addConfirmListener((deliveryTag, multiple) -> {
+//					UseLogger.info(logger, "Ack Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag, multiple);
+//					if (ackCallback != null)
+//						ackCallback.onEvent(deliveryTag);
+//				}, (deliveryTag, multiple) -> {
+//					UseLogger.info(logger, "NoAck Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag,
+//							multiple);
+//					if (noAckCallback != null)
+//						noAckCallback.onEvent(deliveryTag);
+//				});
+//			} catch (IOException e) {
+//				UseLogger.error(logger, e, "init() Call method channel.confirmSelect() throw IOException -> {}",
+//						e.getMessage());
+//			}
+//		}
 	}
 
 	@Override
@@ -155,21 +157,24 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
 					e.getMessage());
 			destroy();
+		} catch (AckRetryException e) {
+			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw AckRetryException -> {} ",
+					isConfirm, e.getMessage());
 		}
 	}
 
-	private void confirmPublish(String target, byte[] msg) throws IOException {
+	private void confirmPublish(String target, byte[] msg) throws IOException, AckRetryException {
 		confirmPublish(target, msg, 0);
 	}
 
-	private void confirmPublish(String target, byte[] msg, int retry) throws IOException {
+	private void confirmPublish(String target, byte[] msg, int retry) throws IOException, AckRetryException {
 		try {
 			channel.confirmSelect();
 			basicPublish(target, msg);
 			if (channel.waitForConfirms(confirmTimeout))
 				return;
 			if (++retry == confirmRetry)
-				throw new IOException("Call confirmPublish(target==[{}] msg==[...] retry==[{}]) failure.");
+				throw new AckRetryException(target, retry);
 			confirmPublish(target, msg, retry);
 		} catch (IOException e) {
 			UseLogger.error(logger, e,
@@ -214,6 +219,19 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	@Override
 	public String getName() {
 		return publisherName;
+	}
+
+	public class AckRetryException extends Exception {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -197190157920481972L;
+
+		public AckRetryException(String exchange, int retry) {
+			super("Call confirmPublish(target==[" + exchange + "] msg==[...] retry==[" + retry + "]) failure.");
+		}
+
 	}
 
 	public class ResendCounter {

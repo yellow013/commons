@@ -176,8 +176,7 @@ public final class RabbitMqOperatingTools {
 			manualCloseChannel.close();
 			System.out.println(manualCloseChannel.isOpen());
 		} catch (IOException | TimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
 
 	}
