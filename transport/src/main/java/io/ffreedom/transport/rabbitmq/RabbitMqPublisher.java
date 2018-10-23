@@ -1,6 +1,7 @@
 package io.ffreedom.transport.rabbitmq;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.BuiltinExchangeType;
@@ -33,9 +34,11 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private BuiltinExchangeType exchangeType;
 
-	private boolean isOpenTx;
+	private boolean isConfirm;
 
-	private boolean isOpenConfirm;
+	private long confirmTimeout;
+
+	private int confirmRetry;
 
 	private Callback<Long> ackCallback;
 
@@ -58,8 +61,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.bindQueues = configurator.getBindQueues();
 		this.exchangeType = configurator.getExchangeType();
 		this.directQueue = configurator.getDirectQueue();
-		this.isOpenTx = configurator.isOpenTx();
-		this.isOpenConfirm = configurator.isOpenConfirm();
+		this.isConfirm = configurator.isConfirm();
+		this.confirmTimeout = configurator.getConfirmTimeout();
+		this.confirmRetry = configurator.getConfirmRetry();
 		createConnection();
 		init();
 	}
@@ -105,7 +109,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			UseLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
 		}
-		if (isOpenConfirm) {
+		if (isConfirm) {
 			try {
 				channel.confirmSelect();
 				channel.addConfirmListener((deliveryTag, multiple) -> {
@@ -142,15 +146,42 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				ThreadUtil.sleep(configurator.getRecoveryInterval());
 				createConnection();
 			}
-			if (isOpenTx) {
-				txPublish(target, msg);
+			if (isConfirm) {
+				confirmPublish(target, msg);
 			} else {
 				basicPublish(target, msg);
 			}
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method publish() isOpenTx==[{}] throw IOException -> {} ", isOpenTx,
+			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
 					e.getMessage());
 			destroy();
+		}
+	}
+
+	private void confirmPublish(String target, byte[] msg) throws IOException {
+		confirmPublish(target, msg, 0);
+	}
+
+	private void confirmPublish(String target, byte[] msg, int retry) throws IOException {
+		try {
+			channel.confirmSelect();
+			basicPublish(target, msg);
+			if (channel.waitForConfirms(confirmTimeout))
+				return;
+			if (++retry == confirmRetry)
+				throw new IOException("Call confirmPublish(target==[{}] msg==[...] retry==[{}]) failure.");
+			confirmPublish(target, msg, retry);
+		} catch (IOException e) {
+			UseLogger.error(logger, e,
+					"Call method channel.confirmSelect() & channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
+					exchange, target, msgProperties, e.getMessage());
+			throw new IOException(e.getMessage());
+		} catch (InterruptedException e) {
+			UseLogger.error(logger, e, "Call method channel.waitForConfirms() throw InterruptedException -> {}",
+					e.getMessage());
+		} catch (TimeoutException e) {
+			UseLogger.error(logger, e, "Call method channel.waitForConfirms() throw TimeoutException -> {}",
+					e.getMessage());
 		}
 	}
 
@@ -167,35 +198,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					msg);
 		} catch (IOException e) {
 			UseLogger.error(logger, e,
-					"basicPublish() Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
-					exchange, target, msgProperties, e.getMessage());
-			throw new IOException(e.getMessage());
-		}
-	}
-
-	private void txPublish(String target, byte[] msg) throws IOException {
-		try {
-			channel.txSelect();
-			channel.basicPublish(
-					// param1: exchange
-					exchange,
-					// param2: routingKey
-					target,
-					// param3: properties
-					msgProperties,
-					// param4: msgBody
-					msg);
-			channel.txCommit();
-		} catch (IOException e) {
-			try {
-				channel.txRollback();
-			} catch (IOException te) {
-				UseLogger.error(logger, e, "txPublish() Call method channel.txRollback() throw IOException -> {}",
-						te.getMessage());
-				throw new IOException(e.getMessage());
-			}
-			UseLogger.error(logger, e,
-					"txPublish() Call method channel.txSelect() or channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) or channel.txCommit() throw IOException -> {}",
+					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
 					exchange, target, msgProperties, e.getMessage());
 			throw new IOException(e.getMessage());
 		}
@@ -203,7 +206,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	@Override
 	public boolean destroy() {
-		logger.info("Call method -> RabbitPublisher.destroy()");
+		UseLogger.info(logger, "Call method -> RabbitPublisher.destroy()");
 		closeConnection();
 		return true;
 	}
@@ -211,6 +214,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	@Override
 	public String getName() {
 		return publisherName;
+	}
+
+	public class ResendCounter {
+
 	}
 
 	public static void main(String[] args) {

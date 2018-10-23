@@ -17,8 +17,9 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	private String directQueue;
 	private BasicProperties msgProperties = MessageProperties.PERSISTENT_BASIC;
 	private BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
-	private boolean isOpenTx = false;
-	private boolean isOpenConfirm = false;
+	private boolean isConfirm = false;
+	private long confirmTimeout = 5000;
+	private int confirmRetry = 3;
 
 	private RmqPublisherConfigurator() {
 		super("RabbitMqPublisherConfigurator");
@@ -53,21 +54,35 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public boolean isOpenTx() {
-		return isOpenTx;
+	public boolean isConfirm() {
+		return isConfirm;
 	}
 
-	public RmqPublisherConfigurator setOpenTx(boolean isOpenTx) {
-		this.isOpenTx = isOpenTx;
+	public RmqPublisherConfigurator openConfirm() {
+		this.isConfirm = true;
 		return this;
 	}
 
-	public boolean isOpenConfirm() {
-		return isOpenConfirm;
+	public RmqPublisherConfigurator closeConfirm() {
+		this.isConfirm = false;
+		return this;
 	}
 
-	public RmqPublisherConfigurator setOpenConfirm(boolean isOpenConfirm) {
-		this.isOpenConfirm = isOpenConfirm;
+	public long getConfirmTimeout() {
+		return confirmTimeout;
+	}
+
+	public RmqPublisherConfigurator setConfirmTimeout(long confirmTimeout) {
+		this.confirmTimeout = confirmTimeout;
+		return this;
+	}
+
+	public int getConfirmRetry() {
+		return confirmRetry;
+	}
+
+	public RmqPublisherConfigurator setConfirmRetry(int confirmRetry) {
+		this.confirmRetry = confirmRetry;
 		return this;
 	}
 
