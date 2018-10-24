@@ -21,8 +21,7 @@ public final class UseLogger {
 	}
 
 	public static void error(Logger logger, Exception e) {
-		logger.error("***Throw Exception -> {}, Exception Message : [{}]", e.getClass().getSimpleName(), e.getMessage(),
-				e);
+		logger.error("***Throw {}, Message : [{}]", e.getClass().getSimpleName(), e.getMessage(), e);
 	}
 
 	public static void error(Logger logger, Exception e, String msg) {
@@ -35,12 +34,12 @@ public final class UseLogger {
 		error(logger, e);
 	}
 
-	public static void main(String[] args) {
+	public static void error(Logger logger, String msg) {
+		logger.error(msg);
+	}
 
-		Logger logger = LoggerFactory.getLogger(UseLogger.class);
-
-		logger.error("asss {} ---- {}", "3hhh", "hfdsh", new RuntimeException());
-
+	public static void error(Logger logger, String msgTemplate, Object... args) {
+		logger.error(msgTemplate, args);
 	}
 
 }

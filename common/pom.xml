@@ -42,7 +42,6 @@
 			<groupId>org.eclipse.collections</groupId>
 			<artifactId>eclipse-collections</artifactId>
 		</dependency>
-
 		<!-- Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>

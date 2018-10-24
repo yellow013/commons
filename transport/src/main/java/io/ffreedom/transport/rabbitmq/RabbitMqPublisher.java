@@ -173,6 +173,8 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			basicPublish(target, msg);
 			if (channel.waitForConfirms(confirmTimeout))
 				return;
+			UseLogger.error(logger, "Method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]", confirmTimeout,
+					retry);
 			if (++retry == confirmRetry)
 				throw new AckRetryException(target, retry);
 			confirmPublish(target, msg, retry);
