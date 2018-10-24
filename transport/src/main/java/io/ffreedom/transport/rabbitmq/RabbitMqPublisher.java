@@ -148,11 +148,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				ThreadUtil.sleep(configurator.getRecoveryInterval());
 				createConnection();
 			}
-			if (isConfirm) {
+			if (isConfirm)
 				confirmPublish(target, msg);
-			} else {
+			else
 				basicPublish(target, msg);
-			}
 		} catch (IOException e) {
 			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
 					e.getMessage());
@@ -173,15 +172,14 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			basicPublish(target, msg);
 			if (channel.waitForConfirms(confirmTimeout))
 				return;
-			UseLogger.error(logger, "Method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]", confirmTimeout,
+			UseLogger.error(logger, "Call method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]", confirmTimeout,
 					retry);
 			if (++retry == confirmRetry)
 				throw new AckRetryException(target, retry);
 			confirmPublish(target, msg, retry);
 		} catch (IOException e) {
-			UseLogger.error(logger, e,
-					"Call method channel.confirmSelect() & channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
-					exchange, target, msgProperties, e.getMessage());
+			UseLogger.error(logger, e, "Call method channel.confirmSelect() throw IOException -> {}", exchange, target,
+					msgProperties, e.getMessage());
 			throw new IOException(e.getMessage());
 		} catch (InterruptedException e) {
 			UseLogger.error(logger, e, "Call method channel.waitForConfirms() throw InterruptedException -> {}",
