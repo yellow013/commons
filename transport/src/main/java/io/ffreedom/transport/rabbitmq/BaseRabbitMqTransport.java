@@ -12,6 +12,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.log.UseLogger;
+import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
 
@@ -85,6 +86,15 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 	@Override
 	public boolean isConnected() {
 		return (connection != null && connection.isOpen()) && (channel != null && channel.isOpen());
+	}
+
+	protected boolean closeAndReconnection() {
+		UseLogger.info(logger, "Call method closeAndReconnection().");
+		closeConnection();
+		ThreadUtil.sleep(configurator.getRecoveryInterval() / 2);
+		createConnection();
+		ThreadUtil.sleep(configurator.getRecoveryInterval() / 2);
+		return isConnected();
 	}
 
 	protected void closeConnection() {

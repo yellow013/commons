@@ -156,26 +156,26 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
 					e.getMessage());
 			destroy();
-		} catch (AckRetryException e) {
+		} catch (NoAckException e) {
 			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw AckRetryException -> {} ",
 					isConfirm, e.getMessage());
 		}
 	}
 
-	private void confirmPublish(String target, byte[] msg) throws IOException, AckRetryException {
+	private void confirmPublish(String target, byte[] msg) throws IOException, NoAckException {
 		confirmPublish(target, msg, 0);
 	}
 
-	private void confirmPublish(String target, byte[] msg, int retry) throws IOException, AckRetryException {
+	private void confirmPublish(String target, byte[] msg, int retry) throws IOException, NoAckException {
 		try {
 			channel.confirmSelect();
 			basicPublish(target, msg);
 			if (channel.waitForConfirms(confirmTimeout))
 				return;
-			UseLogger.error(logger, "Call method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]", confirmTimeout,
-					retry);
+			UseLogger.error(logger, "Call method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]",
+					confirmTimeout, retry);
 			if (++retry == confirmRetry)
-				throw new AckRetryException(target, retry);
+				throw new NoAckException(target, retry);
 			confirmPublish(target, msg, retry);
 		} catch (IOException e) {
 			UseLogger.error(logger, e, "Call method channel.confirmSelect() throw IOException -> {}", exchange, target,
@@ -221,14 +221,14 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		return publisherName;
 	}
 
-	public class AckRetryException extends Exception {
+	public class NoAckException extends Exception {
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -197190157920481972L;
 
-		public AckRetryException(String exchange, int retry) {
+		public NoAckException(String exchange, int retry) {
 			super("Call confirmPublish(target==[" + exchange + "] msg==[...] retry==[" + retry + "]) failure.");
 		}
 

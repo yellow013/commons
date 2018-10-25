@@ -11,7 +11,10 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 	private String receiveQueue;
 	private String errorMsgToExchange;
 	// 自动ACK
-	private boolean autoAck = true;
+	private boolean isAutoAck = true;
+	// 一次ACK多条
+	private boolean isMultipleAck = false;
+
 	// 最大自动重试次数
 	private int maxAckTotal = 32;
 
@@ -51,11 +54,20 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 	}
 
 	public boolean isAutoAck() {
-		return autoAck;
+		return isAutoAck;
 	}
 
-	public RmqReceiverConfigurator setAutoAck(boolean autoAck) {
-		this.autoAck = autoAck;
+	public RmqReceiverConfigurator setAutoAck(boolean isAutoAck) {
+		this.isAutoAck = isAutoAck;
+		return this;
+	}
+
+	public boolean isMultipleAck() {
+		return isMultipleAck;
+	}
+
+	public RmqReceiverConfigurator setMultipleAck(boolean isMultipleAck) {
+		this.isMultipleAck = isMultipleAck;
 		return this;
 	}
 

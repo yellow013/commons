@@ -10,14 +10,13 @@ import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.common.utils.StringUtil;
-import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
 
 public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver {
 
 	// 接收消息时使用的回调函数
-	private Callback<byte[]> callback;                                                                                                                                                                                                                                              
+	private Callback<byte[]> callback;
 
 	// 绑定的Exchange
 	// 暂时没有使用
@@ -31,6 +30,8 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 
 	// 自动ACK
 	private boolean isAutoAck;
+	// 一次ACK多条
+	private boolean isMultipleAck;
 	// 最大自动重试次数
 	private int maxAckTotal;
 	private String receiverName;
@@ -46,6 +47,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		this.exchange = configurator.getExchange();
 		this.receiveQueue = configurator.getReceiveQueue();
 		this.isAutoAck = configurator.isAutoAck();
+		this.isMultipleAck = configurator.isMultipleAck();
 		this.maxAckTotal = configurator.getMaxAckTotal();
 		this.errorMsgToExchange = configurator.getErrorMsgToExchange();
 		createConnection();
@@ -69,6 +71,12 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	@Override
 	public void receive() {
 		try {
+//			channel.basicConsume(receiveQueue, isAutoAck, tag, (consumerTag, msg) -> {
+//				Envelope envelope = msg.getEnvelope();
+//			}, (consumerTag) -> {
+//			}, (consumerTag, shutdownException) -> {
+//			});
+
 			// param1: queue
 			// param2: autoAck
 			// param3: consumeCallback
@@ -77,49 +85,37 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 						byte[] body) throws IOException {
 					try {
+						UseLogger.info(logger, "Message handle start.");
+						UseLogger.info(logger,
+								"Callback handleDelivery(consumerTag==[{}], envelope.getDeliveryTag==[{}] body.length==[{}])",
+								consumerTag, envelope.getDeliveryTag(), body.length);
 						callback.accept(body);
+						UseLogger.info(logger, "Callback handleDelivery() end.");
 					} catch (Exception e) {
 						UseLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
 								e.getMessage());
 						if (StringUtil.notNullAndEmpty(errorMsgToExchange)) {
-							// message to errorMsgExchange
-							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange!",
+							// Sent message to error dump queue.
+							UseLogger.info(logger, "Exception handling -> Msg [{}] sent to ErrorMsgExchange.",
 									new String(body, Charsets.UTF8));
 							channel.basicPublish(errorMsgToExchange, "", null, body);
-							logger.info("Exception handling -> Sent to ErrorMsgExchange finished.");
+							UseLogger.info(logger, "Exception handling -> Sent to ErrorMsgExchange finished.");
 						} else {
-							// 退回消息->关闭连接
-							logger.info("Exception handling -> Reject Msg [{}]", new String(body, Charsets.UTF8));
+							// Reject message and close connection.
+							UseLogger.info(logger, "Exception handling -> Reject Msg [{}]",
+									new String(body, Charsets.UTF8));
 							channel.basicReject(envelope.getDeliveryTag(), true);
-							logger.info("Exception handling -> Reject Msg finished.");
+							UseLogger.info(logger, "Exception handling -> Reject Msg finished.");
 							destroy();
 						}
 					}
 					if (!isAutoAck) {
-						try {
-							int ack = 0;
-							while (!isConnected()) {
-								logger.error("Detect connection isConnected() == false, ack {}", (++ack));
-								destroy();
-								ThreadUtil.sleep(configurator.getRecoveryInterval());
-								createConnection();
-								if (ack == maxAckTotal) {
-									logger.error("Retry createConnection count -> {}, Quit ack.", ack);
-									break;
-								}
-							}
-							if (isConnected()) {
-								logger.info("Last detect connection isConnected() == true, ack {}", ack);
-								channel.basicAck(envelope.getDeliveryTag(), false);
-								logger.info("Method channel.basicAck() finished.");
-							} else {
-								logger.error("Last detect connection isConnected() == false, ack {}", ack);
-								logger.error("Unable to call method channel.basicAck()");
-							}
-						} catch (IOException e) {
-							UseLogger.error(logger, e,
-									"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) throw IOException -> {}",
-									envelope.getDeliveryTag(), e.getMessage());
+						if (ack(envelope.getDeliveryTag())) {
+							UseLogger.info(logger, "Message handle end.");
+						} else {
+							UseLogger.info(logger,
+									"Call method ack(envelope.getDeliveryTag()==[{}]) failure. Reject message.");
+							channel.basicReject(envelope.getDeliveryTag(), true);
 						}
 					}
 				}
@@ -127,6 +123,45 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		} catch (IOException e) {
 			UseLogger.error(logger, e, "Call method channel.basicConsume() IOException message -> {}", e.getMessage());
 		}
+	}
+
+	private boolean ack(long deliveryTag) {
+		return ack0(deliveryTag, 0);
+	}
+
+	private boolean ack0(long deliveryTag, int retry) {
+		if (retry == 10) {
+			UseLogger.error(logger, "Has been retry ack 10.");
+			return false;
+		}
+		UseLogger.info(logger, "Has been retry ack {}.", retry);
+		try {
+			int reconnectionCount = 0;
+			while (!isConnected()) {
+				logger.error("Detect connection isConnected() == false, ack {}.", (++reconnectionCount));
+				closeAndReconnection();
+				if (reconnectionCount == maxAckTotal) {
+					logger.error("Reconnection count -> {}, Quit ack.", reconnectionCount);
+					break;
+				}
+			}
+			if (isConnected()) {
+				logger.info("Last detect connection isConnected() == true, Reconnection count {}", reconnectionCount);
+				channel.basicAck(deliveryTag, isMultipleAck);
+				logger.info("Method channel.basicAck() finished.");
+				return true;
+			} else {
+				logger.error("Last detect connection isConnected() == false, Reconnection count {}", reconnectionCount);
+				logger.error("Unable to call method channel.basicAck()");
+				return ack0(deliveryTag, retry);
+			}
+		} catch (IOException e) {
+			UseLogger.error(logger, e,
+					"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) throw IOException -> {}",
+					deliveryTag, e.getMessage());
+			return ack0(deliveryTag, ++retry);
+		}
+
 	}
 
 	@Override
