@@ -15,8 +15,10 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 	// 一次ACK多条
 	private boolean isMultipleAck = false;
 
-	// 最大自动重试次数
-	private int maxAckTotal = 32;
+	// 最大重新ACK次数
+	private int maxAckTotal = 16;
+	// 最大ACK重连次数
+	private int maxAckReconnection = 8;
 
 	private RmqReceiverConfigurator() {
 		super("RabbitMqReceiverConfigurator");
@@ -77,6 +79,17 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 
 	public RmqReceiverConfigurator setMaxAckTotal(int maxAckTotal) {
 		this.maxAckTotal = maxAckTotal;
+		return this;
+	}
+
+	
+	
+	public int getMaxAckReconnection() {
+		return maxAckReconnection;
+	}
+
+	public RmqReceiverConfigurator setMaxAckReconnection(int maxAckReconnection) {
+		this.maxAckReconnection = maxAckReconnection;
 		return this;
 	}
 

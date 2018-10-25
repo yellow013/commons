@@ -34,6 +34,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	private boolean isMultipleAck;
 	// 最大自动重试次数
 	private int maxAckTotal;
+	private int maxAckReconnection;
 	private String receiverName;
 
 	/**
@@ -49,6 +50,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		this.isAutoAck = configurator.isAutoAck();
 		this.isMultipleAck = configurator.isMultipleAck();
 		this.maxAckTotal = configurator.getMaxAckTotal();
+		this.maxAckReconnection = configurator.getMaxAckReconnection();
 		this.errorMsgToExchange = configurator.getErrorMsgToExchange();
 		createConnection();
 		init();
@@ -130,18 +132,18 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	}
 
 	private boolean ack0(long deliveryTag, int retry) {
-		if (retry == 10) {
-			UseLogger.error(logger, "Has been retry ack 10.");
+		if (retry == maxAckTotal) {
+			UseLogger.error(logger, "Has been retry ack {}, Quit ack.", maxAckTotal);
 			return false;
 		}
-		UseLogger.info(logger, "Has been retry ack {}.", retry);
+		UseLogger.info(logger, "Has been retry ack {}, Do next ack.", retry);
 		try {
 			int reconnectionCount = 0;
 			while (!isConnected()) {
-				logger.error("Detect connection isConnected() == false, ack {}.", (++reconnectionCount));
+				logger.error("Detect connection isConnected() == false, Reconnection count {}.", (++reconnectionCount));
 				closeAndReconnection();
-				if (reconnectionCount == maxAckTotal) {
-					logger.error("Reconnection count -> {}, Quit ack.", reconnectionCount);
+				if (reconnectionCount == maxAckReconnection) {
+					logger.error("Reconnection count -> {}, Quit current ack.", reconnectionCount);
 					break;
 				}
 			}
