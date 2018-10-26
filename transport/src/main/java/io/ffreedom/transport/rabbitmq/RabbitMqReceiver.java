@@ -8,7 +8,7 @@ import com.rabbitmq.client.Envelope;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
-import io.ffreedom.common.log.UseLogger;
+import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
@@ -62,7 +62,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 			channel.queueDeclare(receiveQueue, configurator.isDurable(), configurator.isExclusive(),
 					configurator.isAutoDelete(), null);
 		} catch (IOException e) {
-			UseLogger.error(logger, e,
+			ErrorLogger.error(logger, e,
 					"Method channel.queueDeclare(queue==[{}], durable==[{]}, exclusive==[{}], autoDelete==[{}], arguments==null) IOException message -> {}",
 					receiveQueue, configurator.isDurable(), configurator.isExclusive(), configurator.isAutoDelete(),
 					e.getMessage());
@@ -87,43 +87,42 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 						byte[] body) throws IOException {
 					try {
-						UseLogger.info(logger, "Message handle start.");
-						UseLogger.info(logger,
+						logger.trace("Message handle start.");
+						logger.trace(
 								"Callback handleDelivery(consumerTag==[{}], envelope.getDeliveryTag==[{}] body.length==[{}])",
 								consumerTag, envelope.getDeliveryTag(), body.length);
 						callback.accept(body);
-						UseLogger.info(logger, "Callback handleDelivery() end.");
+						logger.trace("Callback handleDelivery() end.");
 					} catch (Exception e) {
-						UseLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
+						ErrorLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
 								e.getMessage());
 						if (StringUtil.notNullAndEmpty(errorMsgToExchange)) {
 							// Sent message to error dump queue.
-							UseLogger.info(logger, "Exception handling -> Msg [{}] sent to ErrorMsgExchange.",
+							logger.info("Exception handling -> Msg [{}] sent to ErrorMsgExchange.",
 									new String(body, Charsets.UTF8));
 							channel.basicPublish(errorMsgToExchange, "", null, body);
-							UseLogger.info(logger, "Exception handling -> Sent to ErrorMsgExchange finished.");
+							logger.info("Exception handling -> Sent to ErrorMsgExchange finished.");
 						} else {
 							// Reject message and close connection.
-							UseLogger.info(logger, "Exception handling -> Reject Msg [{}]",
-									new String(body, Charsets.UTF8));
+							logger.info("Exception handling -> Reject Msg [{}]", new String(body, Charsets.UTF8));
 							channel.basicReject(envelope.getDeliveryTag(), true);
-							UseLogger.info(logger, "Exception handling -> Reject Msg finished.");
+							logger.info("Exception handling -> Reject Msg finished.");
 							destroy();
 						}
 					}
 					if (!isAutoAck) {
 						if (ack(envelope.getDeliveryTag())) {
-							UseLogger.info(logger, "Message handle end.");
+							logger.info("Message handle end.");
 						} else {
-							UseLogger.info(logger,
-									"Call method ack(envelope.getDeliveryTag()==[{}]) failure. Reject message.");
+							logger.info("Call method ack(envelope.getDeliveryTag()==[{}]) failure. Reject message.");
 							channel.basicReject(envelope.getDeliveryTag(), true);
 						}
 					}
 				}
 			});
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method channel.basicConsume() IOException message -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method channel.basicConsume() IOException message -> {}",
+					e.getMessage());
 		}
 	}
 
@@ -133,10 +132,10 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 
 	private boolean ack0(long deliveryTag, int retry) {
 		if (retry == maxAckTotal) {
-			UseLogger.error(logger, "Has been retry ack {}, Quit ack.", maxAckTotal);
+			ErrorLogger.error(logger, "Has been retry ack {}, Quit ack.", maxAckTotal);
 			return false;
 		}
-		UseLogger.info(logger, "Has been retry ack {}, Do next ack.", retry);
+		logger.info("Has been retry ack {}, Do next ack.", retry);
 		try {
 			int reconnectionCount = 0;
 			while (!isConnected()) {
@@ -158,7 +157,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				return ack0(deliveryTag, retry);
 			}
 		} catch (IOException e) {
-			UseLogger.error(logger, e,
+			ErrorLogger.error(logger, e,
 					"Call method channel.basicAck(deliveryTag==[{}], multiple==[false]) throw IOException -> {}",
 					deliveryTag, e.getMessage());
 			return ack0(deliveryTag, ++retry);

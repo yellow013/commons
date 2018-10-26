@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.log.UseLogger;
 
 public final class ThreadUtil {
 
@@ -18,7 +18,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			UseLogger.error(logger, e, "Call method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
+			ErrorLogger.error(logger, e, "Call method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
 					e.getMessage());
 		}
 	}
@@ -27,7 +27,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			UseLogger.error(logger, e,
+			ErrorLogger.error(logger, e,
 					"Call method ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
 					e.getMessage());
 		}
@@ -37,7 +37,7 @@ public final class ThreadUtil {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
-			UseLogger.error(logger, e,
+			ErrorLogger.error(logger, e,
 					"Call method ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
 					timeUnit, e.getMessage());
 		}

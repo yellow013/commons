@@ -1,7 +1,10 @@
 package io.ffreedom.transport.jeromq;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.zeromq.ZMQ;
 
+import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
 import io.ffreedom.transport.base.role.Subscriber;
 import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;
@@ -16,7 +19,7 @@ public class JeroMqSubscriber implements Subscriber {
 	private Callback<byte[]> callback;
 	private JeroMqConfigurator configurator;
 
-	private volatile boolean isRun = true;
+	private AtomicBoolean isRun = new AtomicBoolean(true);
 
 	public JeroMqSubscriber(JeroMqConfigurator configurator, Callback<byte[]> callback) {
 		if (configurator == null) {
@@ -37,7 +40,7 @@ public class JeroMqSubscriber implements Subscriber {
 
 	@Override
 	public void subscribe() {
-		while (isRun) {
+		while (isRun.get()) {
 			subscriber.recv();
 			byte[] msgBytes = subscriber.recv();
 			callback.accept(msgBytes);
@@ -46,7 +49,7 @@ public class JeroMqSubscriber implements Subscriber {
 
 	@Override
 	public boolean destroy() {
-		this.isRun = false;
+		this.isRun.set(false);
 		subscriber.close();
 		context.term();
 		return true;
@@ -58,11 +61,10 @@ public class JeroMqSubscriber implements Subscriber {
 	}
 
 	public static void main(String[] args) {
-		JeroMqConfigurator configurator = JeroMqConfigurator.builder().setHost("tcp://*:5555").setIoThreads(1)
-				.setTopic("").build();
 
-		JeroMqSubscriber jeroMQSubscriber = new JeroMqSubscriber(configurator,
-				(byte[] byteMsg) -> System.out.println(new String(byteMsg)));
+		JeroMqSubscriber jeroMQSubscriber = new JeroMqSubscriber(
+				JeroMqConfigurator.builder().setHost("tcp://192.168.1.241:12301").setIoThreads(1).setTopic("").build(),
+				(byte[] byteMsg) -> System.out.println(new String(byteMsg, Charsets.UTF8)));
 
 		jeroMQSubscriber.subscribe();
 	}

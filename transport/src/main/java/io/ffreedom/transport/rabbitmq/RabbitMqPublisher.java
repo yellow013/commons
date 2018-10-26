@@ -8,7 +8,7 @@ import com.rabbitmq.client.BuiltinExchangeType;
 
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.functional.Callback;
-import io.ffreedom.common.log.UseLogger;
+import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Publisher;
@@ -108,7 +108,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 				break;
 			}
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
 		}
 //		if (isConfirm) {
@@ -153,11 +153,11 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			else
 				basicPublish(target, msg);
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
+			ErrorLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw IOException -> {} ", isConfirm,
 					e.getMessage());
 			destroy();
 		} catch (NoAckException e) {
-			UseLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw AckRetryException -> {} ",
+			ErrorLogger.error(logger, e, "Call method publish() isConfirm==[{}] throw AckRetryException -> {} ",
 					isConfirm, e.getMessage());
 		}
 	}
@@ -172,20 +172,20 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 			basicPublish(target, msg);
 			if (channel.waitForConfirms(confirmTimeout))
 				return;
-			UseLogger.error(logger, "Call method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]",
+			ErrorLogger.error(logger, "Call method channel.waitForConfirms(confirmTimeout==[{}]) retry==[{}]",
 					confirmTimeout, retry);
 			if (++retry == confirmRetry)
 				throw new NoAckException(target, retry);
 			confirmPublish(target, msg, retry);
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method channel.confirmSelect() throw IOException -> {}", exchange, target,
-					msgProperties, e.getMessage());
+			ErrorLogger.error(logger, e, "Call method channel.confirmSelect() throw IOException -> {}", exchange,
+					target, msgProperties, e.getMessage());
 			throw new IOException(e.getMessage());
 		} catch (InterruptedException e) {
-			UseLogger.error(logger, e, "Call method channel.waitForConfirms() throw InterruptedException -> {}",
+			ErrorLogger.error(logger, e, "Call method channel.waitForConfirms() throw InterruptedException -> {}",
 					e.getMessage());
 		} catch (TimeoutException e) {
-			UseLogger.error(logger, e, "Call method channel.waitForConfirms() throw TimeoutException -> {}",
+			ErrorLogger.error(logger, e, "Call method channel.waitForConfirms() throw TimeoutException -> {}",
 					e.getMessage());
 		}
 	}
@@ -202,7 +202,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					// param4: msgBody
 					msg);
 		} catch (IOException e) {
-			UseLogger.error(logger, e,
+			ErrorLogger.error(logger, e,
 					"Call method channel.basicPublish(exchange==[{}], routingKey==[{}], properties==[{}], msg==[...]) throw IOException -> {}",
 					exchange, target, msgProperties, e.getMessage());
 			throw new IOException(e.getMessage());
@@ -211,7 +211,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	@Override
 	public boolean destroy() {
-		UseLogger.info(logger, "Call method -> RabbitPublisher.destroy()");
+		logger.info("Call method -> RabbitPublisher.destroy()");
 		closeConnection();
 		return true;
 	}

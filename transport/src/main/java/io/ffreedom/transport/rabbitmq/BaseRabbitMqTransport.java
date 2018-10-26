@@ -10,8 +10,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import io.ffreedom.common.functional.ShutdownEvent;
+import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.log.UseLogger;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
@@ -77,9 +77,9 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 					channel.getChannelNumber());
 			logger.info("All connection call method successful...");
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method createConnection() throw IOException -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method createConnection() throw IOException -> {}", e.getMessage());
 		} catch (TimeoutException e) {
-			UseLogger.error(logger, e, "Call method createConnection() throw TimeoutException -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method createConnection() throw TimeoutException -> {}", e.getMessage());
 		}
 	}
 
@@ -89,7 +89,7 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 	}
 
 	protected boolean closeAndReconnection() {
-		UseLogger.info(logger, "Call method closeAndReconnection().");
+		logger.info("Call method closeAndReconnection().");
 		closeConnection();
 		ThreadUtil.sleep(configurator.getRecoveryInterval() / 2);
 		createConnection();
@@ -108,9 +108,9 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 				logger.info("Connection is closeed!");
 			}
 		} catch (IOException e) {
-			UseLogger.error(logger, e, "Call method closeConnection() throw IOException -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method closeConnection() throw IOException -> {}", e.getMessage());
 		} catch (TimeoutException e) {
-			UseLogger.error(logger, e, "Call method closeConnection() throw TimeoutException -> {}", e.getMessage());
+			ErrorLogger.error(logger, e, "Call method closeConnection() throw TimeoutException -> {}", e.getMessage());
 		}
 	}
 
