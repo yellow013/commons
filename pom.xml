@@ -16,7 +16,7 @@
 	<modules>
 		<module>common</module>
 		<module>transport</module>
-    <module>actors</module>
+    	<!-- <module>actors</module> -->
   </modules>
 
 	<properties>
