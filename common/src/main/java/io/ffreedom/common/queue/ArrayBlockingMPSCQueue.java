@@ -21,12 +21,56 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private AtomicBoolean isClose = new AtomicBoolean(true);
 
-	public ArrayBlockingMPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor) {
+	private String queueName;
+
+	public ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTota,
+			QueueProcessor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
-		if (autoRun) {
+		this.queueName = queueName;
+		switch (mode) {
+		case Auto:
 			start();
+			break;
+		case Delay:
+			ThreadUtil.sleep(delayTota, timeUnit);
+			start();
+			break;
+		default:
+			break;
 		}
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(int queueSize, QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Auto, null, 0L, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(String queueName, int queueSize,
+			QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Auto, null, 0L, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(int queueSize, QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, null, 0L, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(String queueName, int queueSize,
+			QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, null, 0L, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, TimeUnit timeUnit, long delayTota,
+			QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, timeUnit, delayTota, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, TimeUnit timeUnit,
+			long delayTota, QueueProcessor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, timeUnit, delayTota, processor);
+	}
+
+	private enum RunMode {
+		Auto, Manual, Delay
 	}
 
 	public boolean enQueue(T t) {
@@ -59,7 +103,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			} catch (InterruptedException e) {
 				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e.getMessage());
 			}
-		});
+		}, queueName == null ? String.valueOf(this.hashCode()) : queueName);
 	}
 
 	@Override
@@ -70,7 +114,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		ArrayBlockingMPSCQueue<Integer> queue = new ArrayBlockingMPSCQueue<Integer>(100, true, (value) -> {
+		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoRunQueue(100, (value) -> {
 			System.out.println(value);
 		});
 

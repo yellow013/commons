@@ -22,8 +22,5 @@ public abstract class SCQueue<T> implements Queue<T> {
 
 	public abstract void stop();
 
-	public static enum RunMode {
-		Auto, Manual, Delay
-	}
 
 }

@@ -85,7 +85,7 @@ public class SocketSender implements Sender<byte[]> {
 		}
 	}
 
-	private ArrayBlockingMPSCQueue<byte[]> innerQueue = new ArrayBlockingMPSCQueue<>(1024, true, bytes -> {
+	private ArrayBlockingMPSCQueue<byte[]> innerQueue = ArrayBlockingMPSCQueue.autoRunQueue(1024, bytes -> {
 		processSendQueue(bytes);
 	});
 
