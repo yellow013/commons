@@ -18,8 +18,8 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e, "Call method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
-					e.getMessage());
+			ErrorLogger.error(logger, e, "Call method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}",
+					millis, e.getMessage());
 		}
 	}
 
@@ -28,8 +28,8 @@ public final class ThreadUtil {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
 			ErrorLogger.error(logger, e,
-					"Call method ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
-					e.getMessage());
+					"Call method ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis,
+					nanos, e.getMessage());
 		}
 	}
 
