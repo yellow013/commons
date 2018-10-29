@@ -9,7 +9,7 @@ import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.role.Receiver;
 import io.ffreedom.transport.jeromq.config.JeroMqConfigurator;
 
-public class JeroMqReceiver implements Receiver {
+public class JeroMqPipeline implements Receiver {
 
 	private ZContext context;
 	private Socket socket;
@@ -21,7 +21,7 @@ public class JeroMqReceiver implements Receiver {
 
 	private volatile boolean isRun = true;
 
-	public JeroMqReceiver(JeroMqConfigurator configurator, MsgPipeline<byte[], byte[]> pipeline) {
+	public JeroMqPipeline(JeroMqConfigurator configurator, MsgPipeline<byte[], byte[]> pipeline) {
 		if (configurator == null) {
 			throw new NullPointerException("configurator is null in JeroMQReceiver init mothed !");
 		}
@@ -66,7 +66,7 @@ public class JeroMqReceiver implements Receiver {
 
 	public static void main(String[] args) {
 
-		JeroMqReceiver receiver = new JeroMqReceiver(
+		JeroMqPipeline receiver = new JeroMqPipeline(
 				JeroMqConfigurator.builder().setIoThreads(10).setHost("tcp://*:5551").build(), (byte[] byteMsg) -> {
 					System.out.println(new String(byteMsg));
 					return null;
