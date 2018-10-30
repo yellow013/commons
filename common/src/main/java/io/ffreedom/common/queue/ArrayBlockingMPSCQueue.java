@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.QueueProcessor;
 import io.ffreedom.common.queue.base.SCQueue;
+import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 
 public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
@@ -23,7 +24,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private String queueName;
 
-	public ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTota,
+	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTota,
 			QueueProcessor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
@@ -103,7 +104,8 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			} catch (InterruptedException e) {
 				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e.getMessage());
 			}
-		}, queueName == null ? String.valueOf(this.hashCode()) : queueName);
+		}, StringUtil.isNullOrEmpty(queueName) ? this.getClass().getSimpleName() + "-" + String.valueOf(this.hashCode())
+				: queueName);
 	}
 
 	@Override
