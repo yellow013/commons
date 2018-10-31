@@ -62,12 +62,12 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, TimeUnit timeUnit, long delayTota,
 			QueueProcessor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, timeUnit, delayTota, processor);
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, TimeUnit timeUnit,
 			long delayTota, QueueProcessor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, timeUnit, delayTota, processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
 	}
 
 	private enum RunMode {

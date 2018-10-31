@@ -25,20 +25,12 @@ public final class ECFactory {
 		return UnifiedMap.newMap(size);
 	}
 
-	public static final <K, V> ImmutableMap<K, V> newImmutableMap(Map<K, V> map) {
-		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
-	}
-
 	public static final <E> MutableSet<E> newUnifiedSet() {
 		return UnifiedSet.newSet();
 	}
 
 	public static final <E> MutableSet<E> newUnifiedSet(int size) {
 		return UnifiedSet.newSet(size);
-	}
-
-	public static final <E> ImmutableSet<E> newImmutableSet(Iterable<E> iterable) {
-		return ImmutableSetFactoryImpl.INSTANCE.withAll(iterable);
 	}
 
 	public static final <E> MutableList<E> newFastList() {
@@ -49,8 +41,24 @@ public final class ECFactory {
 		return FastList.newList(size);
 	}
 
-	public static final <E> ImmutableList<E> newImmutableList(Iterable<E> iterable) {
-		return ImmutableListFactoryImpl.INSTANCE.withAll(iterable);
+	public static final <K, V> ImmutableMap<K, V> immutableMap(Map<K, V> map) {
+		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
+	}
+
+	public static final <E> ImmutableSet<E> immutableSet(Iterable<E> item) {
+		return ImmutableSetFactoryImpl.INSTANCE.withAll(item);
+	}
+
+	public static final <E> ImmutableSet<E> immutableSet(E[] es) {
+		return ImmutableSetFactoryImpl.INSTANCE.with(es);
+	}
+
+	public static final <E> ImmutableList<E> immutableList(Iterable<E> item) {
+		return ImmutableListFactoryImpl.INSTANCE.withAll(item);
+	}
+
+	public static final <E> ImmutableList<E> immutableList(E[] es) {
+		return ImmutableListFactoryImpl.INSTANCE.with(es);
 	}
 
 }
