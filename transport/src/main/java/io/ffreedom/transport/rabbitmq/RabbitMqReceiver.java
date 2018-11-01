@@ -16,7 +16,7 @@ import io.ffreedom.transport.rabbitmq.config.RmqReceiverConfigurator;
 public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver {
 
 	// 接收消息时使用的回调函数
-	private Callback<byte[]> callback;
+	private volatile Callback<byte[]> callback;
 
 	// 绑定的Exchange
 	// 暂时没有使用
@@ -54,6 +54,16 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 		this.errorMsgToExchange = configurator.getErrorMsgToExchange();
 		createConnection();
 		init();
+	}
+
+	/**
+	 * 
+	 * @param configurator
+	 * @param callback
+	 */
+	@Deprecated
+	public RabbitMqReceiver(String tag, RmqReceiverConfigurator configurator) {
+		this(tag, configurator, null);
 	}
 
 	private void init() {
@@ -175,6 +185,14 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 	@Override
 	public String getName() {
 		return receiverName;
+	}
+
+	@Deprecated
+	public boolean initCallback(Callback<byte[]> callback) {
+		if (this.callback != null)
+			return false;
+		this.callback = callback;
+		return true;
 	}
 
 	public static void main(String[] args) {
