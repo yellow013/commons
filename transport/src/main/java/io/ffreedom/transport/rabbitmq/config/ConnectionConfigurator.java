@@ -15,11 +15,11 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 	protected String virtualHost = "/";
 	// 连接超时时间
 	protected int connectionTimeout = 60 * 1000;
-	
+
 	/**
 	 * 队列定义参数
 	 */
-	// 队列持久化
+	// 是否持久化
 	protected boolean durable = true;
 	// 连接独占此队列
 	protected boolean exclusive = false;
@@ -44,19 +44,9 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 		this.configuratorName = configuratorName;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T setConnectionParam(String host, int port) {
-		this.host = host;
-		this.port = port;
-		return (T) this;
-	}
+	abstract public T setConnectionParam(String host, int port);
 
-	@SuppressWarnings("unchecked")
-	public T setUserParam(String username, String password) {
-		this.username = username;
-		this.password = password;
-		return (T) this;
-	}
+	abstract public T setUserParam(String username, String password);
 
 	abstract public T setVirtualHost(String virtualHost);
 
@@ -74,11 +64,11 @@ public abstract class ConnectionConfigurator<T extends ConnectionConfigurator<?>
 
 	abstract public T setHandshakeTimeout(int handshakeTimeout);
 
-	public abstract T setShutdownTimeout(int shutdownTimeout);
+	abstract public T setShutdownTimeout(int shutdownTimeout);
 
-	public abstract T setRequestedHeartbeat(int requestedHeartbeat);
+	abstract public T setRequestedHeartbeat(int requestedHeartbeat);
 
-	public abstract T setShutdownEvent(ShutdownEvent<Exception> shutdownEvent);
+	abstract public T setShutdownEvent(ShutdownEvent<Exception> shutdownEvent);
 
 	public String getHost() {
 		return host;

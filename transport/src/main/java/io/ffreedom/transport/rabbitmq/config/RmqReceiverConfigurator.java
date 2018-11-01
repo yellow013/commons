@@ -82,8 +82,6 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 		return this;
 	}
 
-	
-	
 	public int getMaxAckReconnection() {
 		return maxAckReconnection;
 	}
@@ -96,6 +94,19 @@ public final class RmqReceiverConfigurator extends ConnectionConfigurator<RmqRec
 	/**
 	 * 配置连接信息 START
 	 */
+	@Override
+	public RmqReceiverConfigurator setConnectionParam(String host, int port) {
+		this.host = host;
+		this.port = port;
+		return this;
+	}
+
+	@Override
+	public RmqReceiverConfigurator setUserParam(String username, String password) {
+		this.username = username;
+		this.password = password;
+		return this;
+	}
 
 	@Override
 	public RmqReceiverConfigurator setVirtualHost(String virtualHost) {

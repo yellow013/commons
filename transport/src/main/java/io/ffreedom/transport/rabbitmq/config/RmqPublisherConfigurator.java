@@ -14,9 +14,9 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	private String exchange = "";
 	private String routingKey = "";
 	private String[] bindQueues = null;
-	private String directQueue;
+	private String directQueue = null;
 	private BasicProperties msgProperties = MessageProperties.PERSISTENT_BASIC;
-	private BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
+	private BuiltinExchangeType builtinExchangeType = BuiltinExchangeType.DIRECT;
 	private boolean isConfirm = false;
 	private long confirmTimeout = 5000;
 	private int confirmRetry = 3;
@@ -86,12 +86,30 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 		return this;
 	}
 
-	public BuiltinExchangeType getExchangeType() {
-		return exchangeType;
+	public BuiltinExchangeType getBuiltinExchangeType() {
+		return builtinExchangeType;
+	}
+
+	public RmqPublisherConfigurator setMode(ExchangeType exchangeType) {
+		if (exchangeType == null)
+			throw new IllegalArgumentException("Param exchangeType not allowed null");
+		switch (exchangeType) {
+		case DIRECT:
+			this.builtinExchangeType = BuiltinExchangeType.DIRECT;
+			return this;
+		case FANOUT:
+			this.builtinExchangeType = BuiltinExchangeType.FANOUT;
+			return this;
+		case TOPIC:
+			this.builtinExchangeType = BuiltinExchangeType.TOPIC;
+			return this;
+		default:
+			return this;
+		}
 	}
 
 	public RmqPublisherConfigurator setModeDirect(String directQueue) {
-		this.exchangeType = BuiltinExchangeType.DIRECT;
+		this.builtinExchangeType = BuiltinExchangeType.DIRECT;
 		this.directQueue = directQueue;
 		return this;
 	}
@@ -101,17 +119,14 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	}
 
 	public RmqPublisherConfigurator setModeFanoutAndBindQueues(String exchange, String[] bindQueues) {
-		this.exchangeType = BuiltinExchangeType.FANOUT;
+		this.builtinExchangeType = BuiltinExchangeType.FANOUT;
 		this.exchange = exchange;
 		this.bindQueues = bindQueues;
 		return this;
 	}
 
 	public RmqPublisherConfigurator setModeTopic(String exchange, String routingKey, String[] bindQueues) {
-		if (bindQueues == null) {
-			throw new IllegalArgumentException("Bind queues not nullable.");
-		}
-		this.exchangeType = BuiltinExchangeType.TOPIC;
+		this.builtinExchangeType = BuiltinExchangeType.TOPIC;
 		this.exchange = exchange;
 		this.routingKey = routingKey;
 		this.bindQueues = bindQueues;
@@ -121,6 +136,20 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	/**
 	 * 配置连接信息 START
 	 */
+
+	@Override
+	public RmqPublisherConfigurator setConnectionParam(String host, int port) {
+		this.host = host;
+		this.port = port;
+		return this;
+	}
+
+	@Override
+	public RmqPublisherConfigurator setUserParam(String username, String password) {
+		this.username = username;
+		this.password = password;
+		return this;
+	}
 
 	@Override
 	public RmqPublisherConfigurator setVirtualHost(String virtualHost) {
@@ -192,5 +221,9 @@ public class RmqPublisherConfigurator extends ConnectionConfigurator<RmqPublishe
 	/**
 	 * 配置连接信息 END
 	 */
+
+	public static enum ExchangeType {
+		DIRECT, FANOUT, TOPIC
+	}
 
 }

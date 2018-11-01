@@ -32,7 +32,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 
 	private String directQueue;
 
-	private BuiltinExchangeType exchangeType;
+	private BuiltinExchangeType builtinExchangeType;
 
 	private boolean isConfirm;
 
@@ -61,7 +61,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.routingKey = configurator.getRoutingKey();
 		this.msgProperties = configurator.getMsgProperties();
 		this.bindQueues = configurator.getBindQueues();
-		this.exchangeType = configurator.getExchangeType();
+		this.builtinExchangeType = configurator.getBuiltinExchangeType();
 		this.directQueue = configurator.getDirectQueue();
 		this.isConfirm = configurator.isConfirm();
 		this.confirmTimeout = configurator.getConfirmTimeout();
@@ -74,11 +74,13 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		this.publisherName = "Publisher->" + configurator.getHost() + ":" + configurator.getPort() + "$" + routingKey;
 		try {
 			OperationalChannel operationalChannel = RabbitMqOperatingTools.ofChannel(channel);
-			switch (exchangeType) {
+			switch (builtinExchangeType) {
 			case DIRECT:
-				this.routingKey = directQueue;
-				operationalChannel.declareQueue(directQueue, configurator.isDurable(), configurator.isExclusive(),
-						configurator.isAutoDelete());
+				this.routingKey = directQueue != null ? directQueue : "";
+				if (directQueue != null) {
+					operationalChannel.declareQueue(directQueue, configurator.isDurable(), configurator.isExclusive(),
+							configurator.isAutoDelete());
+				}
 				break;
 			case FANOUT:
 				operationalChannel.declareFanoutExchange(exchange);
