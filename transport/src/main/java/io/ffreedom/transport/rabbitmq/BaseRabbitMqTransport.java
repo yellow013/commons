@@ -15,6 +15,7 @@ import com.rabbitmq.client.ShutdownSignalException;
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 import io.ffreedom.transport.base.TransportModule;
 import io.ffreedom.transport.rabbitmq.config.ConnectionConfigurator;
@@ -108,10 +109,12 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		Method reason = sig.getReason();
 		if (reason instanceof AMQP.Channel.Close) {
 			AMQP.Channel.Close channelClose = (AMQP.Channel.Close) reason;
-			return channelClose.getReplyCode() == AMQP.REPLY_SUCCESS && channelClose.getReplyText().equals("OK");
+			return channelClose.getReplyCode() == AMQP.REPLY_SUCCESS
+					&& StringUtil.isEquals(channelClose.getReplyText(), "OK");
 		} else if (reason instanceof AMQP.Connection.Close) {
 			AMQP.Connection.Close connectionClose = (AMQP.Connection.Close) reason;
-			return connectionClose.getReplyCode() == AMQP.REPLY_SUCCESS && connectionClose.getReplyText().equals("OK");
+			return connectionClose.getReplyCode() == AMQP.REPLY_SUCCESS
+					&& StringUtil.isEquals(connectionClose.getReplyText(), "OK");
 		} else {
 			return false;
 		}
