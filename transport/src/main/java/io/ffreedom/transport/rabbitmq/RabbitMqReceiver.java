@@ -97,12 +97,12 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 						byte[] body) throws IOException {
 					try {
-						logger.trace("Message handle start.");
-						logger.trace(
+						logger.debug("Message handle start.");
+						logger.debug(
 								"Callback handleDelivery(consumerTag==[{}], envelope.getDeliveryTag==[{}] body.length==[{}])",
 								consumerTag, envelope.getDeliveryTag(), body.length);
 						callback.accept(body);
-						logger.trace("Callback handleDelivery() end.");
+						logger.debug("Callback handleDelivery() end.");
 					} catch (Exception e) {
 						ErrorLogger.error(logger, e, "Call method callback.accept(body) throw Exception -> {}",
 								e.getMessage());
@@ -122,7 +122,7 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 					}
 					if (!isAutoAck) {
 						if (ack(envelope.getDeliveryTag())) {
-							logger.info("Message handle end.");
+							logger.debug("Message handle end.");
 						} else {
 							logger.info("Call method ack(envelope.getDeliveryTag()==[{}]) failure. Reject message.");
 							channel.basicReject(envelope.getDeliveryTag(), true);
@@ -145,21 +145,21 @@ public class RabbitMqReceiver extends BaseRabbitMqTransport implements Receiver 
 			ErrorLogger.error(logger, "Has been retry ack {}, Quit ack.", maxAckTotal);
 			return false;
 		}
-		logger.info("Has been retry ack {}, Do next ack.", retry);
+		logger.debug("Has been retry ack {}, Do next ack.", retry);
 		try {
 			int reconnectionCount = 0;
 			while (!isConnected()) {
-				logger.error("Detect connection isConnected() == false, Reconnection count {}.", (++reconnectionCount));
+				logger.debug("Detect connection isConnected() == false, Reconnection count {}.", (++reconnectionCount));
 				closeAndReconnection();
 				if (reconnectionCount == maxAckReconnection) {
-					logger.error("Reconnection count -> {}, Quit current ack.", reconnectionCount);
+					logger.debug("Reconnection count -> {}, Quit current ack.", reconnectionCount);
 					break;
 				}
 			}
 			if (isConnected()) {
-				logger.info("Last detect connection isConnected() == true, Reconnection count {}", reconnectionCount);
+				logger.debug("Last detect connection isConnected() == true, Reconnection count {}", reconnectionCount);
 				channel.basicAck(deliveryTag, isMultipleAck);
-				logger.info("Method channel.basicAck() finished.");
+				logger.debug("Method channel.basicAck() finished.");
 				return true;
 			} else {
 				logger.error("Last detect connection isConnected() == false, Reconnection count {}", reconnectionCount);

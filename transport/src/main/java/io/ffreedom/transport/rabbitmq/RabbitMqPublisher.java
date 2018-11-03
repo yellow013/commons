@@ -112,25 +112,9 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 		} catch (IOException e) {
 			ErrorLogger.error(logger, e, "Call method init() throw IOException -> {}", e.getMessage());
 			destroy();
+		}finally {
+			
 		}
-//		if (isConfirm) {
-//			try {
-//				channel.confirmSelect();
-//				channel.addConfirmListener((deliveryTag, multiple) -> {
-//					UseLogger.info(logger, "Ack Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag, multiple);
-//					if (ackCallback != null)
-//						ackCallback.onEvent(deliveryTag);
-//				}, (deliveryTag, multiple) -> {
-//					UseLogger.info(logger, "NoAck Callback -> deliveryTag==[{}], multiple==[{}]", deliveryTag,
-//							multiple);
-//					if (noAckCallback != null)
-//						noAckCallback.onEvent(deliveryTag);
-//				});
-//			} catch (IOException e) {
-//				UseLogger.error(logger, e, "init() Call method channel.confirmSelect() throw IOException -> {}",
-//						e.getMessage());
-//			}
-//		}
 	}
 
 	@Override
@@ -165,10 +149,10 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 	}
 
 	private void confirmPublish(String target, byte[] msg) throws IOException, NoAckException {
-		confirmPublish(target, msg, 0);
+		confirmPublish0(target, msg, 0);
 	}
 
-	private void confirmPublish(String target, byte[] msg, int retry) throws IOException, NoAckException {
+	private void confirmPublish0(String target, byte[] msg, int retry) throws IOException, NoAckException {
 		try {
 			channel.confirmSelect();
 			basicPublish(target, msg);
@@ -178,7 +162,7 @@ public class RabbitMqPublisher extends BaseRabbitMqTransport implements Publishe
 					confirmTimeout, retry);
 			if (++retry == confirmRetry)
 				throw new NoAckException(target, retry);
-			confirmPublish(target, msg, retry);
+			confirmPublish0(target, msg, retry);
 		} catch (IOException e) {
 			ErrorLogger.error(logger, e, "Call method channel.confirmSelect() throw IOException -> {}", exchange,
 					target, msgProperties, e.getMessage());
