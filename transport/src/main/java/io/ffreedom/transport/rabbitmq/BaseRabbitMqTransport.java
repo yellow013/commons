@@ -5,9 +5,12 @@ import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Method;
+import com.rabbitmq.client.ShutdownSignalException;
 
 import io.ffreedom.common.functional.ShutdownEvent;
 import io.ffreedom.common.log.ErrorLogger;
@@ -38,9 +41,8 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 	 * @param configurator
 	 */
 	protected BaseRabbitMqTransport(String tag, ConnectionConfigurator<?> configurator) {
-		if (configurator == null) {
+		if (configurator == null)
 			throw new NullPointerException(tag + ": configurator is null.");
-		}
 		this.tag = (tag == null) ? "start_time_" + System.currentTimeMillis() : tag;
 		this.configurator = configurator;
 		this.shutdownEvent = configurator.getShutdownEvent();
@@ -64,12 +66,17 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 			connection = connectionFactory.newConnection();
 			logger.info("Call method connectionFactory.newConnection() finished, tag -> {}, connection id -> {}.", tag,
 					connection.getId());
-			connection.addShutdownListener(exception -> {
+			connection.addShutdownListener(shutdownSignalException -> {
 				// 输出错误信息到控制台
-				logger.info("Call lambda ShutdownListener Message -> {}", exception.getMessage());
-				// 如果回调函数不为null, 则执行此函数
-				if (shutdownEvent != null) {
-					shutdownEvent.accept(exception);
+				logger.info("Call lambda shutdown listener message -> {}", shutdownSignalException.getMessage());
+				if (isNormalShutdown(shutdownSignalException)) {
+					logger.info("{} -> normal shutdown.", tag);
+				} else {
+					logger.info("{} -> is not normal shutdown.", tag);
+					// 如果回调函数不为null, 则执行此函数
+					if (shutdownEvent != null) {
+						shutdownEvent.accept(shutdownSignalException);
+					}
 				}
 			});
 			channel = connection.createChannel();
@@ -95,6 +102,19 @@ abstract class BaseRabbitMqTransport implements TransportModule {
 		createConnection();
 		ThreadUtil.sleep(configurator.getRecoveryInterval() / 2);
 		return isConnected();
+	}
+
+	private boolean isNormalShutdown(ShutdownSignalException sig) {
+		Method reason = sig.getReason();
+		if (reason instanceof AMQP.Channel.Close) {
+			AMQP.Channel.Close channelClose = (AMQP.Channel.Close) reason;
+			return channelClose.getReplyCode() == AMQP.REPLY_SUCCESS && channelClose.getReplyText().equals("OK");
+		} else if (reason instanceof AMQP.Connection.Close) {
+			AMQP.Connection.Close connectionClose = (AMQP.Connection.Close) reason;
+			return connectionClose.getReplyCode() == AMQP.REPLY_SUCCESS && connectionClose.getReplyText().equals("OK");
+		} else {
+			return false;
+		}
 	}
 
 	protected void closeConnection() {
