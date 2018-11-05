@@ -5,9 +5,9 @@ import java.time.ZoneOffset;
 
 public interface TimeZones {
 
-	ZoneId SYSTEM_DEFAULT = ZoneId.systemDefault();
-
 	ZoneOffset UTC = ZoneOffset.UTC;
+
+	ZoneId SYS_DEFAULT = ZoneId.systemDefault();
 
 	/**
 	 * Chinese Standard Time

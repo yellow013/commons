@@ -92,7 +92,7 @@ public final class DateTimeUtil {
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(Date date) {
-		return dateToLocalDateTime(date, TimeZones.SYSTEM_DEFAULT);
+		return dateToLocalDateTime(date, TimeZones.SYS_DEFAULT);
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(Date date, ZoneId zoneId) {
