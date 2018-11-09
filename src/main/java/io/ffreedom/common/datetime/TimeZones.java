@@ -7,7 +7,7 @@ public interface TimeZones {
 
 	ZoneOffset UTC = ZoneOffset.UTC;
 
-	ZoneId SYS_DEFAULT = ZoneId.systemDefault();
+	ZoneId SYS_DEFAULT = ZoneOffset.systemDefault();
 
 	/**
 	 * Chinese Standard Time
