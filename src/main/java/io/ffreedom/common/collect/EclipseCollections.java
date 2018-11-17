@@ -7,6 +7,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.api.map.primitive.MutableLongDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
@@ -17,6 +18,7 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
 import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
@@ -55,6 +57,10 @@ public final class EclipseCollections {
 
 	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap() {
 		return LongObjectHashMap.newMap();
+	}
+
+	public static final MutableLongDoubleMap newLongDoubleHashMap(int size) {
+		return new LongDoubleHashMap(size);
 	}
 
 	public static final <K, V> MutableListMultimap<K, V> newFastListMultimap() {
