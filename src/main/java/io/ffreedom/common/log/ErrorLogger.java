@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 public final class ErrorLogger {
 
 	public static void error(Logger logger, Exception e) {
-		logger.error("***Throw {}, Message : [{}]", e.getClass().getSimpleName(), e.getMessage(), e);
+		logger.error("***Throw -> [{}], ExceptionMessage -> [{}]", e.getClass().getName(), e.getMessage(), e);
 	}
 
 	public static void error(Logger logger, Exception e, String msg) {

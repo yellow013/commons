@@ -8,24 +8,20 @@ import io.ffreedom.common.utils.StringUtil;
 
 public class LoggerFactory {
 
-	private static volatile boolean isLogFilenameSetted;
-	private static volatile boolean isLogLevelSetted;
-	private static volatile boolean isLogFolderSetted;
-
 	public static Logger getLogger(Class<?> clazz) {
-		if (!isLogFolderSetted) {
+		if (!LoggerSetter.isLogFolderSetted()) {
 			String logFolder = System.getProperty(LoggerConstant.LOG_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder)) {
 				LoggerSetter.setLogFolder("default");
 			}
 		}
-		if (!isLogFilenameSetted) {
+		if (!LoggerSetter.isLogFilenameSetted()) {
 			String logFilename = System.getProperty(LoggerConstant.LOG_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename)) {
 				LoggerSetter.setLogFileName("java.runtime");
 			}
 		}
-		if (!isLogLevelSetted) {
+		if (!LoggerSetter.isLogLevelSetted()) {
 			String logLevel = System.getProperty(LoggerConstant.LOG_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel)) {
 				LoggerSetter.setLogLevel(LogLevel.INFO);
