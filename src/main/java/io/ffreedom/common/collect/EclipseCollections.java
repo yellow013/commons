@@ -13,6 +13,7 @@ import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
@@ -24,6 +25,7 @@ import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
 import org.eclipse.collections.impl.set.immutable.ImmutableSetFactoryImpl;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
 public final class EclipseCollections {
 
@@ -41,6 +43,10 @@ public final class EclipseCollections {
 
 	public static final <E> MutableSet<E> newUnifiedSet(int size) {
 		return UnifiedSet.newSet(size);
+	}
+
+	public static final <E> MutableSortedSet<E> newTreeSortedSet() {
+		return TreeSortedSet.newSet();
 	}
 
 	public static final <E> MutableList<E> newFastList() {
