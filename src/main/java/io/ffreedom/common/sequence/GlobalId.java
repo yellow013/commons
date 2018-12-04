@@ -4,13 +4,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public final class GlobalId {
 
-	private static AtomicLong globalId = new AtomicLong(99999999L);;
+	private static AtomicLong ID = new AtomicLong(0L);;
 
-	private GlobalId(long initialValue) {
+	private GlobalId() {
 	}
 
-	public static long generate() {
-		return globalId.incrementAndGet();
+	public static long incrementAndGet() {
+		return ID.incrementAndGet();
 	}
 
 }
