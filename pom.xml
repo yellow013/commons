@@ -8,7 +8,7 @@
 
 	<groupId>io.ffreedom</groupId>
 	<artifactId>commons</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 
 	<url>https://github.com/yellow013/commons.git</url>
 
@@ -91,5 +91,18 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>atgo-maven-repo</id>
+			<name>Nexus Release Repository</name>
+			<url>http://192.168.1.59:8891/repository/atgo-maven-repo/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://192.168.1.59:8891/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
