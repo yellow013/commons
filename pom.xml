@@ -4,8 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- This is parent commons pom.xml -->
-
+	<!-- This is commons pom.xml -->
 	<groupId>io.ffreedom</groupId>
 	<artifactId>commons</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -94,14 +93,14 @@
 
 	<distributionManagement>
 		<repository>
-			<id>atgo-maven-repo</id>
-			<name>Nexus Release Repository</name>
-			<url>http://192.168.1.59:8891/repository/atgo-maven-repo/</url>
+			<id>maven-release</id>
+			<name>Nexus_Release_Repository</name>
+			<url>http://127.0.0.1:8891/repository/maven-release/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
-			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.1.59:8891/repository/maven-snapshots/</url>
+			<name>Nexus_Snapshot_Repository</name>
+			<url>http://127.0.0.1:8898/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
