@@ -1,13 +1,16 @@
 package io.ffreedom.common.collect;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.map.primitive.MutableIntDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableLongDoubleMap;
+import org.eclipse.collections.api.map.primitive.MutableLongIntMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
@@ -18,8 +21,10 @@ import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
 import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
@@ -45,6 +50,10 @@ public final class EclipseCollections {
 		return UnifiedSet.newSet(size);
 	}
 
+	public static final <E> MutableSet<E> newUnifiedSet(Collection<E> collection) {
+		return new UnifiedSet<>(collection);
+	}
+
 	public static final <E> MutableSortedSet<E> newTreeSortedSet() {
 		return TreeSortedSet.newSet();
 	}
@@ -61,8 +70,36 @@ public final class EclipseCollections {
 		return IntObjectHashMap.newMap();
 	}
 
+	public static final <V> MutableIntObjectMap<V> newIntObjectHashMap(int size) {
+		return new IntObjectHashMap<>(size);
+	}
+
 	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap() {
 		return LongObjectHashMap.newMap();
+	}
+
+	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {
+		return new LongObjectHashMap<>(size);
+	}
+
+	public static final <V> MutableLongIntMap newLongIntHashMap() {
+		return new LongIntHashMap();
+	}
+
+	public static final <V> MutableLongIntMap newLongIntHashMap(int size) {
+		return new LongIntHashMap(size);
+	}
+
+	public static final MutableIntDoubleMap newIntDoubleHashMap() {
+		return new IntDoubleHashMap();
+	}
+
+	public static final MutableIntDoubleMap newIntDoubleHashMap(int size) {
+		return new IntDoubleHashMap(size);
+	}
+
+	public static final MutableLongDoubleMap newLongDoubleHashMap() {
+		return new LongDoubleHashMap();
 	}
 
 	public static final MutableLongDoubleMap newLongDoubleHashMap(int size) {
