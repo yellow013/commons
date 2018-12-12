@@ -17,7 +17,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ec.version>9.2.0</ec.version>
-		<guava.version>27.0-jre</guava.version>
+		<guava.version>27.0.1-jre</guava.version>
 		<log4j2.version>2.11.1</log4j2.version>
 		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
