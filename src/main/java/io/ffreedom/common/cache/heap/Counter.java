@@ -16,6 +16,6 @@ public interface Counter<T extends Counter<?>> {
 		return subtract(tag, 1);
 	}
 
-	long value();
+	long getValue();
 
 }

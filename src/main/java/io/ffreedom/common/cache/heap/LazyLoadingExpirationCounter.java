@@ -52,7 +52,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	}
 
 	@Override
-	public long value() {
+	public long getValue() {
 		long baseTime = System.nanoTime() - expireTime.toNanos();
 		timeToTag.forEachKey(time -> checkTime(time, baseTime));
 		clear();
@@ -84,7 +84,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 		}
 
 		for (int i = 0; i < 20; i++) {
-			System.out.println(counter.value());
+			System.out.println(counter.getValue());
 			ThreadUtil.sleep(2000);
 		}
 
