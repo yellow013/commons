@@ -127,16 +127,16 @@ public final class FromPropertiesFile {
 		return getProperty(APPLICATION_FILE_NAME, propertyName);
 	}
 
-	public static String getIntApplicationProperty(String propertyName) {
-		return getProperty(APPLICATION_FILE_NAME, propertyName);
+	public static int getIntApplicationProperty(String propertyName) {
+		return getIntProperty(APPLICATION_FILE_NAME, propertyName);
 	}
 
-	public static String getLongApplicationProperty(String propertyName) {
-		return getProperty(APPLICATION_FILE_NAME, propertyName);
+	public static long getLongApplicationProperty(String propertyName) {
+		return getLongProperty(APPLICATION_FILE_NAME, propertyName);
 	}
 
-	public static String getDoubleApplicationProperty(String propertyName) {
-		return getProperty(APPLICATION_FILE_NAME, propertyName);
+	public static double getDoubleApplicationProperty(String propertyName) {
+		return getDoubleProperty(APPLICATION_FILE_NAME, propertyName);
 	}
 
 	public static void main(String[] args) {
