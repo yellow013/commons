@@ -74,6 +74,7 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -93,15 +94,16 @@
 
 	<distributionManagement>
 		<repository>
-			<id>atgo-maven-repo</id>
-			<name>Nexus Release Repository</name>
-			<url>http://192.168.1.59:8891/repository/atgo-maven-repo/</url>
+			<id>maven-release</id>
+			<name>Nexus_Release_Repository</name>
+			<url>http://127.0.0.1:8891/repository/maven-release/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
-			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.1.59:8891/repository/maven-snapshots/</url>
+			<name>Nexus_Snapshot_Repository</name>
+			<url>http://127.0.0.1:8898/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 
 </project>

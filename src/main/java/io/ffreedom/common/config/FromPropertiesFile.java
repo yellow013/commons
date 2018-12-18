@@ -80,8 +80,8 @@ public final class FromPropertiesFile {
 
 	public static int getIntProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isNullOrEmpty(propertyValue)) {
-			logger.error("Property name -> [{}] is null or empty of file name -> [{}]", propertyName, fileName);
+		if (StringUtil.isDecimal(propertyValue)) {
+			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
@@ -95,8 +95,8 @@ public final class FromPropertiesFile {
 
 	public static long getLongProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isNullOrEmpty(propertyValue)) {
-			logger.error("Property name -> [{}] is null or empty of file name -> [{}]", propertyName, fileName);
+		if (StringUtil.isDecimal(propertyValue)) {
+			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
@@ -110,8 +110,8 @@ public final class FromPropertiesFile {
 
 	public static double getDoubleProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isNullOrEmpty(propertyValue)) {
-			logger.error("Property name -> [{}] is null or empty of file name -> [{}]", propertyName, fileName);
+		if (StringUtil.isDecimal(propertyValue)) {
+			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
