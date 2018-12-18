@@ -1,7 +1,5 @@
 package io.ffreedom.common.utils;
 
-import java.util.Arrays;
-
 public final class StringUtil {
 
 	private StringUtil() {
@@ -35,14 +33,12 @@ public final class StringUtil {
 		boolean haveDecimalPoint = false;
 		for (char c : chars) {
 			if (!Character.isDigit(c))
-				if (haveDecimalPoint) {
+				if (haveDecimalPoint)
 					return false;
-				} else {
-					if (c == '.')
-						haveDecimalPoint = true;
-					else
-						return false;
-				}
+				else if (c == '.')
+					haveDecimalPoint = true;
+				else
+					return false;
 		}
 		return true;
 	}
