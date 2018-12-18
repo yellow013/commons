@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.queue.base.QueueProcessor;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -25,7 +25,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 	private String queueName;
 
 	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTota,
-			QueueProcessor<T> processor) {
+			Processor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
 		this.queueName = queueName;
@@ -42,31 +42,30 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(int queueSize, QueueProcessor<T> processor) {
+	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(int queueSize, Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Auto, null, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(String queueName, int queueSize,
-			QueueProcessor<T> processor) {
+	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(String queueName, int queueSize, Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Auto, null, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(int queueSize, QueueProcessor<T> processor) {
+	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(int queueSize, Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, null, 0L, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(String queueName, int queueSize,
-			QueueProcessor<T> processor) {
+			Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, null, 0L, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, TimeUnit timeUnit, long delayTota,
-			QueueProcessor<T> processor) {
+			Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, TimeUnit timeUnit,
-			long delayTota, QueueProcessor<T> processor) {
+			long delayTota, Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
 	}
 
@@ -101,8 +100,10 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 						processor.process(t);
 					}
 				}
-			} catch (InterruptedException e) {
-				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e.getMessage());
+			} catch (InterruptedException e0) {
+				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e0.getMessage());
+			} catch (Exception e1) {
+				throw new RuntimeException(e1);
 			}
 		}, StringUtil.isNullOrEmpty(queueName) ? this.getClass().getSimpleName() + "-" + String.valueOf(this.hashCode())
 				: queueName);

@@ -3,7 +3,7 @@ package io.ffreedom.common.functional;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface MsgPipeline<IN, OUT> extends Function<IN, OUT>{
+public interface Pipeline<IN, OUT> extends Function<IN, OUT>{
 
 	OUT stream(IN in);
 	

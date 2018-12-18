@@ -5,8 +5,8 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.queue.base.LoadContainer;
-import io.ffreedom.common.queue.base.QueueProcessor;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
@@ -25,11 +25,11 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private volatile boolean isStop = false;
 
-	public SPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor) {
+	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor) {
 		this(queueSize, autoRun, processor, WaitStrategyOption.BusySpin);
 	}
 
-	public SPSCQueue(int queueSize, boolean autoRun, QueueProcessor<T> processor, WaitStrategyOption option) {
+	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
 		super(processor);
 		if (queueSize == 0 || queueSize % 2 != 0) {
 			throw new IllegalArgumentException("queueSize set error...");
@@ -57,7 +57,11 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	}
 
 	private void callProcessor(T t) {
-		processor.process(t);
+		try {
+			processor.process(t);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public SPSCQueue(int queueSize) {

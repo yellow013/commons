@@ -1,5 +1,7 @@
 package io.ffreedom.common.queue.base;
 
+import io.ffreedom.common.functional.Processor;
+
 /**
  * 
  * 
@@ -9,9 +11,9 @@ package io.ffreedom.common.queue.base;
  */
 public abstract class SCQueue<T> implements Queue<T> {
 
-	protected QueueProcessor<T> processor;
+	protected Processor<T> processor;
 
-	public SCQueue(QueueProcessor<T> processor) {
+	public SCQueue(Processor<T> processor) {
 		if (processor == null) {
 			throw new IllegalArgumentException("processor is null...");
 		}

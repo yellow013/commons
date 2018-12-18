@@ -1,4 +1,4 @@
-package io.ffreedom.common.compare;
+package io.ffreedom.common.functional;
 
 @FunctionalInterface
 public interface CompareFunction {

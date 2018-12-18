@@ -7,7 +7,7 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
-import io.ffreedom.common.queue.base.QueueProcessor;
+import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
@@ -17,7 +17,7 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	private LoadContainerEventProducer producer;
 
-	public SPSCQueue2(int queueSize, boolean autoRun, EventFactory<T> eventFactory, QueueProcessor<T> processor) {
+	public SPSCQueue2(int queueSize, boolean autoRun, EventFactory<T> eventFactory, Processor<T> processor) {
 		super(processor);
 		if (queueSize == 0 || queueSize % 2 != 0) {
 			throw new IllegalArgumentException("queueSize set error...");
