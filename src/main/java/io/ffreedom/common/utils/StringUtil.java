@@ -19,23 +19,29 @@ public final class StringUtil {
 
 	// TODO
 	// 改进性能
-	// 不进行char数组copy
-	public final static boolean isNumber(String str) {
+	// 不进行char数组的copy
+	public final static boolean isDecimal(String str) {
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
+		// 判断是否负数
 		if (chars[0] == '-')
 			chars[0] = '0';
+		// 获取最后一个字符
 		char lastChar = chars[chars.length - 1];
+		// 判断是否为long double float的写法
 		if (lastChar == 'L' || lastChar == 'l' || lastChar == 'D' || lastChar == 'd' || lastChar == 'F'
 				|| lastChar == 'f')
 			chars[chars.length - 1] = '0';
+		// 小数点标识
 		boolean haveDecimalPoint = false;
-		for (char c : chars) {
-			if (!Character.isDigit(c))
+		for (char ch : chars) {
+			// 判断每个字母是否为数字
+			if (!(ch >= '0' && ch <= '9'))
 				if (haveDecimalPoint)
 					return false;
-				else if (c == '.')
+				// 允许出现一个小数点
+				else if (ch == '.')
 					haveDecimalPoint = true;
 				else
 					return false;
@@ -45,18 +51,18 @@ public final class StringUtil {
 
 	public static void main(String[] args) {
 
-		System.out.println(isNumber("877f"));
-		System.out.println(isNumber("877F"));
-		System.out.println(isNumber("877l"));
-		System.out.println(isNumber("877L"));
-		System.out.println(isNumber("877d"));
-		System.out.println(isNumber("877D"));
-		System.out.println(isNumber("-877"));
-		System.out.println(isNumber("-877L"));
-		System.out.println(isNumber("8.77L"));
-		System.out.println(isNumber(".877"));
-		System.out.println(isNumber("-.877"));
-		System.out.println(isNumber("-.87.7"));
+		System.out.println(isDecimal("877f"));
+		System.out.println(isDecimal("877F"));
+		System.out.println(isDecimal("877l"));
+		System.out.println(isDecimal("877L"));
+		System.out.println(isDecimal("877d"));
+		System.out.println(isDecimal("877D"));
+		System.out.println(isDecimal("-877"));
+		System.out.println(isDecimal("-877L"));
+		System.out.println(isDecimal("8.77L"));
+		System.out.println(isDecimal(".877"));
+		System.out.println(isDecimal("-.877"));
+		System.out.println(isDecimal("-.87.7"));
 
 	}
 
