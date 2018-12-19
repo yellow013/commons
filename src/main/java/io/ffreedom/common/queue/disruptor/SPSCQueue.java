@@ -32,9 +32,8 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
 		super(processor);
-		if (queueSize == 0 || queueSize % 2 != 0) {
+		if (queueSize == 0 || queueSize % 2 != 0)
 			throw new IllegalArgumentException("queueSize set error...");
-		}
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory<LoadContainer<>>的Lambda
 				LoadContainer::new,
@@ -49,13 +48,10 @@ public class SPSCQueue<T> extends SCQueue<T> {
 				ProducerType.SINGLE,
 				// Waiting策略
 				WaitStrategyFactory.newWaitStrategy(option));
-		this.disruptor.handleEventsWith((LoadContainer<T> event, long sequence, boolean endOfBatch) -> {
-			callProcessor(event.unloading());
-		});
+		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> callProcessor(event.unloading()));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
-		if (autoRun) {
+		if (autoRun)
 			start();
-		}
 	}
 
 	private void callProcessor(T t) {
@@ -90,9 +86,8 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	@Override
 	public boolean enQueue(T t) {
 		try {
-			if (isStop) {
+			if (isStop)
 				return false;
-			}
 			this.producer.onData(t);
 			return true;
 		} catch (Exception e) {
@@ -108,23 +103,20 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	@Override
 	public void stop() {
 		this.isStop = true;
-		while (disruptor.getBufferSize() != 0) {
+		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(1);
-		}
 		disruptor.shutdown();
 	}
 
 	public static void main(String[] args) {
 
-		SPSCQueue<Integer> queue = new SPSCQueue<>(64, true, (integer) -> {
-			System.out.println("********************************************");
-		});
+		SPSCQueue<Integer> queue = new SPSCQueue<>(64, true,
+				(integer) -> System.out.println("********************************************"));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;
-			for (;;) {
+			for (;;)
 				queue.enQueue(++i);
-			}
 		});
 
 		ThreadUtil.sleep(10000);

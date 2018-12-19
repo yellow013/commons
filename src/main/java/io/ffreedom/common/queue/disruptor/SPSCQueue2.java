@@ -1,7 +1,8 @@
 package io.ffreedom.common.queue.disruptor;
 
+import java.util.function.Supplier;
+
 import com.lmax.disruptor.BusySpinWaitStrategy;
-import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -18,15 +19,14 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	private LoadContainerEventProducer producer;
 
-	public SPSCQueue2(int queueSize, boolean autoRun, EventFactory<T> eventFactory, Processor<T> processor) {
+	public SPSCQueue2(int queueSize, boolean autoRun, Supplier<T> supplier, Processor<T> processor) {
 		super(processor);
-		if (queueSize == 0 || queueSize % 2 != 0) {
+		if (queueSize == 0 || queueSize % 2 != 0)
 			throw new IllegalArgumentException("queueSize set error...");
-		}
 		this.processor = processor;
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory<LoadContainer<>>的Lambda
-				eventFactory,
+				() -> supplier.get(),
 				// 队列容量
 				queueSize,
 				// 实现ThreadFactory的Lambda
@@ -36,10 +36,18 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 				ProducerType.SINGLE,
 				// Waiting策略
 				new BusySpinWaitStrategy());
-		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> this.processor.process(event));
+		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> tryCallProcessor(event));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
 			start();
+	}
+
+	private void tryCallProcessor(T t) {
+		try {
+			processor.process(t);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private class LoadContainerEventProducer {
@@ -76,19 +84,14 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	@Override
 	public void stop() {
-		while (disruptor.getBufferSize() != 0) {
-			ThreadUtil.sleep(1000);
-		}
+		while (disruptor.getBufferSize() != 0)
+			ThreadUtil.sleep(10);
 		disruptor.shutdown();
 	}
 
 	public static void main(String[] args) {
 
-		SPSCQueue2<Integer> queue = new SPSCQueue2<>(1024, true, () -> {
-			return null;
-		}, (integer) -> {
-			System.out.println(integer);
-		});
+		SPSCQueue2<Integer> queue = new SPSCQueue2<>(1024, true, () -> null, (integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;
