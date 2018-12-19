@@ -14,9 +14,8 @@ public abstract class SCQueue<T> implements Queue<T> {
 	protected Processor<T> processor;
 
 	public SCQueue(Processor<T> processor) {
-		if (processor == null) {
+		if (processor == null) 
 			throw new IllegalArgumentException("processor is null...");
-		}
 		this.processor = processor;
 	}
 
