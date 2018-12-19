@@ -6,6 +6,7 @@ import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.queue.base.SCQueue;
@@ -29,20 +30,16 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 				// 队列容量
 				queueSize,
 				// 实现ThreadFactory的Lambda
-				(runnable) -> {
-					return ThreadUtil.newThread(runnable, "disruptor-thread");
-				},
+				// (Runnable runnable) -> ThreadUtil.newThread(runnable, "disruptor-thread"),
+				DaemonThreadFactory.INSTANCE,
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
 				// Waiting策略
 				new BusySpinWaitStrategy());
-		this.disruptor.handleEventsWith((T event, long sequence, boolean endOfBatch) -> {
-			this.processor.process(event);
-		});
+		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> this.processor.process(event));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
-		if (autoRun) {
+		if (autoRun)
 			start();
-		}
 	}
 
 	private class LoadContainerEventProducer {
