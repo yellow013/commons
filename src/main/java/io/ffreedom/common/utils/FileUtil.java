@@ -25,12 +25,12 @@ public final class FileUtil {
 		File[] listFiles = parentFile.listFiles();
 		if (listFiles != null && listFiles.length != 0) {
 			for (File file : listFiles) {
-				if (file.isDirectory()) {
+				if (file.isDirectory())
 					loadAllChildFile(loadList, file, fileFilter);
-				} else {
-					if (fileFilter.filter(file))
-						loadList.add(file);
-				}
+				else if (fileFilter.filter(file))
+					loadList.add(file);
+				else
+					continue;
 			}
 		} else {
 			return;

@@ -5,7 +5,7 @@ import io.ffreedom.common.functional.Processor;
 /**
  * 
  * 
- * @author Phoneix
+ * @author yellow013
  *
  * @param <T> Single Consumer Queue
  */
