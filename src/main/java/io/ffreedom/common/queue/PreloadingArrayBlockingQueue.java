@@ -28,7 +28,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	private Condition notEmpty;
 	private Condition notFull;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(PreloadingArrayBlockingQueue.class);
 
 	@SuppressWarnings("unchecked")
 	public PreloadingArrayBlockingQueue(int size) {
@@ -36,9 +36,8 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 			throw new IllegalArgumentException("size is too big.");
 		}
 		this.containers = new LoadContainer[size];
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++)
 			containers[i] = new LoadContainer<>();
-		}
 		this.size = size;
 		this.lock = new ReentrantLock();
 		this.notEmpty = lock.newCondition();
@@ -49,13 +48,11 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	public boolean enQueue(T t) {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount.get() == size) {
+			while (arrayCount.get() == size)
 				notFull.await();
-			}
 			containers[writeOffset].loading(t);
-			if (++writeOffset == size) {
+			if (++writeOffset == size)
 				writeOffset = 0;
-			}
 			arrayCount.incrementAndGet();
 			notEmpty.signal();
 			return true;
@@ -71,13 +68,11 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	public T deQueue() {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount.get() == 0) {
+			while (arrayCount.get() == 0)
 				notEmpty.await();
-			}
 			T t = containers[readOffset].unloading();
-			if (++readOffset == size) {
+			if (++readOffset == size)
 				readOffset = 0;
-			}
 			arrayCount.decrementAndGet();
 			notFull.signal();
 			return t;

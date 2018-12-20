@@ -1,5 +1,7 @@
 package io.ffreedom.common.queue.disruptor;
 
+import org.slf4j.Logger;
+
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -7,6 +9,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
+import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.LoadContainer;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -19,6 +22,8 @@ import io.ffreedom.common.utils.ThreadUtil;
  */
 
 public class SPSCQueue<T> extends SCQueue<T> {
+
+	private Logger logger = LoggerFactory.getLogger(SPSCQueue.class);
 
 	private Disruptor<LoadContainer<T>> disruptor;
 
@@ -58,6 +63,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 		try {
 			processor.process(t);
 		} catch (Exception e) {
+			logger.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -91,6 +97,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 			this.producer.onData(t);
 			return true;
 		} catch (Exception e) {
+			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -106,6 +113,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(1);
 		disruptor.shutdown();
+		logger.info("Call stop() success, disruptor is shutdown.");
 	}
 
 	public static void main(String[] args) {

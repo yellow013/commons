@@ -16,7 +16,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private ArrayBlockingQueue<T> queue;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(ArrayBlockingMPSCQueue.class);
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
 
@@ -59,14 +59,14 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, null, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, TimeUnit timeUnit, long delayTota,
+	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, long delay, TimeUnit timeUnit,
 			Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delay, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, TimeUnit timeUnit,
-			long delayTota, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delayTota, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, long delay,
+			TimeUnit timeUnit, Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delay, processor);
 	}
 
 	private enum RunMode {
@@ -96,16 +96,16 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			try {
 				while (isRun.get() || !queue.isEmpty()) {
 					T t = queue.poll(5, TimeUnit.SECONDS);
-					if (t != null) {
+					if (t != null)
 						processor.process(t);
-					}
 				}
 			} catch (InterruptedException e0) {
 				logger.error("queue.poll(5, TimeUnit.SECONDS) : " + e0.getMessage());
 			} catch (Exception e1) {
 				throw new RuntimeException(e1);
 			}
-		}, StringUtil.isNullOrEmpty(queueName) ? this.getClass().getSimpleName() + "-" + String.valueOf(this.hashCode())
+		}, StringUtil.isNullOrEmpty(queueName)
+				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + String.valueOf(this.hashCode())
 				: queueName);
 	}
 
@@ -124,9 +124,8 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		int i = 0;
 
 		for (;;) {
-			if (i == 1000) {
+			if (i == 1000)
 				queue.stop();
-			}
 			queue.enQueue(++i);
 		}
 

@@ -19,7 +19,7 @@ public class GuavaCacheMap<K, V> {
 	private long maximumSize;
 	private Duration duration;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(GuavaCacheMap.class);
 
 	private GuavaCacheMap(CacheMapBuilder builder, CacheRefresher<K, V> refresher) {
 		this.maximumSize = builder.maximumSize;

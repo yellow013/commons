@@ -2,6 +2,8 @@ package io.ffreedom.common.queue.disruptor;
 
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+
 import com.lmax.disruptor.BusySpinWaitStrategy;
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
@@ -10,14 +12,19 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
+import io.ffreedom.common.log.LoggerFactory;
 import io.ffreedom.common.queue.base.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
 public class SPSCQueue2<T> extends SCQueue<T> {
 
+	private Logger logger = LoggerFactory.getLogger(SPSCQueue2.class);
+
 	private Disruptor<T> disruptor;
 
 	private LoadContainerEventProducer producer;
+
+	private volatile boolean isStop = false;
 
 	public SPSCQueue2(int queueSize, boolean autoRun, Supplier<T> supplier, Processor<T> processor) {
 		super(processor);
@@ -46,6 +53,7 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 		try {
 			processor.process(t);
 		} catch (Exception e) {
+			logger.error("processor throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -71,6 +79,8 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 	@Override
 	public boolean enQueue(T t) {
 		try {
+			if (isStop)
+				return false;
 			this.producer.onData(t);
 			return true;
 		} catch (Exception e) {
@@ -84,9 +94,11 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	@Override
 	public void stop() {
+		this.isStop = true;
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(10);
 		disruptor.shutdown();
+		logger.info("Call stop() success, disruptor is shutdown.");
 	}
 
 	public static void main(String[] args) {
