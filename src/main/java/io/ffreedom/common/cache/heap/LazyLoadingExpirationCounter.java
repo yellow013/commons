@@ -77,6 +77,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	}
 
 	public static void main(String[] args) {
+		
 		LazyLoadingExpirationCounter counter = new LazyLoadingExpirationCounter(Duration.ofMillis(10000), 1024);
 
 		for (int i = 0; i < 20; i++) {
