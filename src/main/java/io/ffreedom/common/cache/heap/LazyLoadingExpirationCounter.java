@@ -20,15 +20,15 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	private MutableLongLongMap timeToTag;
 	private MutableLongLongMap tagToDelta;
-	private MutableLongList deleteCache;
+	private MutableLongList pendingDeleteTime;
 
-	private Duration expireTime;
+	private long expireNanos;
 
 	public LazyLoadingExpirationCounter(Duration expireTime, int capacity) {
-		this.expireTime = expireTime;
+		this.expireNanos = expireTime.toNanos();
 		this.timeToTag = EclipseCollections.newLongLongHashMap(capacity);
 		this.tagToDelta = EclipseCollections.newLongLongHashMap(capacity);
-		this.deleteCache = EclipseCollections.newLongArrayList(capacity / 2);
+		this.pendingDeleteTime = EclipseCollections.newLongArrayList(capacity / 2);
 	}
 
 	private void add(long delta) {
@@ -53,7 +53,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	@Override
 	public long getValue() {
-		long baseTime = System.nanoTime() - expireTime.toNanos();
+		long baseTime = System.nanoTime() - expireNanos;
 		timeToTag.forEachKey(time -> checkTime(time, baseTime));
 		clear();
 		return value;
@@ -61,18 +61,19 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	private void checkTime(long time, long baseTime) {
 		if (time < baseTime)
-			deleteCache.add(time);
+			pendingDeleteTime.add(time);
 	}
 
 	private void clear() {
-		for (int i = 0; i < deleteCache.size(); i++) {
-			long timeKey = deleteCache.get(i);
-			long tagKey = timeToTag.get(timeKey);
-			timeToTag.remove(timeKey);
-			tagToDelta.remove(tagKey);
-			add(-tagToDelta.get(tagKey));
+		for (int i = 0; i < pendingDeleteTime.size(); i++) {
+			long time = pendingDeleteTime.get(i);
+			long tag = timeToTag.get(time);
+			long delta = tagToDelta.get(tag);
+			add(-delta);
+			timeToTag.remove(time);
+			tagToDelta.remove(tag);
 		}
-		deleteCache.clear();
+		pendingDeleteTime.clear();
 	}
 
 	public static void main(String[] args) {
