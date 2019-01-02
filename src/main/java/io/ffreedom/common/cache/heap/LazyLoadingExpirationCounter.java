@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.eclipse.collections.api.iterator.MutableLongIterator;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
@@ -20,7 +21,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	private MutableLongLongMap timeToTag;
 	private MutableLongLongMap tagToDelta;
-	private MutableLongList pendingDeleteTime;
+	private MutableLongList effectiveTimes;
 
 	private long expireNanos;
 
@@ -28,7 +29,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 		this.expireNanos = expireTime.toNanos();
 		this.timeToTag = EclipseCollections.newLongLongHashMap(capacity);
 		this.tagToDelta = EclipseCollections.newLongLongHashMap(capacity);
-		this.pendingDeleteTime = EclipseCollections.newLongArrayList(capacity / 2);
+		this.effectiveTimes = EclipseCollections.newLongArrayList(capacity);
 	}
 
 	private void add(long delta) {
@@ -39,8 +40,9 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	public LazyLoadingExpirationCounter add(long tag, long delta) {
 		if (!tagToDelta.containsKey(tag)) {
 			long time = System.nanoTime();
-			tagToDelta.put(tag, delta);
+			effectiveTimes.add(time);
 			timeToTag.put(time, tag);
+			tagToDelta.put(tag, delta);
 			add(delta);
 		}
 		return this;
@@ -54,30 +56,28 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	@Override
 	public long getValue() {
 		long baseTime = System.nanoTime() - expireNanos;
-		timeToTag.forEachKey(time -> checkTime(time, baseTime));
-		clear();
+		MutableLongIterator effectiveTimeIterator = effectiveTimes.longIterator();
+		while (effectiveTimeIterator.hasNext()) {
+			long time = effectiveTimeIterator.next();
+			if (time < baseTime) {
+				clearTime(time);
+				effectiveTimeIterator.remove();
+			} else
+				break;
+		}
 		return value;
 	}
 
-	private void checkTime(long time, long baseTime) {
-		if (time < baseTime)
-			pendingDeleteTime.add(time);
-	}
-
-	private void clear() {
-		for (int i = 0; i < pendingDeleteTime.size(); i++) {
-			long time = pendingDeleteTime.get(i);
-			long tag = timeToTag.get(time);
-			long delta = tagToDelta.get(tag);
-			add(-delta);
-			timeToTag.remove(time);
-			tagToDelta.remove(tag);
-		}
-		pendingDeleteTime.clear();
+	private void clearTime(long time) {
+		long tag = timeToTag.get(time);
+		long delta = tagToDelta.get(tag);
+		add(-delta);
+		timeToTag.remove(time);
+		tagToDelta.remove(tag);
 	}
 
 	public static void main(String[] args) {
-		
+
 		LazyLoadingExpirationCounter counter = new LazyLoadingExpirationCounter(Duration.ofMillis(10000), 1024);
 
 		for (int i = 0; i < 20; i++) {

@@ -36,7 +36,6 @@ import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
 import org.eclipse.collections.impl.set.immutable.ImmutableSetFactoryImpl;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 import org.eclipse.collections.impl.set.mutable.primitive.LongHashSet;
-import org.eclipse.collections.impl.set.mutable.primitive.MutableLongSetFactoryImpl;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
 public final class EclipseCollections {
