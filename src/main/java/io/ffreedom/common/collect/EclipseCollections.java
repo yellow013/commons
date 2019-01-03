@@ -8,6 +8,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.map.primitive.MutableIntDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableLongDoubleMap;
@@ -18,6 +19,8 @@ import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
+import org.eclipse.collections.api.set.primitive.MutableIntSet;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
 import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
@@ -25,6 +28,7 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.map.mutable.primitive.DoubleIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
@@ -35,6 +39,8 @@ import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
 import org.eclipse.collections.impl.set.immutable.ImmutableSetFactoryImpl;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.set.mutable.primitive.DoubleHashSet;
+import org.eclipse.collections.impl.set.mutable.primitive.IntHashSet;
 import org.eclipse.collections.impl.set.mutable.primitive.LongHashSet;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
@@ -75,6 +81,14 @@ public final class EclipseCollections {
 		return new LongDoubleHashMap(size);
 	}
 
+	public static final MutableDoubleIntMap newDoubleIntHashMap() {
+		return new DoubleIntHashMap();
+	}
+
+	public static final MutableDoubleIntMap newDoubleIntHashMap(int size) {
+		return new DoubleIntHashMap(size);
+	}
+
 	/**
 	 * primitive list
 	 */
@@ -86,8 +100,35 @@ public final class EclipseCollections {
 		return new LongArrayList(initialCapacity);
 	}
 
-	public static final MutableLongList newLongArrayListWith(long... longArray) {
-		return new LongArrayList(longArray);
+	public static final MutableLongList newLongArrayListWith(long... longs) {
+		return new LongArrayList(longs);
+	}
+
+	/**
+	 * primitive set
+	 */
+	public static final MutableIntSet newIntHashSet() {
+		return new IntHashSet();
+	}
+
+	public static final MutableIntSet newIntHashSet(int size) {
+		return new IntHashSet(size);
+	}
+
+	public static final MutableIntSet newIntHashSetWith(int... ints) {
+		return new IntHashSet(ints);
+	}
+
+	public static final MutableDoubleSet newDoubleHashSet() {
+		return new DoubleHashSet();
+	}
+
+	public static final MutableDoubleSet newDoubleHashSet(int size) {
+		return new DoubleHashSet(size);
+	}
+
+	public static final MutableDoubleSet newDoubleHashSetWith(double... doubles) {
+		return new DoubleHashSet(doubles);
 	}
 
 	/**
