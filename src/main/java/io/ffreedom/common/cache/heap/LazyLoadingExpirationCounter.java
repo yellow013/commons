@@ -8,8 +8,7 @@ import org.eclipse.collections.api.iterator.MutableLongIterator;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
-import io.ffreedom.common.collect.EclipseCollections;
-import io.ffreedom.common.utils.ThreadUtil;
+import io.ffreedom.common.collect.ECollections;
 
 @NotThreadSafe
 public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirationCounter> {
@@ -27,9 +26,9 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	public LazyLoadingExpirationCounter(Duration expireTime, int capacity) {
 		this.expireNanos = expireTime.toNanos();
-		this.timeToTag = EclipseCollections.newLongLongHashMap(capacity);
-		this.tagToDelta = EclipseCollections.newLongLongHashMap(capacity);
-		this.effectiveTimes = EclipseCollections.newLongArrayList(capacity);
+		this.timeToTag = ECollections.newLongLongHashMap(capacity);
+		this.tagToDelta = ECollections.newLongLongHashMap(capacity);
+		this.effectiveTimes = ECollections.newLongArrayList(capacity);
 	}
 
 	private void add(long delta) {
@@ -78,24 +77,42 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	public static void main(String[] args) {
 
-		LazyLoadingExpirationCounter counter = new LazyLoadingExpirationCounter(Duration.ofMillis(10000), 1024);
+//		LazyLoadingExpirationCounter counter = new LazyLoadingExpirationCounter(Duration.ofMillis(10000), 1024);
+//
+//		for (int i = 0; i < 20; i++) {
+//			counter.add(i, 10);
+//			ThreadUtil.sleep(500);
+//		}
+//
+//		for (int i = 0; i < 20; i++) {
+//			System.out.println(counter.getValue());
+//			ThreadUtil.sleep(2000);
+//		}
 
-		for (int i = 0; i < 20; i++) {
-			counter.add(i, 10);
-			ThreadUtil.sleep(500);
-		}
+		MutableLongLongMap map = ECollections.newLongLongHashMap(1024);
 
-		for (int i = 0; i < 20; i++) {
-			System.out.println(counter.getValue());
-			ThreadUtil.sleep(2000);
-		}
+		map.put(1, 10);
+
+		System.out.println(-19 + -15);
 
 	}
 
 	@Override
 	public LazyLoadingExpirationCounter removeHistoryDelta(long tag) {
 		long delta = tagToDelta.get(tag);
+		if (delta == 0)
+			return this;
 		tagToDelta.remove(tag);
+		value -= delta;
+		return this;
+	}
+
+	@Override
+	public LazyLoadingExpirationCounter removeHistoryDelta(long tag, long delta) {
+		long saveDelta = tagToDelta.get(tag);
+		if (saveDelta == 0)
+			return this;
+		tagToDelta.put(tag, saveDelta - delta);
 		value -= delta;
 		return this;
 	}

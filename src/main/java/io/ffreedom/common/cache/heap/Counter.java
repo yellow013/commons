@@ -7,6 +7,8 @@ public interface Counter<T extends Counter<?>> {
 	T subtract(long tag, long delta);
 
 	T removeHistoryDelta(long tag);
+	
+	T removeHistoryDelta(long tag, long delta);
 
 	default T increment(long tag) {
 		return add(tag, 1);

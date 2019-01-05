@@ -10,6 +10,7 @@ import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.map.primitive.MutableIntDoubleMap;
+import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableLongDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableLongIntMap;
@@ -30,6 +31,7 @@ import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.map.mutable.primitive.DoubleIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap;
@@ -44,7 +46,7 @@ import org.eclipse.collections.impl.set.mutable.primitive.IntHashSet;
 import org.eclipse.collections.impl.set.mutable.primitive.LongHashSet;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
-public final class EclipseCollections {
+public final class ECollections {
 
 	/**
 	 * primitive map
@@ -71,6 +73,14 @@ public final class EclipseCollections {
 
 	public static final MutableIntDoubleMap newIntDoubleHashMap(int size) {
 		return new IntDoubleHashMap(size);
+	}
+
+	public static final MutableIntIntMap newIntIntHashMap() {
+		return new IntIntHashMap();
+	}
+
+	public static final MutableIntIntMap newIntIntHashMap(int size) {
+		return new IntIntHashMap(size);
 	}
 
 	public static final MutableLongDoubleMap newLongDoubleHashMap() {
