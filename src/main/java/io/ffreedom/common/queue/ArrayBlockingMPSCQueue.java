@@ -28,7 +28,9 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			Processor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
-		this.queueName = queueName;
+		this.queueName = StringUtil.isNullOrEmpty(queueName)
+				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + String.valueOf(this.hashCode())
+				: queueName;
 		switch (mode) {
 		case Auto:
 			start();
@@ -73,6 +75,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		Auto, Manual, Delay
 	}
 
+	@Override
 	public boolean enQueue(T t) {
 		try {
 			if (!isClose.get()) {
@@ -87,6 +90,11 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
+	@Override
+	public String getQueueName() {
+		return queueName;
+	}
+
 	public void start() {
 		if (!isRun.compareAndSet(false, true)) {
 			logger.error("Error call ->  This queue is started.");
@@ -95,7 +103,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		ThreadUtil.startNewThread(() -> {
 			try {
 				while (isRun.get() || !queue.isEmpty()) {
-					T t = queue.poll(5, TimeUnit.SECONDS);
+					T t = queue.poll(1, TimeUnit.SECONDS);
 					if (t != null)
 						processor.process(t);
 				}
@@ -104,9 +112,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			} catch (Exception e1) {
 				throw new RuntimeException(e1);
 			}
-		}, StringUtil.isNullOrEmpty(queueName)
-				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + String.valueOf(this.hashCode())
-				: queueName);
+		}, queueName);
 	}
 
 	@Override
@@ -117,12 +123,12 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoRunQueue(100, (value) -> {
-			System.out.println(value);
-		});
+		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoRunQueue(100,
+				(value) -> System.out.println(value));
 
 		int i = 0;
 
+		System.out.println(queue.getQueueName());
 		for (;;) {
 			if (i == 1000)
 				queue.stop();

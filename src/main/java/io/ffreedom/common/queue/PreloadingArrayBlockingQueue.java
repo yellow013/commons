@@ -88,4 +88,10 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 
 	}
 
+	@Override
+	public String getQueueName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

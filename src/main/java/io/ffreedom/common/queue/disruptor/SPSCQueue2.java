@@ -117,4 +117,10 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	}
 
+	@Override
+	public String getQueueName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
