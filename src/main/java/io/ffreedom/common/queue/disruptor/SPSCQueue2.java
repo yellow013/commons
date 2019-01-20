@@ -68,9 +68,10 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 		public void onData(T t) {
 			ringBuffer.publishEvent(new EventTranslator<T>() {
+
 				@Override
 				public void translateTo(T event, long sequence) {
-					// TODO 实现未完成
+					// TODO Auto-generated method stub
 				}
 			});
 		}
