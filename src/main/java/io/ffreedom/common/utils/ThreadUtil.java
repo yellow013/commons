@@ -1,9 +1,13 @@
 package io.ffreedom.common.utils;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.functional.Runner;
 import io.ffreedom.common.log.ErrorLogger;
 import io.ffreedom.common.log.LoggerFactory;
 
@@ -83,6 +87,36 @@ public final class ThreadUtil {
 
 	public final static Thread startNewThread(Runnable runnable, String threadName) {
 		return startThread(newThread(runnable, threadName));
+	}
+
+	public final static Timer startNewTimerTask(Runner runner, Date firstTime) {
+		return startNewTimerTask(runner, firstTime.getTime());
+	}
+
+	public final static Timer startNewTimerTask(Runner runner, long delay) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				runner.run();
+			}
+		}, delay);
+		return timer;
+	}
+
+	public final static Timer startNewTimerTask(Runner runner, Date firstTime, long period) {
+		return startNewTimerTask(runner, firstTime.getTime(), period);
+	}
+
+	public final static Timer startNewTimerTask(Runner runner, long delay, long period) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				runner.run();
+			}
+		}, delay, period);
+		return timer;
 	}
 
 }
