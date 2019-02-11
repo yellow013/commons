@@ -1,6 +1,6 @@
 package io.ffreedom.common.collect.limited;
 
-public abstract class LimitedContainer<E> {
+abstract class LimitedContainer<E> {
 
 	private int head = 0;
 	private int tail = 0;
