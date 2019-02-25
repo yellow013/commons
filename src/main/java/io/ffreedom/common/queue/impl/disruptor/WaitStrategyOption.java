@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.disruptor;
+package io.ffreedom.common.queue.impl.disruptor;
 
 public enum WaitStrategyOption {
 

@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue;
+package io.ffreedom.common.queue.impl;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.queue.base.SCQueue;
+import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
 
@@ -76,7 +76,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 	}
 
 	@Override
-	public boolean enQueue(T t) {
+	public boolean enqueue(T t) {
 		try {
 			if (!isClose.get()) {
 				logger.error("ArrayBlockingMPSCQueue.enQueue(t) failure, This queue is closed...");
@@ -132,7 +132,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		for (;;) {
 			if (i == 1000)
 				queue.stop();
-			queue.enQueue(++i);
+			queue.enqueue(++i);
 		}
 
 	}

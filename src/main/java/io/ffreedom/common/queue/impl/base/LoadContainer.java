@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.base;
+package io.ffreedom.common.queue.impl.base;
 
 public class LoadContainer<T> {
 

@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.disruptor;
+package io.ffreedom.common.queue.impl.disruptor;
 
 import java.util.function.Supplier;
 
@@ -13,7 +13,7 @@ import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.queue.base.SCQueue;
+import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
 public class SPSCQueue2<T> extends SCQueue<T> {
@@ -78,7 +78,7 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 	}
 
 	@Override
-	public boolean enQueue(T t) {
+	public boolean enqueue(T t) {
 		try {
 			if (isStop)
 				return false;
@@ -109,7 +109,7 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;
 			for (;;) {
-				queue.enQueue(++i);
+				queue.enqueue(++i);
 				ThreadUtil.sleep(5000);
 			}
 		});
