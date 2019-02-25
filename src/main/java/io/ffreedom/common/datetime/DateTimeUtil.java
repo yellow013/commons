@@ -1,17 +1,17 @@
 package io.ffreedom.common.datetime;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
-
-import io.ffreedom.common.utils.StringUtil;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.ThreadSafe;
+
+import io.ffreedom.common.utils.StringUtil;
 
 @ThreadSafe
 public final class DateTimeUtil {
@@ -78,17 +78,16 @@ public final class DateTimeUtil {
 	}
 
 	@CheckForNull
-	public final static Date strToDate(DateTimeStyle style, String str) {
+	public final static TemporalAccessor strToDate(DateTimeStyle style, String str) {
 		try {
-			return str.length() == style.getPattern().length() ? style.getDateFormat().parse(str) : null;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
+			return str.length() == style.getPattern().length() ? style.getFormatter().parse(str) : null;
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
 	public final static LocalDateTime strToLocalDateTime(DateTimeStyle style, String str) {
-		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getDateTimeFormatter()) : null;
+		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getFormatter()) : null;
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(Date date) {
@@ -100,14 +99,14 @@ public final class DateTimeUtil {
 	}
 
 	public final static String now(DateTimeStyle style) {
-		return style.getDateTimeFormatter().format(LocalDateTime.now());
+		return style.getFormatter().format(LocalDateTime.now());
 	}
 
-	private final static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
+	private static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
 
-	private final static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(
+	private static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(
 			currentDate.get().minusDays(1));
-	private final static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
+	private static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
 
 	public final static LocalDate getCurrentDate() {
 		return currentDate.get();

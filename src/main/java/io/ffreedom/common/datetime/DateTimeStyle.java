@@ -6,71 +6,103 @@ import java.time.format.DateTimeFormatter;
 
 public enum DateTimeStyle {
 
-	HHMM(DatePattern.HHMM),
+	HHMM(Pattern.HHMM),
 
-	HHMMSS(DatePattern.HHMMSS),
+	HHMMSS(Pattern.HHMMSS),
 
-	HH_MM_SS(DatePattern.HH_MM_SS),
-	
-	YYYYMMDD(DatePattern.YYYYMMDD),
+	HH_MM_SS(Pattern.HH_MM_SS),
 
-	YYYYMMDD_HHMMSS(DatePattern.YYYYMMDD_HHMMSS),
+	YYYYMMDD(Pattern.YYYYMMDD),
 
-	YYYY_MM_DD(DatePattern.YYYY_MM_DD),
+	YYYYMMDDHHMMSS(Pattern.YYYYMMDDHHMMSS),
 
-	YYYY_MM_DD_HH_MM_SS(DatePattern.YYYY_MM_DD_HH_MM_SS),
+	YYYYMMDD_HHMMSS(Pattern.YYYYMMDD_HHMMSS),
 
-	HH_MM_SS_MILLISECOND(DatePattern.HH_MM_SS_MILLISECOND),
+	YYYY_MM_DD(Pattern.YYYY_MM_DD),
 
-	HH_MM_SS_MICROSECOND(DatePattern.HH_MM_SS_MICROSECOND),
+	YYYY_MM_DD_HH_MM_SS(Pattern.YYYY_MM_DD_HH_MM_SS),
 
-	HH_MM_SS_NANOSECOND(DatePattern.HH_MM_SS_NANOSECOND),
+	HH_MM_SS_MILLISECOND(Pattern.HH_MM_SS_MILLISECOND),
 
-	YYYYMMDD_HH_MM_SS_MILLISECOND(DatePattern.YYYYMMDD_HH_MM_SS_MILLISECOND),
+	HH_MM_SS_MICROSECOND(Pattern.HH_MM_SS_MICROSECOND),
 
-	YYYYMMDD_HH_MM_SS_MICROSECOND(DatePattern.YYYYMMDD_HH_MM_SS_MICROSECOND),
+	HH_MM_SS_NANOSECOND(Pattern.HH_MM_SS_NANOSECOND),
 
-	YYYYMMDD_HH_MM_SS_NANOSECOND(DatePattern.YYYYMMDD_HH_MM_SS_NANOSECOND),
+	YYYYMMDD_HH_MM_SS_MILLISECOND(Pattern.YYYYMMDD_HH_MM_SS_MILLISECOND),
 
-	YYYY_MM_DD_HH_MM_SS_MILLISECOND(DatePattern.YYYY_MM_DD_HH_MM_SS_MILLISECOND),
+	YYYYMMDD_HH_MM_SS_MICROSECOND(Pattern.YYYYMMDD_HH_MM_SS_MICROSECOND),
 
-	YYYY_MM_DD_HH_MM_SS_MICROSECOND(DatePattern.YYYY_MM_DD_HH_MM_SS_MICROSECOND),
+	YYYYMMDD_HH_MM_SS_NANOSECOND(Pattern.YYYYMMDD_HH_MM_SS_NANOSECOND),
 
-	YYYY_MM_DD_HH_MM_SS_NANOSECOND(DatePattern.YYYY_MM_DD_HH_MM_SS_NANOSECOND),
+	YYYY_MM_DD_HH_MM_SS_MILLISECOND(Pattern.YYYY_MM_DD_HH_MM_SS_MILLISECOND),
+
+	YYYY_MM_DD_HH_MM_SS_MICROSECOND(Pattern.YYYY_MM_DD_HH_MM_SS_MICROSECOND),
+
+	YYYY_MM_DD_HH_MM_SS_NANOSECOND(Pattern.YYYY_MM_DD_HH_MM_SS_NANOSECOND),
 
 	;
 
+	private interface Pattern {
+
+		String HHMM = "HHmm";
+
+		String HHMMSS = "HHmmss";
+
+		String HH_MM_SS = "HH:mm:ss";
+
+		String YYYYMMDD = "yyyyMMdd";
+
+		String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+
+		String YYYYMMDD_HHMMSS = "yyyyMMdd-HHmmss";
+
+		String YYYY_MM_DD = "yyyy-MM-dd";
+
+		String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+
+		String HH_MM_SS_MILLISECOND = "HH:mm:ss.SSS";
+
+		String HH_MM_SS_MICROSECOND = "HH:mm:ss.SSSSSS";
+
+		String HH_MM_SS_NANOSECOND = "HH:mm:ss.SSSSSSSSS";
+
+		String YYYYMMDD_HH_MM_SS_MILLISECOND = "yyyyMMdd HH:mm:ss.SSS";
+
+		String YYYYMMDD_HH_MM_SS_MICROSECOND = "yyyyMMdd HH:mm:ss.SSSSSS";
+
+		String YYYYMMDD_HH_MM_SS_NANOSECOND = "yyyyMMdd HH:mm:ss.SSSSSSSSS";
+
+		String YYYY_MM_DD_HH_MM_SS_MILLISECOND = "yyyy-MM-dd HH:mm:ss.SSS";
+
+		String YYYY_MM_DD_HH_MM_SS_MICROSECOND = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+
+		String YYYY_MM_DD_HH_MM_SS_NANOSECOND = "yyyy-MM-dd HH:mm:ss.SSSSSSSSS";
+
+	}
+
 	private String pattern;
 
-	private final ThreadLocal<DateFormat> threadLocalDateFormat;
-
-	private final DateTimeFormatter dateTimeFormatter;
+	private final DateTimeFormatter formatter;
 
 	private DateTimeStyle(String pattern) {
 		this.pattern = pattern;
-		this.threadLocalDateFormat = new ThreadLocal<>();
-		this.threadLocalDateFormat.set(new SimpleDateFormat(pattern));
-		this.dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+		this.formatter = DateTimeFormatter.ofPattern(pattern);
 	}
 
 	public String getPattern() {
 		return pattern;
 	}
 
+	public DateTimeFormatter getFormatter() {
+		return formatter;
+	}
+
 	public DateFormat newDateFormat() {
 		return new SimpleDateFormat(pattern);
 	}
 
-	public DateTimeFormatter newDateTimeFormatter() {
+	public DateTimeFormatter newFormatter() {
 		return DateTimeFormatter.ofPattern(pattern);
-	}
-
-	public DateFormat getDateFormat() {
-		return threadLocalDateFormat.get();
-	}
-
-	public DateTimeFormatter getDateTimeFormatter() {
-		return dateTimeFormatter;
 	}
 
 	public static void main(String[] args) {

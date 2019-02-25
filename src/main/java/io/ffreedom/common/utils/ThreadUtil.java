@@ -119,4 +119,12 @@ public final class ThreadUtil {
 		return timer;
 	}
 
+	public final static void join(Thread thread) {
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
 }
