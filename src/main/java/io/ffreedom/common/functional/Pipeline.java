@@ -8,8 +8,8 @@ public interface Pipeline<IN, OUT> extends Function<IN, OUT>{
 	OUT stream(IN in);
 	
 	@Override
-	default OUT apply(IN i) {
-		return stream(i);
+	default OUT apply(IN in) {
+		return stream(in);
 	}
 
 }

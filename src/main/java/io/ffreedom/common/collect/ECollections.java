@@ -48,6 +48,9 @@ import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
 public final class ECollections {
 
+	private ECollections() {
+	}
+
 	/**
 	 * primitive map
 	 */

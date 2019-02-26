@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue;
+package io.ffreedom.common.queue.impl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
@@ -9,8 +9,8 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.log.LoggerFactory;
-import io.ffreedom.common.queue.base.LoadContainer;
-import io.ffreedom.common.queue.base.MCQueue;
+import io.ffreedom.common.queue.api.MCQueue;
+import io.ffreedom.common.queue.impl.base.LoadContainer;
 
 @ThreadSafe
 public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
@@ -45,7 +45,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	@Override
-	public boolean enQueue(T t) {
+	public boolean enqueue(T t) {
 		try {
 			lock.lockInterruptibly();
 			while (arrayCount.get() == size)
@@ -65,7 +65,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	@Override
-	public T deQueue() {
+	public T dequeue() {
 		try {
 			lock.lockInterruptibly();
 			while (arrayCount.get() == 0)
