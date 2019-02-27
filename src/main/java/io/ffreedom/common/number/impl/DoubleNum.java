@@ -3,7 +3,7 @@ package io.ffreedom.common.number.impl;
 import io.ffreedom.common.number.api.Num;
 import io.ffreedom.common.utils.DoubleUtil;
 
-public final class DoubleNum implements Num<DoubleNum> {
+public class DoubleNum implements Num<DoubleNum> {
 
 	private double value;
 	private boolean isPrecision8;
@@ -23,11 +23,6 @@ public final class DoubleNum implements Num<DoubleNum> {
 
 	public DoubleNum copy() {
 		return new DoubleNum(value, isPrecision8);
-	}
-
-	@Override
-	public int compareTo(DoubleNum o) {
-		return 0;
 	}
 
 	@Override
@@ -67,92 +62,53 @@ public final class DoubleNum implements Num<DoubleNum> {
 	}
 
 	@Override
-	public DoubleNum sqrt() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DoubleNum sqrt(int precision) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double abs() {
-		return Math.abs(value);
-
-	}
-
-	@Override
 	public boolean isZero() {
 		return value == Num.DoubleZero;
 	}
 
 	@Override
 	public boolean isPositive() {
-		// TODO Auto-generated method stub
-		return false;
+		return value > Num.DoubleZero;
 	}
 
 	@Override
 	public boolean isPositiveOrZero() {
-		// TODO Auto-generated method stub
-		return false;
+		return value >= Num.DoubleZero;
 	}
 
 	@Override
 	public boolean isNegative() {
-		// TODO Auto-generated method stub
-		return false;
+		return value < Num.DoubleZero;
 	}
 
 	@Override
 	public boolean isNegativeOrZero() {
-		// TODO Auto-generated method stub
-		return false;
+		return value <= Num.DoubleZero;
 	}
 
 	@Override
 	public boolean isEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value == other.doubleValue();
 	}
 
 	@Override
 	public boolean isGreaterThan(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value > other.doubleValue();
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value >= other.doubleValue();
 	}
 
 	@Override
 	public boolean isLessThan(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value < other.doubleValue();
 	}
 
 	@Override
 	public boolean isLessThanOrEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public DoubleNum min(Num<?> other) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DoubleNum max(Num<?> other) {
-		// TODO Auto-generated method stub
-		return null;
+		return value <= other.doubleValue();
 	}
 
 	@Override
