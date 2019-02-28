@@ -3,7 +3,7 @@ package io.ffreedom.common.number.impl;
 import io.ffreedom.common.number.api.Num;
 import io.ffreedom.common.utils.DoubleUtil;
 
-public class DoubleNum implements Num<DoubleNum> {
+public final class DoubleNum implements Num<DoubleNum> {
 
 	private double value;
 	private boolean isPrecision8;
@@ -21,6 +21,7 @@ public class DoubleNum implements Num<DoubleNum> {
 		return new DoubleNum(value, true);
 	}
 
+	@Override
 	public DoubleNum copy() {
 		return new DoubleNum(value, isPrecision8);
 	}
@@ -125,10 +126,10 @@ public class DoubleNum implements Num<DoubleNum> {
 	public long longValue() {
 		return Double.valueOf(value).longValue();
 	}
-
+	
 	@Override
-	public float floatValue() {
-		return (float) value;
+	public boolean isNaN() {
+		return Double.isNaN(value);
 	}
 
 }

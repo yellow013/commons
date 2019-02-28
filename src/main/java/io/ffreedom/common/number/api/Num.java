@@ -3,9 +3,10 @@ package io.ffreedom.common.number.api;
 public interface Num<N extends Num<?>> extends Comparable<N> {
 
 	int IntZero = 0;
-	float FloatZero = 0.0F;
 	long LongZero = 0L;
 	double DoubleZero = 0.0D;
+	
+	N copy();
 
 	N plusBy(Num<?> augend);
 
@@ -53,14 +54,6 @@ public interface Num<N extends Num<?>> extends Comparable<N> {
 		return Math.max(longValue(), other);
 	}
 
-	default float min(float other) {
-		return Math.min(floatValue(), other);
-	}
-
-	default float max(float other) {
-		return Math.max(floatValue(), other);
-	}
-
 	default double min(double other) {
 		return Math.min(doubleValue(), other);
 	}
@@ -73,13 +66,11 @@ public interface Num<N extends Num<?>> extends Comparable<N> {
 		return false;
 	}
 
-	double doubleValue();
-
 	int intValue();
 
 	long longValue();
 
-	float floatValue();
+	double doubleValue();
 
 	@Override
 	int hashCode();
