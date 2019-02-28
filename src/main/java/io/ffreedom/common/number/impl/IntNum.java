@@ -76,8 +76,7 @@ public final class IntNum implements Num<IntNum> {
 
 	@Override
 	public boolean isEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value == other.intValue();
 	}
 
 	@Override
