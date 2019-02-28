@@ -39,7 +39,7 @@ public final class IntNum implements Num<IntNum> {
 
 	@Override
 	public IntNum dividedBy(Num<?> divisor) {
-		value *= divisor.intValue();
+		value /= divisor.intValue();
 		return this;
 	}
 
@@ -81,44 +81,37 @@ public final class IntNum implements Num<IntNum> {
 
 	@Override
 	public boolean isGreaterThan(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value > other.intValue();
 	}
 
 	@Override
 	public boolean isGreaterThanOrEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value >= other.intValue();
 	}
 
 	@Override
 	public boolean isLessThan(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value < other.intValue();
 	}
 
 	@Override
 	public boolean isLessThanOrEqual(Num<?> other) {
-		// TODO Auto-generated method stub
-		return false;
+		return value <= other.intValue();
 	}
 
 	@Override
 	public double doubleValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return value;
 	}
 
 	@Override
 	public int intValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return value;
 	}
 
 	@Override
 	public long longValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return value;
 	}
 
 }

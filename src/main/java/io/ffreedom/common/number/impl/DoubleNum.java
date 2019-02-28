@@ -119,14 +119,14 @@ public final class DoubleNum implements Num<DoubleNum> {
 
 	@Override
 	public int intValue() {
-		return Double.valueOf(value).intValue();
+		return (int) value;
 	}
 
 	@Override
 	public long longValue() {
-		return Double.valueOf(value).longValue();
+		return (long) value;
 	}
-	
+
 	@Override
 	public boolean isNaN() {
 		return Double.isNaN(value);
