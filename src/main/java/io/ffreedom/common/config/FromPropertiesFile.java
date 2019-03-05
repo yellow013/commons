@@ -11,13 +11,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.utils.FileUtil;
 import io.ffreedom.common.utils.StringUtil;
 
 public final class FromPropertiesFile {
 
-	private static Logger logger = LoggerFactory.getLogger(FromPropertiesFile.class);
+	private static Logger logger = CommonLoggerFactory.getLogger(FromPropertiesFile.class);
 	/**
 	 * TODO 增加重新加载配置文件的功能
 	 */

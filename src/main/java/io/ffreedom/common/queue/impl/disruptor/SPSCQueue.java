@@ -9,7 +9,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.queue.impl.base.LoadContainer;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -23,7 +23,7 @@ import io.ffreedom.common.utils.ThreadUtil;
 
 public class SPSCQueue<T> extends SCQueue<T> {
 
-	private Logger logger = LoggerFactory.getLogger(SPSCQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(getClass());
 
 	private Disruptor<LoadContainer<T>> disruptor;
 

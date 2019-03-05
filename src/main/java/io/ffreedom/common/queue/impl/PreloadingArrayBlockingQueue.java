@@ -8,7 +8,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.queue.api.MCQueue;
 import io.ffreedom.common.queue.impl.base.LoadContainer;
 
@@ -28,7 +28,7 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	private Condition notEmpty;
 	private Condition notFull;
 
-	private Logger logger = LoggerFactory.getLogger(PreloadingArrayBlockingQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(PreloadingArrayBlockingQueue.class);
 
 	@SuppressWarnings("unchecked")
 	public PreloadingArrayBlockingQueue(int size) {

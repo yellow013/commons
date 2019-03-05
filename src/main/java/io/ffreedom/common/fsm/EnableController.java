@@ -21,7 +21,6 @@ public final class EnableController implements Enable {
 	@Override
 	public void disable() {
 		this.isEnable = false;
-
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.functional.Processor;
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.utils.StringUtil;
 import io.ffreedom.common.utils.ThreadUtil;
@@ -16,7 +16,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private ArrayBlockingQueue<T> queue;
 
-	private Logger logger = LoggerFactory.getLogger(ArrayBlockingMPSCQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(ArrayBlockingMPSCQueue.class);
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
 
