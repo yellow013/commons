@@ -3,7 +3,6 @@ package io.ffreedom.common.param;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.Temporal;
 
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableIntBooleanMap;
@@ -23,7 +22,9 @@ public final class ParamMap<K extends ParamKey> {
 	private MutableIntIntMap integerParamMap = new IntIntHashMap(32);
 	private MutableIntDoubleMap doubleParamMap = new IntDoubleHashMap(32);
 	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>(32);
-	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>(32);
+	private MutableIntObjectMap<LocalDateTime> datetimeParamMap = new IntObjectHashMap<>(32);
+	private MutableIntObjectMap<LocalDate> dateParamMap = new IntObjectHashMap<>(32);
+	private MutableIntObjectMap<LocalTime> timeParamMap = new IntObjectHashMap<>(32);
 
 	public ParamMap(Initializer<MutableMap<K, Object>> initializer) {
 		MutableMap<K, Object> initMap = initializer.initialize();
@@ -73,24 +74,15 @@ public final class ParamMap<K extends ParamKey> {
 	}
 
 	public LocalDateTime getDateTime(K key) {
-		if (key.getParamType() == ParamType.DATETIME) {
-			return (LocalDateTime) temporalParamMap.get(key.getKeyId());
-		}
-		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not DATETIME");
+		return datetimeParamMap.get(key.getKeyId());
 	}
 
 	public LocalDate getDate(K key) {
-		if (key.getParamType() == ParamType.DATE) {
-			return (LocalDate) temporalParamMap.get(key.getKeyId());
-		}
-		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not DATE");
+		return dateParamMap.get(key.getKeyId());
 	}
 
 	public LocalTime getTime(K key) {
-		if (key.getParamType() == ParamType.TIME) {
-			return (LocalTime) temporalParamMap.get(key.getKeyId());
-		}
-		throw new IllegalArgumentException(key.fullName() + " -> ParamType is not TIME");
+		return timeParamMap.get(key.getKeyId());
 	}
 
 	private void putParam(K key, boolean value) {
@@ -109,8 +101,16 @@ public final class ParamMap<K extends ParamKey> {
 		stringParamMap.put(key.getKeyId(), value);
 	}
 
-	private void putParam(K key, Temporal value) {
-		temporalParamMap.put(key.getKeyId(), value);
+	private void putParam(K key, LocalDateTime value) {
+		datetimeParamMap.put(key.getKeyId(), value);
+	}
+
+	private void putParam(K key, LocalDate value) {
+		dateParamMap.put(key.getKeyId(), value);
+	}
+
+	private void putParam(K key, LocalTime value) {
+		timeParamMap.put(key.getKeyId(), value);
 	}
 
 }
