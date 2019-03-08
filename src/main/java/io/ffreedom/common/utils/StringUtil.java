@@ -48,6 +48,10 @@ public final class StringUtil {
 		}
 		return true;
 	}
+	
+	public static boolean notDecimal(String str) {
+		return !isDecimal(str);
+	}
 
 	public static void main(String[] args) {
 

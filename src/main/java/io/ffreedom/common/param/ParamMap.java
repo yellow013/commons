@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
 
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.primitive.MutableIntBooleanMap;
 import org.eclipse.collections.api.map.primitive.MutableIntDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
@@ -25,30 +25,30 @@ public final class ParamMap<K extends ParamKey> {
 	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>(16);
 	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>(16);
 
-	public ParamMap(Initializer<MutableMap<K, Object>> initializer) {
-		MutableMap<K, Object> initMap = initializer.initialize();
-		initMap.keySet().forEach(key -> {
+	public ParamMap(Initializer<ImmutableMap<K, Object>> initializer) {
+		ImmutableMap<K, Object> initMap = initializer.initialize();
+		initMap.forEachKeyValue((K key, Object value) -> {
 			switch (key.getParamType()) {
 			case BOOLEAN:
-				putParam(key, (boolean) initMap.get(key));
+				putParam(key, (boolean) value);
 				break;
 			case INTEGER:
-				putParam(key, (int) initMap.get(key));
+				putParam(key, (int) value);
 				break;
 			case DOUBLE:
-				putParam(key, (double) initMap.get(key));
+				putParam(key, (double) value);
 				break;
 			case STRING:
-				putParam(key, (String) initMap.get(key));
+				putParam(key, (String) value);
 				break;
 			case DATETIME:
-				putParam(key, (LocalDateTime) initMap.get(key));
+				putParam(key, (LocalDateTime) value);
 				break;
 			case DATE:
-				putParam(key, (LocalDate) initMap.get(key));
+				putParam(key, (LocalDate) value);
 				break;
 			case TIME:
-				putParam(key, (LocalTime) initMap.get(key));
+				putParam(key, (LocalTime) value);
 				break;
 			default:
 				throw new IllegalArgumentException("");

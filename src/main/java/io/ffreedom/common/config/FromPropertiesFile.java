@@ -18,6 +18,7 @@ import io.ffreedom.common.utils.StringUtil;
 public final class FromPropertiesFile {
 
 	private static Logger logger = CommonLoggerFactory.getLogger(FromPropertiesFile.class);
+
 	/**
 	 * TODO 增加重新加载配置文件的功能
 	 */
@@ -48,10 +49,10 @@ public final class FromPropertiesFile {
 					propertiesMap.put(propertyName, propertyValue);
 				}
 			} catch (FileNotFoundException e) {
-				logger.error("File -> [{}} is not found");
+				logger.error("File -> [{}] is not found");
 				throw new RuntimeException(e);
 			} catch (IOException e) {
-				logger.error("File -> [{}} failed to load");
+				logger.error("File -> [{}] load failed");
 				throw new RuntimeException(e);
 			}
 		}
@@ -80,7 +81,7 @@ public final class FromPropertiesFile {
 
 	public static int getIntProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isDecimal(propertyValue)) {
+		if (StringUtil.notDecimal(propertyValue)) {
 			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
@@ -95,7 +96,7 @@ public final class FromPropertiesFile {
 
 	public static long getLongProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isDecimal(propertyValue)) {
+		if (StringUtil.notDecimal(propertyValue)) {
 			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
@@ -110,7 +111,7 @@ public final class FromPropertiesFile {
 
 	public static double getDoubleProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
-		if (StringUtil.isDecimal(propertyValue)) {
+		if (StringUtil.notDecimal(propertyValue)) {
 			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
