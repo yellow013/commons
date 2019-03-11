@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
+import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
@@ -29,6 +30,7 @@ import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
+import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.map.mutable.primitive.DoubleIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
@@ -149,6 +151,14 @@ public final class ECollections {
 	/**
 	 * map
 	 */
+	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap() {
+		return ConcurrentHashMap.newMap();
+	}
+
+	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int size) {
+		return ConcurrentHashMap.newMap(size);
+	}
+
 	public static final <K, V> MutableMap<K, V> newUnifiedMap() {
 		return UnifiedMap.newMap();
 	}

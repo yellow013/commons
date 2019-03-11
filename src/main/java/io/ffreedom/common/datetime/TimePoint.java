@@ -8,41 +8,33 @@ public final class TimePoint implements Comparable<TimePoint> {
 	private int time;
 	private int nano;
 
-	public TimePoint() {
-
+	public TimePoint(int date, int time, int nano) {
+		super();
+		this.date = date;
+		this.time = time;
+		this.nano = nano;
 	}
 
 	public static TimePoint now() {
 		LocalDateTime now = LocalDateTime.now();
-		return new TimePoint().setDate(now.getYear() * 10000 + now.getMonthValue() * 100 + now.getDayOfMonth())
-				.setTime(now.getHour() * 10000 + now.getMinute() * 100 + now.getSecond()).setNano(now.getNano());
+		return new TimePoint(now.getYear() * 10000 + now.getMonthValue() * 100 + now.getDayOfMonth(),
+				now.getHour() * 10000 + now.getMinute() * 100 + now.getSecond(), now.getNano());
+	}
+
+	public static TimePoint of(int date, int time, int nano) {
+		return new TimePoint(date, time, nano);
 	}
 
 	public int getDate() {
 		return date;
 	}
 
-	public TimePoint setDate(int date) {
-		this.date = date;
-		return this;
-	}
-
 	public int getTime() {
 		return time;
 	}
 
-	public TimePoint setTime(int time) {
-		this.time = time;
-		return this;
-	}
-
 	public int getNano() {
 		return nano;
-	}
-
-	public TimePoint setNano(int nano) {
-		this.nano = nano;
-		return this;
 	}
 
 	@Override
@@ -50,6 +42,16 @@ public final class TimePoint implements Comparable<TimePoint> {
 		return date < o.date ? -1
 				: date > o.date ? 1
 						: time < o.time ? -1 : time > o.time ? 1 : nano < o.nano ? -1 : nano > o.nano ? 1 : 0;
+	}
+
+	public static void main(String[] args) {
+
+		TimePoint now = TimePoint.now();
+
+		System.out.println(now.getDate());
+		System.out.println(now.getTime());
+		System.out.println(now.getNano());
+
 	}
 
 }
