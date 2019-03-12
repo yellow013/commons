@@ -3,10 +3,11 @@ package io.ffreedom.common.log;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.ffreedom.common.utils.StringUtil;
 
-public class LoggerFactory {
+public class CommonLoggerFactory {
 
 	public static Logger getLogger(Class<?> clazz) {
 		if (!LoggerSetter.isLogFolderSetted()) {
@@ -24,7 +25,7 @@ public class LoggerFactory {
 			if (StringUtil.isNullOrEmpty(logLevel))
 				LoggerSetter.setLogLevel(LogLevel.INFO);
 		}
-		return org.slf4j.LoggerFactory.getLogger(clazz);
+		return LoggerFactory.getLogger(clazz);
 	}
 
 	public static void main(String[] args) {
@@ -32,7 +33,7 @@ public class LoggerFactory {
 
 		LoggerSetter.setLogFileName("new");
 		LoggerSetter.setLogLevel(LogLevel.INFO);
-		Logger logger = getLogger(LoggerFactory.class);
+		Logger logger = getLogger(CommonLoggerFactory.class);
 
 		logger.warn("777");
 		logger.info("778");

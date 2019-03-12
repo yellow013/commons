@@ -12,13 +12,13 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
 public class SPSCQueue2<T> extends SCQueue<T> {
 
-	private Logger logger = LoggerFactory.getLogger(SPSCQueue2.class);
+	private Logger logger = CommonLoggerFactory.getLogger(SPSCQueue2.class);
 
 	private Disruptor<T> disruptor;
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
+import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
@@ -16,6 +17,7 @@ import org.eclipse.collections.api.map.primitive.MutableLongDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableLongIntMap;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
+import org.eclipse.collections.api.map.primitive.MutableObjectLongMap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.set.ImmutableSet;
@@ -28,6 +30,7 @@ import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
+import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.map.mutable.primitive.DoubleIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
@@ -37,6 +40,7 @@ import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongLongHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.ObjectLongHashMap;
 import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
 import org.eclipse.collections.impl.set.immutable.ImmutableSetFactoryImpl;
@@ -147,6 +151,14 @@ public final class ECollections {
 	/**
 	 * map
 	 */
+	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap() {
+		return ConcurrentHashMap.newMap();
+	}
+
+	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int size) {
+		return ConcurrentHashMap.newMap(size);
+	}
+
 	public static final <K, V> MutableMap<K, V> newUnifiedMap() {
 		return UnifiedMap.newMap();
 	}
@@ -169,6 +181,14 @@ public final class ECollections {
 
 	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {
 		return new LongObjectHashMap<>(size);
+	}
+
+	public static final <K> MutableObjectLongMap<K> newObjectLongHashMap() {
+		return new ObjectLongHashMap<>();
+	}
+
+	public static final <K> MutableObjectLongMap<K> newObjectLongHashMap(int size) {
+		return new ObjectLongHashMap<>(size);
 	}
 
 	/**

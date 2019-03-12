@@ -2,8 +2,14 @@ package io.ffreedom.common.fsm;
 
 public interface Enable {
 
-	boolean enabled();
+	boolean isEnabled();
 
-	void setEnable(boolean enable);
+	boolean isDisabled();
+
+	void disable();
+
+	void enable();
+	
+	
 
 }

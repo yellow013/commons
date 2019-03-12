@@ -86,6 +86,7 @@ public final class DateTimeUtil {
 		}
 	}
 
+	@CheckForNull
 	public final static LocalDateTime strToLocalDateTime(DateTimeStyle style, String str) {
 		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getFormatter()) : null;
 	}
@@ -104,8 +105,8 @@ public final class DateTimeUtil {
 
 	private static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
 
-	private static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(
-			currentDate.get().minusDays(1));
+	private static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(currentDate.get().minusDays(1));
+
 	private static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
 
 	public final static LocalDate getCurrentDate() {

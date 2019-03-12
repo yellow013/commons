@@ -9,7 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-import io.ffreedom.common.log.LoggerFactory;
+import io.ffreedom.common.log.CommonLoggerFactory;
 
 public class GuavaCacheMap<K, V> {
 
@@ -19,7 +19,7 @@ public class GuavaCacheMap<K, V> {
 	private long maximumSize;
 	private Duration duration;
 
-	private Logger logger = LoggerFactory.getLogger(GuavaCacheMap.class);
+	private Logger logger = CommonLoggerFactory.getLogger(GuavaCacheMap.class);
 
 	private GuavaCacheMap(CacheMapBuilder builder, CacheRefresher<K, V> refresher) {
 		this.maximumSize = builder.maximumSize;

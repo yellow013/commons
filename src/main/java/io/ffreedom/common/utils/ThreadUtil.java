@@ -8,15 +8,15 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.functional.Runner;
+import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.log.ErrorLogger;
-import io.ffreedom.common.log.LoggerFactory;
 
 public final class ThreadUtil {
 
 	private ThreadUtil() {
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(ThreadUtil.class);
+	private static Logger logger = CommonLoggerFactory.getLogger(ThreadUtil.class);
 
 	public final static void sleep(long millis) {
 		try {
