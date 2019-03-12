@@ -25,6 +25,7 @@ import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
+import org.eclipse.collections.api.set.sorted.ImmutableSortedSet;
 import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
@@ -48,6 +49,7 @@ import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 import org.eclipse.collections.impl.set.mutable.primitive.DoubleHashSet;
 import org.eclipse.collections.impl.set.mutable.primitive.IntHashSet;
 import org.eclipse.collections.impl.set.mutable.primitive.LongHashSet;
+import org.eclipse.collections.impl.set.sorted.immutable.ImmutableSortedSetFactoryImpl;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
 public final class ECollections {
@@ -250,8 +252,8 @@ public final class ECollections {
 	/**
 	 * immutable set
 	 */
-	public static final <E> ImmutableSet<E> newImmutableSet(Iterable<E> item) {
-		return ImmutableSetFactoryImpl.INSTANCE.withAll(item);
+	public static final <E> ImmutableSet<E> newImmutableSet(Iterable<E> items) {
+		return ImmutableSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
 	/**
@@ -262,10 +264,24 @@ public final class ECollections {
 	}
 
 	/**
+	 * immutable set
+	 */
+	public static final <E> ImmutableSortedSet<E> newImmutableSortedSet(Iterable<E> items) {
+		return ImmutableSortedSetFactoryImpl.INSTANCE.withAll(items);
+	}
+
+	/**
+	 * immutable set
+	 */
+	public static final <E> ImmutableSortedSet<E> newImmutableSortedSet(E[] es) {
+		return ImmutableSortedSetFactoryImpl.INSTANCE.with(es);
+	}
+
+	/**
 	 * immutable list
 	 */
-	public static final <E> ImmutableList<E> newImmutableList(Iterable<E> item) {
-		return ImmutableListFactoryImpl.INSTANCE.withAll(item);
+	public static final <E> ImmutableList<E> newImmutableList(Iterable<E> items) {
+		return ImmutableListFactoryImpl.INSTANCE.withAll(items);
 	}
 
 	public static final <E> ImmutableList<E> newImmutableList(E[] es) {
