@@ -24,7 +24,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private String queueName;
 
-	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTota,
+	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTotal,
 			Processor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(queueSize);
@@ -36,7 +36,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			start();
 			break;
 		case Delay:
-			ThreadUtil.sleep(delayTota, timeUnit);
+			ThreadUtil.sleep(timeUnit, delayTotal);
 			start();
 			break;
 		default:

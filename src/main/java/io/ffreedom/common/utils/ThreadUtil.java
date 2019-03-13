@@ -1,5 +1,6 @@
 package io.ffreedom.common.utils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -7,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.datetime.TimeZones;
 import io.ffreedom.common.functional.Runner;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.log.ErrorLogger;
@@ -37,7 +39,7 @@ public final class ThreadUtil {
 		}
 	}
 
-	public final static void sleep(long time, TimeUnit timeUnit) {
+	public final static void sleep(TimeUnit timeUnit, long time) {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
@@ -49,6 +51,10 @@ public final class ThreadUtil {
 
 	public final static Thread newThread(Runnable runnable) {
 		return new Thread(runnable);
+	}
+
+	public final static Thread newThread(Runnable runnable, String threadName) {
+		return new Thread(runnable, threadName);
 	}
 
 	public final static Thread newMaxPriorityThread(Runnable runnable) {
@@ -76,24 +82,27 @@ public final class ThreadUtil {
 		return startThread(newMinPriorityThread(runnable));
 	}
 
+	public final static Thread startNewThread(Runnable runnable, String threadName) {
+		return startThread(newThread(runnable, threadName));
+	}
+
 	private final static Thread startThread(Thread thread) {
 		thread.start();
 		return thread;
 	}
 
-	public final static Thread newThread(Runnable runnable, String threadName) {
-		return new Thread(runnable, threadName);
+	public final static Timer startNewDelayTask(LocalDateTime firstTime, Runner runner) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				runner.run();
+			}
+		}, Date.from(firstTime.atZone(TimeZones.SYS_DEFAULT).toInstant()));
+		return timer;
 	}
 
-	public final static Thread startNewThread(Runnable runnable, String threadName) {
-		return startThread(newThread(runnable, threadName));
-	}
-
-	public final static Timer startNewTimerTask(Runner runner, Date firstTime) {
-		return startNewTimerTask(runner, firstTime.getTime());
-	}
-
-	public final static Timer startNewTimerTask(Runner runner, long delay) {
+	public final static Timer startNewDelayTask(long delay, Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -104,11 +113,18 @@ public final class ThreadUtil {
 		return timer;
 	}
 
-	public final static Timer startNewTimerTask(Runner runner, Date firstTime, long period) {
-		return startNewTimerTask(runner, firstTime.getTime(), period);
+	public final static Timer startNewCycleTask(LocalDateTime firstTime, long period, Runner runner) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				runner.run();
+			}
+		}, Date.from(firstTime.atZone(TimeZones.SYS_DEFAULT).toInstant()), period);
+		return timer;
 	}
 
-	public final static Timer startNewTimerTask(Runner runner, long delay, long period) {
+	public final static Timer startNewCycleTask(long delay, long period, Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -123,6 +139,8 @@ public final class ThreadUtil {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
+			ErrorLogger.error(logger, e, "Thread join throw InterruptedException from thread -> id==[{}] name==[{}]",
+					thread.getId(), thread.getName());
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
