@@ -96,7 +96,11 @@ public final class ThreadUtil {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				runner.run();
+				try {
+					runner.run();
+				} catch (Exception e) {
+					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+				}
 			}
 		}, Date.from(firstTime.atZone(TimeZones.SYS_DEFAULT).toInstant()));
 		return timer;
@@ -107,31 +111,44 @@ public final class ThreadUtil {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				runner.run();
+				try {
+					runner.run();
+				} catch (Exception e) {
+					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+				}
 			}
 		}, delay);
 		return timer;
 	}
 
-	public final static Timer startNewCycleTask(LocalDateTime firstTime, long period, Runner runner) {
+	public final static Timer startNewCycleTask(LocalDateTime firstTime, TimeUnit timeUnit, long period,
+			Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				runner.run();
+				try {
+					runner.run();
+				} catch (Exception e) {
+					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+				}
 			}
-		}, Date.from(firstTime.atZone(TimeZones.SYS_DEFAULT).toInstant()), period);
+		}, Date.from(firstTime.atZone(TimeZones.SYS_DEFAULT).toInstant()), timeUnit.toMillis(period));
 		return timer;
 	}
 
-	public final static Timer startNewCycleTask(long delay, long period, Runner runner) {
+	public final static Timer startNewCycleTask(long delay, TimeUnit timeUnit, long period, Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				runner.run();
+				try {
+					runner.run();
+				} catch (Exception e) {
+					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+				}
 			}
-		}, delay, period);
+		}, delay, timeUnit.toMillis(period));
 		return timer;
 	}
 
