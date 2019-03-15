@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.list.primitive.MutableDoubleList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.api.map.ImmutableMap;
@@ -29,6 +30,7 @@ import org.eclipse.collections.api.set.sorted.ImmutableSortedSet;
 import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
 import org.eclipse.collections.impl.map.immutable.ImmutableMapFactoryImpl;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
@@ -60,7 +62,7 @@ public final class ECollections {
 	/**
 	 * primitive map
 	 */
-	public static final MutableLongLongMap newLongLongHashMap() {
+	public static MutableLongLongMap newLongLongHashMap() {
 		return new LongLongHashMap();
 	}
 
@@ -68,223 +70,235 @@ public final class ECollections {
 		return new LongLongHashMap(size);
 	}
 
-	public static final MutableLongIntMap newLongIntHashMap() {
+	public static MutableLongIntMap newLongIntHashMap() {
 		return new LongIntHashMap();
 	}
 
-	public static final MutableLongIntMap newLongIntHashMap(int size) {
+	public static MutableLongIntMap newLongIntHashMap(int size) {
 		return new LongIntHashMap(size);
 	}
 
-	public static final MutableIntDoubleMap newIntDoubleHashMap() {
+	public static MutableIntDoubleMap newIntDoubleHashMap() {
 		return new IntDoubleHashMap();
 	}
 
-	public static final MutableIntDoubleMap newIntDoubleHashMap(int size) {
+	public static MutableIntDoubleMap newIntDoubleHashMap(int size) {
 		return new IntDoubleHashMap(size);
 	}
 
-	public static final MutableIntIntMap newIntIntHashMap() {
+	public static MutableIntIntMap newIntIntHashMap() {
 		return new IntIntHashMap();
 	}
 
-	public static final MutableIntIntMap newIntIntHashMap(int size) {
+	public static MutableIntIntMap newIntIntHashMap(int size) {
 		return new IntIntHashMap(size);
 	}
 
-	public static final MutableLongDoubleMap newLongDoubleHashMap() {
+	public static MutableLongDoubleMap newLongDoubleHashMap() {
 		return new LongDoubleHashMap();
 	}
 
-	public static final MutableLongDoubleMap newLongDoubleHashMap(int size) {
+	public static MutableLongDoubleMap newLongDoubleHashMap(int size) {
 		return new LongDoubleHashMap(size);
 	}
 
-	public static final MutableDoubleIntMap newDoubleIntHashMap() {
+	public static MutableDoubleIntMap newDoubleIntHashMap() {
 		return new DoubleIntHashMap();
 	}
 
-	public static final MutableDoubleIntMap newDoubleIntHashMap(int size) {
+	public static MutableDoubleIntMap newDoubleIntHashMap(int size) {
 		return new DoubleIntHashMap(size);
 	}
 
 	/**
 	 * primitive list
 	 */
-	public static final MutableLongList newLongArrayList() {
+	public static MutableLongList newLongArrayList() {
 		return new LongArrayList();
 	}
 
-	public static final MutableLongList newLongArrayList(int initialCapacity) {
+	public static MutableLongList newLongArrayList(int initialCapacity) {
 		return new LongArrayList(initialCapacity);
 	}
 
-	public static final MutableLongList newLongArrayListWith(long... longs) {
+	public static MutableLongList newLongArrayListWith(long... longs) {
 		return new LongArrayList(longs);
+	}
+
+	public static MutableDoubleList newDoubleArrayList() {
+		return new DoubleArrayList();
+	}
+
+	public static MutableDoubleList newDoubleArrayList(int initialCapacity) {
+		return new DoubleArrayList(initialCapacity);
+	}
+
+	public static MutableDoubleList newDoubleArrayListWith(double... doubles) {
+		return new DoubleArrayList(doubles);
 	}
 
 	/**
 	 * primitive set
 	 */
-	public static final MutableIntSet newIntHashSet() {
+	public static MutableIntSet newIntHashSet() {
 		return new IntHashSet();
 	}
 
-	public static final MutableIntSet newIntHashSet(int size) {
+	public static MutableIntSet newIntHashSet(int size) {
 		return new IntHashSet(size);
 	}
 
-	public static final MutableIntSet newIntHashSetWith(int... ints) {
+	public static MutableIntSet newIntHashSetWith(int... ints) {
 		return new IntHashSet(ints);
 	}
 
-	public static final MutableDoubleSet newDoubleHashSet() {
+	public static MutableDoubleSet newDoubleHashSet() {
 		return new DoubleHashSet();
 	}
 
-	public static final MutableDoubleSet newDoubleHashSet(int size) {
+	public static MutableDoubleSet newDoubleHashSet(int size) {
 		return new DoubleHashSet(size);
 	}
 
-	public static final MutableDoubleSet newDoubleHashSetWith(double... doubles) {
+	public static MutableDoubleSet newDoubleHashSetWith(double... doubles) {
 		return new DoubleHashSet(doubles);
 	}
 
 	/**
 	 * map
 	 */
-	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap() {
+	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap() {
 		return ConcurrentHashMap.newMap();
 	}
 
-	public static final <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int size) {
+	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int size) {
 		return ConcurrentHashMap.newMap(size);
 	}
 
-	public static final <K, V> MutableMap<K, V> newUnifiedMap() {
+	public static <K, V> MutableMap<K, V> newUnifiedMap() {
 		return UnifiedMap.newMap();
 	}
 
-	public static final <K, V> MutableMap<K, V> newUnifiedMap(int size) {
+	public static <K, V> MutableMap<K, V> newUnifiedMap(int size) {
 		return UnifiedMap.newMap(size);
 	}
 
-	public static final <V> MutableIntObjectMap<V> newIntObjectHashMap() {
+	public static <V> MutableIntObjectMap<V> newIntObjectHashMap() {
 		return IntObjectHashMap.newMap();
 	}
 
-	public static final <V> MutableIntObjectMap<V> newIntObjectHashMap(int size) {
+	public static <V> MutableIntObjectMap<V> newIntObjectHashMap(int size) {
 		return new IntObjectHashMap<>(size);
 	}
 
-	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap() {
+	public static <V> MutableLongObjectMap<V> newLongObjectHashMap() {
 		return LongObjectHashMap.newMap();
 	}
 
-	public static final <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {
+	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {
 		return new LongObjectHashMap<>(size);
 	}
 
-	public static final <K> MutableObjectLongMap<K> newObjectLongHashMap() {
+	public static <K> MutableObjectLongMap<K> newObjectLongHashMap() {
 		return new ObjectLongHashMap<>();
 	}
 
-	public static final <K> MutableObjectLongMap<K> newObjectLongHashMap(int size) {
+	public static <K> MutableObjectLongMap<K> newObjectLongHashMap(int size) {
 		return new ObjectLongHashMap<>(size);
 	}
 
 	/**
 	 * set
 	 */
-	public static final <E> MutableSet<E> newUnifiedSet() {
+	public static <E> MutableSet<E> newUnifiedSet() {
 		return UnifiedSet.newSet();
 	}
 
-	public static final <E> MutableSet<E> newUnifiedSet(int size) {
+	public static <E> MutableSet<E> newUnifiedSet(int size) {
 		return UnifiedSet.newSet(size);
 	}
 
-	public static final <E> MutableSet<E> newUnifiedSet(Collection<E> collection) {
+	public static <E> MutableSet<E> newUnifiedSet(Collection<E> collection) {
 		return new UnifiedSet<>(collection);
 	}
 
-	public static final <E> MutableSortedSet<E> newTreeSortedSet() {
+	public static <E> MutableSortedSet<E> newTreeSortedSet() {
 		return TreeSortedSet.newSet();
 	}
 
-	public static final MutableLongSet newLongHashSet() {
+	public static MutableLongSet newLongHashSet() {
 		return new LongHashSet();
 	}
 
-	public static final MutableLongSet newLongHashSet(int size) {
+	public static MutableLongSet newLongHashSet(int size) {
 		return new LongHashSet(size);
 	}
 
 	/**
 	 * list
 	 */
-	public static final <E> MutableList<E> newFastList() {
+	public static <E> MutableList<E> newFastList() {
 		return FastList.newList();
 	}
 
-	public static final <E> MutableList<E> newFastList(int size) {
+	public static <E> MutableList<E> newFastList(int size) {
 		return FastList.newList(size);
 	}
 
 	/**
 	 * multimap
 	 */
-	public static final <K, V> MutableListMultimap<K, V> newFastListMultimap() {
+	public static <K, V> MutableListMultimap<K, V> newFastListMultimap() {
 		return FastListMultimap.newMultimap();
 	}
 
-	public static final <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap() {
+	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap() {
 		return UnifiedSetMultimap.newMultimap();
 	}
 
 	/**
 	 * immutable map
 	 */
-	public static final <K, V> ImmutableMap<K, V> newImmutableMap(Map<K, V> map) {
+	public static <K, V> ImmutableMap<K, V> newImmutableMap(Map<K, V> map) {
 		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
 	}
 
 	/**
 	 * immutable set
 	 */
-	public static final <E> ImmutableSet<E> newImmutableSet(Iterable<E> items) {
+	public static <E> ImmutableSet<E> newImmutableSet(Iterable<E> items) {
 		return ImmutableSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
 	/**
 	 * immutable set
 	 */
-	public static final <E> ImmutableSet<E> newImmutableSet(E[] es) {
+	public static <E> ImmutableSet<E> newImmutableSet(E[] es) {
 		return ImmutableSetFactoryImpl.INSTANCE.with(es);
 	}
 
 	/**
 	 * immutable set
 	 */
-	public static final <E> ImmutableSortedSet<E> newImmutableSortedSet(Iterable<E> items) {
+	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(Iterable<E> items) {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
 	/**
 	 * immutable set
 	 */
-	public static final <E> ImmutableSortedSet<E> newImmutableSortedSet(E[] es) {
+	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(E[] es) {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.with(es);
 	}
 
 	/**
 	 * immutable list
 	 */
-	public static final <E> ImmutableList<E> newImmutableList(Iterable<E> items) {
+	public static <E> ImmutableList<E> newImmutableList(Iterable<E> items) {
 		return ImmutableListFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	public static final <E> ImmutableList<E> newImmutableList(E[] es) {
+	public static <E> ImmutableList<E> newImmutableList(E[] es) {
 		return ImmutableListFactoryImpl.INSTANCE.with(es);
 	}
 
