@@ -9,7 +9,5 @@ public interface Enable {
 	void disable();
 
 	void enable();
-	
-	
 
 }

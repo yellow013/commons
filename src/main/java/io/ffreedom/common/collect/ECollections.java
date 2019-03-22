@@ -226,6 +226,10 @@ public final class ECollections {
 		return TreeSortedSet.newSet();
 	}
 
+	public static <E> MutableSortedSet<E> newTreeSortedSet(Iterable<E> items) {
+		return TreeSortedSet.newSet(items);
+	}
+
 	public static MutableLongSet newLongHashSet() {
 		return new LongHashSet();
 	}
@@ -270,23 +274,17 @@ public final class ECollections {
 		return ImmutableSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	/**
-	 * immutable set
-	 */
 	public static <E> ImmutableSet<E> newImmutableSet(E[] es) {
 		return ImmutableSetFactoryImpl.INSTANCE.with(es);
 	}
 
 	/**
-	 * immutable set
+	 * immutable sorted set
 	 */
 	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(Iterable<E> items) {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	/**
-	 * immutable set
-	 */
 	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(E[] es) {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.with(es);
 	}
