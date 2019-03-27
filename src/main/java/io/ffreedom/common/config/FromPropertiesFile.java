@@ -23,7 +23,7 @@ public final class FromPropertiesFile {
 	 * TODO 增加重新加载配置文件的功能
 	 */
 	// fileName
-	////// |- propertyName -> value
+	//// |- propertyName -> value
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> allPropertiesMap = new ConcurrentHashMap<>();
 
 	private static final String APPLICATION_FILE_NAME = "application";
@@ -59,9 +59,8 @@ public final class FromPropertiesFile {
 	}
 
 	private static ConcurrentHashMap<String, String> getPropertiesMap(String fileName) {
-		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX)) {
+		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		}
 		ConcurrentHashMap<String, String> propertiesMap = allPropertiesMap.get(fileName);
 		if (propertiesMap == null) {
 			propertiesMap = new ConcurrentHashMap<>();
