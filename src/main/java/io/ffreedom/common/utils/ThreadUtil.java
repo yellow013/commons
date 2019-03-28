@@ -24,8 +24,9 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e, "Call method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}",
-					millis, e.getMessage());
+			ErrorLogger.error(logger, e,
+					"Call static method ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
+					e.getMessage());
 		}
 	}
 
@@ -34,8 +35,8 @@ public final class ThreadUtil {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
 			ErrorLogger.error(logger, e,
-					"Call method ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis,
-					nanos, e.getMessage());
+					"Call static method ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}",
+					millis, nanos, e.getMessage());
 		}
 	}
 
@@ -44,8 +45,8 @@ public final class ThreadUtil {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
 			ErrorLogger.error(logger, e,
-					"Call method ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
-					timeUnit, e.getMessage());
+					"Call static method ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}",
+					time, timeUnit, e.getMessage());
 		}
 	}
 
@@ -61,8 +62,16 @@ public final class ThreadUtil {
 		return setThreadPriority(newThread(runnable), Thread.MAX_PRIORITY);
 	}
 
+	public final static Thread newMaxPriorityThread(Runnable runnable, String threadName) {
+		return setThreadPriority(newThread(runnable, threadName), Thread.MAX_PRIORITY);
+	}
+
 	public final static Thread newMinPriorityThread(Runnable runnable) {
 		return setThreadPriority(newThread(runnable), Thread.MIN_PRIORITY);
+	}
+
+	public final static Thread newMinPriorityThread(Runnable runnable, String threadName) {
+		return setThreadPriority(newThread(runnable, threadName), Thread.MIN_PRIORITY);
 	}
 
 	private final static Thread setThreadPriority(Thread thread, int priority) {
@@ -74,16 +83,24 @@ public final class ThreadUtil {
 		return startThread(newThread(runnable));
 	}
 
+	public final static Thread startNewThread(Runnable runnable, String threadName) {
+		return startThread(newThread(runnable, threadName));
+	}
+
 	public final static Thread startNewMaxPriorityThread(Runnable runnable) {
 		return startThread(newMaxPriorityThread(runnable));
+	}
+
+	public final static Thread startNewMaxPriorityThread(Runnable runnable, String threadName) {
+		return startThread(newMaxPriorityThread(runnable, threadName));
 	}
 
 	public final static Thread startNewMinPriorityThread(Runnable runnable) {
 		return startThread(newMinPriorityThread(runnable));
 	}
 
-	public final static Thread startNewThread(Runnable runnable, String threadName) {
-		return startThread(newThread(runnable, threadName));
+	public final static Thread startNewMinPriorityThread(Runnable runnable, String threadName) {
+		return startThread(newMinPriorityThread(runnable, threadName));
 	}
 
 	private final static Thread startThread(Thread thread) {
@@ -150,6 +167,10 @@ public final class ThreadUtil {
 			}
 		}, delay, timeUnit.toMillis(period));
 		return timer;
+	}
+
+	public final static void join() {
+		join(Thread.currentThread());
 	}
 
 	public final static void join(Thread thread) {
