@@ -11,12 +11,12 @@ import com.lmax.disruptor.TimeoutBlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.YieldingWaitStrategy;
 
-public final class WaitStrategyFactory {
+final class WaitStrategyFactory {
 
 	private WaitStrategyFactory() {
 	}
 
-	public static WaitStrategy newWaitStrategy(WaitStrategyOption option) {
+	static WaitStrategy newInstance(WaitStrategyOption option) {
 		switch (option) {
 		case BusySpin:
 			return new BusySpinWaitStrategy();

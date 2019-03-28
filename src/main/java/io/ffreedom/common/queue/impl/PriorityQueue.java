@@ -1,6 +1,7 @@
 package io.ffreedom.common.queue.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
@@ -30,11 +31,12 @@ public class PriorityQueue<T> {
 	}
 
 	public boolean isEmpty() {
-		return prioritySet.notEmpty() || secondarySet.notEmpty();
+		return prioritySet.isEmpty() && secondarySet.isEmpty();
 	}
 
-	public T next() {
-		return prioritySet.notEmpty() ? prioritySet.first() : secondarySet.notEmpty() ? secondarySet.first() : null;
+	public Optional<T> next() {
+		return prioritySet.notEmpty() ? Optional.of(prioritySet.first())
+				: secondarySet.notEmpty() ? Optional.of(secondarySet.first()) : Optional.empty();
 	}
 
 }

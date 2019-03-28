@@ -4,21 +4,19 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
-import com.lmax.disruptor.BusySpinWaitStrategy;
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.queue.api.SCQueue;
 import io.ffreedom.common.utils.ThreadUtil;
 
-public class SPSCQueue2<T> extends SCQueue<T> {
+public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
-	private Logger logger = CommonLoggerFactory.getLogger(SPSCQueue2.class);
+	private Logger logger = CommonLoggerFactory.getLogger(SPSCQueueWithSupplier.class);
 
 	private Disruptor<T> disruptor;
 
@@ -26,23 +24,26 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	private volatile boolean isStop = false;
 
-	public SPSCQueue2(int queueSize, boolean autoRun, Supplier<T> supplier, Processor<T> processor) {
+	public SPSCQueueWithSupplier(int queueSize, boolean autoRun, WaitStrategyOption option, Supplier<T> supplier,
+			Processor<T> processor) {
 		super(processor);
 		if (queueSize == 0 || queueSize % 2 != 0)
 			throw new IllegalArgumentException("queueSize set error...");
 		this.processor = processor;
 		this.disruptor = new Disruptor<>(
-				// 实现EventFactory<LoadContainer<>>的Lambda
+				// 实现EventFactory的Lambda
 				() -> supplier.get(),
 				// 队列容量
 				queueSize,
 				// 实现ThreadFactory的Lambda
-				// (Runnable runnable) -> ThreadUtil.newThread(runnable, "disruptor-thread"),
-				DaemonThreadFactory.INSTANCE,
+				(runnable) -> {
+					return ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread");
+				},
+				// DaemonThreadFactory.INSTANCE,
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
 				// Waiting策略
-				new BusySpinWaitStrategy());
+				WaitStrategyFactory.newInstance(option));
 		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> tryCallProcessor(event));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
@@ -104,7 +105,8 @@ public class SPSCQueue2<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		SPSCQueue2<Integer> queue = new SPSCQueue2<>(1024, true, () -> null, (integer) -> System.out.println(integer));
+		SPSCQueueWithSupplier<Integer> queue = new SPSCQueueWithSupplier<>(1024, true, WaitStrategyOption.BusySpin,
+				() -> null, (integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;
