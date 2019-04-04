@@ -2,10 +2,8 @@ package io.ffreedom.common.charset;
 
 public interface StringConstants {
 
-	String NULL_STR = "null";
+	String NullStr = "null";
 
-	String SPACE = " ";
-
-	String EMPTY = "";
+	String Empty = "";
 
 }

@@ -1,28 +1,33 @@
 package io.ffreedom.common.utils;
 
 import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.charset.StringConstants;
 
 public final class StringUtil {
 
 	private StringUtil() {
 	}
 
-	public final static boolean isNullOrEmpty(String str) {
+	public static String toString(Object obj) {
+		return obj == null ? StringConstants.NullStr : obj.toString();
+	}
+
+	public static boolean isNullOrEmpty(String str) {
 		return str == null || str.isEmpty();
 	}
 
-	public final static boolean notNullAndEmpty(String str) {
+	public static boolean notNullAndEmpty(String str) {
 		return str != null && !str.isEmpty();
 	}
 
-	public final static boolean isEquals(String str1, String str2) {
+	public static boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
 	// TODO
 	// 改进性能
 	// 不进行char数组的copy
-	public final static boolean isDecimal(String str) {
+	public static boolean isDecimal(String str) {
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
