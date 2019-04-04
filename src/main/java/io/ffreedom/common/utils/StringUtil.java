@@ -1,5 +1,7 @@
 package io.ffreedom.common.utils;
 
+import io.ffreedom.common.charset.Charsets;
+
 public final class StringUtil {
 
 	private StringUtil() {
@@ -34,23 +36,34 @@ public final class StringUtil {
 				|| lastChar == 'f')
 			chars[chars.length - 1] = '0';
 		// 小数点标识
-		boolean haveDecimalPoint = false;
+		boolean decimalPointFlag = false;
 		for (char ch : chars) {
 			// 判断每个字母是否为数字
 			if (!(ch >= '0' && ch <= '9'))
-				if (haveDecimalPoint)
+				// 出现第二个小数点返回false
+				if (decimalPointFlag)
 					return false;
-				// 允许出现一个小数点
+				// 标识已出现一个小数点
 				else if (ch == '.')
-					haveDecimalPoint = true;
+					decimalPointFlag = true;
+				// 出现其他字符返回false
 				else
 					return false;
 		}
 		return true;
 	}
-	
+
 	public static boolean notDecimal(String str) {
 		return !isDecimal(str);
+	}
+
+	public static String gbkConversionToUtf8(String gbkStr) {
+		return gbkStr == null ? "" : new String(gbkStr.getBytes(Charsets.GBK), Charsets.UTF8);
+	}
+
+	public static String utf8ConversionToGbk(String utf8Str) {
+		return utf8Str == null ? new String("".getBytes(Charsets.UTF8), Charsets.GBK)
+				: new String(utf8Str.getBytes(Charsets.UTF8), Charsets.GBK);
 	}
 
 	public static void main(String[] args) {
