@@ -1,5 +1,7 @@
 package io.ffreedom.common.utils;
 
+import java.util.concurrent.TimeUnit;
+
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.charset.StringConstants;
 

@@ -37,13 +37,13 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}, timeUnit == TimeUnit.MILLISECONDS ? delay : timeUnit.toMillis(delay));
+		}, timeUnit.toMillis(delay));
 		return timer;
 	}
 
 	public static Timer startNewCycleTask(LocalDateTime firstTime, TimeUnit timeUnit, long period, Runner runner) {
 		return startNewCycleTask(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit == TimeUnit.MILLISECONDS ? period : timeUnit.toMillis(period), runner);
+				timeUnit.toMillis(period), runner);
 	}
 
 	public static Timer startNewCycleTask(TimeUnit timeUnit, long delay, long period, Runner runner) {
@@ -57,16 +57,14 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}, timeUnit == TimeUnit.MILLISECONDS ? delay : timeUnit.toMillis(delay),
-				timeUnit == TimeUnit.MILLISECONDS ? period : timeUnit.toMillis(period));
+		}, timeUnit.toMillis(delay), timeUnit.toMillis(period));
 		return timer;
 	}
 
 	public static Timer startNewFixedRateCycleTask(LocalDateTime firstTime, TimeUnit timeUnit, long period,
 			Runner runner) {
 		return startNewFixedRateCycleTask(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit == TimeUnit.MILLISECONDS ? period : timeUnit.toMillis(period), runner);
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runner);
 	}
 
 	public static Timer startNewFixedRateCycleTask(TimeUnit timeUnit, long delay, long period, Runner runner) {
@@ -80,8 +78,7 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}), timeUnit == TimeUnit.MILLISECONDS ? delay : timeUnit.toMillis(delay),
-				timeUnit == TimeUnit.MILLISECONDS ? period : timeUnit.toMillis(period));
+		}), timeUnit.toMillis(delay), timeUnit.toMillis(period));
 		return timer;
 	}
 
@@ -89,32 +86,32 @@ public final class ScheduleTaskUtil {
 			.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "SingleThreadScheduledExecutorService"));
 
 	public static void addTaskToSingleThreadExecutor(LocalDateTime firstTime, Runnable runnable) {
-		addTaskToSingleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				TimeUnit.MILLISECONDS, runnable);
+		addTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), runnable);
 	}
 
-	public static void addTaskToSingleThreadExecutor(long delay, TimeUnit timeUnit, Runnable runnable) {
+	public static void addTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, Runnable runnable) {
 		InnerSingleThreadExecutor.schedule(runnable, delay, timeUnit);
 	}
 
-	public static void addCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, long period, TimeUnit timeUnit,
+	public static void addCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit, long period,
 			Runnable runnable) {
-		addCycleTaskToSingleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
+		addCycleTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addCycleTaskToSingleThreadExecutor(long delay, long period, TimeUnit timeUnit,
+	public static void addCycleTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerSingleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
 	}
 
-	public static void addFixedRateCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, long period,
-			TimeUnit timeUnit, Runnable runnable) {
-		addFixedRateCycleTaskToSingleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
+	public static void addFixedRateCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit,
+			long period, Runnable runnable) {
+		addFixedRateCycleTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addFixedRateCycleTaskToSingleThreadExecutor(long delay, long period, TimeUnit timeUnit,
+	public static void addFixedRateCycleTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerSingleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
 	}
@@ -124,32 +121,32 @@ public final class ScheduleTaskUtil {
 			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutorService"));
 
 	public static void addTaskToMultipleThreadExecutor(LocalDateTime firstTime, Runnable runnable) {
-		addTaskToMultipleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				TimeUnit.MILLISECONDS, runnable);
+		addTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), runnable);
 	}
 
-	public static void addTaskToMultipleThreadExecutor(long delay, TimeUnit timeUnit, Runnable runnable) {
+	public static void addTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, Runnable runnable) {
 		InnerMultipleThreadExecutor.schedule(runnable, delay, timeUnit);
 	}
 
-	public static void addCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, long period, TimeUnit timeUnit,
+	public static void addCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit, long period,
 			Runnable runnable) {
-		addCycleTaskToMultipleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
+		addCycleTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addCycleTaskToMultipleThreadExecutor(long delay, long period, TimeUnit timeUnit,
+	public static void addCycleTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerMultipleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
 	}
 
-	public static void addFixedRateCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, long period,
-			TimeUnit timeUnit, Runnable runnable) {
-		addFixedRateCycleTaskToMultipleThreadExecutor(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
+	public static void addFixedRateCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit,
+			long period, Runnable runnable) {
+		addFixedRateCycleTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
+				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addFixedRateCycleTaskToMultipleThreadExecutor(long delay, long period, TimeUnit timeUnit,
+	public static void addFixedRateCycleTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerMultipleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
 	}
