@@ -1,26 +1,33 @@
 package io.ffreedom.common.utils;
 
+import io.ffreedom.common.charset.Charsets;
+import io.ffreedom.common.charset.StringConstants;
+
 public final class StringUtil {
 
 	private StringUtil() {
 	}
 
-	public final static boolean isNullOrEmpty(String str) {
+	public static String toString(Object obj) {
+		return obj == null ? StringConstants.NullStr : obj.toString();
+	}
+
+	public static boolean isNullOrEmpty(String str) {
 		return str == null || str.isEmpty();
 	}
 
-	public final static boolean notNullAndEmpty(String str) {
+	public static boolean notNullAndEmpty(String str) {
 		return str != null && !str.isEmpty();
 	}
 
-	public final static boolean isEquals(String str1, String str2) {
+	public static boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
 	// TODO
 	// 改进性能
 	// 不进行char数组的copy
-	public final static boolean isDecimal(String str) {
+	public static boolean isDecimal(String str) {
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
@@ -34,23 +41,34 @@ public final class StringUtil {
 				|| lastChar == 'f')
 			chars[chars.length - 1] = '0';
 		// 小数点标识
-		boolean haveDecimalPoint = false;
+		boolean decimalPointFlag = false;
 		for (char ch : chars) {
 			// 判断每个字母是否为数字
 			if (!(ch >= '0' && ch <= '9'))
-				if (haveDecimalPoint)
+				// 出现第二个小数点返回false
+				if (decimalPointFlag)
 					return false;
-				// 允许出现一个小数点
+				// 标识已出现一个小数点
 				else if (ch == '.')
-					haveDecimalPoint = true;
+					decimalPointFlag = true;
+				// 出现其他字符返回false
 				else
 					return false;
 		}
 		return true;
 	}
-	
+
 	public static boolean notDecimal(String str) {
 		return !isDecimal(str);
+	}
+
+	public static String gbkConversionToUtf8(String gbkStr) {
+		return gbkStr == null ? "" : new String(gbkStr.getBytes(Charsets.GBK), Charsets.UTF8);
+	}
+
+	public static String utf8ConversionToGbk(String utf8Str) {
+		return utf8Str == null ? new String("".getBytes(Charsets.UTF8), Charsets.GBK)
+				: new String(utf8Str.getBytes(Charsets.UTF8), Charsets.GBK);
 	}
 
 	public static void main(String[] args) {

@@ -119,4 +119,22 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
+	public static void println(Object... objs) {
+		if (objs == null)
+			return;
+		for (Object obj : objs) {
+			System.out.println(obj);
+		}
+	}
+
+	public static void print(Object... objs) {
+		if (objs == null)
+			return;
+		for (int i = 0; i < objs.length; i++) {
+			System.out.print(objs[i]);
+			if (i < objs.length - 1)
+				System.out.print(" , ");
+		}
+	}
+
 }

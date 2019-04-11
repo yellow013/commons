@@ -249,6 +249,10 @@ public final class ECollections {
 		return FastList.newList(size);
 	}
 
+	public static <E> MutableList<E> newFastList(Iterable<E> items) {
+		return FastList.newList(items);
+	}
+
 	/**
 	 * multimap
 	 */
