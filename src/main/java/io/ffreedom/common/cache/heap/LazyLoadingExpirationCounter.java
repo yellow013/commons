@@ -10,6 +10,13 @@ import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
 import io.ffreedom.common.collect.ECollections;
 
+/**
+ * 累加计算器，可以清除某个特定delta<br>
+ * 在获取值的时候计算过期值
+ * 
+ * @author yellow013
+ *
+ */
 @NotThreadSafe
 public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirationCounter> {
 

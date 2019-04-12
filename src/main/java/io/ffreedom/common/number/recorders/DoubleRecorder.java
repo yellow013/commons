@@ -1,10 +1,18 @@
-package io.ffreedom.common.cache.heap;
+package io.ffreedom.common.number.recorders;
 
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 
 import io.ffreedom.common.collect.ECollections;
 
+/**
+ * 有序的记录N个double数值并排序<br>
+ * 用于查询最大和最小的值<br>
+ * 可以记录重复的值和删除过期的值<br>
+ * 
+ * @author yellow013
+ * 
+ */
 public final class DoubleRecorder {
 
 	private MutableDoubleIntMap doubleCounter;
