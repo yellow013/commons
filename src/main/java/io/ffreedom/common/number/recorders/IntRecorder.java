@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache.heap;
+package io.ffreedom.common.number.recorders;
 
 import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;

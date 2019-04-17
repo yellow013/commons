@@ -1,5 +1,12 @@
 package io.ffreedom.common.cache.heap;
 
+/**
+ * 累加计数器接口
+ * 
+ * @author yellow013
+ *
+ * @param <T>
+ */
 public interface Counter<T extends Counter<?>> {
 
 	T add(long tag, long delta);
@@ -7,7 +14,7 @@ public interface Counter<T extends Counter<?>> {
 	T subtract(long tag, long delta);
 
 	T removeHistoryDelta(long tag);
-	
+
 	T removeHistoryDelta(long tag, long delta);
 
 	default T increment(long tag) {

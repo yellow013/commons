@@ -17,15 +17,15 @@ import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
 import io.ffreedom.common.functional.Initializer;
 
-public final class ParamMap<K extends ParamKey> {
+public final class ParamKeyMap<K extends ParamKey> {
 
-	private MutableIntBooleanMap booleanParamMap = new IntBooleanHashMap(16);
-	private MutableIntIntMap integerParamMap = new IntIntHashMap(16);
-	private MutableIntDoubleMap doubleParamMap = new IntDoubleHashMap(16);
-	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>(16);
-	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>(16);
+	private MutableIntBooleanMap booleanParamMap = new IntBooleanHashMap();
+	private MutableIntIntMap integerParamMap = new IntIntHashMap();
+	private MutableIntDoubleMap doubleParamMap = new IntDoubleHashMap();
+	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>();
+	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>();
 
-	public ParamMap(Initializer<ImmutableMap<K, Object>> initializer) {
+	public ParamKeyMap(Initializer<ImmutableMap<K, Object>> initializer) {
 		ImmutableMap<K, Object> initMap = initializer.initialize();
 		initMap.forEachKeyValue((K key, Object value) -> {
 			switch (key.getParamType()) {
@@ -51,7 +51,7 @@ public final class ParamMap<K extends ParamKey> {
 				putParam(key, (LocalTime) value);
 				break;
 			default:
-				throw new IllegalArgumentException("");
+				throw new IllegalArgumentException("keyId -> " + key.getKeyId() + " illegal argument");
 			}
 		});
 	}
