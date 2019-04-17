@@ -1,7 +1,5 @@
 package io.ffreedom.common.utils;
 
-import java.util.concurrent.TimeUnit;
-
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.charset.StringConstants;
 
@@ -65,11 +63,11 @@ public final class StringUtil {
 	}
 
 	public static String gbkConversionToUtf8(String gbkStr) {
-		return gbkStr == null ? "" : new String(gbkStr.getBytes(Charsets.GBK), Charsets.UTF8);
+		return isNullOrEmpty(gbkStr) ? "" : new String(gbkStr.getBytes(Charsets.GBK), Charsets.UTF8);
 	}
 
 	public static String utf8ConversionToGbk(String utf8Str) {
-		return utf8Str == null ? new String("".getBytes(Charsets.UTF8), Charsets.GBK)
+		return isNullOrEmpty(utf8Str) ? new String("".getBytes(Charsets.UTF8), Charsets.GBK)
 				: new String(utf8Str.getBytes(Charsets.UTF8), Charsets.GBK);
 	}
 
