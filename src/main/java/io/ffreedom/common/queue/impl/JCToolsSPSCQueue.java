@@ -25,7 +25,11 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 
 	private String queueName;
 
-	private JCToolsSPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTotal,
+	private JCToolsSPSCQueue(String queueName, int queueSize, RunMode mode, Processor<T> processor) {
+		this(queueName, queueSize, mode, 0L, processor);
+	}
+
+	private JCToolsSPSCQueue(String queueName, int queueSize, RunMode mode, long delayMillis,
 			Processor<T> processor) {
 		super(processor);
 		this.queue = new SpscArrayQueue<>(Math.max(queueSize, 64));
@@ -38,7 +42,7 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 			start();
 			break;
 		case Delay:
-			ThreadUtil.sleep(timeUnit, delayTotal);
+			ThreadUtil.sleep(delayMillis);
 			start();
 			break;
 		default:
@@ -46,30 +50,42 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
+	public static <T> JCToolsSPSCQueue<T> autoRunQueue(Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Auto, processor);
+	}
+
 	public static <T> JCToolsSPSCQueue<T> autoRunQueue(int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Auto, null, 0L, processor);
+		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Auto, processor);
 	}
 
 	public static <T> JCToolsSPSCQueue<T> autoRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Auto, null, 0L, processor);
+		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Auto, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> manualRunQueue(Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Manual, processor);
 	}
 
 	public static <T> JCToolsSPSCQueue<T> manualRunQueue(int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Manual, null, 0L, processor);
+		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Manual, processor);
 	}
 
 	public static <T> JCToolsSPSCQueue<T> manualRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Manual, null, 0L, processor);
+		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Manual, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> delayRunQueue(long delay, TimeUnit timeUnit, Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	public static <T> JCToolsSPSCQueue<T> delayRunQueue(int queueSize, long delay, TimeUnit timeUnit,
 			Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delay, processor);
+		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	public static <T> JCToolsSPSCQueue<T> delayRunQueue(String queueName, int queueSize, long delay, TimeUnit timeUnit,
 			Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delay, processor);
+		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	@Override

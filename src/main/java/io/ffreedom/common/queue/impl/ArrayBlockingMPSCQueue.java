@@ -25,7 +25,11 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private String queueName;
 
-	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, TimeUnit timeUnit, long delayTotal,
+	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, Processor<T> processor) {
+		this(queueName, queueSize, mode, 0L, processor);
+	}
+
+	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, long delayMillis,
 			Processor<T> processor) {
 		super(processor);
 		this.queue = new ArrayBlockingQueue<>(Math.max(queueSize, 64));
@@ -38,7 +42,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			start();
 			break;
 		case Delay:
-			ThreadUtil.sleep(timeUnit, delayTotal);
+			ThreadUtil.sleep(delayMillis);
 			start();
 			break;
 		default:
@@ -46,31 +50,43 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
+	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Auto, processor);
+	}
+
 	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Auto, null, 0L, processor);
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Auto, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Auto, null, 0L, processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Auto, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Manual, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, null, 0L, processor);
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(String queueName, int queueSize,
 			Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, null, 0L, processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, processor);
+	}
+
+	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(long delay, TimeUnit timeUnit, Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, long delay, TimeUnit timeUnit,
 			Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit, delay, processor);
+		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, long delay,
 			TimeUnit timeUnit, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit, delay, processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	@Override
