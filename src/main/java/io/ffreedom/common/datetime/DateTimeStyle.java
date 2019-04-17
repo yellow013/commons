@@ -42,7 +42,7 @@ public enum DateTimeStyle {
 
 	;
 
-	private interface Pattern {
+	public static interface Pattern {
 
 		String HHMM = "HHmm";
 
