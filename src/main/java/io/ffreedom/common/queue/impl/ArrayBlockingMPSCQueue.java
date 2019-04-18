@@ -88,7 +88,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 	@SpinWaiting
 	public boolean enqueue(T t) {
 		if (!isClose.get()) {
-			logger.error("ArrayBlockingMPSCQueue.enQueue(t) failure, This queue is closed...");
+			logger.error("enqueue(t) failure, This queue is closed...");
 			return false;
 		}
 		try {
