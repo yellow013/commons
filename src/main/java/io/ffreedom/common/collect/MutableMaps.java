@@ -103,14 +103,6 @@ public final class MutableMaps {
 		return UnifiedMap.newMap(size);
 	}
 
-	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap() {
-		return new ObjectBooleanHashMap<>();
-	}
-
-	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap(int size) {
-		return new ObjectBooleanHashMap<>(size);
-	}
-
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap() {
 		return new IntObjectHashMap<>();
 	}
@@ -125,6 +117,14 @@ public final class MutableMaps {
 
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {
 		return new LongObjectHashMap<>(size);
+	}
+
+	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap() {
+		return new ObjectBooleanHashMap<>();
+	}
+
+	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap(int size) {
+		return new ObjectBooleanHashMap<>(size);
 	}
 
 	public static <K> MutableObjectLongMap<K> newObjectLongHashMap() {
