@@ -90,7 +90,8 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 		}
 	}
 
-	public void start() {
+	@Override
+	protected void startProcessThread() {
 		this.disruptor.start();
 	}
 
