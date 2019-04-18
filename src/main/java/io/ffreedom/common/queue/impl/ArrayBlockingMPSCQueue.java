@@ -15,7 +15,7 @@ import io.ffreedom.common.utils.ThreadUtil;
 
 public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
-	private ArrayBlockingQueue<T> queue;
+	private ArrayBlockingQueue<T> innerQueue;
 
 	private Logger logger = CommonLoggerFactory.getLogger(ArrayBlockingMPSCQueue.class);
 
@@ -25,17 +25,12 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	private String queueName;
 
-	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, Processor<T> processor) {
-		this(queueName, queueSize, mode, 0L, processor);
-	}
-
-	private ArrayBlockingMPSCQueue(String queueName, int queueSize, RunMode mode, long delayMillis,
+	private ArrayBlockingMPSCQueue(String queueName, int capacity, RunMode mode, long delayMillis,
 			Processor<T> processor) {
 		super(processor);
-		this.queue = new ArrayBlockingQueue<>(Math.max(queueSize, 64));
+		this.innerQueue = new ArrayBlockingQueue<>(Math.max(capacity, 64));
 		this.queueName = StringUtil.isNullOrEmpty(queueName)
-				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName() + "-"
-						+ Thread.currentThread().getId()
+				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName()
 				: queueName;
 		switch (mode) {
 		case Auto:
@@ -50,43 +45,43 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Auto, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> autoStartQueue(Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Auto, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Auto, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> autoStartQueue(int capacity, Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Auto, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> autoRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Auto, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> autoStartQueue(String queueName, int capacity, Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Auto, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Manual, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> manualStartQueue(Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Manual, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(int queueSize, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Manual, processor);
+	public static <T> ArrayBlockingMPSCQueue<T> manualStartQueue(int capacity, Processor<T> processor) {
+		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Manual, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> manualRunQueue(String queueName, int queueSize,
+	public static <T> ArrayBlockingMPSCQueue<T> manualStartQueue(String queueName, int capacity,
 			Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Manual, processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Manual, 0L, processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(long delay, TimeUnit timeUnit, Processor<T> processor) {
+	public static <T> ArrayBlockingMPSCQueue<T> delayStartQueue(long delay, TimeUnit timeUnit, Processor<T> processor) {
 		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(int queueSize, long delay, TimeUnit timeUnit,
+	public static <T> ArrayBlockingMPSCQueue<T> delayStartQueue(int capacity, long delay, TimeUnit timeUnit,
 			Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
-	public static <T> ArrayBlockingMPSCQueue<T> delayRunQueue(String queueName, int queueSize, long delay,
+	public static <T> ArrayBlockingMPSCQueue<T> delayStartQueue(String queueName, int capacity, long delay,
 			TimeUnit timeUnit, Processor<T> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	@Override
@@ -96,9 +91,14 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 			logger.error("ArrayBlockingMPSCQueue.enQueue(t) failure, This queue is closed...");
 			return false;
 		}
-		while (!queue.offer(t))
-			;
-		return true;
+		try {
+			while (!innerQueue.offer(t, 500, TimeUnit.MILLISECONDS))
+				;
+			return true;
+		} catch (InterruptedException e) {
+			logger.error("innerQueue.offer(t, 500, TimeUnit.MILLISECONDS) throws InterruptedException!");
+			return false;
+		}
 	}
 
 	@Override
@@ -106,19 +106,22 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 		return queueName;
 	}
 
-	public void start() {
+	@Override
+	public void startProcessThread() {
 		if (!isRun.compareAndSet(false, true)) {
 			logger.error("Error call ->  This queue is started.");
 			return;
 		}
 		ThreadUtil.startNewThread(() -> {
 			try {
-				while (isRun.get() || !queue.isEmpty()) {
+				while (isRun.get() || !innerQueue.isEmpty()) {
 					@SpinWaiting
-					T t = queue.poll();
+					T t = innerQueue.poll(500, TimeUnit.MILLISECONDS);
 					if (t != null)
 						processor.process(t);
 				}
+			} catch (InterruptedException e) {
+				logger.error("innerQueue.poll(500, TimeUnit.MILLISECONDS) throws InterruptedException!");
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -133,7 +136,7 @@ public class ArrayBlockingMPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoRunQueue(100, (value) -> {
+		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoStartQueue(100, (value) -> {
 			System.out.println(value);
 			ThreadUtil.sleep(500);
 		});

@@ -1,5 +1,7 @@
 package io.ffreedom.common.queue.api;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import io.ffreedom.common.functional.Processor;
 
 /**
@@ -11,14 +13,25 @@ public abstract class SCQueue<T> implements Queue<T> {
 
 	protected Processor<T> processor;
 
+	protected AtomicBoolean isRun = new AtomicBoolean(false);
+
+	protected AtomicBoolean isClose = new AtomicBoolean(true);
+
 	public SCQueue(Processor<T> processor) {
 		if (processor == null)
 			throw new IllegalArgumentException("processor is null...");
 		this.processor = processor;
 	}
 
-	public abstract void start();
+	protected abstract void startProcessThread();
 
-	public abstract void stop();
+	public void start() {
+		startProcessThread();
+	}
+
+	public void stop() {
+		this.isRun.set(false);
+		this.isClose.set(true);
+	}
 
 }

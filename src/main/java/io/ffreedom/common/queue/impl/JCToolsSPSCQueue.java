@@ -1,7 +1,6 @@
 package io.ffreedom.common.queue.impl;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jctools.queues.SpscArrayQueue;
 import org.slf4j.Logger;
@@ -19,24 +18,24 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(JCToolsSPSCQueue.class);
 
-	private AtomicBoolean isRun = new AtomicBoolean(false);
-
-	private AtomicBoolean isClose = new AtomicBoolean(true);
-
 	private String queueName;
 
-	private JCToolsSPSCQueue(String queueName, int queueSize, RunMode mode, Processor<T> processor) {
-		this(queueName, queueSize, mode, 0L, processor);
+	private WaitingStrategy strategy;
+
+	public static enum WaitingStrategy {
+
+		SpinWaiting, SleepWaiting,
+
 	}
 
-	private JCToolsSPSCQueue(String queueName, int queueSize, RunMode mode, long delayMillis,
+	private JCToolsSPSCQueue(String queueName, int capacity, RunMode mode, long delayMillis, WaitingStrategy strategy,
 			Processor<T> processor) {
 		super(processor);
-		this.queue = new SpscArrayQueue<>(Math.max(queueSize, 64));
+		this.queue = new SpscArrayQueue<>(Math.max(capacity, 64));
 		this.queueName = StringUtil.isNullOrEmpty(queueName)
-				? JCToolsSPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName() + "-"
-						+ Thread.currentThread().getId()
+				? JCToolsSPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName()
 				: queueName;
+		this.strategy = strategy;
 		switch (mode) {
 		case Auto:
 			start();
@@ -50,42 +49,60 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 		}
 	}
 
-	public static <T> JCToolsSPSCQueue<T> autoRunQueue(Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, 64, RunMode.Auto, processor);
+	public static <T> JCToolsSPSCQueue<T> autoStartQueue(WaitingStrategy strategy, Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Auto, 0L, strategy, processor);
 	}
 
-	public static <T> JCToolsSPSCQueue<T> autoRunQueue(int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Auto, processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> autoRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Auto, processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> manualRunQueue(Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, 64, RunMode.Manual, processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> manualRunQueue(int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Manual, processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> manualRunQueue(String queueName, int queueSize, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Manual, processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> delayRunQueue(long delay, TimeUnit timeUnit, Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
-	}
-
-	public static <T> JCToolsSPSCQueue<T> delayRunQueue(int queueSize, long delay, TimeUnit timeUnit,
+	public static <T> JCToolsSPSCQueue<T> autoStartQueue(int capacity, WaitingStrategy strategy,
 			Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(null, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new JCToolsSPSCQueue<>(null, capacity, RunMode.Auto, 0L, strategy, processor);
 	}
 
-	public static <T> JCToolsSPSCQueue<T> delayRunQueue(String queueName, int queueSize, long delay, TimeUnit timeUnit,
+	public static <T> JCToolsSPSCQueue<T> autoStartQueue(String queueName, int capacity, WaitingStrategy strategy,
 			Processor<T> processor) {
-		return new JCToolsSPSCQueue<>(queueName, queueSize, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new JCToolsSPSCQueue<>(queueName, capacity, RunMode.Auto, 0L, strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> manualStartQueue(WaitingStrategy strategy, Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Manual, 0L, strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> manualStartQueue(int capacity, WaitingStrategy strategy,
+			Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, capacity, RunMode.Manual, 0L, strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> manualStartQueue(String queueName, int capacity, WaitingStrategy strategy,
+			Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(queueName, capacity, RunMode.Manual, 0L, strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> delayStartQueue(long delay, TimeUnit timeUnit, WaitingStrategy strategy,
+			Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> delayStartQueue(int capacity, long delay, TimeUnit timeUnit,
+			WaitingStrategy strategy, Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(null, capacity, RunMode.Delay, timeUnit.toMillis(delay), strategy, processor);
+	}
+
+	public static <T> JCToolsSPSCQueue<T> delayStartQueue(String queueName, int capacity, long delay,
+			TimeUnit timeUnit, WaitingStrategy strategy, Processor<T> processor) {
+		return new JCToolsSPSCQueue<>(queueName, capacity, RunMode.Delay, timeUnit.toMillis(delay), strategy,
+				processor);
+	}
+
+	private void waiting() {
+		switch (strategy) {
+		case SpinWaiting:
+			break;
+		case SleepWaiting:
+			ThreadUtil.sleep(50);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -96,7 +113,7 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 			return false;
 		}
 		while (!queue.offer(t))
-			;
+			waiting();
 		return true;
 	}
 
@@ -105,7 +122,8 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 		return queueName;
 	}
 
-	public void start() {
+	@Override
+	public void startProcessThread() {
 		if (!isRun.compareAndSet(false, true)) {
 			logger.error("Error call ->  This queue is started.");
 			return;
@@ -117,23 +135,17 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 					T t = queue.poll();
 					if (t != null)
 						processor.process(t);
+					waiting();
 				}
 			} catch (Exception e) {
-
 				throw new RuntimeException(e);
 			}
 		}, queueName);
 	}
 
-	@Override
-	public void stop() {
-		this.isRun.set(false);
-		this.isClose.set(true);
-	}
-
 	public static void main(String[] args) {
 
-		JCToolsSPSCQueue<Integer> queue = JCToolsSPSCQueue.autoRunQueue(6, (value) -> {
+		JCToolsSPSCQueue<Integer> queue = JCToolsSPSCQueue.autoStartQueue(6, WaitingStrategy.SleepWaiting, (value) -> {
 			System.out.println(value);
 			ThreadUtil.sleep(500);
 		});
