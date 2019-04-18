@@ -17,7 +17,8 @@ public class ImmutableSets {
 		return ImmutableSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	public static <E> ImmutableSet<E> newImmutableSet(E[] es) {
+	@SafeVarargs
+	public static <E> ImmutableSet<E> newImmutableSet(E... es) {
 		return ImmutableSetFactoryImpl.INSTANCE.with(es);
 	}
 
@@ -28,7 +29,8 @@ public class ImmutableSets {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(E[] es) {
+	@SafeVarargs
+	public static <E> ImmutableSortedSet<E> newImmutableSortedSet(E... es) {
 		return ImmutableSortedSetFactoryImpl.INSTANCE.with(es);
 	}
 

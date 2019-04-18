@@ -23,6 +23,7 @@ import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongLongHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.ObjectBooleanHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectLongHashMap;
 import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
@@ -102,8 +103,16 @@ public final class MutableMaps {
 		return UnifiedMap.newMap(size);
 	}
 
+	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap() {
+		return new ObjectBooleanHashMap<>();
+	}
+
+	public static <K> ObjectBooleanHashMap<K> newObjectBooleanHashMap(int size) {
+		return new ObjectBooleanHashMap<>(size);
+	}
+
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap() {
-		return IntObjectHashMap.newMap();
+		return new IntObjectHashMap<>();
 	}
 
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap(int size) {
@@ -111,7 +120,7 @@ public final class MutableMaps {
 	}
 
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap() {
-		return LongObjectHashMap.newMap();
+		return new LongObjectHashMap<>();
 	}
 
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(int size) {

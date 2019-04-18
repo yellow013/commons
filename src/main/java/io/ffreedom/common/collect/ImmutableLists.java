@@ -15,7 +15,8 @@ public final class ImmutableLists {
 		return ImmutableListFactoryImpl.INSTANCE.withAll(items);
 	}
 
-	public static <E> ImmutableList<E> newImmutableList(E[] es) {
+	@SafeVarargs
+	public static <E> ImmutableList<E> newImmutableList(E... es) {
 		return ImmutableListFactoryImpl.INSTANCE.with(es);
 	}
 
