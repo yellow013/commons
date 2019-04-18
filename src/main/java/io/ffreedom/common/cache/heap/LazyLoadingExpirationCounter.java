@@ -8,7 +8,8 @@ import org.eclipse.collections.api.iterator.MutableLongIterator;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
-import io.ffreedom.common.collect.ECollections;
+import io.ffreedom.common.collect.MutableLists;
+import io.ffreedom.common.collect.MutableMaps;
 
 /**
  * 累加计算器，可以清除某个特定delta<br>
@@ -33,9 +34,9 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	public LazyLoadingExpirationCounter(Duration expireTime, int capacity) {
 		this.expireNanos = expireTime.toNanos();
-		this.timeToTag = ECollections.newLongLongHashMap(capacity);
-		this.tagToDelta = ECollections.newLongLongHashMap(capacity);
-		this.effectiveTimes = ECollections.newLongArrayList(capacity);
+		this.timeToTag = MutableMaps.newLongLongHashMap(capacity);
+		this.tagToDelta = MutableMaps.newLongLongHashMap(capacity);
+		this.effectiveTimes = MutableLists.newLongArrayList(capacity);
 	}
 
 	private void add(long delta) {
@@ -96,7 +97,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 //			ThreadUtil.sleep(2000);
 //		}
 
-		MutableLongLongMap map = ECollections.newLongLongHashMap(1024);
+		MutableLongLongMap map = MutableMaps.newLongLongHashMap(1024);
 
 		map.put(1, 10);
 

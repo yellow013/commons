@@ -3,7 +3,8 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 
-import io.ffreedom.common.collect.ECollections;
+import io.ffreedom.common.collect.MutableMaps;
+import io.ffreedom.common.collect.MutableSets;
 
 /**
  * 有序的记录N个double数值并排序<br>
@@ -19,8 +20,8 @@ public final class DoubleRecorder {
 	private MutableDoubleSet doubleSet;
 
 	public DoubleRecorder(int size) {
-		this.doubleCounter = ECollections.newDoubleIntHashMap(size);
-		this.doubleSet = ECollections.newDoubleHashSet(size);
+		this.doubleCounter = MutableMaps.newDoubleIntHashMap(size);
+		this.doubleSet = MutableSets.newDoubleHashSet(size);
 	}
 
 	public void put(double value) {

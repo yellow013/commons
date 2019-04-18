@@ -3,7 +3,8 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;
 
-import io.ffreedom.common.collect.ECollections;
+import io.ffreedom.common.collect.MutableMaps;
+import io.ffreedom.common.collect.MutableSets;
 
 public final class IntRecorder {
 
@@ -11,8 +12,8 @@ public final class IntRecorder {
 	private MutableIntSet intSet;
 
 	public IntRecorder(int size) {
-		this.intCounter = ECollections.newIntIntHashMap(size);
-		this.intSet = ECollections.newIntHashSet(size);
+		this.intCounter = MutableMaps.newIntIntHashMap(size);
+		this.intSet = MutableSets.newIntHashSet(size);
 	}
 
 	public void put(int value) {
