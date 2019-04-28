@@ -1,51 +1,35 @@
 package io.ffreedom.common.datetime;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 public class EpochTimestamp {
 
 	private long epochMilliseconds;
 	private long epochMicroseconds;
 	private Instant instant;
+	private ZonedDateTime zonedDateTime;
 
-	public EpochTimestamp(boolean lazyCalculate) {
+	public EpochTimestamp() {
 		this.epochMilliseconds = System.currentTimeMillis();
-		if (!lazyCalculate) {
-			calculateInstant();
-			calculateEpochMicroseconds();
-		}
+	}
+
+	private void calculateEpochMicroseconds() {
+		this.epochMicroseconds = epochMilliseconds * 1000;
 	}
 
 	private void calculateInstant() {
 		this.instant = Instant.ofEpochMilli(epochMilliseconds);
 	}
 
-	private void calculateEpochMicroseconds() {
+	private void calculateZonedDateTime() {
 		if (instant == null)
 			calculateInstant();
-		this.epochMicroseconds = instant.getEpochSecond() * 1000000 + instant.getNano() / 1000;
+		this.zonedDateTime = ZonedDateTime.ofInstant(instant, TimeZones.SYS_DEFAULT);
 	}
 
 	public static EpochTimestamp now() {
-		return now(false);
-	}
-
-	public static EpochTimestamp now(boolean lazyEvaluation) {
-		return new EpochTimestamp(lazyEvaluation);
-	}
-
-	public Instant getInstant() {
-		if (instant == null)
-			calculateInstant();
-		return instant;
-	}
-
-	public long getEpochSecond() {
-		if (instant == null)
-			calculateInstant();
-		return instant.getEpochSecond();
+		return new EpochTimestamp();
 	}
 
 	public long getEpochMilliseconds() {
@@ -58,32 +42,55 @@ public class EpochTimestamp {
 		return epochMicroseconds;
 	}
 
+	public Instant getInstant() {
+		if (instant == null)
+			calculateInstant();
+		return instant;
+	}
+
+	public ZonedDateTime getZonedDateTime() {
+		if (zonedDateTime == null)
+			calculateZonedDateTime();
+		return zonedDateTime;
+	}
+
 	public static void main(String[] args) {
 
-		// EpochTimestamp now = EpochTimestamp.now();
-		// System.out.println(now.getEpochSecond());
-		// System.out.println(now.getNanoOfSecond());
-		// System.out.println(now.getEpochMicrosecond());
+		for (int i = 0; i < 100000; i++) {
+			EpochTime.milliseconds();
+			EpochTimestamp.now();
+			Instant.now();
+			i++;
+			i--;
+		}
 
-		long l0 = System.nanoTime();
-		LocalTime now = LocalTime.now();
-		Duration between = Duration.between(LocalTime.MIN, now);
-		// long r = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
+		long l0_0 = System.nanoTime();
+		EpochTime.milliseconds();
+		long l0_1 = System.nanoTime();
+		long l0 = l0_1 - l0_0;
 
-		long l1 = System.nanoTime();
-		long l = l1 - l0;
+		long l1_0 = System.nanoTime();
+		EpochTimestamp.now();
+		long l1_1 = System.nanoTime();
+		long l1 = l1_1 - l1_0;
 
-		System.out.println(l);
-		// System.out.println(r);
-		System.out.println(between.getSeconds());
+		long l2_0 = System.nanoTime();
+		Instant.now();
+		long l2_1 = System.nanoTime();
+		long l2 = l2_1 - l2_0;
 
-		// 201099700
-		// 167711000
-		System.out.println(Long.MAX_VALUE);
-		// 1536917333323
-		// 9223372036854775807
-		// YYMMDDhhmmssSSS
-		// 9220123123595999999
+		System.out.println(l0);
+		System.out.println(l1);
+		System.out.println(l2);
+
+		EpochTimestamp now = EpochTimestamp.now();
+
+		System.out.println(now.getEpochMilliseconds());
+		System.out.println(now.getEpochMicroseconds());
+		System.out.println(now.getInstant().getEpochSecond() * 1000000 + now.getInstant().getNano() / 1000);
+		System.out.println(now.getInstant());
+		System.out.println(now.getZonedDateTime());
+
 	}
 
 }
