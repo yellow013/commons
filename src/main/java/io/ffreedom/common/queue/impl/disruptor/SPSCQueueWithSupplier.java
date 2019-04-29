@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
-import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -24,17 +23,17 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
 	private volatile boolean isStop = false;
 
-	public SPSCQueueWithSupplier(int queueSize, boolean autoRun, WaitStrategyOption option, Supplier<T> supplier,
-			Processor<T> processor) {
+	public SPSCQueueWithSupplier(BufferSize bufferSize, boolean autoRun, WaitStrategyOption option,
+			Supplier<T> supplier, Processor<T> processor) {
 		super(processor);
-		if (queueSize == 0 || queueSize % 2 != 0)
-			throw new IllegalArgumentException("queueSize set error...");
+		// if (queueSize == 0 || queueSize % 2 != 0)
+		// throw new IllegalArgumentException("queueSize set error...");
 		this.processor = processor;
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory的Lambda
 				() -> supplier.get(),
 				// 队列容量
-				queueSize,
+				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
 				(runnable) -> {
 					return ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread");
@@ -43,7 +42,7 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
 				// Waiting策略
-				WaitStrategyFactory.newInstance(option));
+				WaitStrategyFactory.getStrategy(option));
 		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> tryCallProcessor(event));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
@@ -68,12 +67,8 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 		}
 
 		public void onData(T t) {
-			ringBuffer.publishEvent(new EventTranslator<T>() {
+			ringBuffer.publishEvent((T event, long sequence) -> {
 
-				@Override
-				public void translateTo(T event, long sequence) {
-					// TODO Auto-generated method stub
-				}
 			});
 		}
 	}
@@ -106,8 +101,8 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		SPSCQueueWithSupplier<Integer> queue = new SPSCQueueWithSupplier<>(1024, true, WaitStrategyOption.BusySpin,
-				() -> null, (integer) -> System.out.println(integer));
+		SPSCQueueWithSupplier<Integer> queue = new SPSCQueueWithSupplier<>(BufferSize.POW2_10, true,
+				WaitStrategyOption.BusySpin, () -> Integer.valueOf(0), (integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;

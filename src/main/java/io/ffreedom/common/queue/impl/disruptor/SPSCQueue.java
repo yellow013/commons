@@ -30,19 +30,23 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private volatile boolean isStop = false;
 
-	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor) {
-		this(queueSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	public SPSCQueue(BufferSize bufferSize) {
+		this(bufferSize, false, null);
 	}
 
-	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
+	public SPSCQueue(BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+		this(bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	}
+
+	public SPSCQueue(BufferSize bufferSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
 		super(processor);
-		if (queueSize == 0 || queueSize % 2 != 0)
-			throw new IllegalArgumentException("queueSize set error...");
+		// if (queueSize == 0 || queueSize % 2 != 0)
+		// throw new IllegalArgumentException("queueSize set error...");
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory<LoadContainer<>>的Lambda
 				LoadContainer::new,
 				// 队列容量
-				queueSize,
+				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
 				(runnable) -> {
 					return ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread");
@@ -51,7 +55,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
 				// Waiting策略
-				WaitStrategyFactory.newInstance(option));
+				WaitStrategyFactory.getStrategy(option));
 		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> callProcessor(event.unloading()));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
@@ -65,10 +69,6 @@ public class SPSCQueue<T> extends SCQueue<T> {
 			logger.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
-	}
-
-	public SPSCQueue(int queueSize) {
-		this(queueSize, false, null);
 	}
 
 	private class LoadContainerEventProducer {
@@ -117,7 +117,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		SPSCQueue<Integer> queue = new SPSCQueue<>(64, true,
+		SPSCQueue<Integer> queue = new SPSCQueue<>(BufferSize.POW2_5, true,
 				(integer) -> System.out.println("********************************************"));
 
 		ThreadUtil.startNewThread(() -> {

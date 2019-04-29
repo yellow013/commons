@@ -16,7 +16,7 @@ final class WaitStrategyFactory {
 	private WaitStrategyFactory() {
 	}
 
-	static WaitStrategy newInstance(WaitStrategyOption option) {
+	static WaitStrategy getStrategy(WaitStrategyOption option) {
 		switch (option) {
 		case BusySpin:
 			return new BusySpinWaitStrategy();
