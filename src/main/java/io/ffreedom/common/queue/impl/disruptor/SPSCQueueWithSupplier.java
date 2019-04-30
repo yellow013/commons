@@ -1,5 +1,6 @@
 package io.ffreedom.common.queue.impl.disruptor;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
 	private LoadContainerEventProducer producer;
 
-	private volatile boolean isStop = false;
+	private AtomicBoolean isStop = new AtomicBoolean(false);
 
 	public SPSCQueueWithSupplier(BufferSize bufferSize, boolean autoRun, WaitStrategyOption option,
 			Supplier<T> supplier, Processor<T> processor) {
@@ -76,9 +77,9 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 	@Override
 	public boolean enqueue(T t) {
 		try {
-			if (isStop)
+			if (isStop.get())
 				return false;
-			this.producer.onData(t);
+			producer.onData(t);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -87,16 +88,21 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
 	@Override
 	protected void startProcessThread() {
-		this.disruptor.start();
+		disruptor.start();
 	}
 
 	@Override
 	public void stop() {
-		this.isStop = true;
+		isStop.set(true);
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(10);
 		disruptor.shutdown();
 		logger.info("Call stop() success, disruptor is shutdown.");
+	}
+
+	@Override
+	public String getQueueName() {
+		return "";
 	}
 
 	public static void main(String[] args) {
@@ -114,12 +120,6 @@ public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
 		ThreadUtil.sleep(10000);
 
-	}
-
-	@Override
-	public String getQueueName() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package io.ffreedom.common.queue.impl.disruptor;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
@@ -28,7 +30,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private LoadContainerEventProducer producer;
 
-	private volatile boolean isStop = false;
+	private AtomicBoolean isStop = new AtomicBoolean(false);
 
 	public SPSCQueue(BufferSize bufferSize) {
 		this(bufferSize, false, null);
@@ -48,9 +50,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 				// 队列容量
 				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
-				(runnable) -> {
-					return ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread");
-				},
+				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread"),
 				// DaemonThreadFactory.INSTANCE,
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
@@ -91,9 +91,9 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	@Override
 	public boolean enqueue(T t) {
 		try {
-			if (isStop)
+			if (isStop.get())
 				return false;
-			this.producer.onData(t);
+			producer.onData(t);
 			return true;
 		} catch (Exception e) {
 			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
@@ -103,16 +103,21 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	@Override
 	protected void startProcessThread() {
-		this.disruptor.start();
+		disruptor.start();
 	}
 
 	@Override
 	public void stop() {
-		this.isStop = true;
+		isStop.set(true);
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(1);
 		disruptor.shutdown();
 		logger.info("Call stop() success, disruptor is shutdown.");
+	}
+
+	@Override
+	public String getQueueName() {
+		return null;
 	}
 
 	public static void main(String[] args) {
@@ -130,12 +135,6 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 		queue.stop();
 
-	}
-
-	@Override
-	public String getQueueName() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
