@@ -21,7 +21,6 @@ import io.ffreedom.common.utils.ThreadUtil;
  *
  * @param <T>
  */
-
 public class SPSCQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(getClass());
@@ -32,16 +31,19 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public SPSCQueue(BufferSize bufferSize) {
-		this(bufferSize, false, null);
+	public SPSCQueue(String queueName, BufferSize bufferSize) {
+		this(queueName, bufferSize, false, null);
 	}
 
-	public SPSCQueue(BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
-		this(bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+		this(queueName, bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
 	}
 
-	public SPSCQueue(BufferSize bufferSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
+	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
+			WaitStrategyOption option) {
 		super(processor);
+		if (queueName != null)
+			super.queueName = queueName;
 		// if (queueSize == 0 || queueSize % 2 != 0)
 		// throw new IllegalArgumentException("queueSize set error...");
 		this.disruptor = new Disruptor<>(
@@ -50,7 +52,8 @@ public class SPSCQueue<T> extends SCQueue<T> {
 				// 队列容量
 				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
-				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread"),
+				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable,
+						"DisruptorQueue-" + super.queueName + "-WorkingThread"),
 				// DaemonThreadFactory.INSTANCE,
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
@@ -115,14 +118,9 @@ public class SPSCQueue<T> extends SCQueue<T> {
 		logger.info("Call stop() success, disruptor is shutdown.");
 	}
 
-	@Override
-	public String getQueueName() {
-		return null;
-	}
-
 	public static void main(String[] args) {
 
-		SPSCQueue<Integer> queue = new SPSCQueue<>(BufferSize.POW2_5, true,
+		SPSCQueue<Integer> queue = new SPSCQueue<>("Test-Queue", BufferSize.POW2_5, true,
 				(integer) -> System.out.println("********************************************"));
 
 		ThreadUtil.startNewThread(() -> {
