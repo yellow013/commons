@@ -18,21 +18,17 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(JCToolsSPSCQueue.class);
 
-	private String queueName;
-
 	private WaitingStrategy waitingStrategy;
 
 	public static enum WaitingStrategy {
-
 		SpinWaiting, SleepWaiting,
-
 	}
 
 	private JCToolsSPSCQueue(String queueName, int capacity, RunMode mode, long delayMillis,
 			WaitingStrategy waitingStrategy, Processor<T> processor) {
 		super(processor);
 		this.queue = new SpscArrayQueue<>(Math.max(capacity, 64));
-		this.queueName = StringUtil.isNullOrEmpty(queueName)
+		super.queueName = StringUtil.isNullOrEmpty(queueName)
 				? JCToolsSPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName()
 				: queueName;
 		this.waitingStrategy = waitingStrategy;
@@ -119,17 +115,12 @@ public class JCToolsSPSCQueue<T> extends SCQueue<T> {
 	}
 
 	@Override
-	public String getQueueName() {
-		return queueName;
-	}
-
-	@Override
 	public void startProcessThread() {
 		if (!isRun.compareAndSet(false, true)) {
-			logger.error("Error call ->  This queue is started.");
+			logger.error("Error call -> This queue is started.");
 			return;
 		}
-		ThreadUtil.startNewThread(() -> {
+		ThreadUtil.startNewMaxPriorityThread(() -> {
 			try {
 				while (isRun.get() || !queue.isEmpty()) {
 					@SpinWaiting

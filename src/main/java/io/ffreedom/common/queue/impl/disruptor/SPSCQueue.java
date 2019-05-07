@@ -1,5 +1,7 @@
 package io.ffreedom.common.queue.impl.disruptor;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
@@ -19,7 +21,6 @@ import io.ffreedom.common.utils.ThreadUtil;
  *
  * @param <T>
  */
-
 public class SPSCQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(getClass());
@@ -28,30 +29,36 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private LoadContainerEventProducer producer;
 
-	private volatile boolean isStop = false;
+	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor) {
-		this(queueSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	public SPSCQueue(String queueName, BufferSize bufferSize) {
+		this(queueName, bufferSize, false, null);
 	}
 
-	public SPSCQueue(int queueSize, boolean autoRun, Processor<T> processor, WaitStrategyOption option) {
+	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+		this(queueName, bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	}
+
+	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
+			WaitStrategyOption option) {
 		super(processor);
-		if (queueSize == 0 || queueSize % 2 != 0)
-			throw new IllegalArgumentException("queueSize set error...");
+		if (queueName != null)
+			super.queueName = queueName;
+		// if (queueSize == 0 || queueSize % 2 != 0)
+		// throw new IllegalArgumentException("queueSize set error...");
 		this.disruptor = new Disruptor<>(
 				// 实现EventFactory<LoadContainer<>>的Lambda
 				LoadContainer::new,
 				// 队列容量
-				queueSize,
+				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
-				(runnable) -> {
-					return ThreadUtil.newMaxPriorityThread(runnable, "disruptor-working-thread");
-				},
+				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable,
+						"DisruptorQueue-" + super.queueName + "-WorkingThread"),
 				// DaemonThreadFactory.INSTANCE,
 				// 生产者策略, 使用单生产者
 				ProducerType.SINGLE,
 				// Waiting策略
-				WaitStrategyFactory.newInstance(option));
+				WaitStrategyFactory.getStrategy(option));
 		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> callProcessor(event.unloading()));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
@@ -65,10 +72,6 @@ public class SPSCQueue<T> extends SCQueue<T> {
 			logger.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
-	}
-
-	public SPSCQueue(int queueSize) {
-		this(queueSize, false, null);
 	}
 
 	private class LoadContainerEventProducer {
@@ -91,9 +94,9 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	@Override
 	public boolean enqueue(T t) {
 		try {
-			if (isStop)
+			if (isStop.get())
 				return false;
-			this.producer.onData(t);
+			producer.onData(t);
 			return true;
 		} catch (Exception e) {
 			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
@@ -103,12 +106,12 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	@Override
 	protected void startProcessThread() {
-		this.disruptor.start();
+		disruptor.start();
 	}
 
 	@Override
 	public void stop() {
-		this.isStop = true;
+		isStop.set(true);
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(1);
 		disruptor.shutdown();
@@ -117,7 +120,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		SPSCQueue<Integer> queue = new SPSCQueue<>(64, true,
+		SPSCQueue<Integer> queue = new SPSCQueue<>("Test-Queue", BufferSize.POW2_5, true,
 				(integer) -> System.out.println("********************************************"));
 
 		ThreadUtil.startNewThread(() -> {
@@ -130,12 +133,6 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 		queue.stop();
 
-	}
-
-	@Override
-	public String getQueueName() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

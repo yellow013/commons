@@ -1,12 +1,8 @@
 package io.ffreedom.common.fsm;
 
-public final class EnableController implements Enable {
+public abstract class EnableController implements Enable {
 
 	private boolean isEnable;
-
-	public final static EnableController newInstance() {
-		return new EnableController();
-	}
 
 	@Override
 	public boolean isEnabled() {

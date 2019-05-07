@@ -2,10 +2,15 @@ package io.ffreedom.common.collect;
 
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableDoubleList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList;
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
+import org.eclipse.collections.impl.utility.Iterate;
+
+import io.ffreedom.common.utils.ArrayUtil;
 
 public final class MutableLists {
 
@@ -15,6 +20,20 @@ public final class MutableLists {
 	/**
 	 * primitive list
 	 */
+	public static MutableIntList newIntArrayList() {
+		return new IntArrayList();
+	}
+
+	public static MutableIntList newIntArrayList(int initialCapacity) {
+		return new IntArrayList(initialCapacity);
+	}
+
+	public static MutableIntList newIntArrayListWith(int... intValues) {
+		if (ArrayUtil.isNullOrEmpty(intValues))
+			return newIntArrayList();
+		return new IntArrayList(intValues);
+	}
+
 	public static MutableLongList newLongArrayList() {
 		return new LongArrayList();
 	}
@@ -23,8 +42,10 @@ public final class MutableLists {
 		return new LongArrayList(initialCapacity);
 	}
 
-	public static MutableLongList newLongArrayListWith(long... longs) {
-		return new LongArrayList(longs);
+	public static MutableLongList newLongArrayListWith(long... longValues) {
+		if (ArrayUtil.isNullOrEmpty(longValues))
+			return newLongArrayList();
+		return new LongArrayList(longValues);
 	}
 
 	public static MutableDoubleList newDoubleArrayList() {
@@ -35,23 +56,34 @@ public final class MutableLists {
 		return new DoubleArrayList(initialCapacity);
 	}
 
-	public static MutableDoubleList newDoubleArrayListWith(double... doubles) {
-		return new DoubleArrayList(doubles);
+	public static MutableDoubleList newDoubleArrayListWith(double... doubleValues) {
+		if (ArrayUtil.isNullOrEmpty(doubleValues))
+			return newDoubleArrayList();
+		return new DoubleArrayList(doubleValues);
 	}
 
 	/**
 	 * list
 	 */
 	public static <E> MutableList<E> newFastList() {
-		return FastList.newList();
+		return new FastList<>();
 	}
 
-	public static <E> MutableList<E> newFastList(int size) {
-		return FastList.newList(size);
+	public static <E> MutableList<E> newFastList(int initialCapacity) {
+		return new FastList<>(initialCapacity);
 	}
 
-	public static <E> MutableList<E> newFastList(Iterable<E> items) {
-		return FastList.newList(items);
+	public static <E> MutableList<E> newFastList(Iterable<E> iterable) {
+		if (Iterate.isEmpty(iterable))
+			return newFastList();
+		return FastList.newList(iterable);
+	}
+
+	@SafeVarargs
+	public static <E> MutableList<E> newFastList(E... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
+			return newFastList();
+		return FastList.newListWith(values);
 	}
 
 }

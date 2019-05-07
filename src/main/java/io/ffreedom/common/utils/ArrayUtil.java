@@ -2,6 +2,30 @@ package io.ffreedom.common.utils;
 
 public final class ArrayUtil {
 
+	public static boolean isNullOrEmpty(byte[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
+	public static boolean isNullOrEmpty(char[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
+	public static boolean isNullOrEmpty(int[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
+	public static boolean isNullOrEmpty(long[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
+	public static boolean isNullOrEmpty(double[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
+	public static boolean isNullOrEmpty(Object[] array) {
+		return array == null ? true : array.length == 0 ? true : false;
+	}
+
 	public static boolean[] copyOf(boolean[] origin) {
 		boolean[] newArray = new boolean[origin.length];
 		System.arraycopy(origin, 0, newArray, 0, origin.length);
