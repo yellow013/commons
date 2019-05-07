@@ -3,7 +3,7 @@ package io.ffreedom.common.queue.api;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.ffreedom.common.functional.Processor;
-import io.ffreedom.common.utils.Randoms;
+import io.ffreedom.common.number.RandomNumbers;
 
 /**
  * @author yellow013
@@ -18,7 +18,7 @@ public abstract class SCQueue<T> implements Queue<T> {
 
 	protected AtomicBoolean isClose = new AtomicBoolean(true);
 
-	protected String queueName = "SCQueue-" + Integer.toString(Randoms.randomUnsignedInt());
+	protected String queueName = "SCQueue-" + Integer.toString(RandomNumbers.randomUnsignedInt());
 
 	public SCQueue(Processor<T> processor) {
 		if (processor == null)
