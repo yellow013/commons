@@ -1,7 +1,7 @@
 package io.ffreedom.common.number.impl;
 
+import io.ffreedom.common.number.DoubleUtil;
 import io.ffreedom.common.number.api.Num;
-import io.ffreedom.common.utils.DoubleUtil;
 
 public final class DoubleNum implements Num<DoubleNum> {
 

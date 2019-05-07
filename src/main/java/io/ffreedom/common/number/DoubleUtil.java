@@ -1,4 +1,4 @@
-package io.ffreedom.common.utils;
+package io.ffreedom.common.number;
 
 public final class DoubleUtil {
 
@@ -13,26 +13,6 @@ public final class DoubleUtil {
 	private final static long CORRECTION_FACTOR = 1L;
 
 	private final static long CORRECTION_DIVISOR = 10L;
-
-	/**
-	 * 保留小数点后8位的精度
-	 * 
-	 * @param d1
-	 * @return
-	 */
-	private static long doubleToLong8(double d1) {
-		return ((long) (d1 * PRECISION_8_MULTIPLIER) + CORRECTION_FACTOR) / CORRECTION_DIVISOR;
-	}
-
-	/**
-	 * 小数点左移8位
-	 * 
-	 * @param l1
-	 * @return
-	 */
-	private static double longToDouble8(long l1) {
-		return l1 / PRECISION_8_DIVISOR;
-	}
 
 	/**
 	 * 保留小数点后4位的精度
@@ -55,13 +35,23 @@ public final class DoubleUtil {
 	}
 
 	/**
-	 * 修正double保留8位精度
+	 * 保留小数点后8位的精度
 	 * 
 	 * @param d1
 	 * @return
 	 */
-	public static double correction8(double d1) {
-		return longToDouble8(doubleToLong8(d1));
+	private static long doubleToLong8(double d1) {
+		return ((long) (d1 * PRECISION_8_MULTIPLIER) + CORRECTION_FACTOR) / CORRECTION_DIVISOR;
+	}
+
+	/**
+	 * 小数点左移8位
+	 * 
+	 * @param l1
+	 * @return
+	 */
+	private static double longToDouble8(long l1) {
+		return l1 / PRECISION_8_DIVISOR;
 	}
 
 	/**
@@ -75,14 +65,13 @@ public final class DoubleUtil {
 	}
 
 	/**
-	 * 8位精度相加
+	 * 修正double保留8位精度
 	 * 
 	 * @param d1
-	 * @param d2
 	 * @return
 	 */
-	public static double add8(double d1, double d2) {
-		return correction8(d1 + d2);
+	public static double correction8(double d1) {
+		return longToDouble8(doubleToLong8(d1));
 	}
 
 	/**
@@ -97,6 +86,17 @@ public final class DoubleUtil {
 	}
 
 	/**
+	 * 8位精度相加
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double add8(double d1, double d2) {
+		return correction8(d1 + d2);
+	}
+
+	/**
 	 * 8位精度相减
 	 * 
 	 * @param d1
@@ -108,17 +108,6 @@ public final class DoubleUtil {
 	}
 
 	/**
-	 * 8位精度乘法
-	 * 
-	 * @param d1
-	 * @param d2
-	 * @return
-	 */
-	public static double multiply8(double d1, double d2) {
-		return correction8(d1 * d2);
-	}
-
-	/**
 	 * 4位精度乘法
 	 * 
 	 * @param d1
@@ -127,6 +116,17 @@ public final class DoubleUtil {
 	 */
 	public static double multiply4(double d1, double d2) {
 		return correction4(d1 * d2);
+	}
+
+	/**
+	 * 8位精度乘法
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double multiply8(double d1, double d2) {
+		return correction8(d1 * d2);
 	}
 
 	/**
