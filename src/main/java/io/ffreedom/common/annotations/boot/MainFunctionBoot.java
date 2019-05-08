@@ -1,5 +1,5 @@
-package io.ffreedom.common.boot;
+package io.ffreedom.common.annotations.boot;
 
-public abstract class MainFunctionBoot {
+public @interface MainFunctionBoot {
 
 }

@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache;
+package io.ffreedom.common.annotations.cache;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

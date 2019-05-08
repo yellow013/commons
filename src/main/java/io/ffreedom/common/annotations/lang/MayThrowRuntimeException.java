@@ -1,4 +1,4 @@
-package io.ffreedom.common.mark;
+package io.ffreedom.common.annotations.lang;
 
 public @interface MayThrowRuntimeException {
 

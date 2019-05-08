@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache;
+package io.ffreedom.common.annotations.cache;
 
 public @interface UpdateCache {
 
