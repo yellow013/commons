@@ -1,6 +1,9 @@
 package io.ffreedom.common.fsm;
 
-public abstract class EnableController implements Enable {
+import javax.annotation.concurrent.NotThreadSafe;
+
+@NotThreadSafe
+public abstract class EnableComponent implements Enable {
 
 	private boolean isEnable;
 
@@ -16,12 +19,12 @@ public abstract class EnableController implements Enable {
 
 	@Override
 	public void disable() {
-		this.isEnable = false;
+		isEnable = false;
 	}
 
 	@Override
 	public void enable() {
-		this.isEnable = true;
+		isEnable = true;
 	}
 
 }

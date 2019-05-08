@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache.heap.list;
+package io.ffreedom.common.cache.list;
 
 import java.util.List;
 
@@ -7,6 +7,4 @@ public interface CacheListRefresh<T> {
 
 	List<T> refresh();
 	
-	//OrderRef DEV
-
 }
