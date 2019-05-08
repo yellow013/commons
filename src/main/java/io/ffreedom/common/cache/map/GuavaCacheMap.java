@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache.heap.map;
+package io.ffreedom.common.cache.map;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
