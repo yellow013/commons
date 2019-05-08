@@ -67,16 +67,17 @@ public class EpochTimestamp {
 		long l0_0 = System.nanoTime();
 		EpochTime.milliseconds();
 		long l0_1 = System.nanoTime();
-		long l0 = l0_1 - l0_0;
 
 		long l1_0 = System.nanoTime();
 		EpochTimestamp.now();
 		long l1_1 = System.nanoTime();
-		long l1 = l1_1 - l1_0;
 
 		long l2_0 = System.nanoTime();
 		Instant.now();
 		long l2_1 = System.nanoTime();
+
+		long l0 = l0_1 - l0_0;
+		long l1 = l1_1 - l1_0;
 		long l2 = l2_1 - l2_0;
 
 		System.out.println(l0);

@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache.heap;
+package io.ffreedom.common.number.counters;
 
 import java.time.Duration;
 
@@ -13,7 +13,8 @@ import io.ffreedom.common.collect.MutableMaps;
 
 /**
  * 累加计算器，可以清除某个特定delta<br>
- * 在获取值的时候计算过期值
+ * 在获取值的时候排除已过期的值<br>
+ * 在当前JVM进程内有效, JVM重启后, 计数器归零
  * 
  * @author yellow013
  *

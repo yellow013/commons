@@ -2,9 +2,9 @@ package io.ffreedom.common.service;
 
 import io.ffreedom.common.utils.ThreadUtil;
 
-public final class ServiceStartUtil {
+public final class ServiceStarter {
 
-	private ServiceStartUtil() {
+	private ServiceStarter() {
 
 	}
 

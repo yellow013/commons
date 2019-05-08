@@ -1,4 +1,4 @@
-package io.ffreedom.common.cache.heap;
+package io.ffreedom.common.number.counters;
 
 /**
  * 累加计数器接口
@@ -7,7 +7,7 @@ package io.ffreedom.common.cache.heap;
  *
  * @param <T>
  */
-public interface Counter<T extends Counter<?>> {
+public interface Counter<T extends Counter<T>> {
 
 	T add(long tag, long delta);
 
