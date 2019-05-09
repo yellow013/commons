@@ -1,7 +1,7 @@
 package io.ffreedom.common.fsm;
 
-public interface MealyMachine extends FiniteStateMachine {
+public interface MealyMachine<S extends State> extends FiniteStateMachine<S> {
 
-	State setState(State state);
+	S setState(S state);
 
 }

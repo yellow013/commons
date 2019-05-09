@@ -5,24 +5,24 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import io.ffreedom.common.utils.ThreadUtil;
 
-public class LocalId {
+public final class LocalSerial {
 
-	private AtomicLong ID;
+	private AtomicLong innerId;
 
-	private LocalId(long initValue) {
-		this.ID = new AtomicLong(initValue);
+	private LocalSerial(long initValue) {
+		this.innerId = new AtomicLong(initValue);
+	}
+
+	public static LocalSerial newInstance(long initValue) {
+		return new LocalSerial(initValue);
+	}
+
+	public static LocalSerial newInstance() {
+		return new LocalSerial(0);
 	}
 
 	public long incrementAndGet() {
-		return ID.incrementAndGet();
-	}
-
-	public static LocalId newInstance(long initValue) {
-		return new LocalId(initValue);
-	}
-
-	public static LocalId newInstance() {
-		return new LocalId(0);
+		return innerId.incrementAndGet();
 	}
 
 	public static void main(String[] args) {

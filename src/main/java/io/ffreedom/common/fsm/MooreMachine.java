@@ -1,7 +1,7 @@
 package io.ffreedom.common.fsm;
 
-public interface MooreMachine extends FiniteStateMachine {
+public interface MooreMachine<S extends State> extends FiniteStateMachine<S> {
 
-	void setState(State state);
+	void setState(S state);
 
 }
