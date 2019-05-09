@@ -9,19 +9,23 @@ import io.ffreedom.common.utils.StringUtil;
 
 public class CommonLoggerFactory {
 
+	private static final String DefaultFolder = "default";
+
+	private static final String DefaultFileName = "jruntime";
+
 	public static Logger getLogger(Class<?> clazz) {
 		if (!LoggerSetter.isLogFolderSetted()) {
-			String logFolder = System.getProperty(LoggerConstant.LOG_FOLDER);
+			String logFolder = System.getProperty(LoggerConstant.LOG4J2_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder))
-				LoggerSetter.setLogFolder("default");
+				LoggerSetter.setLogFolder(DefaultFolder);
 		}
 		if (!LoggerSetter.isLogFilenameSetted()) {
-			String logFilename = System.getProperty(LoggerConstant.LOG_FILENAME);
+			String logFilename = System.getProperty(LoggerConstant.LOG4J2_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
-				LoggerSetter.setLogFileName("java.runtime");
+				LoggerSetter.setLogFileName(DefaultFileName);
 		}
 		if (!LoggerSetter.isLogLevelSetted()) {
-			String logLevel = System.getProperty(LoggerConstant.LOG_LEVEL);
+			String logLevel = System.getProperty(LoggerConstant.LOG4J2_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel))
 				LoggerSetter.setLogLevel(LogLevel.INFO);
 		}
@@ -39,7 +43,7 @@ public class CommonLoggerFactory {
 		logger.info("778");
 		logger.debug("779");
 
-		System.out.println(System.getProperty(LoggerConstant.LOG_FOLDER));
+		System.out.println(System.getProperty(LoggerConstant.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
 	}
 

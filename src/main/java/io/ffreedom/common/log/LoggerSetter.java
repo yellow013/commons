@@ -19,17 +19,17 @@ public class LoggerSetter {
 	}
 
 	public static void setLogFolder(String logFolder) {
-		System.setProperty(LoggerConstant.LOG_FOLDER, logFolder);
+		System.setProperty(LoggerConstant.LOG4J2_FOLDER, logFolder);
 		isLogFolderSetted = true;
 	}
 
 	public static void setLogFileName(String logFileName) {
-		System.setProperty(LoggerConstant.LOG_FILENAME, logFileName);
+		System.setProperty(LoggerConstant.LOG4J2_FILENAME, logFileName);
 		isLogFilenameSetted = true;
 	}
 
 	public static void setLogLevel(LogLevel logLevel) {
-		System.setProperty(LoggerConstant.LOG_LEVEL, logLevel.name());
+		System.setProperty(LoggerConstant.LOG4J2_LEVEL, logLevel.name());
 		isLogLevelSetted = true;
 	}
 
