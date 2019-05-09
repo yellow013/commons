@@ -1,6 +1,6 @@
 package io.ffreedom.common.sequence;
 
-public interface Serial<T extends Serial<?>> extends Comparable<T> {
+public interface Serial<T extends Serial<T>> extends Comparable<T> {
 
 	long getSerialNumber();
 
