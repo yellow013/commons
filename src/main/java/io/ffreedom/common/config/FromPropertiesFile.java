@@ -38,7 +38,6 @@ public final class FromPropertiesFile {
 			logger.info("Properties file -> [{}] start load", propertiesFile);
 			Properties properties = new Properties();
 			String fileName = propertiesFile.getName().split(PROPERTIES_FILE_SUFFIX)[0];
-			System.out.println("fileName -> " + fileName);
 			try {
 				properties.load(new FileInputStream(propertiesFile));
 				Set<String> propertyNames = properties.stringPropertyNames();
