@@ -146,9 +146,8 @@ public final class ArrayUtil {
 	public static void println(Object... objs) {
 		if (objs == null)
 			return;
-		for (Object obj : objs) {
+		for (Object obj : objs)
 			System.out.println(obj);
-		}
 	}
 
 	public static void print(Object... objs) {
@@ -159,6 +158,18 @@ public final class ArrayUtil {
 			if (i < objs.length - 1)
 				System.out.print(" , ");
 		}
+	}
+
+	public static String toString(Object... objs) {
+		if (objs == null)
+			return "";
+		StringBuilder builder = new StringBuilder("[");
+		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
+			builder.append(objs[i].toString());
+			if (i < j)
+				builder.append(",");
+		}
+		return builder.append("]").toString();
 	}
 
 }
