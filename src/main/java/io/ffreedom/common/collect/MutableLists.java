@@ -1,5 +1,7 @@
 package io.ffreedom.common.collect;
 
+import java.util.function.Supplier;
+
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableDoubleList;
 import org.eclipse.collections.api.list.primitive.MutableIntList;
@@ -8,7 +10,6 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
-import org.eclipse.collections.impl.utility.Iterate;
 
 import io.ffreedom.common.utils.ArrayUtil;
 
@@ -73,8 +74,14 @@ public final class MutableLists {
 		return new FastList<>(initialCapacity);
 	}
 
+	public static <E> MutableList<E> newFastList(Supplier<Iterable<E>> supplier) {
+		if (supplier == null)
+			return newFastList();
+		return newFastList(supplier.get());
+	}
+
 	public static <E> MutableList<E> newFastList(Iterable<E> iterable) {
-		if (Iterate.isEmpty(iterable))
+		if (iterable == null)
 			return newFastList();
 		return FastList.newList(iterable);
 	}

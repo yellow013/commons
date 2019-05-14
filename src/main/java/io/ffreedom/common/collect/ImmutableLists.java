@@ -1,8 +1,9 @@
 package io.ffreedom.common.collect;
 
+import java.util.function.Supplier;
+
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
-import org.eclipse.collections.impl.utility.Iterate;
 
 import io.ffreedom.common.utils.ArrayUtil;
 
@@ -14,8 +15,14 @@ public final class ImmutableLists {
 	/**
 	 * immutable list
 	 */
+	public static <E> ImmutableList<E> newImmutableList(Supplier<Iterable<E>> supplier) {
+		if (supplier == null)
+			return ImmutableListFactoryImpl.INSTANCE.empty();
+		return newImmutableList(supplier.get());
+	}
+
 	public static <E> ImmutableList<E> newImmutableList(Iterable<E> iterable) {
-		if (Iterate.isEmpty(iterable))
+		if (iterable == null)
 			return ImmutableListFactoryImpl.INSTANCE.empty();
 		return ImmutableListFactoryImpl.INSTANCE.withAll(iterable);
 	}
