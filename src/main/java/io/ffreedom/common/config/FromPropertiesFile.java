@@ -24,7 +24,7 @@ public final class FromPropertiesFile {
 	 */
 	// fileName
 	//// |- propertyName -> value
-	private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> allPropertiesMap = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> AllPropertiesMap = new ConcurrentHashMap<>();
 
 	private static final String APPLICATION_FILE_NAME = "application";
 
@@ -57,18 +57,18 @@ public final class FromPropertiesFile {
 		}
 	}
 
-	private static ConcurrentHashMap<String, String> getPropertiesMap(String fileName) {
+	private synchronized static ConcurrentHashMap<String, String> getPropertiesMap(String fileName) {
 		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		ConcurrentHashMap<String, String> propertiesMap = allPropertiesMap.get(fileName);
+		ConcurrentHashMap<String, String> propertiesMap = AllPropertiesMap.get(fileName);
 		if (propertiesMap == null) {
 			propertiesMap = new ConcurrentHashMap<>();
-			allPropertiesMap.put(fileName, propertiesMap);
+			AllPropertiesMap.put(fileName, propertiesMap);
 		}
 		return propertiesMap;
 	}
 
-	public static String getProperty(String fileName, String propertyName) {
+	public synchronized static String getProperty(String fileName, String propertyName) {
 		String propertyValue = getPropertiesMap(fileName).get(propertyName);
 		if (propertyValue == null) {
 			logger.error("Property name -> [{}] is not found of file name -> [{}]", propertyName, fileName);
