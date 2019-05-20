@@ -94,6 +94,12 @@
 		</dependency>
 	</dependencies>
 
+	<scm>
+		<connection>scm:svn:http://192.168.1.251/svn/develop/project_atgo/jcommons/trunk</connection>
+		<developerConnection>scm:svn:http://192.168.1.251/svn/develop/project_atgo/jcommons/trunk</developerConnection>
+		<url>http://192.168.1.251/svn/develop/project_atgo/jcommons/trunk</url>
+	</scm>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -101,8 +107,19 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<tagBase>http://192.168.1.251/svn/develop/project_atgo/jcommons/tags</tagBase>
+					<branchBase>http://192.168.1.251/svn/develop/project_atgo/jcommons/branches</branchBase>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -112,12 +129,12 @@
 		<repository>
 			<id>maven-repo</id>
 			<name>Nexus Release Repository</name>
-			<url>http://192.168.1.10:8898/repository/maven-repo/</url>
+			<url>http://192.168.1.51:8891/repository/atgo-maven-repo/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.1.10:8898/repository/maven-snapshots/</url>
+			<url>http://192.168.1.51:8891/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
