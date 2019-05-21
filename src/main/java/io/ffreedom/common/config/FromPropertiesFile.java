@@ -150,9 +150,10 @@ public final class FromPropertiesFile {
 
 		File[] listFiles = file.listFiles();
 
-		for (File file2 : listFiles) {
-			System.out.println(file2.getName());
-		}
+		if (listFiles != null)
+			for (File file2 : listFiles) {
+				System.out.println(file2.getName());
+			}
 
 		System.out.println(System.getProperty("user.dir"));
 
