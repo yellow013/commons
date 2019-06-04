@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -22,9 +21,8 @@ public final class FromPropertiesFile {
 	/**
 	 * TODO 增加重新加载配置文件的功能
 	 */
-	// fileName
-	//// |- propertyName -> value
-	private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> AllPropertiesMap = new ConcurrentHashMap<>();
+	// fileName-propertyName -> value
+	private static final ConcurrentHashMap<String, String> AllPropertiesMap = new ConcurrentHashMap<>();
 
 	private static final String APPLICATION_FILE_NAME = "application";
 
@@ -36,16 +34,15 @@ public final class FromPropertiesFile {
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {
 			logger.info("Properties file -> [{}] start load", propertiesFile);
-			Properties properties = new Properties();
-			String fileName = propertiesFile.getName().split(PROPERTIES_FILE_SUFFIX)[0];
+			String fileName = propertiesFile.getName();
 			try {
+				Properties properties = new Properties();
 				properties.load(new FileInputStream(propertiesFile));
-				Set<String> propertyNames = properties.stringPropertyNames();
-				ConcurrentHashMap<String, String> propertiesMap = getPropertiesMap(fileName);
-				for (String propertyName : propertyNames) {
+				for (String propertyName : properties.stringPropertyNames()) {
+					String propertiesKey = getPropertiesKey(fileName, propertyName);
 					String propertyValue = properties.getProperty(propertyName);
-					logger.info("Put property, neme==[{}], value==[{}]", propertyName, propertyValue);
-					propertiesMap.put(propertyName, propertyValue);
+					logger.info("Put property, propertiesKey==[{}], propertyValue==[{}]", propertiesKey, propertyValue);
+					AllPropertiesMap.put(propertiesKey, propertyValue);
 				}
 			} catch (FileNotFoundException e) {
 				logger.error("File -> [{}] is not found");
@@ -57,19 +54,16 @@ public final class FromPropertiesFile {
 		}
 	}
 
-	private synchronized static ConcurrentHashMap<String, String> getPropertiesMap(String fileName) {
+	private static String getPropertiesKey(String fileName, String propertyName) {
+		if (fileName == null)
+			fileName = "";
 		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		ConcurrentHashMap<String, String> propertiesMap = AllPropertiesMap.get(fileName);
-		if (propertiesMap == null) {
-			propertiesMap = new ConcurrentHashMap<>();
-			AllPropertiesMap.put(fileName, propertiesMap);
-		}
-		return propertiesMap;
+		return fileName + "-" + propertyName;
 	}
 
 	public synchronized static String getProperty(String fileName, String propertyName) {
-		String propertyValue = getPropertiesMap(fileName).get(propertyName);
+		String propertyValue = AllPropertiesMap.get(getPropertiesKey(fileName, propertyName));
 		if (propertyValue == null) {
 			logger.error("Property name -> [{}] is not found of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
