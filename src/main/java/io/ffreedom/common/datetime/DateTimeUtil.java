@@ -79,6 +79,10 @@ public final class DateTimeUtil {
 
 	@CheckForNull
 	public final static TemporalAccessor strToDate(DateTimeStyle style, String str) {
+		if (style == null)
+			throw new IllegalArgumentException("style cannot null");
+		if (str == null)
+			throw new IllegalArgumentException("str cannot null");
 		try {
 			return str.length() == style.getPattern().length() ? style.getFormatter().parse(str) : null;
 		} catch (Exception e) {
@@ -92,7 +96,7 @@ public final class DateTimeUtil {
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(Date date) {
-		return dateToLocalDateTime(date, TimeZones.SYS_DEFAULT);
+		return dateToLocalDateTime(date, TimeZones.DEFAULT_ZONE_ID);
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(Date date, ZoneId zoneId) {

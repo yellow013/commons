@@ -2,12 +2,15 @@ package io.ffreedom.common.datetime;
 
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 public interface TimeZones {
 
 	ZoneOffset UTC = ZoneOffset.UTC;
 
-	ZoneId SYS_DEFAULT = ZoneOffset.systemDefault();
+	ZoneOffset DEFAULT_ZONE_OFFSET = ZonedDateTime.now().getOffset();
+
+	ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault();
 
 	/**
 	 * Chinese Standard Time

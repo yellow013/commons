@@ -25,7 +25,7 @@ public class EpochTimestamp {
 	private void calculateZonedDateTime() {
 		if (instant == null)
 			calculateInstant();
-		this.zonedDateTime = ZonedDateTime.ofInstant(instant, TimeZones.SYS_DEFAULT);
+		this.zonedDateTime = ZonedDateTime.ofInstant(instant, TimeZones.DEFAULT_ZONE_ID);
 	}
 
 	public static EpochTimestamp now() {
