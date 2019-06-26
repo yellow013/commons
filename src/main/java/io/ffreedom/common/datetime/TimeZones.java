@@ -8,10 +8,9 @@ public interface TimeZones {
 
 	ZoneOffset UTC = ZoneOffset.UTC;
 
-	ZoneOffset DEFAULT_ZONE_OFFSET = ZonedDateTime.now().getOffset();
-
 	ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault();
 
+	ZoneOffset DEFAULT_ZONE_OFFSET = ZonedDateTime.now(DEFAULT_ZONE_ID).getOffset();
 	/**
 	 * Chinese Standard Time
 	 */
