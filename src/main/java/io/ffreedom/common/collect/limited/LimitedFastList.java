@@ -2,9 +2,9 @@ package io.ffreedom.common.collect.limited;
 
 import org.eclipse.collections.impl.list.mutable.FastList;
 
-public final class FastLimitedList<E> extends LimitedList<FastList<E>, E> {
+public final class LimitedFastList<E> extends LimitedList<FastList<E>, E> {
 
-	public FastLimitedList(int capacity) {
+	public LimitedFastList(int capacity) {
 		super(capacity);
 	}
 
