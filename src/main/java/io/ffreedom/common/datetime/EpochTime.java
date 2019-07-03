@@ -1,5 +1,6 @@
 package io.ffreedom.common.datetime;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -35,6 +36,10 @@ public final class EpochTime {
 		System.out.println(epoch);
 		System.out.println(milliseconds(now, offset));
 		System.out.println(now.toEpochSecond(offset));
+		
+		
+		Charset.availableCharsets().entrySet().stream().forEach(entity -> System.out.println(entity));
+		
 	}
 
 }
