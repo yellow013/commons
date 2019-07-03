@@ -1,7 +1,7 @@
 package io.ffreedom.common.utils;
 
 import io.ffreedom.common.charset.Charsets;
-import io.ffreedom.common.charset.StringConstants;
+import io.ffreedom.common.charset.StrConstants;
 
 public final class StringUtil {
 
@@ -9,7 +9,7 @@ public final class StringUtil {
 	}
 
 	public static String toString(Object obj) {
-		return obj == null ? StringConstants.NullStr : obj.toString();
+		return obj == null ? StrConstants.NULL : obj.toString();
 	}
 
 	public static boolean isNullOrEmpty(String str) {

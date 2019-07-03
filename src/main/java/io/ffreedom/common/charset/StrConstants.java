@@ -1,9 +1,9 @@
 package io.ffreedom.common.charset;
 
-public interface StringConstants {
+public interface StrConstants {
 
-	String NullStr = "null";
+	String NULL = "null";
 
-	String Empty = "";
+	String EMPTY = "";
 
 }
