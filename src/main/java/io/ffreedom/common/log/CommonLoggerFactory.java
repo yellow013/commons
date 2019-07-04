@@ -15,17 +15,17 @@ public class CommonLoggerFactory {
 
 	public static Logger getLogger(Class<?> clazz) {
 		if (!LoggerSetter.isLogFolderSetted()) {
-			String logFolder = System.getProperty(LoggerConstant.LOG4J2_FOLDER);
+			String logFolder = System.getProperty(LoggerConstant.LOG4_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder))
 				LoggerSetter.setLogFolder(DefaultFolder);
 		}
 		if (!LoggerSetter.isLogFilenameSetted()) {
-			String logFilename = System.getProperty(LoggerConstant.LOG4J2_FILENAME);
+			String logFilename = System.getProperty(LoggerConstant.LOG4_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
 				LoggerSetter.setLogFileName(DefaultFileName);
 		}
 		if (!LoggerSetter.isLogLevelSetted()) {
-			String logLevel = System.getProperty(LoggerConstant.LOG4J2_LEVEL);
+			String logLevel = System.getProperty(LoggerConstant.LOG4_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel))
 				LoggerSetter.setLogLevel(LogLevel.INFO);
 		}
@@ -33,9 +33,10 @@ public class CommonLoggerFactory {
 	}
 
 	public static void main(String[] args) {
+		
 		System.out.println(System.getProperty("user.home"));
-
 		LoggerSetter.setLogFileName("new");
+		
 		LoggerSetter.setLogLevel(LogLevel.INFO);
 		Logger logger = getLogger(CommonLoggerFactory.class);
 
@@ -43,7 +44,7 @@ public class CommonLoggerFactory {
 		logger.info("778");
 		logger.debug("779");
 
-		System.out.println(System.getProperty(LoggerConstant.LOG4J2_FOLDER));
+		System.out.println(System.getProperty(LoggerConstant.LOG4_FOLDER));
 		System.out.println(LocalDateTime.now());
 	}
 
