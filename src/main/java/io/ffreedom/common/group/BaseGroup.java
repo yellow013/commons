@@ -5,23 +5,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.ThreadSafe;
 
-@NotThreadSafe
+@ThreadSafe
 public abstract class BaseGroup<K, V> implements Group<K, V> {
 
 	protected Map<K, V> group = new ConcurrentHashMap<>();
 
 	@Override
 	public synchronized V getMember(K k) {
-		V returnMember = group.get(k);
-		if (returnMember != null) {
-			return returnMember;
+		V member = group.get(k);
+		if (member != null) {
+			return member;
 		} else {
-			if (registerMember(k)) {
+			if (registerMember(k))
 				return getMember(k);
-			}
-			throw new RuntimeException("Call method -> createMember(" + k + ") return null, throw RuntimeException.");
+			else
+				return null;
+			//throw new RuntimeException("Call method -> createMember(" + k + ") return null, throw RuntimeException.");
 		}
 	}
 

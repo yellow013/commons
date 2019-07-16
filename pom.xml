@@ -45,8 +45,13 @@
 			<artifactId>eclipse-collections</artifactId>
 			<version>9.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections-forkjoin</artifactId>
+			<version>10.0.0</version>
+		</dependency>
 
-		<!-- LMAX jctools -->
+		<!-- jctools -->
 		<dependency>
 			<groupId>org.jctools</groupId>
 			<artifactId>jctools-core</artifactId>
@@ -96,10 +101,17 @@
 		</plugins>
 	</build>
 
-	<!-- <distributionManagement> <repository> <id>maven-repo</id> <name>Nexus 
-		Release Repository</name> <url>http://192.168.1.1:8891/repository/maven-repo/</url> 
-		</repository> <snapshotRepository> <id>maven-snapshots</id> <name>Nexus Snapshot 
-		Repository</name> <url>http://192.168.1.1:8891/repository/maven-snapshots/</url> 
-		</snapshotRepository> </distributionManagement> -->
+	<distributionManagement>
+		<repository>
+			<id>betball-releases</id>
+			<name>betball-pb-releases</name>
+			<url>http://203.60.2.51:10000/nexus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>betball-snapshots</id>
+			<name>betball-pb-snapshots</name>
+			<url>http://203.60.2.51:10000/nexus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

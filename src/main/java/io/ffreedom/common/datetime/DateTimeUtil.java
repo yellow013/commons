@@ -16,28 +16,44 @@ import io.ffreedom.common.utils.StringUtil;
 @ThreadSafe
 public final class DateTimeUtil {
 
-	public final static int intDate() {
-		return intDate(LocalDate.now());
+	public final static int date() {
+		return date(LocalDate.now());
 	}
 
-	public final static int intDate(LocalDate date) {
+	public final static int date(LocalDate date) {
 		return date.getYear() * 10000 + date.getMonth().getValue() * 100 + date.getDayOfMonth();
 	}
 
-	public final static int intTime() {
-		return intTime(LocalTime.now());
+	public final static int time() {
+		return time(LocalTime.now());
 	}
 
-	public final static int intTime(LocalTime time) {
+	public final static int time(LocalTime time) {
 		return time.getHour() * 10000 + time.getMinute() * 100 + time.getSecond();
 	}
 
-	public final static int intTimeToMillisecond() {
-		return intTimeToMillisecond(LocalTime.now());
+	public final static int timeToMillisecond() {
+		return timeToMillisecond(LocalTime.now());
 	}
 
-	public final static int intTimeToMillisecond(LocalTime time) {
-		return intTime(time) * 1000 + time.getNano() / 1000000;
+	public final static int timeToMillisecond(LocalTime time) {
+		return time(time) * 1000 + time.getNano() / 1000000;
+	}
+
+	public final static long timeToMicrosecond() {
+		return timeToMicrosecond(LocalTime.now());
+	}
+
+	public final static long timeToMicrosecond(LocalTime time) {
+		return time(time) * 1000000 + time.getNano() / 1000;
+	}
+
+	public final static long timeToNanosecond() {
+		return timeToNanosecond(LocalTime.now());
+	}
+
+	public final static long timeToNanosecond(LocalTime time) {
+		return time(time) * 1000000000 + time.getNano();
 	}
 
 	public final static long datetimeToSecond() {
@@ -45,7 +61,7 @@ public final class DateTimeUtil {
 	}
 
 	public final static long datetimeToSecond(LocalDateTime dateTime) {
-		return intDate(dateTime.toLocalDate()) * 1000000L + intTime(dateTime.toLocalTime());
+		return date(dateTime.toLocalDate()) * 1000000L + time(dateTime.toLocalTime());
 	}
 
 	public final static long datetimeToMillisecond() {
@@ -134,16 +150,17 @@ public final class DateTimeUtil {
 	public static void main(String[] args) {
 
 		LocalDateTime dateTime = LocalDateTime.now();
+//		System.out.println(Integer.MAX_VALUE);
+//		System.out.println(Long.MAX_VALUE);
+//		System.out.println(intDate(dateTime.toLocalDate()));
+//		System.out.println(intTime(dateTime.toLocalTime()));
 		System.out.println(Integer.MAX_VALUE);
-		System.out.println(Long.MAX_VALUE);
-		System.out.println(intDate(dateTime.toLocalDate()));
-		System.out.println(intTime(dateTime.toLocalTime()));
-		System.out.println(intTimeToMillisecond(dateTime.toLocalTime()));
-		System.out.println(datetimeToSecond(dateTime));
-		System.out.println(datetimeToMillisecond(dateTime));
-		System.out.println(toLocalDate(20161223));
-		System.out.println(toLocalTime(234554987));
-		System.out.println(toLocalDateTime(20161223234554987L));
+		System.out.println(timeToMillisecond(dateTime.toLocalTime()));
+//		System.out.println(datetimeToSecond(dateTime));
+//		System.out.println(datetimeToMillisecond(dateTime));
+//		System.out.println(toLocalDate(20161223));
+//		System.out.println(toLocalTime(234554987));
+//		System.out.println(toLocalDateTime(20161223234554987L));
 
 	}
 
