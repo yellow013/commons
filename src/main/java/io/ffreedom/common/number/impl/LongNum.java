@@ -20,31 +20,31 @@ public final class LongNum implements Num<LongNum> {
 	}
 
 	@Override
-	public LongNum plusBy(Num<?> augend) {
+	public LongNum plus(Num<?> augend) {
 		value += augend.longValue();
 		return this;
 	}
 
 	@Override
-	public LongNum minusBy(Num<?> subtrahend) {
+	public LongNum minus(Num<?> subtrahend) {
 		value -= subtrahend.longValue();
 		return this;
 	}
 
 	@Override
-	public LongNum multipliedBy(Num<?> multiplicand) {
+	public LongNum multiplied(Num<?> multiplicand) {
 		value *= multiplicand.longValue();
 		return this;
 	}
 
 	@Override
-	public LongNum dividedBy(Num<?> divisor) {
+	public LongNum divided(Num<?> divisor) {
 		value /= divisor.longValue();
 		return this;
 	}
 
 	@Override
-	public LongNum powBy(int n) {
+	public LongNum pow(int n) {
 		value = (long) Math.pow(value, n);
 		return this;
 	}

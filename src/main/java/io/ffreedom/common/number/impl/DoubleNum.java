@@ -27,7 +27,7 @@ public final class DoubleNum implements Num<DoubleNum> {
 	}
 
 	@Override
-	public DoubleNum plusBy(Num<?> augend) {
+	public DoubleNum plus(Num<?> augend) {
 		if (isPrecision8)
 			this.value = DoubleUtil.add8(value, augend.doubleValue());
 		else
@@ -36,13 +36,13 @@ public final class DoubleNum implements Num<DoubleNum> {
 	}
 
 	@Override
-	public DoubleNum minusBy(Num<?> subtrahend) {
+	public DoubleNum minus(Num<?> subtrahend) {
 		this.value = DoubleUtil.subtraction(value, subtrahend.doubleValue());
 		return this;
 	}
 
 	@Override
-	public DoubleNum multipliedBy(Num<?> multiplicand) {
+	public DoubleNum multiplied(Num<?> multiplicand) {
 		if (isPrecision8)
 			this.value = DoubleUtil.multiply8(value, multiplicand.doubleValue());
 		else
@@ -51,13 +51,13 @@ public final class DoubleNum implements Num<DoubleNum> {
 	}
 
 	@Override
-	public DoubleNum dividedBy(Num<?> divisor) {
+	public DoubleNum divided(Num<?> divisor) {
 		this.value = DoubleUtil.division(value, divisor.doubleValue());
 		return this;
 	}
 
 	@Override
-	public DoubleNum powBy(int n) {
+	public DoubleNum pow(int n) {
 		this.value = Math.pow(value, n);
 		return this;
 	}

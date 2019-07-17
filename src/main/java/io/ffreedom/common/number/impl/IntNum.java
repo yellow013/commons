@@ -20,31 +20,31 @@ public final class IntNum implements Num<IntNum> {
 	}
 
 	@Override
-	public IntNum plusBy(Num<?> augend) {
+	public IntNum plus(Num<?> augend) {
 		value += augend.intValue();
 		return this;
 	}
 
 	@Override
-	public IntNum minusBy(Num<?> subtrahend) {
+	public IntNum minus(Num<?> subtrahend) {
 		value -= subtrahend.intValue();
 		return this;
 	}
 
 	@Override
-	public IntNum multipliedBy(Num<?> multiplicand) {
+	public IntNum multiplied(Num<?> multiplicand) {
 		value *= multiplicand.intValue();
 		return this;
 	}
 
 	@Override
-	public IntNum dividedBy(Num<?> divisor) {
+	public IntNum divided(Num<?> divisor) {
 		value /= divisor.intValue();
 		return this;
 	}
 
 	@Override
-	public IntNum powBy(int n) {
+	public IntNum pow(int n) {
 		value = (int) Math.pow(value, n);
 		return this;
 	}

@@ -8,15 +8,15 @@ public interface Num<N extends Num<?>> extends Comparable<N> {
 	
 	N copy();
 
-	N plusBy(Num<?> augend);
+	N plus(Num<?> augend);
 
-	N minusBy(Num<?> subtrahend);
+	N minus(Num<?> subtrahend);
 
-	N multipliedBy(Num<?> multiplicand);
+	N multiplied(Num<?> multiplicand);
 
-	N dividedBy(Num<?> divisor);
+	N divided(Num<?> divisor);
 
-	N powBy(int n);
+	N pow(int n);
 
 	boolean isZero();
 
