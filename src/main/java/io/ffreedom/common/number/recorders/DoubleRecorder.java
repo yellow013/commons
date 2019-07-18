@@ -3,8 +3,8 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 
-import io.ffreedom.common.collect.MutableMaps;
-import io.ffreedom.common.collect.MutableSets;
+import io.ffreedom.common.collections.MutableMaps;
+import io.ffreedom.common.collections.MutableSets;
 
 /**
  * 有序的记录N个double数值并排序<br>

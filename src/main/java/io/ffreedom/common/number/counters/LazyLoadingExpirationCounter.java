@@ -8,8 +8,8 @@ import org.eclipse.collections.api.iterator.MutableLongIterator;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
-import io.ffreedom.common.collect.MutableLists;
-import io.ffreedom.common.collect.MutableMaps;
+import io.ffreedom.common.collections.MutableLists;
+import io.ffreedom.common.collections.MutableMaps;
 
 /**
  * 累加计算器，可以清除某个特定delta<br>

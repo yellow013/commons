@@ -3,8 +3,8 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;
 
-import io.ffreedom.common.collect.MutableMaps;
-import io.ffreedom.common.collect.MutableSets;
+import io.ffreedom.common.collections.MutableMaps;
+import io.ffreedom.common.collections.MutableSets;
 
 public final class IntRecorder {
 
