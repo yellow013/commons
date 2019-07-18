@@ -1,4 +1,4 @@
-package io.ffreedom.common.collect;
+package io.ffreedom.common.collections;
 
 import java.util.Collection;
 import java.util.Comparator;
