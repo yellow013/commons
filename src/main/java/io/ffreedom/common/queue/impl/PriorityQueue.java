@@ -7,7 +7,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.eclipse.collections.api.set.sorted.MutableSortedSet;
 
-import io.ffreedom.common.collect.MutableSets;
+import io.ffreedom.common.collections.MutableSets;
 
 @NotThreadSafe
 public class PriorityQueue<E> {
