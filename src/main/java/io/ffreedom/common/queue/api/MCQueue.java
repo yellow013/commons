@@ -1,7 +1,7 @@
 package io.ffreedom.common.queue.api;
 
-public interface MCQueue<T> extends Queue<T> {
+public interface MCQueue<E> extends Queue<E> {
 
-	T dequeue();
+	E dequeue();
 
 }

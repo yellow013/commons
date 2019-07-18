@@ -13,9 +13,9 @@ import io.ffreedom.common.queue.api.MCQueue;
 import io.ffreedom.common.queue.impl.base.LoadContainer;
 
 @ThreadSafe
-public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
+public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 
-	private LoadContainer<T>[] containers;
+	private LoadContainer<E>[] containers;
 
 	private final int size;
 	private volatile AtomicInteger arrayCount = new AtomicInteger();
@@ -45,19 +45,19 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	@Override
-	public boolean enqueue(T t) {
+	public boolean enqueue(E e) {
 		try {
 			lock.lockInterruptibly();
 			while (arrayCount.get() == size)
 				notFull.await();
-			containers[writeOffset].loading(t);
+			containers[writeOffset].loading(e);
 			if (++writeOffset == size)
 				writeOffset = 0;
 			arrayCount.incrementAndGet();
 			notEmpty.signal();
 			return true;
-		} catch (InterruptedException e) {
-			logger.error("PreloadingArrayBlockingQueue.enQueue(t) : " + e.getMessage());
+		} catch (InterruptedException exception) {
+			logger.error("PreloadingArrayBlockingQueue.enQueue(t)", exception);
 			return false;
 		} finally {
 			lock.unlock();
@@ -65,17 +65,17 @@ public class PreloadingArrayBlockingQueue<T> implements MCQueue<T> {
 	}
 
 	@Override
-	public T dequeue() {
+	public E dequeue() {
 		try {
 			lock.lockInterruptibly();
 			while (arrayCount.get() == 0)
 				notEmpty.await();
-			T t = containers[readOffset].unloading();
+			E e = containers[readOffset].unloading();
 			if (++readOffset == size)
 				readOffset = 0;
 			arrayCount.decrementAndGet();
 			notFull.signal();
-			return t;
+			return e;
 		} catch (InterruptedException e) {
 			logger.error("PreloadingArrayBlockingQueue.deQueue() : " + e.getMessage());
 			return null;

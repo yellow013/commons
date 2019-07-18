@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.concurrent.ThreadSafe;
 
 @ThreadSafe
-public final class RandomNumbers {
+public final class RandomNumber {
 
 	private static ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 

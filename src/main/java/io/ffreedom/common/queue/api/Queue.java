@@ -1,8 +1,8 @@
 package io.ffreedom.common.queue.api;
 
-public interface Queue<T> {
+public interface Queue<E> {
 	
-	boolean enqueue(T t);
+	boolean enqueue(E e);
 	
 	String getQueueName();
 

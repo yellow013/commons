@@ -1,8 +1,8 @@
 package io.ffreedom.common.functional;
 
 @FunctionalInterface
-public interface Processor<IN> {
+public interface Processor<T> {
 
-	void process(IN in) throws Exception;
+	void process(T input) throws Exception;
 
 }

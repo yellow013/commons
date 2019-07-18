@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import javax.annotation.concurrent.NotThreadSafe;
 
 @NotThreadSafe
-public class PreloadingQueue<T> {
+public class PreloadingQueue<E> {
 
-	private LinkedList<T> objs = new LinkedList<>();
+	private LinkedList<E> objs = new LinkedList<>();
 
-	public T next() {
+	public E next() {
 		return objs.removeFirst();
 	}
 
-	public void addLast(T content) {
-		objs.addLast(content);
+	public void addLast(E element) {
+		objs.addLast(element);
 	}
 
 	public boolean isEmpty() {
@@ -26,7 +26,7 @@ public class PreloadingQueue<T> {
 		return !isEmpty();
 	}
 
-	public Collection<T> getAllElement() {
+	public Collection<E> getAllElement() {
 		return objs;
 	}
 

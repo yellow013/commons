@@ -1,15 +1,15 @@
 package io.ffreedom.common.queue.impl.base;
 
-public class LoadContainer<T> {
+public class LoadContainer<E> {
 
-	private T t;
+	private E e;
 
-	public void loading(T t) {
-		this.t = t;
+	public void loading(E e) {
+		this.e = e;
 	}
 
-	public T unloading() {
-		return t;
+	public E unloading() {
+		return e;
 	}
 
 }
