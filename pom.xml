@@ -47,13 +47,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.26</version>
 		</dependency>
-
 		<!-- Eclipse Collections -->
-		<dependency>
-			<groupId>org.eclipse.collections</groupId>
-			<artifactId>eclipse-collections-api</artifactId>
-			<version>10.0.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.eclipse.collections</groupId>
 			<artifactId>eclipse-collections</artifactId>
@@ -94,6 +88,20 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
 		</dependency>
+		
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>betball-releases</id>
+			<name>betball-pb-releases</name>
+			<url>http://203.60.1.16:10000/nexus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>betball-snapshots</id>
+			<name>betball-pb-snapshots</name>
+			<url>http://203.60.1.16:10000/nexus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
