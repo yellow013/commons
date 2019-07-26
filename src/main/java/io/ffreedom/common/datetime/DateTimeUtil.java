@@ -16,79 +16,263 @@ import io.ffreedom.common.utils.StringUtil;
 @ThreadSafe
 public final class DateTimeUtil {
 
+	/**
+	 * 返回 primitive int 表示的 yyyyMMdd
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public final static int date() {
 		return date(LocalDate.now());
 	}
 
+	/**
+	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyMMdd
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public final static int date(LocalDate date) {
 		return date.getYear() * 10000 + date.getMonth().getValue() * 100 + date.getDayOfMonth();
 	}
 
-	public final static int time() {
-		return time(LocalTime.now());
+	/**
+	 * 返回 primitive int 表示的 HH
+	 * 
+	 * @return
+	 */
+	public final static int timeToHour() {
+		return timeToHour(LocalTime.now());
 	}
 
-	public final static int time(LocalTime time) {
+	/**
+	 * 根据指定 LocalTime 返回 primitive int 表示的 HH
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public final static int timeToHour(LocalTime time) {
+		return time.getHour();
+	}
+
+	/**
+	 * 返回 primitive int 表示的 HHmm
+	 * 
+	 * @return
+	 */
+	public final static int timeToMinute() {
+		return timeToMinute(LocalTime.now());
+	}
+
+	/**
+	 * 根据指定 LocalTime 返回 primitive int 表示的 HHmm
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public final static int timeToMinute(LocalTime time) {
+		return time.getHour() * 100 + time.getMinute();
+	}
+
+	/**
+	 * 返回 primitive int 表示的 HHmmss
+	 * 
+	 * @return
+	 */
+	public final static int timeToSecond() {
+		return timeToSecond(LocalTime.now());
+	}
+
+	/**
+	 * 根据指定 LocalTime 返回 primitive int 表示的 HHmmss
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public final static int timeToSecond(LocalTime time) {
 		return time.getHour() * 10000 + time.getMinute() * 100 + time.getSecond();
 	}
 
+	/**
+	 * 返回 primitive int 表示的 HHmmssSSS
+	 * 
+	 * @return
+	 */
 	public final static int timeToMillisecond() {
 		return timeToMillisecond(LocalTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalTime 返回 primitive int 表示的 HHmmssSSS
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public final static int timeToMillisecond(LocalTime time) {
-		return time(time) * 1000 + time.getNano() / 1000000;
+		return timeToSecond(time) * 1000 + time.getNano() / 1000000;
 	}
 
+	/**
+	 * 返回 primitive long 表示的 HHmmssSSSSSS
+	 * 
+	 * @return
+	 */
 	public final static long timeToMicrosecond() {
 		return timeToMicrosecond(LocalTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalTime 返回 primitive long 表示的 HHmmssSSSSSS
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public final static long timeToMicrosecond(LocalTime time) {
-		return time(time) * 1000000 + time.getNano() / 1000;
+		return timeToSecond(time) * 1000000L + time.getNano() / 1000;
 	}
 
+	/**
+	 * 返回 primitive long 表示的 HHmmssSSSSSSSSS
+	 * 
+	 * @return
+	 */
 	public final static long timeToNanosecond() {
 		return timeToNanosecond(LocalTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalTime 返回 primitive long 表示的 HHmmssSSSSSSSSS
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public final static long timeToNanosecond(LocalTime time) {
-		return time(time) * 1000000000 + time.getNano();
+		return timeToSecond(time) * 1000000000L + time.getNano();
 	}
 
+	/**
+	 * 返回 primitive long 表示的 yyyyMMddHH
+	 * 
+	 * @return
+	 */
+	public final static long datetimeToHour() {
+		return datetimeToHour(LocalDateTime.now());
+	}
+
+	/**
+	 * 根据指定 LocalDateTime 返回 primitive long 表示的 yyyyMMddHH
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
+	public final static long datetimeToHour(LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate()) * 100L + timeToHour(dateTime.toLocalTime());
+	}
+
+	/**
+	 * 返回 primitive long 表示的 yyyyMMddHHmm
+	 * 
+	 * @return
+	 */
+	public final static long datetimeToMinute() {
+		return datetimeToMinute(LocalDateTime.now());
+	}
+
+	/**
+	 * 根据指定 LocalDateTime 返回 primitive long 表示的 yyyyMMddHHmm
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
+	public final static long datetimeToMinute(LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate()) * 10000L + timeToMinute(dateTime.toLocalTime());
+	}
+
+	/**
+	 * 返回 primitive long 表示的 yyyyMMddHHmmss
+	 * 
+	 * @return
+	 */
 	public final static long datetimeToSecond() {
 		return datetimeToSecond(LocalDateTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalDateTime 返回 primitive long 表示的 yyyyMMddHHmmss
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
 	public final static long datetimeToSecond(LocalDateTime dateTime) {
-		return date(dateTime.toLocalDate()) * 1000000L + time(dateTime.toLocalTime());
+		return date(dateTime.toLocalDate()) * 1000000L + timeToSecond(dateTime.toLocalTime());
 	}
 
+	/**
+	 * 返回 primitive long 表示的 yyyyMMddHHmmssSSS
+	 * 
+	 * @return
+	 */
 	public final static long datetimeToMillisecond() {
 		return datetimeToMillisecond(LocalDateTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalDateTime 返回 primitive long 表示的 yyyyMMddHHmmssSSS<br>
+	 * year 不可超过 922337
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
 	public final static long datetimeToMillisecond(LocalDateTime dateTime) {
 		return datetimeToSecond(dateTime) * 1000L + dateTime.toLocalTime().getNano() / 1000000;
 	}
 
+	/**
+	 * 获取当天经过的 seconds
+	 * 
+	 * @return
+	 */
 	public final static int secondsOfDay() {
 		return secondsOfDay(LocalTime.now());
 	}
 
+	/**
+	 * 根据指定 LocalTime 获取当天经过的 seconds
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public final static int secondsOfDay(LocalTime time) {
 		return time.getHour() * 3600 + time.getMinute() * 60 + time.getSecond();
 	}
 
+	/**
+	 * primitive int yyyyMMdd 转换为 LocalDate
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public final static LocalDate toLocalDate(int date) {
 		return LocalDate.of(date / 10000, (date % 10000) / 100, date % 100);
 	}
 
+	/**
+	 * primitive int HHmmss 转换为 LocalTime
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public final static LocalTime toLocalTime(int time) {
 		return LocalTime.of(time / 10000000, (time % 10000000) / 100000, (time % 100000) / 1000,
 				(time % 1000) * 1000000);
 	}
 
+	/**
+	 * primitive long yyyyMMddHHmmss 转换为 LocalDateTime
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public final static LocalDateTime toLocalDateTime(long datetime) {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
 	}
@@ -150,17 +334,22 @@ public final class DateTimeUtil {
 	public static void main(String[] args) {
 
 		LocalDateTime dateTime = LocalDateTime.now();
-//		System.out.println(Integer.MAX_VALUE);
-//		System.out.println(Long.MAX_VALUE);
-//		System.out.println(intDate(dateTime.toLocalDate()));
-//		System.out.println(intTime(dateTime.toLocalTime()));
 		System.out.println(Integer.MAX_VALUE);
+		System.out.println(Long.MAX_VALUE);
+		System.out.println(date(dateTime.toLocalDate()));
+		System.out.println(timeToHour(dateTime.toLocalTime()));
+		System.out.println(timeToMinute(dateTime.toLocalTime()));
+		System.out.println(timeToSecond(dateTime.toLocalTime()));
 		System.out.println(timeToMillisecond(dateTime.toLocalTime()));
-//		System.out.println(datetimeToSecond(dateTime));
-//		System.out.println(datetimeToMillisecond(dateTime));
-//		System.out.println(toLocalDate(20161223));
-//		System.out.println(toLocalTime(234554987));
-//		System.out.println(toLocalDateTime(20161223234554987L));
+		System.out.println(timeToMicrosecond(dateTime.toLocalTime()));
+		System.out.println(timeToNanosecond(dateTime.toLocalTime()));
+		System.out.println(datetimeToHour(dateTime));
+		System.out.println(datetimeToMinute(dateTime));
+		System.out.println(datetimeToSecond(dateTime));
+		System.out.println(datetimeToMillisecond(dateTime));
+		System.out.println(toLocalDate(20161223));
+		System.out.println(toLocalTime(234554987));
+		System.out.println(toLocalDateTime(20161223234554987L));
 
 	}
 
