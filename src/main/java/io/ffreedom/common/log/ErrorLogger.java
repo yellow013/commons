@@ -4,26 +4,18 @@ import org.slf4j.Logger;
 
 public final class ErrorLogger {
 
-	public static void error(Logger logger, Exception e) {
-		logger.error("***Throw -> [{}], ExceptionMessage -> [{}]", e.getClass().getName(), e.getMessage(), e);
+	public static void error(Logger logger, Exception ex) {
+		logger.error("***Throw -> [{}], ExceptionMessage -> [{}]", ex.getClass().getSimpleName(), ex.getMessage(), ex);
 	}
 
-	public static void error(Logger logger, Exception e, String msg) {
-		error(logger, msg);
-		error(logger, e);
-	}
-
-	public static void error(Logger logger, String msg) {
+	public static void error(Logger logger, Exception ex, String msg) {
 		logger.error(msg);
+		error(logger, ex);
 	}
 
-	public static void error(Logger logger, Exception e, String msgTemplate, Object... args) {
-		error(logger, msgTemplate, args);
-		error(logger, e);
-	}
-
-	public static void error(Logger logger, String msgTemplate, Object... args) {
+	public static void error(Logger logger, Exception ex, String msgTemplate, Object... args) {
 		logger.error(msgTemplate, args);
+		error(logger, ex);
 	}
 
 }
