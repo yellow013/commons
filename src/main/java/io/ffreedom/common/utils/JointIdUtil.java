@@ -20,7 +20,7 @@ public final class JointIdUtil {
 	public static long jointId(int highPos, int lowPos) {
 		if (highPos >= HighPosMaxValue)
 			throw new IllegalArgumentException(
-					"Input highPos is too many, MaxValue==[" + HighPosMaxValue + "], InputValue==[" + highPos + "]");
+					"Input highPos is too many, MaxValue==[922337203], InputValue==[" + highPos + "]");
 		return highPos * HighPosMultiplier + lowPos;
 	}
 
