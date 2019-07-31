@@ -59,7 +59,7 @@ public final class FromPropertiesFile {
 			fileName = "";
 		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		return fileName + "-" + propertyName;
+		return new StringBuilder(3).append(fileName).append("-").append(propertyName).toString();
 	}
 
 	public synchronized static String getProperty(String fileName, String propertyName) {
