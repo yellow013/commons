@@ -10,26 +10,26 @@ public final class StringUtil {
 	private StringUtil() {
 	}
 
-	public static final String toString(Object obj) {
+	public static String toString(Object obj) {
 		return obj == null ? StrConstants.NULL : obj.toString();
 	}
 
-	public static final boolean isNullOrEmpty(String str) {
+	public static boolean isNullOrEmpty(String str) {
 		return str == null || str.isEmpty();
 	}
 
-	public static final boolean notNullAndEmpty(String str) {
+	public static boolean notNullAndEmpty(String str) {
 		return str != null && !str.isEmpty();
 	}
 
-	public static final boolean isEquals(String str1, String str2) {
+	public static boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
 	// TODO
 	// 改进性能
 	// 不进行char数组的copy
-	public static final boolean isDecimal(String str) {
+	public static boolean isDecimal(String str) {
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
@@ -60,27 +60,27 @@ public final class StringUtil {
 		return true;
 	}
 
-	public static final boolean notDecimal(String str) {
+	public static boolean notDecimal(String str) {
 		return !isDecimal(str);
 	}
 
-	public static final String gbkConversionToUtf8(String gbkStr) {
+	public static String gbkConversionToUtf8(String gbkStr) {
 		return conversionToSpecified(gbkStr, Charsets.GBK, Charsets.UTF8);
 	}
 
-	public static final String utf8ConversionToGbk(String utf8Str) {
+	public static String utf8ConversionToGbk(String utf8Str) {
 		return conversionToSpecified(utf8Str, Charsets.UTF8, Charsets.GBK);
 	}
 
-	public static final String conversionToUtf8(String sourceStr, Charset sourceCoding) {
+	public static String conversionToUtf8(String sourceStr, Charset sourceCoding) {
 		return conversionToSpecified(sourceStr, sourceCoding, Charsets.UTF8);
 	}
 
-	public static final String conversionToSpecified(String sourceStr, Charset sourceCoding, Charset targetCoding) {
+	public static String conversionToSpecified(String sourceStr, Charset sourceCoding, Charset targetCoding) {
 		return sourceStr == null ? sourceStr : new String(sourceStr.getBytes(sourceCoding), targetCoding);
 	}
 
-	public static final String concatenateStr(String... strs) {
+	public static String concatenateStr(String... strs) {
 		if (strs == null || strs.length == 0)
 			return StrConstants.EMPTY;
 		StringBuilder builder = new StringBuilder(strs.length);
@@ -107,11 +107,11 @@ public final class StringUtil {
 		System.out.println(isDecimal("-.877"));
 		System.out.println(isDecimal("-.87.7"));
 
-		System.out.println(concatenateStr("A","BB","CCC"));
-		System.out.println(concatenateStr("A","BB",null));
-		System.out.println(concatenateStr("A","BB","",null,"null"));
-		System.out.println(concatenateStr("A","BB","",null));
-		System.out.println(concatenateStr(null,null));
+		System.out.println(concatenateStr("A", "BB", "CCC"));
+		System.out.println(concatenateStr("A", "BB", null));
+		System.out.println(concatenateStr("A", "BB", "", null, "null"));
+		System.out.println(concatenateStr("A", "BB", "", null));
+		System.out.println(concatenateStr(null, null));
 
 	}
 
