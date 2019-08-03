@@ -30,6 +30,7 @@ public final class StringUtil {
 	// 改进性能,使用str.charAt(index)
 	// 不进行char数组的copy
 	public static boolean isDecimal(String str) {
+		//Character.isDigit(ch);
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
