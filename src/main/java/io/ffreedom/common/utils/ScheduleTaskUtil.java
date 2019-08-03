@@ -1,7 +1,9 @@
 package io.ffreedom.common.utils;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -85,70 +87,142 @@ public final class ScheduleTaskUtil {
 	private static ScheduledExecutorService InnerSingleThreadExecutor = Executors
 			.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "SingleThreadScheduledExecutorService"));
 
-	public static void addTaskToSingleThreadExecutor(LocalDateTime firstTime, Runnable runnable) {
-		addTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), runnable);
+	public static void singleThreadSchedule(LocalDateTime firstTime, Runnable runnable) {
+		singleThreadSchedule(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				runnable);
 	}
 
-	public static void addTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, Runnable runnable) {
+	public static void singleThreadSchedule(TimeUnit timeUnit, long delay, Runnable runnable) {
 		InnerSingleThreadExecutor.schedule(runnable, delay, timeUnit);
 	}
 
-	public static void addCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit, long period,
+	public static void singleThreadScheduleWithFixedDelay(LocalDateTime firstTime, TimeUnit timeUnit, long period,
 			Runnable runnable) {
-		addCycleTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
+		singleThreadScheduleWithFixedDelay(TimeUnit.MILLISECONDS,
 				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addCycleTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, long period,
+	public static void singleThreadScheduleWithFixedDelay(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerSingleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
 	}
 
-	public static void addFixedRateCycleTaskToSingleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit,
-			long period, Runnable runnable) {
-		addFixedRateCycleTaskToSingleThreadExecutor(TimeUnit.MILLISECONDS,
+	/**
+	 * 
+	 * @param firstTime
+	 * @param timeUnit
+	 * @param period
+	 * @param runnable
+	 */
+	public static void singleThreadScheduleAtFixedRate(LocalDateTime firstTime, TimeUnit timeUnit, long period,
+			Runnable runnable) {
+		singleThreadScheduleAtFixedRate(TimeUnit.MILLISECONDS,
 				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addFixedRateCycleTaskToSingleThreadExecutor(TimeUnit timeUnit, long delay, long period,
-			Runnable runnable) {
+	/**
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param period
+	 * @param runnable
+	 */
+	public static void singleThreadScheduleAtFixedRate(TimeUnit timeUnit, long delay, long period, Runnable runnable) {
 		InnerSingleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
 	}
 
+	
 	private static ScheduledExecutorService InnerMultipleThreadExecutor = Executors.newScheduledThreadPool(
-			Runtime.getRuntime().availableProcessors(),
+			Runtime.getRuntime().availableProcessors() + 2,
 			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutorService"));
 
-	public static void addTaskToMultipleThreadExecutor(LocalDateTime firstTime, Runnable runnable) {
-		addTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), runnable);
+	/**
+	 * Creates and executes a one-shot action that becomes enabled after the given
+	 * delay.
+	 * 
+	 * @param firstTime
+	 * @param runnable
+	 */
+	public static void multipleThreadSchedule(LocalDateTime firstTime, Runnable runnable) {
+		multipleThreadSchedule(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				runnable);
 	}
 
-	public static void addTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, Runnable runnable) {
+	/**
+	 * Creates and executes a one-shot action that becomes enabled after the given
+	 * delay.
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param runnable
+	 */
+	public static void multipleThreadSchedule(TimeUnit timeUnit, long delay, Runnable runnable) {
 		InnerMultipleThreadExecutor.schedule(runnable, delay, timeUnit);
 	}
 
-	public static void addCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit, long period,
+	/**
+	 * The given delay between the termination of one execution and the commencement
+	 * of the next.
+	 * 
+	 * @param firstTime
+	 * @param timeUnit
+	 * @param period
+	 * @param runnable
+	 */
+	public static void multipleThreadScheduleWithFixedDelay(LocalDateTime firstTime, TimeUnit timeUnit, long period,
 			Runnable runnable) {
-		addCycleTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
+		multipleThreadScheduleWithFixedDelay(TimeUnit.MILLISECONDS,
 				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addCycleTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, long period,
+	/**
+	 * The given delay between the termination of one execution and the commencement
+	 * of the next.
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param period
+	 * @param runnable
+	 */
+	public static void multipleThreadScheduleWithFixedDelay(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerMultipleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
 	}
 
-	public static void addFixedRateCycleTaskToMultipleThreadExecutor(LocalDateTime firstTime, TimeUnit timeUnit,
-			long period, Runnable runnable) {
-		addFixedRateCycleTaskToMultipleThreadExecutor(TimeUnit.MILLISECONDS,
+	/**
+	 * That is executions will commence after initialDelay then initialDelay+period,
+	 * then initialDelay + 2 * period, and so on.
+	 * 
+	 * @param firstTime
+	 * @param timeUnit
+	 * @param period
+	 * @param runnable
+	 */
+	public static void multipleThreadScheduleAtFixedRate(LocalDateTime firstTime, TimeUnit timeUnit, long period,
+			Runnable runnable) {
+		multipleThreadScheduleAtFixedRate(TimeUnit.MILLISECONDS,
 				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
 	}
 
-	public static void addFixedRateCycleTaskToMultipleThreadExecutor(TimeUnit timeUnit, long delay, long period,
+	/**
+	 * That is executions will commence after initialDelay then initialDelay+period,
+	 * then initialDelay + 2 * period, and so on.
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param period
+	 * @param runnable
+	 */
+	public static void multipleThreadScheduleAtFixedRate(TimeUnit timeUnit, long delay, long period,
 			Runnable runnable) {
 		InnerMultipleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
+	}
+
+	public static void main(String[] args) {
+
+		multipleThreadScheduleAtFixedRate(LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 38, 00)), TimeUnit.SECONDS,
+				3, () -> System.out.println(12345));
+
 	}
 
 }

@@ -27,7 +27,7 @@ public final class StringUtil {
 	}
 
 	// TODO
-	// 改进性能
+	// 改进性能,使用str.charAt(index)
 	// 不进行char数组的copy
 	public static boolean isDecimal(String str) {
 		if (isNullOrEmpty(str))
@@ -80,14 +80,54 @@ public final class StringUtil {
 		return sourceStr == null ? sourceStr : new String(sourceStr.getBytes(sourceCoding), targetCoding);
 	}
 
+	/**
+	 * 使用','将字符串连接
+	 * 
+	 * @param strs
+	 * @return
+	 */
 	public static String concatenateStr(String... strs) {
+		return concatenateStr(64, ',', strs);
+	}
+
+	/**
+	 * 指定缓冲区长度, 使用','将字符串连接
+	 * 
+	 * @param capacity 缓冲区长度
+	 * @param strs     字符串数组
+	 * @return
+	 */
+	public static String concatenateStr(int capacity, String... strs) {
+		return concatenateStr(capacity, ',', strs);
+	}
+
+	/**
+	 * 使用指定符号将字符串连接
+	 * 
+	 * @param symbol 连接符号
+	 * @param strs   字符串数组
+	 * @return
+	 */
+	public static String concatenateStr(char symbol, String... strs) {
+		return concatenateStr(64, symbol, strs);
+	}
+
+	/**
+	 * 指定缓冲区长度, 使用指定符号将字符串连接
+	 * 
+	 * @param capacity 缓冲区长度
+	 * @param symbol   连接符号
+	 * @param strs     字符串数组
+	 * @return
+	 */
+	public static String concatenateStr(int capacity, char symbol, String... strs) {
 		if (strs == null || strs.length == 0)
 			return StrConstants.EMPTY;
-		StringBuilder builder = new StringBuilder(strs.length);
+		StringBuilder builder = new StringBuilder(capacity);
 		for (int i = 0; i < strs.length; i++) {
 			builder.append(strs[i]);
 			if (i < strs.length - 1)
-				builder.append(",");
+				builder.append(symbol);
 		}
 		return builder.toString();
 	}
@@ -111,6 +151,7 @@ public final class StringUtil {
 		System.out.println(concatenateStr("A", "BB", null));
 		System.out.println(concatenateStr("A", "BB", "", null, "null"));
 		System.out.println(concatenateStr("A", "BB", "", null));
+		System.out.println(concatenateStr('%', "A", "BB", "", null));
 		System.out.println(concatenateStr(null, null));
 
 	}
