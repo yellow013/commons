@@ -30,7 +30,7 @@ public final class StringUtil {
 	// 改进性能,使用str.charAt(index)
 	// 不进行char数组的copy
 	public static boolean isDecimal(String str) {
-		//Character.isDigit(ch);
+		// Character.isDigit(ch);
 		if (isNullOrEmpty(str))
 			return false;
 		char[] chars = str.toCharArray();
@@ -88,7 +88,7 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static String concatenateStr(String... strs) {
-		return concatenateStr(64, ',', strs);
+		return concatenateStr(strs.length * 16 + strs.length, ',', strs);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static String concatenateStr(char symbol, String... strs) {
-		return concatenateStr(64, symbol, strs);
+		return concatenateStr(strs.length * 16 + strs.length, symbol, strs);
 	}
 
 	/**
