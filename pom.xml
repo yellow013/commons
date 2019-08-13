@@ -11,12 +11,19 @@
 
 	<url>https://github.com/yellow013/commons.git</url>
 
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>commons</name>
+
+	<modules>
+		<module>commons-core</module>
+		<module>commons-memory</module>
+		<module>commons-queue</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<slf4j.version>1.7.27</slf4j.version>
 	</properties>
 
 	<build>
@@ -33,6 +40,54 @@
 		</plugins>
 	</build>
 
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Logs dependency -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			
+			<!-- Eclipse Collections -->
+			<dependency>
+				<groupId>org.eclipse.collections</groupId>
+				<artifactId>eclipse-collections</artifactId>
+				<version>10.0.0</version>
+			</dependency>
+
+			<!-- jsr305 -->
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+
+			<!-- commons-io -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
+			</dependency>
+
+			<!-- commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.9</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>io.ffreedom</groupId>
+				<artifactId>commons-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+
+	</dependencyManagement>
+
+
 	<dependencies>
 		<!-- Junit4 dependency -->
 		<dependency>
@@ -42,56 +97,21 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Logs dependency -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.26</version>
-		</dependency>
-		<!-- Eclipse Collections -->
-		<dependency>
-			<groupId>org.eclipse.collections</groupId>
-			<artifactId>eclipse-collections</artifactId>
-			<version>10.0.0</version>
-		</dependency>
-
-		<!-- jctools -->
-		<dependency>
-			<groupId>org.jctools</groupId>
-			<artifactId>jctools-core</artifactId>
-			<version>2.1.2</version>
-		</dependency>
-
-		<!-- LMAX Disruptor -->
-		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-			<version>3.4.2</version>
-		</dependency>
-
-		<!-- jsr305 -->
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-
-		<!-- commons-io -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
-		</dependency>
-
-		<!-- commons-lang3 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.9</version>
-		</dependency>
-
 	</dependencies>
 
-	
+
+	<distributionManagement>
+		<repository>
+			<id>betball-releases</id>
+			<name>betball-pb-releases</name>
+			<url>http://203.60.1.16:10000/nexus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>betball-snapshots</id>
+			<name>betball-pb-snapshots</name>
+			<url>http://203.60.1.16:10000/nexus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 </project>
