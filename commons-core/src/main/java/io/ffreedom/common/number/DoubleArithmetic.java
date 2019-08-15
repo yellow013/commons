@@ -1,14 +1,16 @@
 package io.ffreedom.common.number;
 
-public final class DoubleUtil {
+import static java.lang.StrictMath.IEEEremainder;
 
-	private final static long PRECISION_8_MULTIPLIER = 1_000_000_000L;
+public final class DoubleArithmetic {
 
-	private final static double PRECISION_8_DIVISOR = 100_000_000D;
+	private final static long PRECISION_8_MULTIPLIER = 10_000_000_000L;
 
-	private final static long PRECISION_4_MULTIPLIER = 100_000L;
+	private final static double PRECISION_8_DIVISOR = 1_000_000_000D;
 
-	private final static double PRECISION_4_DIVISOR = 10_000D;
+	private final static long PRECISION_4_MULTIPLIER = 1_000_000L;
+
+	private final static double PRECISION_4_DIVISOR = 100_000D;
 
 	private final static long CORRECTION_FACTOR = 1L;
 
@@ -138,6 +140,29 @@ public final class DoubleUtil {
 	 */
 	public static double division(double d1, double d2) {
 		return correction8(d1 / d2);
+	}
+
+	/**
+	 * 8位精度取余
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return
+	 */
+	public static double remainder(double d1, double d2) {
+		return IEEEremainder(d1, d2);
+	}
+
+	public static void main(String[] args) {
+		System.out.println(add8(0.5321, 1.1111123234));
+		System.out.println(0.5321 + 1.1111123234);
+		int i = 0;
+		for (double d = 0.0001; d < 0.01; d += 0.000001) {
+//			System.out.println(i);
+//			System.out.println(correction8(d));
+			i++;
+		}
+
 	}
 
 }

@@ -11,8 +11,13 @@ public final class AdvDouble {
 
 	private long integerPart;
 	private long decimalPart;
+	
+	public final static AdvDouble newDouble() {
+		return new AdvDouble(0, 0);
+	}
 
 	public final static AdvDouble newDouble(double doubleValue) {
+		DoubleArithmetic.remainder(doubleValue, 1);
 		return new AdvDouble(0, 0);
 	}
 

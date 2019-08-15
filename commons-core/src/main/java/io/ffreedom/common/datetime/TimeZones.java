@@ -10,7 +10,7 @@ public interface TimeZones {
 
 	ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault();
 
-	ZoneOffset DEFAULT_ZONE_OFFSET = ZonedDateTime.now(DEFAULT_ZONE_ID).getOffset();
+	ZoneOffset DEFAULT_ZONE_OFFSET = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, DEFAULT_ZONE_ID).getOffset();
 	/**
 	 * Chinese Standard Time
 	 */

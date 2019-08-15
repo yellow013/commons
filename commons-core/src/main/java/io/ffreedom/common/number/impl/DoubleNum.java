@@ -1,6 +1,12 @@
 package io.ffreedom.common.number.impl;
 
-import io.ffreedom.common.number.DoubleUtil;
+import static io.ffreedom.common.number.DoubleArithmetic.add4;
+import static io.ffreedom.common.number.DoubleArithmetic.add8;
+import static io.ffreedom.common.number.DoubleArithmetic.division;
+import static io.ffreedom.common.number.DoubleArithmetic.multiply4;
+import static io.ffreedom.common.number.DoubleArithmetic.multiply8;
+import static io.ffreedom.common.number.DoubleArithmetic.subtraction;
+
 import io.ffreedom.common.number.api.Num;
 
 public final class DoubleNum implements Num<DoubleNum> {
@@ -29,30 +35,30 @@ public final class DoubleNum implements Num<DoubleNum> {
 	@Override
 	public DoubleNum plus(Num<?> augend) {
 		if (isPrecision8)
-			this.value = DoubleUtil.add8(value, augend.doubleValue());
+			this.value = add8(value, augend.doubleValue());
 		else
-			this.value = DoubleUtil.add4(value, augend.doubleValue());
+			this.value = add4(value, augend.doubleValue());
 		return this;
 	}
 
 	@Override
 	public DoubleNum minus(Num<?> subtrahend) {
-		this.value = DoubleUtil.subtraction(value, subtrahend.doubleValue());
+		this.value = subtraction(value, subtrahend.doubleValue());
 		return this;
 	}
 
 	@Override
 	public DoubleNum multiplied(Num<?> multiplicand) {
 		if (isPrecision8)
-			this.value = DoubleUtil.multiply8(value, multiplicand.doubleValue());
+			this.value = multiply8(value, multiplicand.doubleValue());
 		else
-			this.value = DoubleUtil.multiply4(value, multiplicand.doubleValue());
+			this.value = multiply4(value, multiplicand.doubleValue());
 		return this;
 	}
 
 	@Override
 	public DoubleNum divided(Num<?> divisor) {
-		this.value = DoubleUtil.division(value, divisor.doubleValue());
+		this.value = division(value, divisor.doubleValue());
 		return this;
 	}
 

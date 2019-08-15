@@ -299,7 +299,7 @@ public final class DateTimeUtil {
 	}
 
 	@CheckForNull
-	public final static TemporalAccessor strToDate(DateTimeStyle style, String str) {
+	public final static TemporalAccessor strToDate(DateTimePattern style, String str) {
 		if (style == null)
 			throw new IllegalArgumentException("style cannot null");
 		if (str == null)
@@ -312,7 +312,7 @@ public final class DateTimeUtil {
 	}
 
 	@CheckForNull
-	public final static LocalDateTime strToLocalDateTime(DateTimeStyle style, String str) {
+	public final static LocalDateTime strToLocalDateTime(DateTimePattern style, String str) {
 		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getFormatter()) : null;
 	}
 
@@ -324,7 +324,7 @@ public final class DateTimeUtil {
 		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
 	}
 
-	public final static String now(@Nonnull DateTimeStyle style) {
+	public final static String now(@Nonnull DateTimePattern style) {
 		return style.getFormatter().format(LocalDateTime.now());
 	}
 

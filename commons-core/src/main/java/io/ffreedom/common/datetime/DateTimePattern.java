@@ -4,87 +4,50 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
-public enum DateTimeStyle {
+public enum DateTimePattern {
 
-	HHMM(Pattern.HHMM),
+	HHMM("HHmm"),
 
-	HHMMSS(Pattern.HHMMSS),
+	HHMMSS("HHmmss"),
 
-	HH_MM_SS(Pattern.HH_MM_SS),
+	HH_MM_SS("HH:mm:ss"),
 
-	YYYYMMDD(Pattern.YYYYMMDD),
+	HH_MM_SS_MILLISECOND("HH:mm:ss.SSS"),
 
-	YYYYMMDDHHMMSS(Pattern.YYYYMMDDHHMMSS),
+	HH_MM_SS_MICROSECOND("HH:mm:ss.SSSSSS"),
 
-	YYYYMMDD_HHMMSS(Pattern.YYYYMMDD_HHMMSS),
+	HH_MM_SS_NANOSECOND("HH:mm:ss.SSSSSSSSS"),
 
-	YYYY_MM_DD(Pattern.YYYY_MM_DD),
+	YYYYMM("yyyyMM"),
 
-	YYYY_MM_DD_HH_MM_SS(Pattern.YYYY_MM_DD_HH_MM_SS),
+	YYYYMMDD("yyyyMMdd"),
 
-	HH_MM_SS_MILLISECOND(Pattern.HH_MM_SS_MILLISECOND),
+	YYYY_MM_DD("yyyy-MM-dd"),
 
-	HH_MM_SS_MICROSECOND(Pattern.HH_MM_SS_MICROSECOND),
+	YYYYMMDDHHMMSS("yyyyMMddHHmmss"),
 
-	HH_MM_SS_NANOSECOND(Pattern.HH_MM_SS_NANOSECOND),
+	YYYYMMDD_HHMMSS("yyyyMMdd-HHmmss"),
 
-	YYYYMMDD_HH_MM_SS_MILLISECOND(Pattern.YYYYMMDD_HH_MM_SS_MILLISECOND),
+	YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
 
-	YYYYMMDD_HH_MM_SS_MICROSECOND(Pattern.YYYYMMDD_HH_MM_SS_MICROSECOND),
+	YYYYMMDD_HH_MM_SS_MILLISECOND("yyyyMMdd HH:mm:ss.SSS"),
 
-	YYYYMMDD_HH_MM_SS_NANOSECOND(Pattern.YYYYMMDD_HH_MM_SS_NANOSECOND),
+	YYYYMMDD_HH_MM_SS_MICROSECOND("yyyyMMdd HH:mm:ss.SSSSSS"),
 
-	YYYY_MM_DD_HH_MM_SS_MILLISECOND(Pattern.YYYY_MM_DD_HH_MM_SS_MILLISECOND),
+	YYYYMMDD_HH_MM_SS_NANOSECOND("yyyyMMdd HH:mm:ss.SSSSSSSSS"),
 
-	YYYY_MM_DD_HH_MM_SS_MICROSECOND(Pattern.YYYY_MM_DD_HH_MM_SS_MICROSECOND),
+	YYYY_MM_DD_HH_MM_SS_MILLISECOND("yyyy-MM-dd HH:mm:ss.SSS"),
 
-	YYYY_MM_DD_HH_MM_SS_NANOSECOND(Pattern.YYYY_MM_DD_HH_MM_SS_NANOSECOND),
+	YYYY_MM_DD_HH_MM_SS_MICROSECOND("yyyy-MM-dd HH:mm:ss.SSSSSS"),
+
+	YYYY_MM_DD_HH_MM_SS_NANOSECOND("yyyy-MM-dd HH:mm:ss.SSSSSSSSS"),
 
 	;
 
-	public static interface Pattern {
-
-		String HHMM = "HHmm";
-
-		String HHMMSS = "HHmmss";
-
-		String HH_MM_SS = "HH:mm:ss";
-
-		String YYYYMMDD = "yyyyMMdd";
-
-		String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
-
-		String YYYYMMDD_HHMMSS = "yyyyMMdd-HHmmss";
-
-		String YYYY_MM_DD = "yyyy-MM-dd";
-
-		String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-
-		String HH_MM_SS_MILLISECOND = "HH:mm:ss.SSS";
-
-		String HH_MM_SS_MICROSECOND = "HH:mm:ss.SSSSSS";
-
-		String HH_MM_SS_NANOSECOND = "HH:mm:ss.SSSSSSSSS";
-
-		String YYYYMMDD_HH_MM_SS_MILLISECOND = "yyyyMMdd HH:mm:ss.SSS";
-
-		String YYYYMMDD_HH_MM_SS_MICROSECOND = "yyyyMMdd HH:mm:ss.SSSSSS";
-
-		String YYYYMMDD_HH_MM_SS_NANOSECOND = "yyyyMMdd HH:mm:ss.SSSSSSSSS";
-
-		String YYYY_MM_DD_HH_MM_SS_MILLISECOND = "yyyy-MM-dd HH:mm:ss.SSS";
-
-		String YYYY_MM_DD_HH_MM_SS_MICROSECOND = "yyyy-MM-dd HH:mm:ss.SSSSSS";
-
-		String YYYY_MM_DD_HH_MM_SS_NANOSECOND = "yyyy-MM-dd HH:mm:ss.SSSSSSSSS";
-
-	}
-
 	private String pattern;
-
 	private final DateTimeFormatter formatter;
 
-	private DateTimeStyle(String pattern) {
+	private DateTimePattern(String pattern) {
 		this.pattern = pattern;
 		this.formatter = DateTimeFormatter.ofPattern(pattern);
 	}
@@ -97,7 +60,7 @@ public enum DateTimeStyle {
 		return formatter;
 	}
 
-	public DateFormat newDateFormat() {
+	public DateFormat newFormat() {
 		return new SimpleDateFormat(pattern);
 	}
 
