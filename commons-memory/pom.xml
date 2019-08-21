@@ -19,6 +19,12 @@
 			<groupId>io.ffreedom</groupId>
 			<artifactId>commons-core</artifactId>
 		</dependency>
+		
+		<!-- jctools -->
+		<dependency>
+			<groupId>org.jctools</groupId>
+			<artifactId>jctools-core</artifactId>
+		</dependency>
 
 	</dependencies>
 </project>

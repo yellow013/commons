@@ -1,19 +1,22 @@
 package io.ffreedom.common.cache.map;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public class CacheMap<K, V> {
+import javax.annotation.concurrent.ThreadSafe;
 
-	private Map<K, Boolean> availableMap = new ConcurrentHashMap<>();
-	private Map<K, V> valueMap = new ConcurrentHashMap<>();
+import org.jctools.maps.NonBlockingHashMap;
+
+@ThreadSafe
+public final class CacheMap<K, V> {
+
+	private ConcurrentMap<K, Boolean> availableMap = new NonBlockingHashMap<>();
+	private ConcurrentMap<K, V> valueMap = new NonBlockingHashMap<>();
 
 	private CacheRefresher<K, V> refresher;
 
 	public CacheMap(CacheRefresher<K, V> refresher) {
-		if (refresher == null) {
-			throw new NullPointerException("CacheMapRefresher is null...");
-		}
+		if (refresher == null)
+			throw new IllegalArgumentException("CacheMapRefresher is can't null...");
 		this.refresher = refresher;
 	}
 
@@ -36,11 +39,8 @@ public class CacheMap<K, V> {
 	}
 
 	private boolean isAvailable(K key) {
-		if (availableMap.containsKey(key)) {
-			return availableMap.get(key);
-		} else {
-			return false;
-		}
+		Boolean available = availableMap.get(key);
+		return available == null ? false : available.booleanValue();
 	}
 
 	public CacheMap<K, V> setUnavailable(K key) {
