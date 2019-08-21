@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
 
 import io.ffreedom.common.utils.StringUtil;
@@ -318,6 +321,14 @@ public final class DateTimeUtil {
 
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date) {
 		return dateToLocalDateTime(date, TimeZones.DEFAULT_ZONE_ID);
+	}
+
+	public final static long durationByDay(@Nonnull LocalDate startDate) {
+		return durationByDay(startDate, LocalDate.now());
+	}
+
+	public final static long durationByDay(@Nonnull LocalDate startDate, @Nonnull LocalDate endDate) {
+		return endDate.toEpochDay() - startDate.toEpochDay();
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date, @Nonnull ZoneId zoneId) {
