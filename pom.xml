@@ -16,8 +16,7 @@
 
 	<modules>
 		<module>commons-core</module>
-		<module>commons-memory</module>
-		<module>commons-queue</module>
+		<module>commons-concurrent</module>
 	</modules>
 
 	<properties>
@@ -41,7 +40,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-		
+
 			<dependency>
 				<groupId>io.ffreedom</groupId>
 				<artifactId>commons-core</artifactId>
@@ -61,7 +60,7 @@
 				<artifactId>disruptor</artifactId>
 				<version>3.4.2</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 

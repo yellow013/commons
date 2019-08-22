@@ -1,20 +1,21 @@
-package io.ffreedom.common.cache.list;
+package io.ffreedom.common.list;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
-public class CacheList<T> {
+public final class CacheList<T> {
 
 	private volatile List<T> value;
 	private AtomicBoolean available = new AtomicBoolean(false);
 
-	private CacheListRefresh<T> cacheRefresh;
+	private Supplier<List<T>> refresher;
 
-	public CacheList(CacheListRefresh<T> cacheRefresh) {
-		if (cacheRefresh == null)
-			throw new IllegalArgumentException("cacheRefresh illegalArgumentException.");
-		this.cacheRefresh = cacheRefresh;
+	public CacheList(Supplier<List<T>> refresher) {
+		if (refresher == null)
+			throw new IllegalArgumentException("refresher is can't null...");
+		this.refresher = refresher;
 	}
 
 	private CacheList<T> set(List<T> value) {
@@ -27,7 +28,7 @@ public class CacheList<T> {
 		if (available.get())
 			return Optional.ofNullable(value);
 		else {
-			List<T> value = cacheRefresh.refresh();
+			List<T> value = refresher.get();
 			return value == null ? Optional.empty() : set(value).get();
 		}
 	}

@@ -1,7 +1,8 @@
-package io.ffreedom.common.cache.map;
+package io.ffreedom.common.map;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -13,7 +14,7 @@ public final class CacheMap<K, V> {
 
 	private ConcurrentMap<K, Saved> valueMap = new NonBlockingHashMap<>();
 
-	private CacheRefresher<K, V> refresher;
+	private Function<K, V> refresher;
 
 	private class Saved {
 
@@ -27,9 +28,9 @@ public final class CacheMap<K, V> {
 		}
 	}
 
-	public CacheMap(CacheRefresher<K, V> refresher) {
+	public CacheMap(Function<K, V> refresher) {
 		if (refresher == null)
-			throw new IllegalArgumentException("CacheMapRefresher is can't null...");
+			throw new IllegalArgumentException("refresher is can't null...");
 		this.refresher = refresher;
 	}
 
@@ -41,7 +42,7 @@ public final class CacheMap<K, V> {
 	public Optional<V> get(@Nonnull K key) {
 		Saved saved = valueMap.get(key);
 		if (saved == null || !saved.isAvailable) {
-			V refreshed = refresher.refresh(key);
+			V refreshed = refresher.apply(key);
 			return refreshed == null ? Optional.empty() : put(key, refreshed).get(key);
 		} else
 			return saved.isAvailable ? Optional.of(saved.value) : get(key);
