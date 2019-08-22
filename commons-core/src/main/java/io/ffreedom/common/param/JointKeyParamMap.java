@@ -11,7 +11,7 @@ import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
 
-public abstract class JointKeyParamMap<JK1 extends JointKey, JK2 extends JointKey> {
+public abstract class JointKeyParamMap<K1 extends JointKey, K2 extends JointKey> {
 
 	private MutableLongBooleanMap booleanParamMap = new LongBooleanHashMap();
 	private MutableLongIntMap integerParamMap = new LongIntHashMap();
@@ -23,12 +23,12 @@ public abstract class JointKeyParamMap<JK1 extends JointKey, JK2 extends JointKe
 
 	}
 
-	public void put(JK1 key1, JK2 key2, ParamType type, Object value) {
+	public void put(K1 key1, K2 key2, ParamType type, Object value) {
 
 	}
 
-	public boolean get(JK1 key1, JK2 key2) {
-		int key = key1.portionId() * 1000000000 + key2.portionId();
+	public boolean get(K1 key1, K2 key2) {
+		int key = key1.id() * 1000000000 + key2.id();
 		return booleanParamMap.get(key);
 	}
 
