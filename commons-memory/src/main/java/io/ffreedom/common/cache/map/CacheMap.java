@@ -1,7 +1,9 @@
 package io.ffreedom.common.cache.map;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.jctools.maps.NonBlockingHashMap;
@@ -9,10 +11,21 @@ import org.jctools.maps.NonBlockingHashMap;
 @ThreadSafe
 public final class CacheMap<K, V> {
 
-	private ConcurrentMap<K, Boolean> availableMap = new NonBlockingHashMap<>();
-	private ConcurrentMap<K, V> valueMap = new NonBlockingHashMap<>();
+	private ConcurrentMap<K, Saved> valueMap = new NonBlockingHashMap<>();
 
 	private CacheRefresher<K, V> refresher;
+
+	private class Saved {
+
+		private volatile boolean isAvailable;
+		private volatile V value;
+
+		public Saved(boolean isAvailable, V value) {
+			super();
+			this.isAvailable = isAvailable;
+			this.value = value;
+		}
+	}
 
 	public CacheMap(CacheRefresher<K, V> refresher) {
 		if (refresher == null)
@@ -20,31 +33,29 @@ public final class CacheMap<K, V> {
 		this.refresher = refresher;
 	}
 
-	public CacheMap<K, V> put(K key, V value) {
-		valueMap.put(key, value);
-		availableMap.put(key, true);
+	public CacheMap<K, V> put(@Nonnull K key, @Nonnull V value) {
+		valueMap.put(key, new Saved(true, value));
 		return this;
 	}
 
-	public V get(K key) {
-		if (isAvailable(key)) {
-			return valueMap.get(key);
-		} else {
-			V value = refresher.refresh(key);
-			if (value == null) {
-				return null;
-			}
-			return put(key, value).get(key);
-		}
+	public Optional<V> get(@Nonnull K key) {
+		Saved saved = valueMap.get(key);
+		if (saved == null || !saved.isAvailable) {
+			V refreshed = refresher.refresh(key);
+			return refreshed == null ? Optional.empty() : put(key, refreshed).get(key);
+		} else
+			return saved.isAvailable ? Optional.of(saved.value) : get(key);
 	}
 
-	private boolean isAvailable(K key) {
-		Boolean available = availableMap.get(key);
-		return available == null ? false : available.booleanValue();
+	public CacheMap<K, V> setUnavailable(@Nonnull K key) {
+		Saved saved = valueMap.get(key);
+		if (saved != null)
+			saved.isAvailable = false;
+		return this;
 	}
 
-	public CacheMap<K, V> setUnavailable(K key) {
-		availableMap.put(key, false);
+	public CacheMap<K, V> delete(@Nonnull K key) {
+		valueMap.remove(key);
 		return this;
 	}
 
