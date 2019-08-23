@@ -1,24 +1,29 @@
 package io.ffreedom.common.map;
 
 import java.time.temporal.Temporal;
-import java.util.List;
 
-import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.list.MutableList;
 
-import io.ffreedom.common.collections.MutableMaps;
-import io.ffreedom.common.collections.MutableSets;
+abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMap<K, V, T>> {
 
-public class DatetimeRangeMap<V> {
+	protected LongRangeMap<V> savedMap = new LongRangeMap<>(128);
 
-	private MutableMap<Temporal, V> savedMap = MutableMaps.newUnifiedMap(256);
+	abstract public T put(K key, V value);
 
-	private MutableSet<Temporal> timeSet = MutableSets.newUnifiedSet();
+	abstract public V get(K key);
 
-	public List<V> get(Temporal startTime, Temporal endTime) {
+	abstract public MutableList<V> get(K startPoint, K endPoint);
 
-		MutableSet<Temporal> select = timeSet.select(datetime -> startTime.equals(datetime));
-		return null;
+	protected void put(long key, V value) {
+		savedMap.put(key, value);
+	}
+
+	protected V get(long key) {
+		return savedMap.get(key);
+	}
+
+	protected MutableList<V> get(long startPoint, long endPoint) {
+		return savedMap.get(startPoint, endPoint);
 	}
 
 }
