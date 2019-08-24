@@ -1,29 +1,58 @@
 package io.ffreedom.common.map;
 
 import java.time.temporal.Temporal;
+import java.util.function.ToLongFunction;
+
+import javax.annotation.Nonnull;
 
 import org.eclipse.collections.api.list.MutableList;
 
 abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMap<K, V, T>> {
 
-	protected LongRangeMap<V> savedMap = new LongRangeMap<>(128);
+	protected ToLongFunction<K> conversionFunc;
 
-	abstract public T put(K key, V value);
+	private LongRangeMap<V> savedMap = new LongRangeMap<>(128);
 
-	abstract public V get(K key);
+	public TemporalRangeMap(ToLongFunction<K> conversionFunc) {
+		this.conversionFunc = conversionFunc;
+	}
 
-	abstract public MutableList<V> get(K startPoint, K endPoint);
+	/**
+	 * abstract method
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	abstract public T put(@Nonnull K key, V value);
+
+	/**
+	 * general get method
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public V get(@Nonnull K key) {
+		return savedMap.get(conversionFunc.applyAsLong(key));
+	}
+
+	/**
+	 * general get method
+	 * 
+	 * @param startPoint
+	 * @param endPoint
+	 * @return
+	 */
+	public MutableList<V> get(@Nonnull K startPoint, @Nonnull K endPoint) {
+		return savedMap.get(conversionFunc.applyAsLong(startPoint), conversionFunc.applyAsLong(endPoint));
+	}
+
+	protected LongRangeMap<V> getSavedMap() {
+		return savedMap;
+	}
 
 	protected void put(long key, V value) {
 		savedMap.put(key, value);
-	}
-
-	protected V get(long key) {
-		return savedMap.get(key);
-	}
-
-	protected MutableList<V> get(long startPoint, long endPoint) {
-		return savedMap.get(startPoint, endPoint);
 	}
 
 }

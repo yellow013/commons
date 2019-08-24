@@ -75,7 +75,7 @@ public final class LongRangeMap<V> {
 
 	// TODO 性能优化
 	public MutableLongSet selectKey(long startPoint, long endPoint) {
-		return savedKey.select(key -> key >= startPoint && key <= endPoint);
+		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(1000));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -87,11 +87,11 @@ public final class LongRangeMap<V> {
 
 		long startNano = System.nanoTime();
 		LongRangeMap<String> longRangeMap = new LongRangeMap<>(20000000);
-		for (long l = 0L; l < 10000000L; l++) {
+		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}
 		long endNano = System.nanoTime();
-		System.out.println((endNano - startNano) / 1000000000);
+		System.out.println((endNano - startNano) / 1000000);
 
 		long startNano1 = System.nanoTime();
 		for (long l = 1000L; l < 2000L; l++) {

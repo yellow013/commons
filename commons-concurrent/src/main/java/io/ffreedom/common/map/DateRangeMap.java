@@ -1,36 +1,26 @@
 package io.ffreedom.common.map;
 
+import static io.ffreedom.common.datetime.DateTimeUtil.date;
+
 import java.time.LocalDate;
+import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
 
-import org.eclipse.collections.api.list.MutableList;
-
-import static io.ffreedom.common.datetime.DateTimeUtil.date;
-
 public final class DateRangeMap<V> extends TemporalRangeMap<LocalDate, V, DateRangeMap<V>> {
 
-	private DateRangeMap() {
+	private DateRangeMap(ToLongFunction<LocalDate> conversionFunc) {
+		super(conversionFunc);
 	}
 
 	public final static <V> DateRangeMap<V> newMap() {
-		return new DateRangeMap<>();
+		return new DateRangeMap<>(date -> date(date));
 	}
 
 	@Override
 	public DateRangeMap<V> put(@Nonnull LocalDate key, V value) {
 		put(date(key), value);
 		return this;
-	}
-
-	@Override
-	public V get(@Nonnull LocalDate key) {
-		return get(date(key));
-	}
-
-	@Override
-	public MutableList<V> get(@Nonnull LocalDate startPoint, @Nonnull LocalDate endPoint) {
-		return get(date(startPoint), date(endPoint));
 	}
 
 }

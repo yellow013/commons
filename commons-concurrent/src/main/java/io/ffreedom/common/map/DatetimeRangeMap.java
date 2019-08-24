@@ -1,23 +1,23 @@
 package io.ffreedom.common.map;
 
-import java.time.LocalDateTime;
-import java.util.function.ToLongFunction;
-
-import javax.annotation.Nonnull;
-
-import org.eclipse.collections.api.list.MutableList;
-
 import static io.ffreedom.common.datetime.DateTimeUtil.datetimeToHour;
 import static io.ffreedom.common.datetime.DateTimeUtil.datetimeToMillisecond;
 import static io.ffreedom.common.datetime.DateTimeUtil.datetimeToMinute;
 import static io.ffreedom.common.datetime.DateTimeUtil.datetimeToSecond;
 
+import java.time.LocalDateTime;
+import java.util.function.ToLongFunction;
+
+import javax.annotation.Nonnull;
+
 public final class DatetimeRangeMap<V> extends TemporalRangeMap<LocalDateTime, V, DatetimeRangeMap<V>> {
 
-	private ToLongFunction<LocalDateTime> conversionFunc;
-
+	/**
+	 * 
+	 * @param conversionFunc
+	 */
 	private DatetimeRangeMap(ToLongFunction<LocalDateTime> conversionFunc) {
-		this.conversionFunc = conversionFunc;
+		super(conversionFunc);
 	}
 
 	public final static <V> DatetimeRangeMap<V> newMapToHour() {
@@ -40,16 +40,6 @@ public final class DatetimeRangeMap<V> extends TemporalRangeMap<LocalDateTime, V
 	public DatetimeRangeMap<V> put(@Nonnull LocalDateTime key, V value) {
 		put(conversionFunc.applyAsLong(key), value);
 		return this;
-	}
-
-	@Override
-	public V get(@Nonnull LocalDateTime key) {
-		return get(conversionFunc.applyAsLong(key));
-	}
-
-	@Override
-	public MutableList<V> get(@Nonnull LocalDateTime startPoint, @Nonnull LocalDateTime endPoint) {
-		return get(conversionFunc.applyAsLong(startPoint), conversionFunc.applyAsLong(endPoint));
 	}
 
 }
