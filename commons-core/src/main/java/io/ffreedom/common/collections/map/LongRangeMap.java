@@ -1,4 +1,4 @@
-package io.ffreedom.common.map;
+package io.ffreedom.common.collections.map;
 
 import javax.annotation.Nullable;
 
@@ -24,7 +24,7 @@ public final class LongRangeMap<V> {
 	private MutableLongSet savedKey;
 
 	public LongRangeMap() {
-		this(128);
+		this(64);
 	}
 
 	public LongRangeMap(int initialCapacity) {

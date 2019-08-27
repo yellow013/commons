@@ -1,4 +1,4 @@
-package io.ffreedom.common.map;
+package io.ffreedom.common.collections.map;
 
 import java.time.temporal.Temporal;
 import java.util.function.ToLongFunction;
@@ -11,10 +11,15 @@ abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMa
 
 	protected ToLongFunction<K> conversionFunc;
 
-	private LongRangeMap<V> savedMap = new LongRangeMap<>(128);
+	private LongRangeMap<V> savedMap;
 
 	public TemporalRangeMap(ToLongFunction<K> conversionFunc) {
+		this(conversionFunc, 128);
+	}
+
+	public TemporalRangeMap(ToLongFunction<K> conversionFunc, int initialCapacity) {
 		this.conversionFunc = conversionFunc;
+		this.savedMap = new LongRangeMap<>(initialCapacity);
 	}
 
 	/**

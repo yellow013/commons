@@ -1,4 +1,4 @@
-package io.ffreedom.common.map;
+package io.ffreedom.common.collections.map;
 
 import static io.ffreedom.common.datetime.DateTimeUtil.timeToHour;
 import static io.ffreedom.common.datetime.DateTimeUtil.timeToMillisecond;
