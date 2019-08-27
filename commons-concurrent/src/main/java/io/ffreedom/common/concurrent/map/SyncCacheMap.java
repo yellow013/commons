@@ -1,4 +1,4 @@
-package io.ffreedom.common.map;
+package io.ffreedom.common.concurrent.map;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
@@ -10,7 +10,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.jctools.maps.NonBlockingHashMap;
 
 @ThreadSafe
-public final class CacheMap<K, V> {
+public final class SyncCacheMap<K, V> {
 
 	private ConcurrentMap<K, Saved> valueMap = new NonBlockingHashMap<>();
 
@@ -28,13 +28,13 @@ public final class CacheMap<K, V> {
 		}
 	}
 
-	public CacheMap(Function<K, V> refresher) {
+	public SyncCacheMap(Function<K, V> refresher) {
 		if (refresher == null)
 			throw new IllegalArgumentException("refresher is can't null...");
 		this.refresher = refresher;
 	}
 
-	public CacheMap<K, V> put(@Nonnull K key, @Nonnull V value) {
+	public SyncCacheMap<K, V> put(@Nonnull K key, @Nonnull V value) {
 		valueMap.put(key, new Saved(true, value));
 		return this;
 	}
@@ -48,14 +48,14 @@ public final class CacheMap<K, V> {
 			return saved.isAvailable ? Optional.of(saved.value) : get(key);
 	}
 
-	public CacheMap<K, V> setUnavailable(@Nonnull K key) {
+	public SyncCacheMap<K, V> setUnavailable(@Nonnull K key) {
 		Saved saved = valueMap.get(key);
 		if (saved != null)
 			saved.isAvailable = false;
 		return this;
 	}
 
-	public CacheMap<K, V> delete(@Nonnull K key) {
+	public SyncCacheMap<K, V> delete(@Nonnull K key) {
 		valueMap.remove(key);
 		return this;
 	}

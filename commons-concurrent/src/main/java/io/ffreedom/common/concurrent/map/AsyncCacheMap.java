@@ -1,4 +1,4 @@
-package io.ffreedom.common.map;
+package io.ffreedom.common.concurrent.map;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -9,8 +9,8 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
 import io.ffreedom.common.collections.MutableMaps;
-import io.ffreedom.common.queue.api.SCQueue;
-import io.ffreedom.common.queue.impl.ArrayBlockingMPSCQueue;
+import io.ffreedom.common.concurrent.queue.api.SCQueue;
+import io.ffreedom.common.concurrent.queue.impl.ArrayBlockingMPSCQueue;
 
 @ThreadSafe
 public final class AsyncCacheMap<K, V> {
