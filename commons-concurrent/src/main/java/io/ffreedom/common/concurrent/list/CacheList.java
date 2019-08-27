@@ -1,4 +1,4 @@
-package io.ffreedom.common.list;
+package io.ffreedom.common.concurrent.list;
 
 import java.util.List;
 import java.util.Optional;
