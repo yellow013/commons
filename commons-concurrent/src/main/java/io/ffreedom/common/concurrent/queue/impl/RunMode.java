@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.impl;
+package io.ffreedom.common.concurrent.queue.impl;
 
 enum RunMode {
 	Auto, Manual, Delay

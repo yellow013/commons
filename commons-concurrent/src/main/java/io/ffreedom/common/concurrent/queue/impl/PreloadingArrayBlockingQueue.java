@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.impl;
+package io.ffreedom.common.concurrent.queue.impl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
@@ -8,9 +8,9 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.concurrent.queue.api.MCQueue;
+import io.ffreedom.common.concurrent.queue.impl.base.LoadContainer;
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.queue.api.MCQueue;
-import io.ffreedom.common.queue.impl.base.LoadContainer;
 
 @ThreadSafe
 public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {

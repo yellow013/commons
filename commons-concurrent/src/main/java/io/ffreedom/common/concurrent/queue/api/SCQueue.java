@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.api;
+package io.ffreedom.common.concurrent.queue.api;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

@@ -1,4 +1,4 @@
-package io.ffreedom.common.queue.impl.disruptor;
+package io.ffreedom.common.concurrent.queue.impl.disruptor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -9,10 +9,10 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+import io.ffreedom.common.concurrent.queue.api.SCQueue;
+import io.ffreedom.common.concurrent.queue.impl.base.LoadContainer;
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.queue.api.SCQueue;
-import io.ffreedom.common.queue.impl.base.LoadContainer;
 import io.ffreedom.common.utils.ThreadUtil;
 
 /**
