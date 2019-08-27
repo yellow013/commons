@@ -59,7 +59,7 @@ public final class LongRangeMap<V> {
 		savedKey.clear();
 	}
 
-	public MutableList<V> get(long startPoint, long endPoint) {
+	public MutableList<V> scan(long startPoint, long endPoint) {
 		MutableLongSet selectKey = selectKey(startPoint, endPoint);
 		MutableList<V> selected = MutableLists.newFastList(selectKey.size());
 		operatingSelect(selectKey, key -> selected.add(savedMap.get(key)));

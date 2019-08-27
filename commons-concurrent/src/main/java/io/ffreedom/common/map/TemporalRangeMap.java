@@ -43,8 +43,8 @@ abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMa
 	 * @param endPoint
 	 * @return
 	 */
-	public MutableList<V> get(@Nonnull K startPoint, @Nonnull K endPoint) {
-		return savedMap.get(conversionFunc.applyAsLong(startPoint), conversionFunc.applyAsLong(endPoint));
+	public MutableList<V> scan(@Nonnull K startPoint, @Nonnull K endPoint) {
+		return savedMap.scan(conversionFunc.applyAsLong(startPoint), conversionFunc.applyAsLong(endPoint));
 	}
 
 	protected LongRangeMap<V> getSavedMap() {
