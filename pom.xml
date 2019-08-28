@@ -77,19 +77,5 @@
 	</dependencies>
 
 
-	<distributionManagement>
-		<repository>
-			<id>betball-releases</id>
-			<name>betball-pb-releases</name>
-			<url>http://203.60.1.16:10000/nexus/repository/maven-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>betball-snapshots</id>
-			<name>betball-pb-snapshots</name>
-			<url>http://203.60.1.16:10000/nexus/repository/maven-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-
 
 </project>

@@ -19,8 +19,6 @@
 
 	<dependencies>
 
-
-
 		<!-- Eclipse Collections -->
 		<dependency>
 			<groupId>org.eclipse.collections</groupId>
@@ -48,6 +46,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
 		</dependency>
+
+		<!-- google guava -->
+		<!-- <dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>28.0-jre</version>
+		</dependency> -->
 
 		<!-- Logs dependency -->
 		<!-- slf4j + slf4j adaptor + log4j2 -->
@@ -92,7 +97,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Junit4 dependency -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -100,9 +105,6 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
-		
-		
-		
+
 	</dependencies>
 </project>
