@@ -28,7 +28,7 @@ public final class ImmutableMaps {
 		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
 	}
 
-	public static ImmutableIntObjectMapFactory getIntObjectMapFactory() {
+	public static ImmutableIntObjectMapFactory IntObjectMapFactoryInstance() {
 		return ImmutableIntObjectMapFactoryImpl.INSTANCE;
 	}
 
