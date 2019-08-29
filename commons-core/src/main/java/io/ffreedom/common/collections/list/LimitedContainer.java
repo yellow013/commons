@@ -1,4 +1,4 @@
-package io.ffreedom.common.collections.limited;
+package io.ffreedom.common.collections.list;
 
 public abstract class LimitedContainer<E> {
 

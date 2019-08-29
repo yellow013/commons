@@ -1,4 +1,4 @@
-package io.ffreedom.common.collections.limited;
+package io.ffreedom.common.collections.list;
 
 import org.eclipse.collections.impl.list.mutable.FastList;
 

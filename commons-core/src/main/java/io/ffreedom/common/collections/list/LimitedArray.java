@@ -1,4 +1,4 @@
-package io.ffreedom.common.collections.limited;
+package io.ffreedom.common.collections.list;
 
 import java.lang.reflect.Array;
 

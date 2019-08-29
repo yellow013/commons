@@ -12,15 +12,15 @@ import io.ffreedom.common.collections.MutableLists;
 import io.ffreedom.common.collections.MutableMaps;
 
 /**
- * 累加计算器，可以清除某个特定delta<br>
- * 在获取值的时候排除已过期的值<br>
+ * 累加计数器, 可以清除某个特定delta<br>
+ * 采用惰性求值, 在获取值的时候排除已过期的值<br>
  * 在当前JVM进程内有效, JVM重启后, 计数器归零
  * 
  * @author yellow013
  *
  */
 @NotThreadSafe
-public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirationCounter> {
+public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluationExpirableCounter> {
 
 	private long value = 0L;
 
@@ -33,7 +33,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 	private long expireNanos;
 
-	public LazyLoadingExpirationCounter(Duration expireTime, int capacity) {
+	public LazyEvaluationExpirableCounter(Duration expireTime, int capacity) {
 		this.expireNanos = expireTime.toNanos();
 		this.timeToTag = MutableMaps.newLongLongHashMap(capacity);
 		this.tagToDelta = MutableMaps.newLongLongHashMap(capacity);
@@ -45,7 +45,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	}
 
 	@Override
-	public LazyLoadingExpirationCounter add(long tag, long delta) {
+	public LazyEvaluationExpirableCounter add(long tag, long delta) {
 		if (!tagToDelta.containsKey(tag)) {
 			long time = System.nanoTime();
 			effectiveTimes.add(time);
@@ -57,7 +57,7 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 	}
 
 	@Override
-	public LazyLoadingExpirationCounter subtract(long tag, long delta) {
+	public LazyEvaluationExpirableCounter subtract(long tag, long delta) {
 		return add(tag, -delta);
 	}
 
@@ -84,6 +84,26 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 		tagToDelta.remove(tag);
 	}
 
+	@Override
+	public LazyEvaluationExpirableCounter removeHistoryDelta(long tag) {
+		long delta = tagToDelta.get(tag);
+		if (delta == 0)
+			return this;
+		tagToDelta.remove(tag);
+		value -= delta;
+		return this;
+	}
+
+	@Override
+	public LazyEvaluationExpirableCounter removeHistoryDelta(long tag, long delta) {
+		long saveDelta = tagToDelta.get(tag);
+		if (saveDelta == 0)
+			return this;
+		tagToDelta.put(tag, saveDelta - delta);
+		value -= delta;
+		return this;
+	}
+
 	public static void main(String[] args) {
 
 //		LazyLoadingExpirationCounter counter = new LazyLoadingExpirationCounter(Duration.ofMillis(10000), 1024);
@@ -104,26 +124,6 @@ public class LazyLoadingExpirationCounter implements Counter<LazyLoadingExpirati
 
 		System.out.println(-19 + -15);
 
-	}
-
-	@Override
-	public LazyLoadingExpirationCounter removeHistoryDelta(long tag) {
-		long delta = tagToDelta.get(tag);
-		if (delta == 0)
-			return this;
-		tagToDelta.remove(tag);
-		value -= delta;
-		return this;
-	}
-
-	@Override
-	public LazyLoadingExpirationCounter removeHistoryDelta(long tag, long delta) {
-		long saveDelta = tagToDelta.get(tag);
-		if (saveDelta == 0)
-			return this;
-		tagToDelta.put(tag, saveDelta - delta);
-		value -= delta;
-		return this;
 	}
 
 }
