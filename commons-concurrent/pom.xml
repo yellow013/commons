@@ -15,7 +15,7 @@
 	<name>commons-concurrent</name>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>io.ffreedom</groupId>
 			<artifactId>commons-core</artifactId>
@@ -31,6 +31,12 @@
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.reactivex.rxjava3</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>3.0.0-RC2</version>
 		</dependency>
 
 	</dependencies>
