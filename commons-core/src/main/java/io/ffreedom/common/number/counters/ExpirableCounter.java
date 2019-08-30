@@ -12,15 +12,17 @@ import io.ffreedom.common.collections.MutableLists;
 import io.ffreedom.common.collections.MutableMaps;
 
 /**
- * 累加计数器, 可以清除某个特定delta<br>
- * 采用惰性求值, 在获取值的时候排除已过期的值<br>
- * 在当前JVM进程内有效, JVM重启后, 计数器归零
+ * 
+ * 具备过期特性的累加计数器, 可以清除某个特定delta, 是计算单位时间窗口的閥值较为有效的结构<br>
+ * 累加值失效有两种情况, 调用removeHistoryDelta对value进行修正, 或在过期后自动失效<br>
+ * 采用惰性求值, 只在获取值的时候排除已过期的值<br>
+ * 未进行堆外缓存, 仅在当前JVM进程内有效, JVM重启后, 计数器归零
  * 
  * @author yellow013
  *
  */
 @NotThreadSafe
-public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluationExpirableCounter> {
+public final class ExpirableCounter implements Counter<ExpirableCounter> {
 
 	private long value = 0L;
 
@@ -33,32 +35,27 @@ public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluat
 
 	private long expireNanos;
 
-	public LazyEvaluationExpirableCounter(Duration expireTime, int capacity) {
+	public ExpirableCounter(Duration expireTime, int capacity) {
 		this.expireNanos = expireTime.toNanos();
 		this.timeToTag = MutableMaps.newLongLongHashMap(capacity);
 		this.tagToDelta = MutableMaps.newLongLongHashMap(capacity);
 		this.effectiveTimes = MutableLists.newLongArrayList(capacity);
 	}
 
-	private void add(long delta) {
+	private void updateValue(long delta) {
 		value += delta;
 	}
 
 	@Override
-	public LazyEvaluationExpirableCounter add(long tag, long delta) {
+	public ExpirableCounter add(long tag, long delta) {
 		if (!tagToDelta.containsKey(tag)) {
 			long time = System.nanoTime();
 			effectiveTimes.add(time);
 			timeToTag.put(time, tag);
 			tagToDelta.put(tag, delta);
-			add(delta);
+			updateValue(delta);
 		}
 		return this;
-	}
-
-	@Override
-	public LazyEvaluationExpirableCounter subtract(long tag, long delta) {
-		return add(tag, -delta);
 	}
 
 	@Override
@@ -68,7 +65,7 @@ public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluat
 		while (effectiveTimeIterator.hasNext()) {
 			long time = effectiveTimeIterator.next();
 			if (time < baseTime) {
-				clearTime(time);
+				clear(time);
 				effectiveTimeIterator.remove();
 			} else
 				break;
@@ -76,16 +73,16 @@ public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluat
 		return value;
 	}
 
-	private void clearTime(long time) {
+	private void clear(long time) {
 		long tag = timeToTag.get(time);
 		long delta = tagToDelta.get(tag);
-		add(-delta);
+		updateValue(-delta);
 		timeToTag.remove(time);
 		tagToDelta.remove(tag);
 	}
 
 	@Override
-	public LazyEvaluationExpirableCounter removeHistoryDelta(long tag) {
+	public ExpirableCounter remove(long tag) {
 		long delta = tagToDelta.get(tag);
 		if (delta == 0)
 			return this;
@@ -95,11 +92,11 @@ public final class LazyEvaluationExpirableCounter implements Counter<LazyEvaluat
 	}
 
 	@Override
-	public LazyEvaluationExpirableCounter removeHistoryDelta(long tag, long delta) {
-		long saveDelta = tagToDelta.get(tag);
-		if (saveDelta == 0)
+	public ExpirableCounter historyDeltaAdd(long tag, long delta) {
+		long savedDelta = tagToDelta.get(tag);
+		if (savedDelta == 0)
 			return this;
-		tagToDelta.put(tag, saveDelta - delta);
+		tagToDelta.put(tag, savedDelta - delta);
 		value -= delta;
 		return this;
 	}
