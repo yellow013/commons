@@ -1,4 +1,4 @@
-package io.ffreedom.common.utils;
+package io.ffreedom.common.param;
 
 public final class JointIdUtil {
 

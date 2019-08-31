@@ -1,6 +1,6 @@
 package io.ffreedom.common.service;
 
-import io.ffreedom.common.utils.ThreadUtil;
+import io.ffreedom.common.thread.ThreadUtil;
 
 public final class ServiceStarter {
 
