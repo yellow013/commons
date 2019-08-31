@@ -1,4 +1,4 @@
-package io.ffreedom.common.utils;
+package io.ffreedom.common.thread;
 
 import java.time.Duration;
 import java.time.LocalDate;

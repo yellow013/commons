@@ -3,7 +3,7 @@ package io.ffreedom.common.sequence;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
-import io.ffreedom.common.utils.ThreadUtil;
+import io.ffreedom.common.thread.ThreadUtil;
 
 public final class LocalSerial {
 
