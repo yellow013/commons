@@ -13,7 +13,7 @@ import io.ffreedom.common.concurrent.queue.api.SCQueue;
 import io.ffreedom.common.concurrent.queue.impl.base.LoadContainer;
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.utils.ThreadUtil;
+import io.ffreedom.common.thread.ThreadUtil;
 
 /**
  * 

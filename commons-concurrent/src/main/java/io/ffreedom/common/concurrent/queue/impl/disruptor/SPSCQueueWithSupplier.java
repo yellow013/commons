@@ -12,7 +12,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import io.ffreedom.common.concurrent.queue.api.SCQueue;
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.utils.ThreadUtil;
+import io.ffreedom.common.thread.ThreadUtil;
 
 public class SPSCQueueWithSupplier<T> extends SCQueue<T> {
 
