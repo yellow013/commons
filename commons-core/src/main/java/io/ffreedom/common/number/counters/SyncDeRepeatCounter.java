@@ -14,14 +14,14 @@ import io.ffreedom.common.collections.MutableSets;
  * @param <T>
  */
 @ThreadSafe
-public final class DeRepeatCounter<T> {
+public final class SyncDeRepeatCounter<T> {
 
 	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
 	private volatile int counter = 0;
 
-	// private Lock lock = new ReentrantLock();
+//	private Lock lock = new ReentrantLock();
 
-	public synchronized DeRepeatCounter<T> add(T t) {
+	public synchronized SyncDeRepeatCounter<T> add(T t) {
 //		try {
 //			lock.lock();
 		deRepeatSet.add(t);
@@ -33,7 +33,7 @@ public final class DeRepeatCounter<T> {
 		return this;
 	}
 
-	public DeRepeatCounter<T> subtract(T t) {
+	public SyncDeRepeatCounter<T> subtract(T t) {
 //		try {
 //			lock.lock();
 		deRepeatSet.remove(t);
@@ -51,7 +51,7 @@ public final class DeRepeatCounter<T> {
 
 	public static void main(String[] args) {
 
-		DeRepeatCounter<String> deRepeatCounter = new DeRepeatCounter<String>();
+		SyncDeRepeatCounter<String> deRepeatCounter = new SyncDeRepeatCounter<String>();
 
 		System.out.println(deRepeatCounter.add("").add("fsdaf").add("dsfsad").add("").add("aaa").add("aaa").getValue());
 
