@@ -18,7 +18,7 @@ public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	private LoadContainer<E>[] containers;
 
 	private final int size;
-	private volatile AtomicInteger arrayCount = new AtomicInteger();
+	private volatile AtomicInteger count = new AtomicInteger();
 
 	private int readOffset;
 	private int writeOffset;
@@ -48,12 +48,12 @@ public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	public boolean enqueue(E e) {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount.get() == size)
+			while (count.get() == size)
 				notFull.await();
 			containers[writeOffset].loading(e);
 			if (++writeOffset == size)
 				writeOffset = 0;
-			arrayCount.incrementAndGet();
+			count.incrementAndGet();
 			notEmpty.signal();
 			return true;
 		} catch (InterruptedException exception) {
@@ -68,12 +68,12 @@ public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	public E dequeue() {
 		try {
 			lock.lockInterruptibly();
-			while (arrayCount.get() == 0)
+			while (count.get() == 0)
 				notEmpty.await();
 			E e = containers[readOffset].unloading();
 			if (++readOffset == size)
 				readOffset = 0;
-			arrayCount.decrementAndGet();
+			count.decrementAndGet();
 			notFull.signal();
 			return e;
 		} catch (InterruptedException e) {
