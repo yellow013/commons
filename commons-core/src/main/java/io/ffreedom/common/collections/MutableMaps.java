@@ -212,10 +212,8 @@ public final class MutableMaps {
 	}
 
 	public static <K, V> MutableMap<K, V> newUnifiedMap(Map<K, V> map) {
-		if (map == null)
+		if (map == null || map.isEmpty())
 			return newUnifiedMap();
-		if (map.isEmpty())
-			return newUnifiedMap(map.size());
 		return UnifiedMap.newMap(map);
 	}
 
@@ -231,10 +229,8 @@ public final class MutableMaps {
 	}
 
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(Map<K, V> map) {
-		if (map == null)
+		if (map == null || map.isEmpty())
 			return newConcurrentHashMap();
-		if (map.isEmpty())
-			return newConcurrentHashMap(map.size());
 		return ConcurrentHashMap.newMap(map);
 	}
 
@@ -247,10 +243,8 @@ public final class MutableMaps {
 	}
 
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMapUnsafe(Map<K, V> map) {
-		if (map == null)
+		if (map == null || map.isEmpty())
 			return newConcurrentHashMapUnsafe();
-		if (map.isEmpty())
-			return newConcurrentHashMapUnsafe(map.size());
 		return ConcurrentHashMapUnsafe.newMap(map);
 	}
 
