@@ -8,6 +8,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private BiConsumer<Thread, Runnable> beforeHandler;
@@ -15,6 +18,8 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private BiConsumer<Runnable, Throwable> afterHandler;
 	private boolean isAfterHandle = false;
+
+	private final Logger logger = LoggerFactory.getLogger(CommonThreadPool.class);
 
 	private CommonThreadPool(ThreadPoolBuilder builder, BiConsumer<Thread, Runnable> beforeHandler,
 			BiConsumer<Runnable, Throwable> afterHandler) {
@@ -62,20 +67,26 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	@Override
 	protected void beforeExecute(Thread thread, Runnable runnable) {
+		logger.debug("Thread name -> {}, Runnable -> {}, execute before.", thread.getName(), runnable.toString());
 		if (isBeforeHandle)
 			beforeHandler.accept(thread, runnable);
 	}
 
 	@Override
 	protected void afterExecute(Runnable runnable, Throwable throwable) {
+		logger.debug("Runnable -> {}, execute after.", runnable.toString());
 		if (isAfterHandle)
 			afterHandler.accept(runnable, throwable);
 	}
 
+	@Override
+	protected void terminated() {
+	};
+
 	public final static class ThreadPoolBuilder {
 
 		private int corePoolSize = Runtime.getRuntime().availableProcessors();
-		private int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+		private int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 4;
 		private long keepAliveTime = 90;
 		private TimeUnit timeUnit = TimeUnit.SECONDS;
 		private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
@@ -130,7 +141,7 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 			return this;
 		}
 
-		public CommonThreadPool build(String threadPoolName) {
+		public ThreadPoolExecutor build(String threadPoolName) {
 			return threadFactory != null && rejectedHandler != null
 					? new CommonThreadPool(this, threadFactory, rejectedHandler, beforeHandler, afterHandler)
 					: threadFactory != null && rejectedHandler == null
@@ -139,6 +150,16 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 									? new CommonThreadPool(this, rejectedHandler, beforeHandler, afterHandler)
 									: new CommonThreadPool(this, beforeHandler, afterHandler);
 		}
+
+	}
+
+	public static void main(String[] args) {
+		int COUNT_BITS = Integer.SIZE - 3;
+		System.out.println(Integer.toBinaryString(-1 << COUNT_BITS));
+		System.out.println(Integer.toBinaryString(0 << COUNT_BITS));
+		System.out.println(Integer.toBinaryString(1 << COUNT_BITS));
+		System.out.println(Integer.toBinaryString(2 << COUNT_BITS));
+		System.out.println(Integer.toBinaryString(3 << COUNT_BITS));
 
 	}
 
