@@ -17,43 +17,35 @@ import io.ffreedom.common.collections.MutableSets;
 public final class SyncDeRepeatCounter<T> {
 
 	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
-	private volatile int counter = 0;
-
-//	private Lock lock = new ReentrantLock();
+	private volatile int count = 0;
 
 	public synchronized SyncDeRepeatCounter<T> add(T t) {
-//		try {
-//			lock.lock();
 		deRepeatSet.add(t);
-		counter = deRepeatSet.size();
-//		} catch (Exception e) {
-//		} finally {
-//			lock.unlock();
-//		}
+		count = deRepeatSet.size();
 		return this;
 	}
 
-	public SyncDeRepeatCounter<T> subtract(T t) {
-//		try {
-//			lock.lock();
+	public synchronized SyncDeRepeatCounter<T> subtract(T t) {
 		deRepeatSet.remove(t);
-		counter = deRepeatSet.size();
-//		} catch (Exception e) {
-//		} finally {
-//			lock.unlock();
-//		}
+		count = deRepeatSet.size();
 		return this;
 	}
 
-	public long getValue() {
-		return counter;
+	public synchronized SyncDeRepeatCounter<T> clear(T t) {
+		deRepeatSet.clear();
+		count = 0;
+		return this;
+	}
+
+	public long count() {
+		return count;
 	}
 
 	public static void main(String[] args) {
 
 		SyncDeRepeatCounter<String> deRepeatCounter = new SyncDeRepeatCounter<String>();
 
-		System.out.println(deRepeatCounter.add("").add("fsdaf").add("dsfsad").add("").add("aaa").add("aaa").getValue());
+		System.out.println(deRepeatCounter.add("").add("fsdaf").add("dsfsad").add("").add("aaa").add("aaa").count());
 
 	}
 
