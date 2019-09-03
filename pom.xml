@@ -21,7 +21,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<build>
@@ -40,27 +40,23 @@
 
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>io.ffreedom</groupId>
 				<artifactId>commons-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<!-- jctools -->
 			<dependency>
 				<groupId>org.jctools</groupId>
 				<artifactId>jctools-core</artifactId>
 				<version>2.1.2</version>
 			</dependency>
-
 			<!-- LMAX Disruptor -->
 			<dependency>
 				<groupId>com.lmax</groupId>
 				<artifactId>disruptor</artifactId>
 				<version>3.4.2</version>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -73,10 +69,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-
-
 
 
 
