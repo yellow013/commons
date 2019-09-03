@@ -1,6 +1,7 @@
 package io.ffreedom.common.collections.map;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import org.eclipse.collections.api.block.procedure.primitive.LongProcedure;
 import org.eclipse.collections.api.list.MutableList;
@@ -17,7 +18,7 @@ import io.ffreedom.common.collections.MutableSets;
  *
  * @param <V>
  */
-
+@NotThreadSafe
 public final class LongRangeMap<V> {
 
 	private MutableLongObjectMap<V> savedMap;
@@ -75,7 +76,16 @@ public final class LongRangeMap<V> {
 
 	// TODO 性能优化
 	public MutableLongSet selectKey(long startPoint, long endPoint) {
-		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(1000));
+//		MutableLongIterator longIterator = savedKey.longIterator();
+//		MutableLongSet longHashSet = MutableSets.newLongHashSet(512);
+//		while (longIterator.hasNext()) {
+//			long next = longIterator.next();
+//			if (next >= startPoint && next <= endPoint)
+//				longHashSet.add(next);
+//		}
+//		return longHashSet;
+		 return savedKey.select(key -> key >= startPoint && key <= endPoint,
+		 MutableSets.newLongHashSet(128));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -100,7 +110,7 @@ public final class LongRangeMap<V> {
 			// longRangeMap.get(1000, l);
 		}
 		long endNano1 = System.nanoTime();
-		System.out.println((endNano1 - startNano1) / 1000000);
+		System.out.println((endNano1 - startNano1) / 1000000000);
 
 	}
 
