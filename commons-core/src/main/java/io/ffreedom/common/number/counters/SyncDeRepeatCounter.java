@@ -29,14 +29,14 @@ public final class SyncDeRepeatCounter<T> {
 	}
 
 	public synchronized SyncDeRepeatCounter<T> add(T t) {
-		deRepeatSet.add(t);
-		count = deRepeatSet.size();
+		if (deRepeatSet.add(t))
+			count = deRepeatSet.size();
 		return this;
 	}
 
 	public synchronized SyncDeRepeatCounter<T> subtract(T t) {
-		deRepeatSet.remove(t);
-		count = deRepeatSet.size();
+		if (deRepeatSet.remove(t))
+			count = deRepeatSet.size();
 		return this;
 	}
 
