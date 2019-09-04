@@ -18,6 +18,15 @@ public final class SyncDeRepeatCounter<T> {
 
 	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
 	private volatile int count = 0;
+	private final int initCount;
+
+	public SyncDeRepeatCounter() {
+		this(0);
+	}
+
+	public SyncDeRepeatCounter(int initCount) {
+		this.initCount = initCount;
+	}
 
 	public synchronized SyncDeRepeatCounter<T> add(T t) {
 		deRepeatSet.add(t);
@@ -38,12 +47,12 @@ public final class SyncDeRepeatCounter<T> {
 	}
 
 	public long count() {
-		return count;
+		return initCount + count;
 	}
 
 	public static void main(String[] args) {
 
-		SyncDeRepeatCounter<String> deRepeatCounter = new SyncDeRepeatCounter<String>();
+		SyncDeRepeatCounter<String> deRepeatCounter = new SyncDeRepeatCounter<String>(100);
 
 		System.out.println(deRepeatCounter.add("").add("fsdaf").add("dsfsad").add("").add("aaa").add("aaa").count());
 
