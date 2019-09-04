@@ -60,11 +60,11 @@ public final class ExpirableCounter implements Counter<ExpirableCounter> {
 
 	@Override
 	public long getValue() {
-		long baseTime = System.nanoTime() - expireNanos;
+		long baselineTime = System.nanoTime() - expireNanos;
 		MutableLongIterator effectiveTimeIterator = effectiveTimes.longIterator();
 		while (effectiveTimeIterator.hasNext()) {
 			long time = effectiveTimeIterator.next();
-			if (time < baseTime) {
+			if (time < baselineTime) {
 				clear(time);
 				effectiveTimeIterator.remove();
 			} else
