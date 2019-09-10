@@ -2,15 +2,26 @@ package io.ffreedom.common.concurrent.list;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public final class CacheList<T> {
 
-	private volatile List<T> value;
-	private AtomicBoolean available = new AtomicBoolean(false);
+	private volatile Saved saved;
 
 	private Supplier<List<T>> refresher;
+
+	private class Saved {
+
+		private volatile boolean available;
+		private volatile List<T> value;
+
+		private Saved(boolean available, List<T> value) {
+			super();
+			this.available = available;
+			this.value = value;
+		}
+
+	}
 
 	public CacheList(Supplier<List<T>> refresher) {
 		if (refresher == null)
@@ -19,22 +30,21 @@ public final class CacheList<T> {
 	}
 
 	private CacheList<T> set(List<T> value) {
-		this.value = value;
-		this.available.set(true);
+		this.saved = new Saved(true, value);
 		return this;
 	}
 
 	public Optional<List<T>> get() {
-		if (available.get())
-			return Optional.ofNullable(value);
-		else {
-			List<T> value = refresher.get();
-			return value == null ? Optional.empty() : set(value).get();
-		}
+		if (saved == null || !saved.available) {
+			List<T> refreshed = refresher.get();
+			return refreshed == null ? Optional.empty() : set(refreshed).get();
+		} else
+			// return saved.isAvailable ? Optional.of(saved.value) : get(key);
+			return Optional.of(saved.value);
 	}
 
 	public CacheList<T> setUnavailable() {
-		this.available.set(false);
+		saved.available = false;
 		return this;
 	}
 

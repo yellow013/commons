@@ -78,16 +78,14 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 		private final RingBuffer<LoadContainer<T>> ringBuffer;
 
+		private EventTranslatorOneArg<LoadContainer<T>, T> eventTranslator = (event, sequence, t) -> event.loading(t);
+
 		private LoadContainerEventProducer(RingBuffer<LoadContainer<T>> ringBuffer) {
 			this.ringBuffer = ringBuffer;
 		}
 
-		public void onData(T t) {
-			ringBuffer.publishEvent(new EventTranslatorOneArg<LoadContainer<T>, T>() {
-				public void translateTo(LoadContainer<T> event, long sequence, T t) {
-					event.loading(t);
-				}
-			}, t);
+		private void onEvent(T t) {
+			ringBuffer.publishEvent(eventTranslator, t);
 		}
 	}
 
@@ -96,7 +94,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 		try {
 			if (isStop.get())
 				return false;
-			producer.onData(t);
+			producer.onEvent(t);
 			return true;
 		} catch (Exception e) {
 			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
@@ -121,7 +119,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 	public static void main(String[] args) {
 
 		SPSCQueue<Integer> queue = new SPSCQueue<>("Test-Queue", BufferSize.POW2_5, true,
-				(integer) -> System.out.println("********************************************"));
+				(integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;

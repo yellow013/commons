@@ -9,6 +9,13 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.jctools.maps.NonBlockingHashMap;
 
+/**
+ * 
+ * @author yellow013
+ *
+ * @param <K>
+ * @param <V>
+ */
 @ThreadSafe
 public final class SyncCacheMap<K, V> {
 
@@ -18,12 +25,12 @@ public final class SyncCacheMap<K, V> {
 
 	private class Saved {
 
-		private volatile boolean isAvailable;
+		private volatile boolean available;
 		private volatile V value;
 
-		public Saved(boolean isAvailable, V value) {
+		private Saved(boolean available, V value) {
 			super();
-			this.isAvailable = isAvailable;
+			this.available = available;
 			this.value = value;
 		}
 	}
@@ -41,17 +48,18 @@ public final class SyncCacheMap<K, V> {
 
 	public Optional<V> get(@Nonnull K key) {
 		Saved saved = valueMap.get(key);
-		if (saved == null || !saved.isAvailable) {
+		if (saved == null || !saved.available) {
 			V refreshed = refresher.apply(key);
 			return refreshed == null ? Optional.empty() : put(key, refreshed).get(key);
 		} else
-			return saved.isAvailable ? Optional.of(saved.value) : get(key);
+			// return saved.isAvailable ? Optional.of(saved.value) : get(key);
+			return Optional.of(saved.value);
 	}
 
 	public SyncCacheMap<K, V> setUnavailable(@Nonnull K key) {
 		Saved saved = valueMap.get(key);
 		if (saved != null)
-			saved.isAvailable = false;
+			saved.available = false;
 		return this;
 	}
 

@@ -25,9 +25,9 @@ final class WaitStrategyFactory {
 		case LiteBlocking:
 			return new LiteBlockingWaitStrategy();
 		case TimeoutBlocking:
-			return new TimeoutBlockingWaitStrategy(1, TimeUnit.MICROSECONDS);
+			return new TimeoutBlockingWaitStrategy(5, TimeUnit.MICROSECONDS);
 		case LiteTimeoutBlocking:
-			return new LiteTimeoutBlockingWaitStrategy(1, TimeUnit.MICROSECONDS);
+			return new LiteTimeoutBlockingWaitStrategy(5, TimeUnit.MICROSECONDS);
 		case PhasedBackoff:
 			throw new RuntimeException("PhasedBackoffWaitStrategy does not support.");
 		case Sleeping:

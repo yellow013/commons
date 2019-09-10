@@ -11,7 +11,13 @@ import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.concurrent.queue.api.SCQueue;
 import io.ffreedom.common.concurrent.queue.impl.ArrayBlockingMPSCQueue;
-
+/**
+ * 
+ * @author yellow013
+ *
+ * @param <K>
+ * @param <V>
+ */
 @ThreadSafe
 public final class AsyncCacheMap<K, V> {
 
