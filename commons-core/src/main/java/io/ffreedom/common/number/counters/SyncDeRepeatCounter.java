@@ -17,8 +17,10 @@ import io.ffreedom.common.collections.MutableSets;
 public final class SyncDeRepeatCounter<T> {
 
 	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
-	private volatile int count = 0;
-	private final int initCount;
+	private volatile int count;
+	private volatile int initCount;
+
+	// private boolean isArchived = false;
 
 	public SyncDeRepeatCounter() {
 		this(0);
@@ -40,14 +42,24 @@ public final class SyncDeRepeatCounter<T> {
 		return this;
 	}
 
-	public synchronized SyncDeRepeatCounter<T> clear(T t) {
+	public synchronized SyncDeRepeatCounter<T> clear() {
 		deRepeatSet.clear();
 		count = 0;
+		initCount = 0;
 		return this;
 	}
 
 	public long count() {
 		return initCount + count;
+	}
+
+	/**
+	 * 清空数据, 但保留计数结果
+	 * 
+	 * @return
+	 */
+	public synchronized void archive() {
+		deRepeatSet.clear();
 	}
 
 	public static void main(String[] args) {
