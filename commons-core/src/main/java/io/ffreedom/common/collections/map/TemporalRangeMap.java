@@ -4,10 +4,12 @@ import java.time.temporal.Temporal;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import org.eclipse.collections.api.list.MutableList;
 
-abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMap<K, V, T>> {
+@NotThreadSafe
+public abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMap<K, V, T>> {
 
 	protected ToLongFunction<K> conversionFunc;
 

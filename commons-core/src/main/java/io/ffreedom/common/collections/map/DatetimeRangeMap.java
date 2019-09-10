@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
+@NotThreadSafe
 public final class DatetimeRangeMap<V> extends TemporalRangeMap<LocalDateTime, V, DatetimeRangeMap<V>> {
 
 	/**

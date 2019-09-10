@@ -9,9 +9,11 @@ import java.time.LocalTime;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import io.ffreedom.common.datetime.DateTimeUtil;
 
+@NotThreadSafe
 public final class TimeRangeMap<V> extends TemporalRangeMap<LocalTime, V, TimeRangeMap<V>> {
 
 	private TimeRangeMap(ToLongFunction<LocalTime> conversionFunc) {

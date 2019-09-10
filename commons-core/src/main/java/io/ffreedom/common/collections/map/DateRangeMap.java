@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
+@NotThreadSafe
 public final class DateRangeMap<V> extends TemporalRangeMap<LocalDate, V, DateRangeMap<V>> {
 
 	private DateRangeMap(ToLongFunction<LocalDate> conversionFunc) {
