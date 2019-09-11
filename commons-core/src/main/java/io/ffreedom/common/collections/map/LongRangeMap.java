@@ -1,7 +1,7 @@
 package io.ffreedom.common.collections.map;
 
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.block.procedure.primitive.LongProcedure;
 import org.eclipse.collections.api.list.MutableList;
@@ -18,7 +18,7 @@ import io.ffreedom.common.collections.MutableSets;
  *
  * @param <V>
  */
-@NotThreadSafe
+@ThreadSafe
 public final class LongRangeMap<V> {
 
 	private MutableLongObjectMap<V> savedMap;
@@ -34,7 +34,7 @@ public final class LongRangeMap<V> {
 
 	}
 
-	public LongRangeMap<V> put(long key, V value) {
+	public synchronized LongRangeMap<V> put(long key, V value) {
 		savedMap.put(key, value);
 		savedKey.add(key);
 		return this;
@@ -46,7 +46,7 @@ public final class LongRangeMap<V> {
 	}
 
 	@Nullable
-	public V remove(long key) {
+	public synchronized V remove(long key) {
 		savedKey.remove(key);
 		return savedMap.remove(key);
 	}
@@ -55,22 +55,22 @@ public final class LongRangeMap<V> {
 		return MutableLists.newFastList(savedMap.values());
 	}
 
-	public void clear() {
+	public synchronized void clear() {
 		savedMap.clear();
 		savedKey.clear();
 	}
 
-	public MutableList<V> scan(long startPoint, long endPoint) {
+	public synchronized MutableList<V> scan(long startPoint, long endPoint) {
 		MutableLongSet selectKey = selectKey(startPoint, endPoint);
 		MutableList<V> selected = MutableLists.newFastList(selectKey.size());
-		operatingSelect(selectKey, key -> selected.add(savedMap.get(key)));
+		operatingSelect(selectKey, key -> selected.add(get(key)));
 		return selected;
 	}
 
-	public MutableList<V> remove(long startPoint, long endPoint) {
+	public synchronized MutableList<V> remove(long startPoint, long endPoint) {
 		MutableLongSet selectKey = selectKey(startPoint, endPoint);
 		MutableList<V> removed = MutableLists.newFastList(selectKey.size());
-		operatingSelect(selectKey, key -> removed.add(savedMap.remove(key)));
+		operatingSelect(selectKey, key -> removed.add(remove(key)));
 		return removed;
 	}
 
@@ -84,8 +84,7 @@ public final class LongRangeMap<V> {
 //				longHashSet.add(next);
 //		}
 //		return longHashSet;
-		 return savedKey.select(key -> key >= startPoint && key <= endPoint,
-		 MutableSets.newLongHashSet(128));
+		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(64));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -96,22 +95,23 @@ public final class LongRangeMap<V> {
 	public static void main(String[] args) {
 
 		long startNano = System.nanoTime();
-		LongRangeMap<String> longRangeMap = new LongRangeMap<>(20000000);
+		LongRangeMap<String> longRangeMap = new LongRangeMap<>(200000);
 		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}
 		long endNano = System.nanoTime();
 		System.out.println((endNano - startNano) / 1000000);
 
-		long startNano1 = System.nanoTime();
-		for (long l = 1000L; l < 2000L; l++) {
-			@SuppressWarnings("unused")
-			MutableLongSet selectKey = longRangeMap.selectKey(0, l);
-			// longRangeMap.get(1000, l);
+		for (int i = 0; i < 200; i++) {
+			long startNano1 = System.nanoTime();
+			for (long l = 1000L; l < 2000L; l++) {
+				@SuppressWarnings("unused")
+				MutableLongSet selectKey = longRangeMap.selectKey(0, l);
+				// longRangeMap.get(1000, l);
+			}
+			long endNano1 = System.nanoTime();
+			System.out.println((endNano1 - startNano1) / 1000000);
 		}
-		long endNano1 = System.nanoTime();
-		System.out.println((endNano1 - startNano1) / 1000000000);
-
 	}
 
 }
