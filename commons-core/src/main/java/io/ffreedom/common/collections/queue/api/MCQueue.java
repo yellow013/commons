@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.api;
+package io.ffreedom.common.collections.queue.api;
 
 public interface MCQueue<E> extends Queue<E> {
 
