@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.impl;
+package io.ffreedom.common.concurrent.queue;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
@@ -8,8 +8,8 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 
-import io.ffreedom.common.concurrent.queue.api.MCQueue;
-import io.ffreedom.common.concurrent.queue.impl.base.LoadContainer;
+import io.ffreedom.common.collections.queue.api.MCQueue;
+import io.ffreedom.common.collections.queue.base.LoadContainer;
 import io.ffreedom.common.log.CommonLoggerFactory;
 
 @ThreadSafe

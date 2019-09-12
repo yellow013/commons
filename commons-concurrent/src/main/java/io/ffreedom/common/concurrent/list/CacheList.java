@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
+@ThreadSafe
 public final class CacheList<T> {
 
 	private volatile Saved saved;

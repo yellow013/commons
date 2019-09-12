@@ -9,8 +9,8 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
 import io.ffreedom.common.collections.MutableMaps;
-import io.ffreedom.common.concurrent.queue.api.SCQueue;
-import io.ffreedom.common.concurrent.queue.impl.ArrayBlockingMPSCQueue;
+import io.ffreedom.common.collections.queue.api.SCQueue;
+import io.ffreedom.common.concurrent.queue.ArrayBlockingMPSCQueue;
 /**
  * 
  * @author yellow013

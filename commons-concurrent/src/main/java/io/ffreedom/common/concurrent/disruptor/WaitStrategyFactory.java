@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.impl.disruptor;
+package io.ffreedom.common.concurrent.disruptor;
 
 import java.util.concurrent.TimeUnit;
 

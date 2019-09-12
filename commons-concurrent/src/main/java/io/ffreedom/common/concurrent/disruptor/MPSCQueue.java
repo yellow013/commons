@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.queue.impl.disruptor;
+package io.ffreedom.common.concurrent.disruptor;
 
-import io.ffreedom.common.concurrent.queue.api.SCQueue;
+import io.ffreedom.common.collections.queue.api.SCQueue;
 import io.ffreedom.common.functional.Processor;
 
 /**
