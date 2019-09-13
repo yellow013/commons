@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue;
+package io.ffreedom.common.collections.queue;
 
 import java.util.Collection;
 import java.util.LinkedList;

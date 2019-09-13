@@ -18,7 +18,7 @@ public abstract class SCQueue<E> implements Queue<E> {
 
 	protected AtomicBoolean isClose = new AtomicBoolean(true);
 
-	protected String queueName = "SCQueue-" + Integer.toString(RandomNumber.randomUnsignedInt());
+	protected String queueName = "SCQueue-" + Integer.toString(RandomNumber.safeRandomUnsignedInt());
 
 	public SCQueue(Processor<E> processor) {
 		if (processor == null)
