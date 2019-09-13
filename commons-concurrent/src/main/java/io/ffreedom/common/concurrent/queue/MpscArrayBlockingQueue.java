@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.annotations.thread.SpinWaiting;
+import io.ffreedom.common.collections.queue.RunMode;
 import io.ffreedom.common.collections.queue.api.SCQueue;
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
