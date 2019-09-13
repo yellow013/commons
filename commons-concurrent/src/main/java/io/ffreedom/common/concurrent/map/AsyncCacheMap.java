@@ -10,7 +10,7 @@ import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.queue.api.SCQueue;
-import io.ffreedom.common.concurrent.queue.ArrayBlockingMPSCQueue;
+import io.ffreedom.common.concurrent.queue.MpscArrayBlockingQueue;
 /**
  * 
  * @author yellow013
@@ -67,9 +67,9 @@ public final class AsyncCacheMap<K, V> {
 			throw new IllegalArgumentException("refresher is can't null...");
 		this.refresher = refresher;
 		this.cacheName = cacheName == null ? "AsyncCacheMap-" + hashCode() : cacheName;
-		this.execQueue = ArrayBlockingMPSCQueue.autoStartQueue(this.cacheName + "-execQueue", 64,
+		this.execQueue = MpscArrayBlockingQueue.autoStartQueue(this.cacheName + "-execQueue", 64,
 				event -> asyncExec(event));
-		this.queryQueue = ArrayBlockingMPSCQueue.autoStartQueue(this.cacheName + "-execQueue", 64,
+		this.queryQueue = MpscArrayBlockingQueue.autoStartQueue(this.cacheName + "-execQueue", 64,
 				result -> consumerMap.remove(result.nanoTime).accept(result.value));
 	}
 

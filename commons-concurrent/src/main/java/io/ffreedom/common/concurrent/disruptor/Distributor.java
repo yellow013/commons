@@ -1,38 +1,54 @@
 package io.ffreedom.common.concurrent.disruptor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
+import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
 import io.ffreedom.common.collections.queue.api.SCQueue;
+import io.ffreedom.common.collections.queue.base.LoadContainer;
 import io.ffreedom.common.functional.Processor;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.thread.ThreadUtil;
 
-public class SpscQueueWithSupplier<T> extends SCQueue<T> {
+/**
+ * 
+ * @author yellow013
+ *
+ * @param <T>
+ */
+public class Distributor<T> extends SCQueue<T> {
 
-	private Logger logger = CommonLoggerFactory.getLogger(SpscQueueWithSupplier.class);
+	private Logger logger = CommonLoggerFactory.getLogger(getClass());
 
-	private Disruptor<T> disruptor;
+	private Disruptor<LoadContainer<T>> disruptor;
 
 	private LoadContainerEventProducer producer;
 
 	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public SpscQueueWithSupplier(BufferSize bufferSize, boolean autoRun, WaitStrategyOption option,
-			Supplier<T> supplier, Processor<T> processor) {
+	public Distributor(String queueName, BufferSize bufferSize) {
+		this(queueName, bufferSize, false, null);
+	}
+
+	public Distributor(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+		this(queueName, bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
+	}
+
+	public Distributor(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
+			WaitStrategyOption option) {
 		super(processor);
+		if (queueName != null)
+			super.queueName = queueName;
 		// if (queueSize == 0 || queueSize % 2 != 0)
 		// throw new IllegalArgumentException("queueSize set error...");
-		this.processor = processor;
 		this.disruptor = new Disruptor<>(
-				// 实现EventFactory的Lambda
-				() -> supplier.get(),
+				// 实现EventFactory<LoadContainer<>>的Lambda
+				LoadContainer::new,
 				// 队列容量
 				bufferSize.size(),
 				// 实现ThreadFactory的Lambda
@@ -43,33 +59,33 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 				ProducerType.SINGLE,
 				// Waiting策略
 				WaitStrategyFactory.getStrategy(option));
-		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> tryCallProcessor(event));
+		this.disruptor.handleEventsWith((event, sequence, endOfBatch) -> callProcessor(event.unloading()));
 		this.producer = new LoadContainerEventProducer(disruptor.getRingBuffer());
 		if (autoRun)
 			start();
 	}
 
-	private void tryCallProcessor(T t) {
+	private void callProcessor(T t) {
 		try {
 			processor.process(t);
 		} catch (Exception e) {
-			logger.error("processor throw exception -> [{}]", e.getMessage(), e);
+			logger.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
 
 	private class LoadContainerEventProducer {
 
-		private final RingBuffer<T> ringBuffer;
+		private final RingBuffer<LoadContainer<T>> ringBuffer;
 
-		private LoadContainerEventProducer(RingBuffer<T> ringBuffer) {
+		private EventTranslatorOneArg<LoadContainer<T>, T> eventTranslator = (event, sequence, t) -> event.loading(t);
+
+		private LoadContainerEventProducer(RingBuffer<LoadContainer<T>> ringBuffer) {
 			this.ringBuffer = ringBuffer;
 		}
 
-		public void onData(T t) {
-			ringBuffer.publishEvent((T event, long sequence) -> {
-
-			});
+		private void onEvent(T t) {
+			ringBuffer.publishEvent(eventTranslator, t);
 		}
 	}
 
@@ -78,9 +94,10 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 		try {
 			if (isStop.get())
 				return false;
-			producer.onData(t);
+			producer.onEvent(t);
 			return true;
 		} catch (Exception e) {
+			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -94,30 +111,25 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 	public void stop() {
 		isStop.set(true);
 		while (disruptor.getBufferSize() != 0)
-			ThreadUtil.sleep(10);
+			ThreadUtil.sleep(1);
 		disruptor.shutdown();
 		logger.info("Call stop() success, disruptor is shutdown.");
 	}
 
-	@Override
-	public String getQueueName() {
-		return "";
-	}
-
 	public static void main(String[] args) {
 
-		SpscQueueWithSupplier<Integer> queue = new SpscQueueWithSupplier<>(BufferSize.POW2_10, true,
-				WaitStrategyOption.BusySpin, () -> Integer.valueOf(0), (integer) -> System.out.println(integer));
+		Distributor<Integer> queue = new Distributor<>("Test-Queue", BufferSize.POW2_5, true,
+				(integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
 			int i = 0;
-			for (;;) {
+			for (;;)
 				queue.enqueue(++i);
-				ThreadUtil.sleep(5000);
-			}
 		});
 
 		ThreadUtil.sleep(10000);
+
+		queue.stop();
 
 	}
 

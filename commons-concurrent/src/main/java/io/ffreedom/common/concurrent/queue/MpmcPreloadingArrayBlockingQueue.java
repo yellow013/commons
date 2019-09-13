@@ -13,25 +13,25 @@ import io.ffreedom.common.collections.queue.base.LoadContainer;
 import io.ffreedom.common.log.CommonLoggerFactory;
 
 @ThreadSafe
-public class PreloadingArrayBlockingQueue<E> implements MCQueue<E> {
+public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 
 	private LoadContainer<E>[] containers;
 
 	private final int size;
-	private volatile AtomicInteger count = new AtomicInteger();
+	private AtomicInteger count = new AtomicInteger();
 
-	private int readOffset;
-	private int writeOffset;
+	private volatile int readOffset;
+	private volatile int writeOffset;
 
 	private ReentrantLock lock;
 
 	private Condition notEmpty;
 	private Condition notFull;
 
-	private Logger logger = CommonLoggerFactory.getLogger(PreloadingArrayBlockingQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(MpmcPreloadingArrayBlockingQueue.class);
 
 	@SuppressWarnings("unchecked")
-	public PreloadingArrayBlockingQueue(int size) {
+	public MpmcPreloadingArrayBlockingQueue(int size) {
 		if (size <= 0) {
 			throw new IllegalArgumentException("size is too big.");
 		}

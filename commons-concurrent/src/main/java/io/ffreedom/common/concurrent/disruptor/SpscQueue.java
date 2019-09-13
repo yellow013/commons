@@ -17,11 +17,11 @@ import io.ffreedom.common.thread.ThreadUtil;
 
 /**
  * 
- * @author Peng.Jin
+ * @author yellow013
  *
  * @param <T>
  */
-public class SPSCQueue<T> extends SCQueue<T> {
+public class SpscQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(getClass());
 
@@ -31,15 +31,15 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public SPSCQueue(String queueName, BufferSize bufferSize) {
+	public SpscQueue(String queueName, BufferSize bufferSize) {
 		this(queueName, bufferSize, false, null);
 	}
 
-	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+	public SpscQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
 		this(queueName, bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
 	}
 
-	public SPSCQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
+	public SpscQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
 			WaitStrategyOption option) {
 		super(processor);
 		if (queueName != null)
@@ -118,7 +118,7 @@ public class SPSCQueue<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		SPSCQueue<Integer> queue = new SPSCQueue<>("Test-Queue", BufferSize.POW2_5, true,
+		SpscQueue<Integer> queue = new SpscQueue<>("Test-Queue", BufferSize.POW2_5, true,
 				(integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {

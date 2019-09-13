@@ -13,22 +13,22 @@ import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.thread.ThreadUtil;
 import io.ffreedom.common.utils.StringUtil;
 
-public class ArrayBlockingMPSCQueue<E> extends SCQueue<E> {
+public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 
 	private ArrayBlockingQueue<E> innerQueue;
 
-	private Logger logger = CommonLoggerFactory.getLogger(ArrayBlockingMPSCQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(MpscArrayBlockingQueue.class);
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
 
 	private AtomicBoolean isClose = new AtomicBoolean(true);
 
-	private ArrayBlockingMPSCQueue(String queueName, int capacity, RunMode mode, long delayMillis,
+	private MpscArrayBlockingQueue(String queueName, int capacity, RunMode mode, long delayMillis,
 			Processor<E> processor) {
 		super(processor);
 		this.innerQueue = new ArrayBlockingQueue<>(Math.max(capacity, 64));
 		this.queueName = StringUtil.isNullOrEmpty(queueName)
-				? ArrayBlockingMPSCQueue.class.getSimpleName() + "-" + Thread.currentThread().getName()
+				? MpscArrayBlockingQueue.class.getSimpleName() + "-" + Thread.currentThread().getName()
 				: queueName;
 		switch (mode) {
 		case Auto:
@@ -43,43 +43,43 @@ public class ArrayBlockingMPSCQueue<E> extends SCQueue<E> {
 		}
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> autoStartQueue(Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Auto, 0L, processor);
+	public static <E> MpscArrayBlockingQueue<E> autoStartQueue(Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(null, 64, RunMode.Auto, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> autoStartQueue(int capacity, Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Auto, 0L, processor);
+	public static <E> MpscArrayBlockingQueue<E> autoStartQueue(int capacity, Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(null, capacity, RunMode.Auto, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> autoStartQueue(String queueName, int capacity, Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Auto, 0L, processor);
+	public static <E> MpscArrayBlockingQueue<E> autoStartQueue(String queueName, int capacity, Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(queueName, capacity, RunMode.Auto, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> manualStartQueue(Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Manual, 0L, processor);
+	public static <E> MpscArrayBlockingQueue<E> manualStartQueue(Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(null, 64, RunMode.Manual, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> manualStartQueue(int capacity, Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Manual, 0L, processor);
+	public static <E> MpscArrayBlockingQueue<E> manualStartQueue(int capacity, Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(null, capacity, RunMode.Manual, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> manualStartQueue(String queueName, int capacity,
+	public static <E> MpscArrayBlockingQueue<E> manualStartQueue(String queueName, int capacity,
 			Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Manual, 0L, processor);
+		return new MpscArrayBlockingQueue<>(queueName, capacity, RunMode.Manual, 0L, processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> delayStartQueue(long delay, TimeUnit timeUnit, Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
+	public static <E> MpscArrayBlockingQueue<E> delayStartQueue(long delay, TimeUnit timeUnit, Processor<E> processor) {
+		return new MpscArrayBlockingQueue<>(null, 64, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> delayStartQueue(int capacity, long delay, TimeUnit timeUnit,
+	public static <E> MpscArrayBlockingQueue<E> delayStartQueue(int capacity, long delay, TimeUnit timeUnit,
 			Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(null, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new MpscArrayBlockingQueue<>(null, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
-	public static <E> ArrayBlockingMPSCQueue<E> delayStartQueue(String queueName, int capacity, long delay,
+	public static <E> MpscArrayBlockingQueue<E> delayStartQueue(String queueName, int capacity, long delay,
 			TimeUnit timeUnit, Processor<E> processor) {
-		return new ArrayBlockingMPSCQueue<>(queueName, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
+		return new MpscArrayBlockingQueue<>(queueName, capacity, RunMode.Delay, timeUnit.toMillis(delay), processor);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class ArrayBlockingMPSCQueue<E> extends SCQueue<E> {
 
 	public static void main(String[] args) {
 
-		ArrayBlockingMPSCQueue<Integer> queue = ArrayBlockingMPSCQueue.autoStartQueue(100, (value) -> {
+		MpscArrayBlockingQueue<Integer> queue = MpscArrayBlockingQueue.autoStartQueue(100, (value) -> {
 			System.out.println(value);
 			ThreadUtil.sleep(500);
 		});
