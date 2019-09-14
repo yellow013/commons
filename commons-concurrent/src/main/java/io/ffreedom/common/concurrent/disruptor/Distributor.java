@@ -31,8 +31,8 @@ public class Distributor<T> extends SCQueue<T> {
 
 	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public Distributor(String queueName, BufferSize bufferSize) {
-		this(queueName, bufferSize, false, null);
+	public Distributor(String queueName, BufferSize bufferSize, Processor<T> processor) {
+		this(queueName, bufferSize, false, processor);
 	}
 
 	public Distributor(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {

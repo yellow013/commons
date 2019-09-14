@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
+import com.lmax.disruptor.EventTranslator;
+import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -62,14 +64,16 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 
 		private final RingBuffer<T> ringBuffer;
 
+		private EventTranslatorOneArg<T, T> translator = (T event, long sequence, T t) -> {
+			event = t;
+		};
+
 		private LoadContainerEventProducer(RingBuffer<T> ringBuffer) {
 			this.ringBuffer = ringBuffer;
 		}
 
 		public void onData(T t) {
-			ringBuffer.publishEvent((T event, long sequence) -> {
-
-			});
+			ringBuffer.publishEvent(translator, t);
 		}
 	}
 
