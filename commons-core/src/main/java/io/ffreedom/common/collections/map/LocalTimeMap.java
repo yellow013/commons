@@ -1,11 +1,12 @@
 package io.ffreedom.common.collections.map;
 
 import static io.ffreedom.common.datetime.DateTimeUtil.timeToHour;
-import static io.ffreedom.common.datetime.DateTimeUtil.timeToMillisecond;
 import static io.ffreedom.common.datetime.DateTimeUtil.timeToMinute;
 import static io.ffreedom.common.datetime.DateTimeUtil.timeToSecond;
 
 import java.time.LocalTime;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
@@ -14,31 +15,40 @@ import javax.annotation.concurrent.NotThreadSafe;
 import io.ffreedom.common.datetime.DateTimeUtil;
 
 @NotThreadSafe
-public final class TimeRangeMap<V> extends TemporalRangeMap<LocalTime, V, TimeRangeMap<V>> {
+public final class LocalTimeMap<V> extends TemporalMap<LocalTime, V, LocalTimeMap<V>> {
 
-	private TimeRangeMap(ToLongFunction<LocalTime> conversionFunc) {
-		super(conversionFunc);
+	private LocalTimeMap(ToLongFunction<LocalTime> keyToLangFunc, Function<LocalTime, LocalTime> nextKeyFunc,
+			BiPredicate<LocalTime, LocalTime> hasNextKey) {
+		super(keyToLangFunc, nextKeyFunc, hasNextKey);
 	}
 
-	public final static <V> TimeRangeMap<V> newMapToHour() {
-		return new TimeRangeMap<>(time -> timeToHour(time));
+	private static ToLongFunction<LocalTime> keyToLangFuncWithHour = key -> timeToHour(key);
+	private static Function<LocalTime, LocalTime> nextKeyFuncWithHour = key -> key.plusHours(1);
+
+	private static ToLongFunction<LocalTime> keyToLangFuncWithMinute = key -> timeToMinute(key);
+	private static Function<LocalTime, LocalTime> nextKeyFuncWithMinute = key -> key.plusMinutes(1);
+
+	private static ToLongFunction<LocalTime> keyToLangFuncWithSecond = key -> timeToSecond(key);
+	private static Function<LocalTime, LocalTime> nextKeyFuncWithSecond = key -> key.plusSeconds(1);
+
+	private static BiPredicate<LocalTime, LocalTime> hasNextKey = (nextKey, endPoint) -> nextKey.isBefore(endPoint)
+			|| nextKey.equals(endPoint);
+
+	public final static <V> LocalTimeMap<V> newMapToHour() {
+		return new LocalTimeMap<>(keyToLangFuncWithHour, nextKeyFuncWithHour, hasNextKey);
 	}
 
-	public final static <V> TimeRangeMap<V> newMapToMinute() {
-		return new TimeRangeMap<>(time -> timeToMinute(time));
+	public final static <V> LocalTimeMap<V> newMapToMinute() {
+		return new LocalTimeMap<>(keyToLangFuncWithMinute, nextKeyFuncWithMinute, hasNextKey);
 	}
 
-	public final static <V> TimeRangeMap<V> newMapToSecond() {
-		return new TimeRangeMap<>(time -> timeToSecond(time));
-	}
-
-	public final static <V> TimeRangeMap<V> newMapToMillisecond() {
-		return new TimeRangeMap<>(time -> timeToMillisecond(time));
+	public final static <V> LocalTimeMap<V> newMapToSecond() {
+		return new LocalTimeMap<>(keyToLangFuncWithSecond, nextKeyFuncWithSecond, hasNextKey);
 	}
 
 	@Override
-	public TimeRangeMap<V> put(@Nonnull LocalTime key, V value) {
-		put(conversionFunc.applyAsLong(key), value);
+	public LocalTimeMap<V> put(@Nonnull LocalTime key, V value) {
+		put(keyToLangFunc.applyAsLong(key), value);
 		return this;
 	}
 

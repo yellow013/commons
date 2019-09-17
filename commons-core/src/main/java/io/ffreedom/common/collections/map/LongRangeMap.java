@@ -104,7 +104,7 @@ public final class LongRangeMap<V> {
 
 		for (int i = 0; i < 200; i++) {
 			long startNano1 = System.nanoTime();
-			for (long l = 1000L; l < 2000L; l++) {
+			for (long l = 1000L; l < 1300L; l++) {
 				@SuppressWarnings("unused")
 				MutableLongSet selectKey = longRangeMap.selectKey(0, l);
 				// longRangeMap.get(1000, l);
@@ -112,6 +112,16 @@ public final class LongRangeMap<V> {
 			long endNano1 = System.nanoTime();
 			System.out.println((endNano1 - startNano1) / 1000000);
 		}
+
+//		MutableMap<LocalDate, String> unifiedMap = MutableMaps.newUnifiedMap();
+//
+//		unifiedMap.put(LocalDate.now(), "AAAA");
+//		unifiedMap.put(LocalDate.now(), "BBBB");
+//		System.out.println(unifiedMap.get(LocalDate.now()));
+//		System.out.println(LocalDate.now().hashCode());
+//		System.out.println(LocalDate.now().hashCode());
+//		
+//		System.out.println(LocalDate.now() == LocalDate.now());
 	}
 
 }

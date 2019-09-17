@@ -1,27 +1,40 @@
 package io.ffreedom.common.collections.map;
 
 import java.time.temporal.Temporal;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.ToLongFunction;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
+
+import io.ffreedom.common.collections.MutableLists;
+import io.ffreedom.common.collections.MutableMaps;
 
 @NotThreadSafe
-public abstract class TemporalRangeMap<K extends Temporal, V, T extends TemporalRangeMap<K, V, T>> {
+public abstract class TemporalMap<K extends Temporal, V, T extends TemporalMap<K, V, T>> {
 
-	protected ToLongFunction<K> conversionFunc;
+	protected ToLongFunction<K> keyToLangFunc;
 
-	private LongRangeMap<V> savedMap;
+	private Function<K, K> nextKeyFunc;
 
-	public TemporalRangeMap(ToLongFunction<K> conversionFunc) {
-		this(conversionFunc, 128);
+	private BiPredicate<K, K> hasNextKey;
+
+	private MutableLongObjectMap<V> savedMap;
+
+	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey) {
+		this(keyToLangFunc, nextKeyFunc, hasNextKey, 128);
 	}
 
-	public TemporalRangeMap(ToLongFunction<K> conversionFunc, int initialCapacity) {
-		this.conversionFunc = conversionFunc;
-		this.savedMap = new LongRangeMap<>(initialCapacity);
+	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey,
+			int initialCapacity) {
+		this.keyToLangFunc = keyToLangFunc;
+		this.nextKeyFunc = nextKeyFunc;
+		this.hasNextKey = hasNextKey;
+		this.savedMap = MutableMaps.newLongObjectHashMap(initialCapacity);
 	}
 
 	/**
@@ -40,7 +53,7 @@ public abstract class TemporalRangeMap<K extends Temporal, V, T extends Temporal
 	 * @return
 	 */
 	public V get(@Nonnull K key) {
-		return savedMap.get(conversionFunc.applyAsLong(key));
+		return savedMap.get(keyToLangFunc.applyAsLong(key));
 	}
 
 	/**
@@ -51,10 +64,25 @@ public abstract class TemporalRangeMap<K extends Temporal, V, T extends Temporal
 	 * @return
 	 */
 	public MutableList<V> scan(@Nonnull K startPoint, @Nonnull K endPoint) {
-		return savedMap.scan(conversionFunc.applyAsLong(startPoint), conversionFunc.applyAsLong(endPoint));
+		MutableList<V> rtnList = MutableLists.newFastList(32);
+		if (!hasNextKey.test(startPoint, endPoint))
+			return putResult(rtnList, get(endPoint));
+		putResult(rtnList, get(startPoint));
+		K nextKey = nextKeyFunc.apply(startPoint);
+		while (hasNextKey.test(nextKey, endPoint)) {
+			putResult(rtnList, get(nextKey));
+			nextKey = nextKeyFunc.apply(nextKey);
+		}
+		return rtnList;
 	}
 
-	protected LongRangeMap<V> getSavedMap() {
+	private MutableList<V> putResult(MutableList<V> rtnList, V value) {
+		if (value != null)
+			rtnList.add(value);
+		return rtnList;
+	}
+
+	protected MutableLongObjectMap<V> getSavedMap() {
 		return savedMap;
 	}
 
