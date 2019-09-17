@@ -13,7 +13,7 @@ import io.ffreedom.common.collections.MutableMaps;
 
 /**
  * 
- * 具备过期特性的累加计数器, 可以清除某个特定delta, 在计算单位时间窗口的閥值时是较为有效的结构<br>
+ * 具备过期特性的累加计数器, 可以清除某个特定delta, 是计算单位时间窗口的閥值时较为有效的结构<br>
  * 累加值失效有两种情况, 调用removeHistoryDelta对value进行修正, 或在过期后自动失效<br>
  * 采用惰性求值, 只在获取值的时候排除已过期的值<br>
  * 未进行堆外缓存, 仅在当前JVM进程内有效, JVM重启后, 计数器归零
