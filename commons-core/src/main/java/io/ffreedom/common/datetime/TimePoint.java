@@ -21,8 +21,7 @@ public final class TimePoint implements Comparable<TimePoint> {
 	// TODO 使用位运算实现
 	public static TimePoint now() {
 		LocalDateTime now = LocalDateTime.now();
-		return new TimePoint(date(now.getYear(), now.getMonthValue(), now.getDayOfMonth()),
-				timeToSecond(now.getHour(), now.getMinute(), now.getSecond()), now.getNano());
+		return of(date(now.toLocalDate()), timeToSecond(now.toLocalTime()), now.getNano());
 	}
 
 	public static TimePoint of(int date, int time, int nano) {
@@ -45,7 +44,10 @@ public final class TimePoint implements Comparable<TimePoint> {
 	public int compareTo(TimePoint o) {
 		return date < o.date ? -1
 				: date > o.date ? 1
-						: time < o.time ? -1 : time > o.time ? 1 : nano < o.nano ? -1 : nano > o.nano ? 1 : 0;
+						: time < o.time ? -1 
+								: time > o.time ? 1 
+										: nano < o.nano ? -1 
+												: nano > o.nano ? 1 : 0;
 	}
 
 	public static void main(String[] args) {

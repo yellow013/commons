@@ -34,17 +34,27 @@ public final class DateTimeUtil {
 	 * @return
 	 */
 	public final static int date(@Nonnull LocalDate date) {
-		return date(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth());
+		return date.getYear() * 10000 + date.getMonth().getValue() * 100 + date.getDayOfMonth();
 	}
 
 	/**
-	 * 根据指定 year, month, day 返回 primitive int 表示的 yyyyMMdd
+	 * 返回 primitive int 表示的 yyyyMMdd
 	 * 
 	 * @param date
 	 * @return
 	 */
-	public final static int date(int year, int month, int dayOfMonth) {
-		return year * 10000 + month * 100 + dayOfMonth;
+	public final static int yearDay() {
+		return yearDay(LocalDate.now());
+	}
+
+	/**
+	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyMMdd
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int yearDay(@Nonnull LocalDate date) {
+		return date.getYear() * 1000 + date.getDayOfYear();
 	}
 
 	/**
@@ -101,17 +111,7 @@ public final class DateTimeUtil {
 	 * @return
 	 */
 	public final static int timeToSecond(@Nonnull LocalTime time) {
-		return timeToSecond(time.getHour(), time.getMinute(), time.getSecond());
-	}
-
-	/**
-	 * 根据指定 hour, minute, second 返回 primitive int 表示的 HHmmss
-	 * 
-	 * @param time
-	 * @return
-	 */
-	public final static int timeToSecond(int hour, int minute, int second) {
-		return hour * 10000 + minute * 100 + second;
+		return time.getHour() * 10000 + time.getMinute() * 100 + time.getSecond();
 	}
 
 	/**
@@ -379,6 +379,10 @@ public final class DateTimeUtil {
 		System.out.println(toLocalDate(20161223));
 		System.out.println(toLocalTime(234554987));
 		System.out.println(toLocalDateTime(20161223234554987L));
+		System.out.println(yearDay());
+		System.out.println(LocalDate.now());
+		System.out.println(LocalDate.ofEpochDay(System.currentTimeMillis() / (24 * 60 * 60 * 1000)));
+		System.out.println(System.currentTimeMillis() / (24 * 60 * 60 * 1000));
 
 	}
 

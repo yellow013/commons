@@ -1,5 +1,6 @@
 package io.ffreedom.common.datetime;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -11,6 +12,16 @@ import static java.lang.System.currentTimeMillis;
 import static io.ffreedom.common.datetime.TimeZones.DEFAULT_ZONE_OFFSET;
 
 public final class EpochTime {
+
+	private final static int DAY_MILLIS = 24 * 60 * 60 * 1000;
+
+	public static long day() {
+		return currentTimeMillis() / DAY_MILLIS;
+	}
+
+	public static long day(@Nonnull LocalDate date) {
+		return date.toEpochDay();
+	}
 
 	public static long seconds() {
 		return currentTimeMillis() / 1000;
