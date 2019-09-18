@@ -1,4 +1,4 @@
-package io.ffreedom.common.number.counters;
+package io.ffreedom.common.concurrent.counter;
 
 import javax.annotation.concurrent.ThreadSafe;
 

@@ -1,10 +1,20 @@
-package io.ffreedom.common.collections.set;
+package io.ffreedom.common.concurrent.set;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 
 import io.ffreedom.common.collections.MutableMaps;
-import io.ffreedom.common.number.counters.SyncDeRepeatCounter;
+import io.ffreedom.common.concurrent.counter.SyncDeRepeatCounter;
 
+/**
+ * 
+ * @author yellow013
+ *
+ * @param <T>
+ */
+
+@ThreadSafe
 public final class DeRepeatCounterSet<T> {
 
 	private SyncDeRepeatCounter<T> counter = new SyncDeRepeatCounter<>();
