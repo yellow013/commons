@@ -1,4 +1,4 @@
-package io.ffreedom.common.number.counters;
+package io.ffreedom.common.collections.counter;
 
 /**
  * 累加计数器接口

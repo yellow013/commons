@@ -64,19 +64,19 @@ public abstract class TemporalMap<K extends Temporal, V, T extends TemporalMap<K
 	 * @return
 	 */
 	public MutableList<V> scan(@Nonnull K startPoint, @Nonnull K endPoint) {
-		MutableList<V> rtnList = MutableLists.newFastList(32);
+		MutableList<V> result = MutableLists.newFastList(32);
 		if (!hasNextKey.test(startPoint, endPoint))
-			return putResult(rtnList, get(endPoint));
-		putResult(rtnList, get(startPoint));
+			return loadResult(result, get(endPoint));
+		loadResult(result, get(startPoint));
 		K nextKey = nextKeyFunc.apply(startPoint);
 		while (hasNextKey.test(nextKey, endPoint)) {
-			putResult(rtnList, get(nextKey));
+			loadResult(result, get(nextKey));
 			nextKey = nextKeyFunc.apply(nextKey);
 		}
-		return rtnList;
+		return result;
 	}
 
-	private MutableList<V> putResult(MutableList<V> rtnList, V value) {
+	private MutableList<V> loadResult(MutableList<V> rtnList, V value) {
 		if (value != null)
 			rtnList.add(value);
 		return rtnList;
