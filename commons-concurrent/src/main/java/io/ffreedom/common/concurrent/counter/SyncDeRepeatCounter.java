@@ -4,6 +4,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.set.MutableSet;
 
+import io.ffreedom.common.annotations.thread.LockHeld;
 import io.ffreedom.common.collections.MutableSets;
 
 /**
@@ -30,18 +31,21 @@ public final class SyncDeRepeatCounter<T> {
 		this.initCount = initCount;
 	}
 
+	@LockHeld
 	public synchronized SyncDeRepeatCounter<T> add(T t) {
 		if (deRepeatSet.add(t))
 			count = deRepeatSet.size();
 		return this;
 	}
 
+	@LockHeld
 	public synchronized SyncDeRepeatCounter<T> subtract(T t) {
 		if (deRepeatSet.remove(t))
 			count = deRepeatSet.size();
 		return this;
 	}
 
+	@LockHeld
 	public synchronized SyncDeRepeatCounter<T> clear() {
 		deRepeatSet.clear();
 		count = 0;
