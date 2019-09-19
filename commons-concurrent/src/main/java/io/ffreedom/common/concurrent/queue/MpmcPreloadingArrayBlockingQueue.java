@@ -93,8 +93,7 @@ public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 
 	@Override
 	public String getQueueName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "MpmcPreloadingArrayBlockingQueue";
 	}
 
 }
