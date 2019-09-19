@@ -11,6 +11,9 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.ffreedom.common.number.RandomNumber;
+import io.ffreedom.common.utils.StringUtil;
+
 public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private BiConsumer<Thread, Runnable> beforeHandler;
@@ -19,38 +22,42 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 	private BiConsumer<Runnable, Throwable> afterHandler;
 	private boolean isAfterHandle = false;
 
+	private String threadPoolName;
+
 	private final Logger logger = LoggerFactory.getLogger(CommonThreadPool.class);
 
-	private CommonThreadPool(ThreadPoolBuilder builder, BiConsumer<Thread, Runnable> beforeHandler,
-			BiConsumer<Runnable, Throwable> afterHandler) {
+	private CommonThreadPool(String threadPoolName, ThreadPoolBuilder builder,
+			BiConsumer<Thread, Runnable> beforeHandler, BiConsumer<Runnable, Throwable> afterHandler) {
 		super(builder.corePoolSize, builder.maximumPoolSize, builder.keepAliveTime, builder.timeUnit,
 				builder.workQueue);
-		initHandler(beforeHandler, afterHandler);
+		init(threadPoolName, beforeHandler, afterHandler);
 	}
 
-	private CommonThreadPool(ThreadPoolBuilder builder, ThreadFactory threadFactory,
+	private CommonThreadPool(String threadPoolName, ThreadPoolBuilder builder, ThreadFactory threadFactory,
 			BiConsumer<Thread, Runnable> beforeHandler, BiConsumer<Runnable, Throwable> afterHandler) {
 		super(builder.corePoolSize, builder.maximumPoolSize, builder.keepAliveTime, builder.timeUnit, builder.workQueue,
 				threadFactory);
-		initHandler(beforeHandler, afterHandler);
+		init(threadPoolName, beforeHandler, afterHandler);
 	}
 
-	private CommonThreadPool(ThreadPoolBuilder builder, RejectedExecutionHandler rejectedHandler,
+	private CommonThreadPool(String threadPoolName, ThreadPoolBuilder builder, RejectedExecutionHandler rejectedHandler,
 			BiConsumer<Thread, Runnable> beforeHandler, BiConsumer<Runnable, Throwable> afterHandler) {
 		super(builder.corePoolSize, builder.maximumPoolSize, builder.keepAliveTime, builder.timeUnit, builder.workQueue,
 				rejectedHandler);
-		initHandler(beforeHandler, afterHandler);
+		init(threadPoolName, beforeHandler, afterHandler);
 	}
 
-	private CommonThreadPool(ThreadPoolBuilder builder, ThreadFactory threadFactory,
+	private CommonThreadPool(String threadPoolName, ThreadPoolBuilder builder, ThreadFactory threadFactory,
 			RejectedExecutionHandler rejectedHandler, BiConsumer<Thread, Runnable> beforeHandler,
 			BiConsumer<Runnable, Throwable> afterHandler) {
 		super(builder.corePoolSize, builder.maximumPoolSize, builder.keepAliveTime, builder.timeUnit, builder.workQueue,
 				threadFactory, rejectedHandler);
-		initHandler(beforeHandler, afterHandler);
+		init(threadPoolName, beforeHandler, afterHandler);
 	}
 
-	private void initHandler(BiConsumer<Thread, Runnable> beforeHandler, BiConsumer<Runnable, Throwable> afterHandler) {
+	private void init(String threadPoolName, BiConsumer<Thread, Runnable> beforeHandler,
+			BiConsumer<Runnable, Throwable> afterHandler) {
+		this.threadPoolName = threadPoolName;
 		if (beforeHandler != null) {
 			this.beforeHandler = beforeHandler;
 			this.isBeforeHandle = true;
@@ -83,11 +90,15 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 	protected void terminated() {
 	};
 
+	public String getThreadPoolName() {
+		return threadPoolName;
+	}
+
 	public final static class ThreadPoolBuilder {
 
 		private int corePoolSize = Runtime.getRuntime().availableProcessors();
 		private int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 4;
-		private long keepAliveTime = 90;
+		private long keepAliveTime = 60;
 		private TimeUnit timeUnit = TimeUnit.SECONDS;
 		private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
 		private ThreadFactory threadFactory;
@@ -106,12 +117,8 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 			return this;
 		}
 
-		public ThreadPoolBuilder setKeepAliveTime(long keepAliveTime) {
+		public ThreadPoolBuilder setKeepAliveTime(long keepAliveTime, TimeUnit timeUnit) {
 			this.keepAliveTime = keepAliveTime;
-			return this;
-		}
-
-		public ThreadPoolBuilder setTimeUnit(TimeUnit timeUnit) {
 			this.timeUnit = timeUnit;
 			return this;
 		}
@@ -141,14 +148,23 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 			return this;
 		}
 
+		public ThreadPoolExecutor build() {
+			return build(null);
+		}
+
 		public ThreadPoolExecutor build(String threadPoolName) {
-			return threadFactory != null && rejectedHandler != null
-					? new CommonThreadPool(this, threadFactory, rejectedHandler, beforeHandler, afterHandler)
-					: threadFactory != null && rejectedHandler == null
-							? new CommonThreadPool(this, threadFactory, beforeHandler, afterHandler)
-							: threadFactory == null && rejectedHandler != null
-									? new CommonThreadPool(this, rejectedHandler, beforeHandler, afterHandler)
-									: new CommonThreadPool(this, beforeHandler, afterHandler);
+			threadPoolName = StringUtil.isNullOrEmpty(threadPoolName)
+					? "CommonThreadPool-" + RandomNumber.safeRandomInt()
+					: threadPoolName;
+			if (threadFactory != null && rejectedHandler != null)
+				return new CommonThreadPool(threadPoolName, this, threadFactory, rejectedHandler, beforeHandler,
+						afterHandler);
+			if (threadFactory != null && rejectedHandler == null)
+				return new CommonThreadPool(threadPoolName, this, threadFactory, beforeHandler, afterHandler);
+			if (threadFactory == null && rejectedHandler != null)
+				return new CommonThreadPool(threadPoolName, this, rejectedHandler, beforeHandler, afterHandler);
+			else
+				return new CommonThreadPool(threadPoolName, this, beforeHandler, afterHandler);
 		}
 
 	}
