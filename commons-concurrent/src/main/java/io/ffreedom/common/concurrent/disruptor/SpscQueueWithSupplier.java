@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
-import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;

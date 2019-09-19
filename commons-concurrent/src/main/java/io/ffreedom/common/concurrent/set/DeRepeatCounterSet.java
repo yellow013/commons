@@ -4,6 +4,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 
+import io.ffreedom.common.annotations.thread.LockHeld;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.concurrent.counter.SyncDeRepeatCounter;
 
@@ -18,17 +19,18 @@ import io.ffreedom.common.concurrent.counter.SyncDeRepeatCounter;
 public final class DeRepeatCounterSet<T> {
 
 	private SyncDeRepeatCounter<T> counter = new SyncDeRepeatCounter<>();
-	private MutableIntObjectMap<SyncDeRepeatCounter<T>> groupCounter = MutableMaps.newIntObjectHashMap();
+	private MutableIntObjectMap<SyncDeRepeatCounter<T>> groupCounterMap = MutableMaps.newIntObjectHashMap();
 
 	public SyncDeRepeatCounter<T> getCounter() {
 		return counter;
 	}
 
+	@LockHeld
 	public synchronized SyncDeRepeatCounter<T> getCounterByGroup(int groupId) {
-		SyncDeRepeatCounter<T> counter = groupCounter.get(groupId);
+		SyncDeRepeatCounter<T> counter = groupCounterMap.get(groupId);
 		if (counter == null) {
 			counter = new SyncDeRepeatCounter<>();
-			groupCounter.put(groupId, counter);
+			groupCounterMap.put(groupId, counter);
 		}
 		return counter;
 	}

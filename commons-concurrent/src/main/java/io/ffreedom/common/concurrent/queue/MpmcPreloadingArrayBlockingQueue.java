@@ -8,6 +8,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 
+import io.ffreedom.common.annotations.thread.LockHeld;
 import io.ffreedom.common.collections.queue.api.MCQueue;
 import io.ffreedom.common.collections.queue.base.LoadContainer;
 import io.ffreedom.common.log.CommonLoggerFactory;
@@ -45,6 +46,7 @@ public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	}
 
 	@Override
+	@LockHeld
 	public boolean enqueue(E e) {
 		try {
 			lock.lockInterruptibly();
@@ -65,6 +67,7 @@ public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	}
 
 	@Override
+	@LockHeld
 	public E dequeue() {
 		try {
 			lock.lockInterruptibly();
