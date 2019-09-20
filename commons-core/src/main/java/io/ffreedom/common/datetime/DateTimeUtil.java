@@ -347,6 +347,31 @@ public final class DateTimeUtil {
 		return pattern.getFormatter().format(LocalDateTime.now());
 	}
 
+	private static LocalDate CurrentDate = LocalDate.now();
+
+	private static LocalDate PreviousDate = CurrentDate.minusDays(1);
+
+	private static LocalDate NextDate = CurrentDate.plusDays(1);
+
+	public static LocalDate resetCurrentDate(LocalDate date) {
+		CurrentDate = date;
+		PreviousDate = CurrentDate.minusDays(1);
+		NextDate = CurrentDate.plusDays(1);
+		return CurrentDate;
+	}
+
+	public static LocalDate CurrentDate() {
+		return CurrentDate;
+	}
+
+	public static LocalDate PreviousDate() {
+		return PreviousDate;
+	}
+
+	public static LocalDate NextDate() {
+		return NextDate;
+	}
+
 	public static void main(String[] args) {
 
 		LocalDateTime dateTime = LocalDateTime.now();
