@@ -2,6 +2,9 @@ package io.ffreedom.common.utils;
 
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import io.ffreedom.common.charset.Charsets;
 import io.ffreedom.common.charset.StrConstants;
 
@@ -12,6 +15,18 @@ public final class StringUtil {
 
 	public static String toString(Object obj) {
 		return obj == null ? StrConstants.NULL : obj.toString();
+	}
+
+	/**
+	 * Use ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE)
+	 * 
+	 * @param obj
+	 * @return String
+	 * 
+	 */
+	public static String reflectionToString(Object obj) {
+		return obj == null ? StrConstants.NULL
+				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	public static boolean isNullOrEmpty(String str) {

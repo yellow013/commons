@@ -56,7 +56,7 @@ public class GuavaCacheMap<K, V> {
 //	/**
 //	 * Builder for GuavaCacheMap
 //	 * 
-//	 * @author phoenix
+//	 * @author yellow013
 //	 *
 //	 */
 //	public static class CacheMapBuilder {

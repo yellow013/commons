@@ -157,9 +157,9 @@ public final class DoubleArithmetic {
 		System.out.println(add8(0.5321, 1.1111123234));
 		System.out.println(0.5321 + 1.1111123234);
 		int i = 0;
-		for (double d = 0.0001; d < 0.01; d += 0.000001) {
-//			System.out.println(i);
-//			System.out.println(correction8(d));
+		for (double d = 0.0001; d < 0.01; d += 0.00001) {
+			System.out.println(i);
+			System.out.println(correction8(d));
 			i++;
 		}
 

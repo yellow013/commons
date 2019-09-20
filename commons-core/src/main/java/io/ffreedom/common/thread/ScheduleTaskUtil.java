@@ -24,11 +24,11 @@ public final class ScheduleTaskUtil {
 	private static Logger logger = CommonLoggerFactory.getLogger(ScheduleTaskUtil.class);
 
 	public static Timer startNewDelayTask(LocalDateTime firstTime, Runner runner) {
-		return startNewDelayTask(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+		return startNewDelayTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
 				runner);
 	}
 
-	public static Timer startNewDelayTask(TimeUnit timeUnit, long delay, Runner runner) {
+	public static Timer startNewDelayTask(long delay, TimeUnit unit, Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -39,16 +39,16 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}, timeUnit.toMillis(delay));
+		}, unit.toMillis(delay));
 		return timer;
 	}
 
-	public static Timer startNewCycleTask(LocalDateTime firstTime, TimeUnit timeUnit, long period, Runner runner) {
-		return startNewCycleTask(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				timeUnit.toMillis(period), runner);
+	public static Timer startNewCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runner runner) {
+		return startNewCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), unit.toMillis(period),
+				TimeUnit.MILLISECONDS, runner);
 	}
 
-	public static Timer startNewCycleTask(TimeUnit timeUnit, long delay, long period, Runner runner) {
+	public static Timer startNewCycleTask(long delay, long period, TimeUnit unit, Runner runner) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -59,17 +59,16 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}, timeUnit.toMillis(delay), timeUnit.toMillis(period));
+		}, unit.toMillis(delay), unit.toMillis(period));
 		return timer;
 	}
 
-	public static Timer startNewFixedRateCycleTask(LocalDateTime firstTime, TimeUnit timeUnit, long period,
-			Runner runner) {
-		return startNewFixedRateCycleTask(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runner);
+	public static Timer startNewFixedRateCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runner runner) {
+		return startNewFixedRateCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, runner);
 	}
 
-	public static Timer startNewFixedRateCycleTask(TimeUnit timeUnit, long delay, long period, Runner runner) {
+	public static Timer startNewFixedRateCycleTask(long delay, long period, TimeUnit unit, Runner runner) {
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate((new TimerTask() {
 			@Override
@@ -80,61 +79,130 @@ public final class ScheduleTaskUtil {
 					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
 				}
 			}
-		}), timeUnit.toMillis(delay), timeUnit.toMillis(period));
+		}), unit.toMillis(delay), unit.toMillis(period));
 		return timer;
 	}
 
+	/**
+	 * SingleThreadExecutor
+	 */
 	private static ScheduledExecutorService InnerSingleThreadExecutor = Executors
-			.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "SingleThreadScheduledExecutorService"));
+			.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "SingleThreadScheduledExecutor"));
 
-	public static void singleThreadSchedule(LocalDateTime firstTime, Runnable runnable) {
-		singleThreadSchedule(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				runnable);
-	}
-
-	public static void singleThreadSchedule(TimeUnit timeUnit, long delay, Runnable runnable) {
-		InnerSingleThreadExecutor.schedule(runnable, delay, timeUnit);
-	}
-
-	public static void singleThreadScheduleWithFixedDelay(LocalDateTime firstTime, TimeUnit timeUnit, long period,
-			Runnable runnable) {
-		singleThreadScheduleWithFixedDelay(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
-	}
-
-	public static void singleThreadScheduleWithFixedDelay(TimeUnit timeUnit, long delay, long period,
-			Runnable runnable) {
-		InnerSingleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
+	/**
+	 * Creates and executes a one-shot action that becomes enabled after the given
+	 * delay.
+	 * 
+	 * @param firstTime
+	 * @param runnable
+	 */
+	public static void singleThreadSchedule(LocalDateTime firstTime, Runnable command) {
+		singleThreadSchedule(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
+				command);
 	}
 
 	/**
+	 * Creates and executes a one-shot action that becomes enabled after the given
+	 * delay.
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param runnable
+	 */
+	public static void singleThreadSchedule(long delay, TimeUnit timeUnit, Runnable command) {
+		InnerSingleThreadExecutor.schedule(command, delay, timeUnit);
+	}
+
+	/**
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用. 即执行将在initialDelay之后开始.<br>
+	 * 随后在<b> [一次执行的终止] </b>和<b> [下一次执行的开始] </b>之间延迟给定时间.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * <br>
+	 * The given delay between the termination of one execution <br>
+	 * and the commencement of the next.
 	 * 
 	 * @param firstTime
 	 * @param timeUnit
 	 * @param period
 	 * @param runnable
 	 */
-	public static void singleThreadScheduleAtFixedRate(LocalDateTime firstTime, TimeUnit timeUnit, long period,
-			Runnable runnable) {
-		singleThreadScheduleAtFixedRate(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
+	public static void singleThreadScheduleWithFixedDelay(LocalDateTime firstTime, long period, TimeUnit unit,
+			Runnable command) {
+		singleThreadScheduleWithFixedDelay(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, command);
 	}
 
 	/**
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用. 即执行将在initialDelay之后开始.<br>
+	 * 随后在<b> [一次执行的终止] </b>和<b> [下一次执行的开始] </b>之间延迟给定时间.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * <br>
+	 * The given delay between the termination of one execution <br>
+	 * and the commencement of the next.
 	 * 
 	 * @param timeUnit
 	 * @param delay
 	 * @param period
 	 * @param runnable
 	 */
-	public static void singleThreadScheduleAtFixedRate(TimeUnit timeUnit, long delay, long period, Runnable runnable) {
-		InnerSingleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
+	public static void singleThreadScheduleWithFixedDelay(long initialDelay, long delay, TimeUnit unit,
+			Runnable command) {
+		InnerSingleThreadExecutor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
 	}
 
-	
+	/**
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用, 即执行将在initialDelay之后开始.<br>
+	 * 然后是initialDelay + period, 然后是initialDelay + 2 * period, 依此类推.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * 如果此任务的执行时间超过其周期, 则后续执行可能会延迟, 但不会同时执行.<br>
+	 * <br>
+	 * That is executions will commence after initialDelay <br>
+	 * then initialDelay + period, then initialDelay + 2 * period, and so on. <br>
+	 * 
+	 * @param firstTime
+	 * @param timeUnit
+	 * @param period
+	 * @param runnable
+	 */
+	public static void singleThreadScheduleAtFixedRate(LocalDateTime firstTime, long period, TimeUnit unit,
+			Runnable command) {
+		singleThreadScheduleAtFixedRate(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, command);
+	}
+
+	/**
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用, 即执行将在initialDelay之后开始.<br>
+	 * 然后是initialDelay + period, 然后是initialDelay + 2 * period, 依此类推.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * 如果此任务的执行时间超过其周期, 则后续执行可能会延迟, 但不会同时执行.<br>
+	 * <br>
+	 * That is executions will commence after initialDelay <br>
+	 * then initialDelay + period, then initialDelay + 2 * period, and so on. <br>
+	 * 
+	 * @param timeUnit
+	 * @param delay
+	 * @param period
+	 * @param runnable
+	 */
+	public static void singleThreadScheduleAtFixedRate(long initialDelay, long period, TimeUnit unit,
+			Runnable command) {
+		InnerSingleThreadExecutor.scheduleAtFixedRate(command, initialDelay, period, unit);
+	}
+
+	/**
+	 * MultipleThreadExecutor 线程数为核心数量 + 核心数量 * 1/2
+	 */
 	private static ScheduledExecutorService InnerMultipleThreadExecutor = Executors.newScheduledThreadPool(
-			Runtime.getRuntime().availableProcessors() + 2,
-			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutorService"));
+			Runtime.getRuntime().availableProcessors() + Runtime.getRuntime().availableProcessors() / 2,
+			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutor"));
 
 	/**
 	 * Creates and executes a one-shot action that becomes enabled after the given
@@ -143,9 +211,9 @@ public final class ScheduleTaskUtil {
 	 * @param firstTime
 	 * @param runnable
 	 */
-	public static void multipleThreadSchedule(LocalDateTime firstTime, Runnable runnable) {
-		multipleThreadSchedule(TimeUnit.MILLISECONDS, Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				runnable);
+	public static void multipleThreadSchedule(LocalDateTime firstTime, Runnable command) {
+		multipleThreadSchedule(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
+				command);
 	}
 
 	/**
@@ -156,72 +224,96 @@ public final class ScheduleTaskUtil {
 	 * @param delay
 	 * @param runnable
 	 */
-	public static void multipleThreadSchedule(TimeUnit timeUnit, long delay, Runnable runnable) {
-		InnerMultipleThreadExecutor.schedule(runnable, delay, timeUnit);
+	public static void multipleThreadSchedule(long delay, TimeUnit unit, Runnable command) {
+		InnerMultipleThreadExecutor.schedule(command, delay, unit);
 	}
 
 	/**
-	 * The given delay between the termination of one execution and the commencement
-	 * of the next.
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用. 即执行将在initialDelay之后开始.<br>
+	 * 随后在<b> [一次执行的终止] </b>和<b> [下一次执行的开始] </b>之间延迟给定时间.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * <br>
+	 * The given delay between the termination of one execution <br>
+	 * and the commencement of the next.
 	 * 
 	 * @param firstTime
 	 * @param timeUnit
 	 * @param period
 	 * @param runnable
 	 */
-	public static void multipleThreadScheduleWithFixedDelay(LocalDateTime firstTime, TimeUnit timeUnit, long period,
-			Runnable runnable) {
-		multipleThreadScheduleWithFixedDelay(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
+	public static void multipleThreadScheduleWithFixedDelay(LocalDateTime firstTime, long period, TimeUnit unit,
+			Runnable command) {
+		multipleThreadScheduleWithFixedDelay(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, command);
 	}
 
 	/**
-	 * The given delay between the termination of one execution and the commencement
-	 * of the next.
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用. 即执行将在initialDelay之后开始.<br>
+	 * 随后在<b> [一次执行的终止] </b>和<b> [下一次执行的开始] </b>之间延迟给定时间.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * <br>
+	 * The given delay between the termination of one execution <br>
+	 * and the commencement of the next.
 	 * 
 	 * @param timeUnit
 	 * @param delay
 	 * @param period
 	 * @param runnable
 	 */
-	public static void multipleThreadScheduleWithFixedDelay(TimeUnit timeUnit, long delay, long period,
-			Runnable runnable) {
-		InnerMultipleThreadExecutor.scheduleWithFixedDelay(runnable, delay, period, timeUnit);
+	public static void multipleThreadScheduleWithFixedDelay(long delay, long period, TimeUnit unit, Runnable command) {
+		InnerMultipleThreadExecutor.scheduleWithFixedDelay(command, delay, period, unit);
 	}
 
 	/**
-	 * That is executions will commence after initialDelay then initialDelay+period,
-	 * then initialDelay + 2 * period, and so on.
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用, 即执行将在initialDelay之后开始.<br>
+	 * 然后是initialDelay + period, 然后是initialDelay + 2 * period, 依此类推.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * 如果此任务的执行时间超过其周期, 则后续执行可能会延迟, 但不会同时执行.<br>
+	 * <br>
+	 * That is executions will commence after initialDelay <br>
+	 * then initialDelay + period, then initialDelay + 2 * period, and so on. <br>
 	 * 
 	 * @param firstTime
 	 * @param timeUnit
 	 * @param period
 	 * @param runnable
 	 */
-	public static void multipleThreadScheduleAtFixedRate(LocalDateTime firstTime, TimeUnit timeUnit, long period,
-			Runnable runnable) {
-		multipleThreadScheduleAtFixedRate(TimeUnit.MILLISECONDS,
-				Duration.between(LocalDateTime.now(), firstTime).toMillis(), timeUnit.toMillis(period), runnable);
+	public static void multipleThreadScheduleAtFixedRate(LocalDateTime firstTime, long period, TimeUnit unit,
+			Runnable command) {
+		multipleThreadScheduleAtFixedRate(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, command);
 	}
 
 	/**
-	 * That is executions will commence after initialDelay then initialDelay+period,
-	 * then initialDelay + 2 * period, and so on.
+	 * 在SingleThreadExecutor中创建并执行一个周期性动作.<br>
+	 * 该动作在给定的初始延迟之后首先被启用, 即执行将在initialDelay之后开始.<br>
+	 * 然后是initialDelay + period, 然后是initialDelay + 2 * period, 依此类推.<br>
+	 * 如果任务的任何执行遇到异常, 则后续执行结束.<br>
+	 * 否则, 任务仅可通过取消或终止Executor来终止.<br>
+	 * 如果此任务的执行时间超过其周期, 则后续执行可能会延迟, 但不会同时执行.<br>
+	 * <br>
+	 * That is executions will commence after initialDelay <br>
+	 * then initialDelay + period, then initialDelay + 2 * period, and so on. <br>
 	 * 
 	 * @param timeUnit
 	 * @param delay
 	 * @param period
 	 * @param runnable
 	 */
-	public static void multipleThreadScheduleAtFixedRate(TimeUnit timeUnit, long delay, long period,
-			Runnable runnable) {
-		InnerMultipleThreadExecutor.scheduleAtFixedRate(runnable, delay, period, timeUnit);
+	public static void multipleThreadScheduleAtFixedRate(long delay, long period, TimeUnit unit, Runnable command) {
+		InnerMultipleThreadExecutor.scheduleAtFixedRate(command, delay, period, unit);
 	}
 
 	public static void main(String[] args) {
 
-		multipleThreadScheduleAtFixedRate(LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 38, 00)), TimeUnit.SECONDS,
-				3, () -> System.out.println(12345));
+		multipleThreadScheduleAtFixedRate(LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 38, 00)), 3,
+				TimeUnit.SECONDS, () -> System.out.println(12345));
 
 	}
 

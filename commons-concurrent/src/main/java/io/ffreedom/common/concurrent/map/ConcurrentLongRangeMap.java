@@ -1,4 +1,4 @@
-package io.ffreedom.common.collections.map;
+package io.ffreedom.common.concurrent.map;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -19,22 +19,22 @@ import io.ffreedom.common.collections.MutableSets;
  * @param <V>
  */
 @ThreadSafe
-public final class LongRangeMap<V> {
+public final class ConcurrentLongRangeMap<V> {
 
 	private MutableLongObjectMap<V> savedMap;
 	private MutableLongSet savedKey;
 
-	public LongRangeMap() {
+	public ConcurrentLongRangeMap() {
 		this(64);
 	}
 
-	public LongRangeMap(int initialCapacity) {
+	public ConcurrentLongRangeMap(int initialCapacity) {
 		this.savedMap = MutableMaps.newLongObjectHashMap(initialCapacity);
 		this.savedKey = MutableSets.newLongHashSet(initialCapacity);
 
 	}
 
-	public synchronized LongRangeMap<V> put(long key, V value) {
+	public synchronized ConcurrentLongRangeMap<V> put(long key, V value) {
 		savedMap.put(key, value);
 		savedKey.add(key);
 		return this;
@@ -95,7 +95,7 @@ public final class LongRangeMap<V> {
 	public static void main(String[] args) {
 
 		long startNano = System.nanoTime();
-		LongRangeMap<String> longRangeMap = new LongRangeMap<>(200000);
+		ConcurrentLongRangeMap<String> longRangeMap = new ConcurrentLongRangeMap<>(200000);
 		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}

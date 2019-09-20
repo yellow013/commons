@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.ffreedom.common.thread.ThreadUtil;
 import io.ffreedom.common.utils.StringUtil;
 
 public class CommonLoggerFactory {
@@ -15,17 +16,17 @@ public class CommonLoggerFactory {
 
 	public static Logger getLogger(Class<?> clazz) {
 		if (!LoggerSetter.isLogFolderSetted()) {
-			String logFolder = System.getProperty(LoggerConstant.LOG4_FOLDER);
+			String logFolder = System.getProperty(LoggerConstant.LOG4J2_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder))
 				LoggerSetter.setLogFolder(DefaultFolder);
 		}
 		if (!LoggerSetter.isLogFilenameSetted()) {
-			String logFilename = System.getProperty(LoggerConstant.LOG4_FILENAME);
+			String logFilename = System.getProperty(LoggerConstant.LOG4J2_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
 				LoggerSetter.setLogFileName(DefaultFileName);
 		}
 		if (!LoggerSetter.isLogLevelSetted()) {
-			String logLevel = System.getProperty(LoggerConstant.LOG4_LEVEL);
+			String logLevel = System.getProperty(LoggerConstant.LOG4J2_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel))
 				LoggerSetter.setLogLevel(LogLevel.INFO);
 		}
@@ -33,19 +34,32 @@ public class CommonLoggerFactory {
 	}
 
 	public static void main(String[] args) {
-		
+
 		System.out.println(System.getProperty("user.home"));
 		LoggerSetter.setLogFileName("new");
-		
-		LoggerSetter.setLogLevel(LogLevel.INFO);
+
+		LoggerSetter.setLogLevel(LogLevel.ERROR);
 		Logger logger = getLogger(CommonLoggerFactory.class);
 
-		logger.warn("777");
-		logger.info("778");
-		logger.debug("779");
-
-		System.out.println(System.getProperty(LoggerConstant.LOG4_FOLDER));
+		logger.error("this is error");
+		logger.warn("this is warn");
+		logger.info("this is info");
+		logger.debug("this is debug");
+		
+		System.out.println(System.getProperty(LoggerConstant.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
+		
+		for(;;) {
+			logger.error("this is error");
+			logger.warn("this is warn");
+			logger.info("this is info");
+			logger.debug("this is debug");
+			ThreadUtil.sleep(3000);
+		}
+		
+		
+
+		
 	}
 
 }

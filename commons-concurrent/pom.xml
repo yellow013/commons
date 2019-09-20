@@ -20,24 +20,106 @@
 			<groupId>io.ffreedom</groupId>
 			<artifactId>commons-core</artifactId>
 		</dependency>
-
 		<!-- jctools -->
 		<dependency>
 			<groupId>org.jctools</groupId>
 			<artifactId>jctools-core</artifactId>
 		</dependency>
-
 		<!-- LMAX Disruptor -->
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
 		</dependency>
+		<!-- MapDB -->
+		<dependency>
+			<groupId>org.mapdb</groupId>
+			<artifactId>mapdb</artifactId>
+			<version>3.0.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.collections</groupId>
+					<artifactId>eclipse-collections-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.collections</groupId>
+					<artifactId>eclipse-collections</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- chronicle-map off-heap and high performance queue framework -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-queue</artifactId>
+			<version>5.17.22</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<!-- exclusion jna-platform version 4.2.1 -->
+				<!-- but must import latest version jna-platform -->
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna-platform</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
-			<groupId>io.reactivex.rxjava3</groupId>
-			<artifactId>rxjava</artifactId>
-			<version>3.0.0-RC2</version>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.4.0</version>
 		</dependency>
+
+		<!-- chronicle-map off-heap and high performance map framework -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-map</artifactId>
+			<version>3.17.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna-platform</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-bytes</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-threads</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-wire</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+		<!-- <dependency> <groupId>io.reactivex.rxjava3</groupId> <artifactId>rxjava</artifactId> 
+			<version>3.0.0-RC2</version> </dependency> -->
 
 	</dependencies>
 
