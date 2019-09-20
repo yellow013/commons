@@ -4,14 +4,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
+import io.ffreedom.common.datetime.Pattern.DatePattern;
+import io.ffreedom.common.datetime.Pattern.DateTimePattern;
+import io.ffreedom.common.datetime.Pattern.TimePattern;
 import io.ffreedom.common.utils.StringUtil;
 
 @ThreadSafe
@@ -299,25 +302,21 @@ public final class DateTimeUtil {
 	}
 
 	@CheckForNull
-	public final static TemporalAccessor strToDate(DateTimePattern style, String str) {
+	public final static TemporalAccessor strToDate(DatePattern style, String str) {
 		if (style == null)
 			throw new IllegalArgumentException("style cannot null");
-		if (str == null)
-			throw new IllegalArgumentException("str cannot null");
+		if (StringUtil.isNullOrEmpty(str))
+			throw new IllegalArgumentException("str cannot null or empty");
 		try {
 			return str.length() == style.getPattern().length() ? style.getFormatter().parse(str) : null;
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
+		} catch (DateTimeParseException e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
 		}
 	}
 
 	@CheckForNull
 	public final static LocalDateTime strToLocalDateTime(DateTimePattern style, String str) {
 		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getFormatter()) : null;
-	}
-
-	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date) {
-		return dateToLocalDateTime(date, TimeZones.DEFAULT_ZONE_ID);
 	}
 
 	public final static long durationByDay(@Nonnull LocalDate startDate) {
@@ -328,36 +327,24 @@ public final class DateTimeUtil {
 		return endDate.toEpochDay() - startDate.toEpochDay();
 	}
 
+	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date) {
+		return LocalDateTime.ofInstant(date.toInstant(), TimeZones.DEFAULT_ZONE_ID);
+	}
+
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date, @Nonnull ZoneId zoneId) {
 		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
 	}
 
-	public final static String now(@Nonnull DateTimePattern style) {
-		return style.getFormatter().format(LocalDateTime.now());
+	public final static String nowDate(@Nonnull DatePattern pattern) {
+		return pattern.getFormatter().format(LocalDate.now());
 	}
 
-	private static AtomicReference<LocalDate> currentDate = new AtomicReference<>(LocalDate.now());
-
-	private static AtomicReference<LocalDate> yesterdayDate = new AtomicReference<>(currentDate.get().minusDays(1));
-
-	private static AtomicReference<LocalDate> tomorrowDate = new AtomicReference<>(currentDate.get().plusDays(1));
-
-	public final static LocalDate getCurrentDate() {
-		return currentDate.get();
+	public final static String nowTime(@Nonnull TimePattern pattern) {
+		return pattern.getFormatter().format(LocalTime.now());
 	}
 
-	public final static LocalDate getYesterdayDate() {
-		return yesterdayDate.get();
-	}
-
-	public final static LocalDate getTomorrowDate() {
-		return tomorrowDate.get();
-	}
-
-	public final static void setCurrentDate(@Nonnull LocalDate date) {
-		currentDate.set(date);
-		yesterdayDate.set(date.minusDays(1));
-		tomorrowDate.set(date.plusDays(1));
+	public final static String nowDatetime(@Nonnull DateTimePattern pattern) {
+		return pattern.getFormatter().format(LocalDateTime.now());
 	}
 
 	public static void main(String[] args) {

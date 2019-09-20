@@ -4,50 +4,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
-public enum DateTimePattern {
+public abstract class Pattern {
 
-	HHMM("HHmm"),
-
-	HHMMSS("HHmmss"),
-
-	HH_MM_SS("HH:mm:ss"),
-
-	HH_MM_SS_MILLISECOND("HH:mm:ss.SSS"),
-
-	HH_MM_SS_MICROSECOND("HH:mm:ss.SSSSSS"),
-
-	HH_MM_SS_NANOSECOND("HH:mm:ss.SSSSSSSSS"),
-
-	YYYYMM("yyyyMM"),
-
-	YYYYMMDD("yyyyMMdd"),
-
-	YYYY_MM_DD("yyyy-MM-dd"),
-
-	YYYYMMDDHHMMSS("yyyyMMddHHmmss"),
-
-	YYYYMMDD_HHMMSS("yyyyMMdd-HHmmss"),
-
-	YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
-
-	YYYYMMDD_HH_MM_SS_MILLISECOND("yyyyMMdd HH:mm:ss.SSS"),
-
-	YYYYMMDD_HH_MM_SS_MICROSECOND("yyyyMMdd HH:mm:ss.SSSSSS"),
-
-	YYYYMMDD_HH_MM_SS_NANOSECOND("yyyyMMdd HH:mm:ss.SSSSSSSSS"),
-
-	YYYY_MM_DD_HH_MM_SS_MILLISECOND("yyyy-MM-dd HH:mm:ss.SSS"),
-
-	YYYY_MM_DD_HH_MM_SS_MICROSECOND("yyyy-MM-dd HH:mm:ss.SSSSSS"),
-
-	YYYY_MM_DD_HH_MM_SS_NANOSECOND("yyyy-MM-dd HH:mm:ss.SSSSSSSSS"),
-
-	;
-
-	private String pattern;
+	private final String pattern;
 	private final DateTimeFormatter formatter;
 
-	private DateTimePattern(String pattern) {
+	protected Pattern(String pattern) {
 		this.pattern = pattern;
 		this.formatter = DateTimeFormatter.ofPattern(pattern);
 	}
@@ -68,8 +30,82 @@ public enum DateTimePattern {
 		return DateTimeFormatter.ofPattern(pattern);
 	}
 
-	public static void main(String[] args) {
-		System.out.println(DateTimeUtil.now(HH_MM_SS_MICROSECOND));
+	/**
+	 * 日期格式列表
+	 * 
+	 * @author yellow013
+	 *
+	 */
+	public static final class DatePattern extends Pattern {
+
+		public final static DatePattern YYYYMM = new DatePattern("yyyyMM");
+
+		public final static DatePattern YYYYMMDD = new DatePattern("yyyyMMdd");
+
+		public final static DatePattern YYYY_MM = new DatePattern("yyyy-MM");
+
+		public final static DatePattern YYYY_MM_DD = new DatePattern("yyyy-MM-dd");
+
+		private DatePattern(String pattern) {
+			super(pattern);
+		}
+
+	}
+
+	public static final class TimePattern extends Pattern {
+
+		public final static TimePattern HHMM = new TimePattern("HHmm");
+
+		public final static TimePattern HH_MM = new TimePattern("HH:mm");
+
+		public final static TimePattern HHMMSS = new TimePattern("HHmmss");
+
+		public final static TimePattern HH_MM_SS = new TimePattern("HH:mm:ss");
+
+		public final static TimePattern HH_MM_SS_MILLISECOND = new TimePattern("HH:mm:ss.SSS");
+
+		public final static TimePattern HH_MM_SS_MICROSECOND = new TimePattern("HH:mm:ss.SSSSSS");
+
+		public final static TimePattern HH_MM_SS_NANOSECOND = new TimePattern("HH:mm:ss.SSSSSSSSS");
+
+		;
+
+		private TimePattern(String pattern) {
+			super(pattern);
+		}
+
+	}
+
+	public static final class DateTimePattern extends Pattern {
+
+		public final static DateTimePattern YYYYMMDDHHMMSS = new DateTimePattern("yyyyMMddHHmmss");
+
+		public final static DateTimePattern YYYYMMDD_HHMMSS = new DateTimePattern("yyyyMMdd-HHmmss");
+
+		public final static DateTimePattern YYYY_MM_DD_HH_MM_SS = new DateTimePattern("yyyy-MM-dd HH:mm:ss");
+
+		public final static DateTimePattern YYYYMMDD_HH_MM_SS_MILLISECOND = new DateTimePattern(
+				"yyyyMMdd HH:mm:ss.SSS");
+
+		public final static DateTimePattern YYYYMMDD_HH_MM_SS_MICROSECOND = new DateTimePattern(
+				"yyyyMMdd HH:mm:ss.SSSSSS");
+
+		public final static DateTimePattern YYYYMMDD_HH_MM_SS_NANOSECOND = new DateTimePattern(
+				"yyyyMMdd HH:mm:ss.SSSSSSSSS");
+
+		public final static DateTimePattern YYYY_MM_DD_HH_MM_SS_MILLISECOND = new DateTimePattern(
+				"yyyy-MM-dd HH:mm:ss.SSS");
+
+		public final static DateTimePattern YYYY_MM_DD_HH_MM_SS_MICROSECOND = new DateTimePattern(
+				"yyyy-MM-dd HH:mm:ss.SSSSSS");
+
+		public final static DateTimePattern YYYY_MM_DD_HH_MM_SS_NANOSECOND = new DateTimePattern(
+				"yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
+
+		private DateTimePattern(String pattern) {
+			super(pattern);
+		}
+
 	}
 
 }
