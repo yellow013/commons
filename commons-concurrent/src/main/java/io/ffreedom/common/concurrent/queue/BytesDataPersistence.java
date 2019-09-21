@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import io.ffreedom.common.concurrent.queue.base.ChronicleDataPersistence;
 import io.ffreedom.common.datetime.DateTimeUtil;
 
-public class BytesDataPersistence extends ChronicleDataPersistence<byte[]> {
+public class BytesDataPersistence extends ChronicleDataPersistence<byte[], BytesReader, BytesWriter> {
 
 	public BytesDataPersistence() {
 		super(null);
@@ -24,9 +24,13 @@ public class BytesDataPersistence extends ChronicleDataPersistence<byte[]> {
 	}
 
 	@Override
-	protected void append0(byte[] event) {
-		// TODO Auto-generated method stub
+	public BytesReader newQueueReader() {
+		return BytesReader.wrap(queue.createTailer());
+	}
 
+	@Override
+	public BytesWriter newQueueWriter() {
+		return BytesWriter.wrap(queue.acquireAppender());
 	}
 
 }

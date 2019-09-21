@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 
 import io.ffreedom.common.concurrent.queue.base.ChronicleDataPersistence;
 import io.ffreedom.common.datetime.DateTimeUtil;
+import io.ffreedom.common.number.RandomNumber;
 
-public class CharSequenceDataPersistence extends ChronicleDataPersistence<CharSequence> {
+public class CharSequenceDataPersistence
+		extends ChronicleDataPersistence<CharSequence, CharSequenceReader, CharSequenceWriter> {
 
 	public CharSequenceDataPersistence() {
 		super(null);
@@ -24,12 +26,40 @@ public class CharSequenceDataPersistence extends ChronicleDataPersistence<CharSe
 	}
 
 	@Override
-	protected void append0(CharSequence event) {
-		try {
-			appender.writeText(event);
-		} catch (Exception e) {
-			logger.error("ChronicleDataPersistence name==[{}] throw RuntimeException", getName(), e);
-		}
+	public CharSequenceReader newQueueReader() {
+		return CharSequenceReader.wrap(queue.createTailer());
+	}
+
+	@Override
+	public CharSequenceWriter newQueueWriter() {
+		return CharSequenceWriter.wrap(queue.acquireAppender());
+	}
+
+	public static void main(String[] args) {
+		CharSequenceDataPersistence dataPersistence = new CharSequenceDataPersistence();
+		CharSequenceWriter queueWriter = dataPersistence.newQueueWriter();
+		CharSequenceReader queueReader = dataPersistence.newQueueReader();
+		new Thread(() -> {
+			for (;;) {
+				try {
+					queueWriter.write(String.valueOf(RandomNumber.unsafeRandomLong()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+		CharSequence read = "";
+		long nanoTime0 = System.nanoTime();
+		do {
+			try {
+				read = queueReader.read();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} while (read != null);
+		long nanoTime1 = System.nanoTime();
+		System.out.println((nanoTime1 - nanoTime0) / 1000);
+
 	}
 
 }
