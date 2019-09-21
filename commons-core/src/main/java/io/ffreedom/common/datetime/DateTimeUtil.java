@@ -4,14 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
+import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
 import io.ffreedom.common.datetime.Pattern.DatePattern;
 import io.ffreedom.common.datetime.Pattern.DateTimePattern;
 import io.ffreedom.common.datetime.Pattern.TimePattern;
@@ -252,25 +250,6 @@ public final class DateTimeUtil {
 	}
 
 	/**
-	 * 获取当天经过的 seconds
-	 * 
-	 * @return
-	 */
-	public final static int secondsOfDay() {
-		return secondsOfDay(LocalTime.now());
-	}
-
-	/**
-	 * 根据指定 LocalTime 获取当天经过的 seconds
-	 * 
-	 * @param time
-	 * @return
-	 */
-	public final static int secondsOfDay(@Nonnull LocalTime time) {
-		return time.getHour() * 3600 + time.getMinute() * 60 + time.getSecond();
-	}
-
-	/**
 	 * primitive int yyyyMMdd 转换为 LocalDate
 	 * 
 	 * @param date
@@ -301,22 +280,31 @@ public final class DateTimeUtil {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
 	}
 
-	@CheckForNull
-	public final static TemporalAccessor strToDate(DatePattern style, String str) {
-		if (style == null)
-			throw new IllegalArgumentException("style cannot null");
-		if (StringUtil.isNullOrEmpty(str))
-			throw new IllegalArgumentException("str cannot null or empty");
-		try {
-			return str.length() == style.getPattern().length() ? style.getFormatter().parse(str) : null;
-		} catch (DateTimeParseException e) {
-			throw new IllegalArgumentException(e.getMessage(), e);
-		}
+	@MayThrowRuntimeException
+	public final static LocalDate toLocalDate(@Nonnull DatePattern pattern, @Nonnull String str) {
+		checkFormatParam(pattern, str);
+		return LocalDate.parse(str, pattern.getFormatter());
 	}
 
-	@CheckForNull
-	public final static LocalDateTime strToLocalDateTime(DateTimePattern style, String str) {
-		return !StringUtil.isNullOrEmpty(str) ? LocalDateTime.parse(str, style.getFormatter()) : null;
+	@MayThrowRuntimeException
+	public final static LocalTime toLocalTime(@Nonnull TimePattern pattern, @Nonnull String str) {
+		checkFormatParam(pattern, str);
+		return LocalTime.parse(str, pattern.getFormatter());
+	}
+
+	@MayThrowRuntimeException
+	public final static LocalDateTime toLocalDateTime(@Nonnull DateTimePattern pattern, @Nonnull String str) {
+		checkFormatParam(pattern, str);
+		return LocalDateTime.parse(str, pattern.getFormatter());
+	}
+
+	private static void checkFormatParam(Pattern pattern, String str) {
+		if (pattern == null)
+			throw new IllegalArgumentException("pattern cannot null");
+		if (StringUtil.isNullOrEmpty(str))
+			throw new IllegalArgumentException("str cannot null or empty.");
+		if (str.length() == pattern.getPattern().length())
+			throw new IllegalArgumentException("str and pattern length no match.");
 	}
 
 	public final static long durationByDay(@Nonnull LocalDate startDate) {
@@ -335,16 +323,28 @@ public final class DateTimeUtil {
 		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
 	}
 
-	public final static String nowDate(@Nonnull DatePattern pattern) {
-		return pattern.getFormatter().format(LocalDate.now());
+	public final static String nowDateStr(@Nonnull DatePattern pattern) {
+		return dateStr(LocalDate.now(), pattern);
 	}
 
-	public final static String nowTime(@Nonnull TimePattern pattern) {
-		return pattern.getFormatter().format(LocalTime.now());
+	public final static String dateStr(@Nonnull LocalDate date, @Nonnull DatePattern pattern) {
+		return pattern.getFormatter().format(date);
 	}
 
-	public final static String nowDatetime(@Nonnull DateTimePattern pattern) {
-		return pattern.getFormatter().format(LocalDateTime.now());
+	public final static String nowTimeStr(@Nonnull TimePattern pattern) {
+		return timeStr(LocalTime.now(), pattern);
+	}
+
+	public final static String timeStr(@Nonnull LocalTime time, @Nonnull TimePattern pattern) {
+		return pattern.getFormatter().format(time);
+	}
+
+	public final static String nowDatetimeStr(@Nonnull DateTimePattern pattern) {
+		return datetimeStr(LocalDateTime.now(), pattern);
+	}
+
+	public final static String datetimeStr(@Nonnull LocalDateTime datetime, @Nonnull DateTimePattern pattern) {
+		return pattern.getFormatter().format(datetime);
 	}
 
 	private static LocalDate CurrentDate = LocalDate.now();
