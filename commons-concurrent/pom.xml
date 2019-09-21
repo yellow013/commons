@@ -114,6 +114,11 @@
 					<groupId>net.openhft</groupId>
 					<artifactId>chronicle-wire</artifactId>
 				</exclusion>
+				<!-- java 11 use this exclusion -->
+				<exclusion>
+					<groupId>com.sun.java</groupId>
+					<artifactId>tools</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
