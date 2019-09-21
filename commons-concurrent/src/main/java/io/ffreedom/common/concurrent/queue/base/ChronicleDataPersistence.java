@@ -6,16 +6,18 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.datetime.DateTimeUtil;
+import io.ffreedom.common.datetime.Pattern.DatePattern;
 import io.ffreedom.common.env.SysProperty;
 import io.ffreedom.common.env.SysPropertys;
 import io.ffreedom.common.log.CommonLoggerFactory;
+import io.ffreedom.common.utils.StringUtil;
 import net.openhft.chronicle.queue.ExcerptAppender;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
 public abstract class ChronicleDataPersistence<T, RT extends QueueReader<T>, WT extends QueueWriter<T>> {
 
-	private String path;
+	private String savePath;
 
 	private String name;
 
@@ -24,43 +26,55 @@ public abstract class ChronicleDataPersistence<T, RT extends QueueReader<T>, WT 
 	protected Logger logger = CommonLoggerFactory.getLogger(this.getClass());
 
 	protected ChronicleDataPersistence() {
-		this(null);
+		this("", "", null, null);
 	}
 
 	protected ChronicleDataPersistence(Logger externalLogger) {
-		this("data", String.valueOf(DateTimeUtil.date()), externalLogger);
+		this("", "", null, externalLogger);
 	}
 
-	protected ChronicleDataPersistence(String prefix, String name) {
-		this(prefix, name, null);
+	protected ChronicleDataPersistence(String prefix, Logger externalLogger) {
+		this("", prefix, null, externalLogger);
 	}
 
-	protected ChronicleDataPersistence(String prefix, String name, Logger externalLogger) {
-		this.name = prefix + "-" + name;
+	protected ChronicleDataPersistence(String prefix, LocalDate date, Logger externalLogger) {
+		this("", prefix, date, externalLogger);
+	}
+
+	protected ChronicleDataPersistence(String rootPath, String prefix, Logger externalLogger) {
+		this(rootPath, prefix, null, externalLogger);
+	}
+
+	protected ChronicleDataPersistence(String rootPath, String prefix, LocalDate date, Logger externalLogger) {
 		if (externalLogger != null)
 			this.logger = externalLogger;
-		initSavePath();
+		initSavePath(rootPath, prefix, date);
 		initChronicleComponent();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			queue.close();
 			logger.info("Add ShutdownHook of {}", name);
-		}, "ChronicleQueue-Instance-Cleaner"));
+		}, "ChronicleQueue-Instance-Cleanup-Thread"));
 	}
 
-	private void initSavePath() {
-		this.path = SysProperty.JAVA_IO_TMPDIR + "/" + name;
+	private void initSavePath(String rootPath, String prefix, LocalDate date) {
+		if (StringUtil.isNullOrEmpty(rootPath))
+			rootPath = SysProperty.JAVA_IO_TMPDIR + "/";
+		if (StringUtil.isNullOrEmpty(prefix))
+			prefix = "data";
+		this.name = date == null ? prefix : prefix + "-" + DateTimeUtil.dateStr(date, DatePattern.YYYYMMDD);
+		this.savePath = rootPath + name;
 	}
 
 	private void initChronicleComponent() {
-		this.queue = SingleChronicleQueueBuilder.binary(path).build();
+		this.queue = SingleChronicleQueueBuilder.binary(savePath).build();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getPath() {
-		return path;
+	public String getSavePath() {
+		return savePath;
 	}
 
 	public SingleChronicleQueue getQueue() {

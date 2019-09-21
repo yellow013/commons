@@ -1,28 +1,37 @@
 package io.ffreedom.common.concurrent.queue;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 
 import io.ffreedom.common.concurrent.queue.base.ChronicleDataPersistence;
-import io.ffreedom.common.datetime.DateTimeUtil;
 import io.ffreedom.common.number.RandomNumber;
 
 public class CharSequenceDataPersistence
 		extends ChronicleDataPersistence<CharSequence, CharSequenceReader, CharSequenceWriter> {
 
 	public CharSequenceDataPersistence() {
-		super(null);
+		super();
 	}
 
 	public CharSequenceDataPersistence(Logger externalLogger) {
-		super("data", String.valueOf(DateTimeUtil.date()), externalLogger);
+		super(externalLogger);
 	}
 
-	public CharSequenceDataPersistence(String prefix, String name) {
-		super(prefix, name, null);
+	public CharSequenceDataPersistence(String prefix, Logger externalLogger) {
+		super(prefix, externalLogger);
 	}
 
-	public CharSequenceDataPersistence(String prefix, String name, Logger externalLogger) {
-		super(prefix, name, externalLogger);
+	public CharSequenceDataPersistence(String prefix, LocalDate date, Logger externalLogger) {
+		super(prefix, date, externalLogger);
+	}
+
+	public CharSequenceDataPersistence(String rootPath, String prefix, Logger externalLogger) {
+		super(rootPath, prefix, externalLogger);
+	}
+
+	public CharSequenceDataPersistence(String rootPath, String prefix, LocalDate date, Logger externalLogger) {
+		super(rootPath, prefix, date, externalLogger);
 	}
 
 	@Override
