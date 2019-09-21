@@ -10,22 +10,18 @@ import io.ffreedom.common.env.SysProperty;
 import io.ffreedom.common.env.SysPropertys;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import net.openhft.chronicle.queue.ExcerptAppender;
-import net.openhft.chronicle.queue.ExcerptTailer;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
-public abstract class ChronicleDataPersistence<T> {
+public abstract class ChronicleDataPersistence<T, RT extends QueueReader<T>, WT extends QueueWriter<T>> {
 
 	private String path;
 
 	private String name;
 
-	private SingleChronicleQueue queue;
+	protected SingleChronicleQueue queue;
 
-	protected ExcerptAppender appender;
-	protected ExcerptTailer tailer;
-
-	protected Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
+	protected Logger logger = CommonLoggerFactory.getLogger(this.getClass());
 
 	protected ChronicleDataPersistence() {
 		this(null);
@@ -47,6 +43,7 @@ public abstract class ChronicleDataPersistence<T> {
 		initChronicleComponent();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			queue.close();
+			logger.info("Add ShutdownHook of {}", name);
 		}, "ChronicleQueue-Instance-Cleaner"));
 	}
 
@@ -56,8 +53,6 @@ public abstract class ChronicleDataPersistence<T> {
 
 	private void initChronicleComponent() {
 		this.queue = SingleChronicleQueueBuilder.binary(path).build();
-		this.appender = queue.acquireAppender();
-		this.tailer = queue.createTailer();
 	}
 
 	public String getName() {
@@ -71,6 +66,10 @@ public abstract class ChronicleDataPersistence<T> {
 	public SingleChronicleQueue getQueue() {
 		return queue;
 	}
+
+	abstract public RT newQueueReader();
+
+	abstract public WT newQueueWriter();
 
 	public static void main(String[] args) {
 		String path = "backup-" + LocalDate.now();
@@ -88,12 +87,6 @@ public abstract class ChronicleDataPersistence<T> {
 		System.out.println("... bye.");
 		SysPropertys.showAll();
 	}
-
-	public void append(T event) {
-		append0(event);
-	}
-
-	abstract protected void append0(T event);
 
 //	public byte[] getEvent() {
 //		try {
