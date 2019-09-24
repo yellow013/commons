@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.base;
+package io.ffreedom.common.concurrent.persistence.base;
 
 import net.openhft.chronicle.queue.ExcerptTailer;
 
@@ -10,10 +10,6 @@ public abstract class QueueReader<T> {
 		super();
 		this.tailer = tailer;
 	}
-
-//	public static <T> QueueReader<T> wrap(ExcerptTailer tailer) {
-//		return new QueueReader<>(tailer);
-//	}
 
 	public ExcerptTailer getTailer() {
 		return tailer;

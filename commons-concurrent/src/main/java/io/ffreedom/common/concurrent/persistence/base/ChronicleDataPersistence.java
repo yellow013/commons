@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.base;
+package io.ffreedom.common.concurrent.persistence.base;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -12,6 +12,7 @@ import io.ffreedom.common.env.SysPropertys;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import io.ffreedom.common.utils.StringUtil;
 import net.openhft.chronicle.queue.ExcerptAppender;
+import net.openhft.chronicle.queue.RollCycles;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
@@ -87,7 +88,7 @@ public abstract class ChronicleDataPersistence<T, RT extends QueueReader<T>, WT 
 
 	public static void main(String[] args) {
 		String path = "backup-" + LocalDate.now();
-		SingleChronicleQueue queue = SingleChronicleQueueBuilder.binary(path).build();
+		SingleChronicleQueue queue = SingleChronicleQueueBuilder.binary(path).rollCycle(RollCycles.HOURLY).build();
 		ExcerptAppender appender = queue.acquireAppender();
 		try (Scanner read = new Scanner(System.in)) {
 			while (true) {
@@ -101,17 +102,5 @@ public abstract class ChronicleDataPersistence<T, RT extends QueueReader<T>, WT 
 		System.out.println("... bye.");
 		SysPropertys.showAll();
 	}
-
-//	public byte[] getEvent() {
-//		try {
-//			tailer.readBytes(reader)
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//		}
-//	}
-//
-//	public List<byte[]> getEvents() {
-//
-//	}
 
 }

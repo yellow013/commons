@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.queue.base;
+package io.ffreedom.common.concurrent.persistence.base;
 
 import org.slf4j.Logger;
 
@@ -13,10 +13,6 @@ public abstract class QueueWriter<T> {
 	protected QueueWriter(ExcerptAppender appender) {
 		this.appender = appender;
 	}
-
-//	public static <T> QueueWriter<T> wrap(ExcerptAppender appender) {
-//		return new QueueWriter<>(appender);
-//	}
 
 	public ExcerptAppender getAppender() {
 		return appender;
