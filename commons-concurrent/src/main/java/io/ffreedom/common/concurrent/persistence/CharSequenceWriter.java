@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.queue;
+package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.queue.base.QueueWriter;
+import io.ffreedom.common.concurrent.persistence.base.QueueWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public final class CharSequenceWriter extends QueueWriter<CharSequence> {

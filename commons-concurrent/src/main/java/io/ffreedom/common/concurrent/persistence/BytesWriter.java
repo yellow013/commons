@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.queue;
+package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.queue.base.QueueWriter;
+import io.ffreedom.common.concurrent.persistence.base.QueueWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public final class BytesWriter extends QueueWriter<byte[]> {
@@ -15,8 +15,9 @@ public final class BytesWriter extends QueueWriter<byte[]> {
 
 	@Override
 	protected void write0(byte[] t) {
-		// TODO Auto-generated method stub
-
+		
+		appender.writeBytes(wire -> {
+		});
 	}
 
 }

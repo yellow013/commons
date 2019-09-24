@@ -1,10 +1,10 @@
-package io.ffreedom.common.concurrent.queue;
+package io.ffreedom.common.concurrent.persistence;
 
 import java.time.LocalDate;
 
 import org.slf4j.Logger;
 
-import io.ffreedom.common.concurrent.queue.base.ChronicleDataPersistence;
+import io.ffreedom.common.concurrent.persistence.base.ChronicleDataPersistence;
 import io.ffreedom.common.number.RandomNumber;
 
 public class CharSequenceDataPersistence

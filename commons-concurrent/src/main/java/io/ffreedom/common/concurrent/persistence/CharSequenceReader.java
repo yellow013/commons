@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.queue;
+package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.queue.base.QueueReader;
+import io.ffreedom.common.concurrent.persistence.base.QueueReader;
 import net.openhft.chronicle.queue.ExcerptTailer;
 
 public final class CharSequenceReader extends QueueReader<CharSequence> {
