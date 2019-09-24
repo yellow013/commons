@@ -315,6 +315,14 @@ public final class DateTimeUtil {
 		return endDate.toEpochDay() - startDate.toEpochDay();
 	}
 
+	public final static long durationBySecond(@Nonnull LocalTime startTime) {
+		return durationBySecond(startTime, LocalTime.now());
+	}
+
+	public final static long durationBySecond(@Nonnull LocalTime startTime, @Nonnull LocalTime endTime) {
+		return endTime.toSecondOfDay() - startTime.toSecondOfDay();
+	}
+
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date) {
 		return LocalDateTime.ofInstant(date.toInstant(), TimeZones.DEFAULT_ZONE_ID);
 	}
