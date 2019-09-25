@@ -31,7 +31,7 @@
 			<artifactId>disruptor</artifactId>
 		</dependency>
 		<!-- MapDB -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.mapdb</groupId>
 			<artifactId>mapdb</artifactId>
 			<version>3.0.7</version>
@@ -45,7 +45,7 @@
 					<artifactId>eclipse-collections</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 
 		<!-- chronicle-map off-heap and high performance queue framework -->
 		<dependency>
