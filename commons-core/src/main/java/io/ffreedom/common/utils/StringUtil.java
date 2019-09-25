@@ -96,6 +96,14 @@ public final class StringUtil {
 		return sourceStr == null ? sourceStr : new String(sourceStr.getBytes(sourceCoding), targetCoding);
 	}
 
+	public static String bytesToStr(byte[] bytes) {
+		return bytesToStr(bytes, Charsets.UTF8);
+	}
+
+	public static String bytesToStr(byte[] bytes, Charset charset) {
+		return new String(bytes, charset);
+	}
+
 	/**
 	 * 使用','将字符串连接
 	 * 
