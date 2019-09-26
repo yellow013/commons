@@ -1,9 +1,9 @@
 package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.persistence.base.QueueWriter;
+import io.ffreedom.common.concurrent.persistence.base.DataWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
-public final class BytesWriter extends QueueWriter<byte[]> {
+public final class BytesWriter extends DataWriter<byte[]> {
 
 	private BytesWriter(ExcerptAppender appender) {
 		super(appender);
@@ -14,7 +14,7 @@ public final class BytesWriter extends QueueWriter<byte[]> {
 	}
 
 	@Override
-	protected void write0(byte[] t) {
+	protected void append0(byte[] t) {
 		
 		appender.writeBytes(wire -> {
 		});
