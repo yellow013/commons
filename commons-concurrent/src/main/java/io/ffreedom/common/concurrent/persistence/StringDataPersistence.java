@@ -1,57 +1,50 @@
 package io.ffreedom.common.concurrent.persistence;
 
-import java.time.LocalDate;
-
-import org.slf4j.Logger;
-
 import io.ffreedom.common.concurrent.persistence.base.ChronicleDataPersistence;
+import io.ffreedom.common.concurrent.persistence.base.FileCycle;
 import io.ffreedom.common.number.RandomNumber;
 
-public class CharSequenceDataPersistence
-		extends ChronicleDataPersistence<CharSequence, CharSequenceReader, CharSequenceWriter> {
+public class StringDataPersistence extends ChronicleDataPersistence<String, StringReader, StringWriter> {
 
-	public CharSequenceDataPersistence() {
-		super();
+	private StringDataPersistence(Builder builder) {
+		super(builder);
 	}
 
-	public CharSequenceDataPersistence(Logger externalLogger) {
-		super(externalLogger);
-	}
-
-	public CharSequenceDataPersistence(String prefix, Logger externalLogger) {
-		super(prefix, externalLogger);
-	}
-
-	public CharSequenceDataPersistence(String prefix, LocalDate date, Logger externalLogger) {
-		super(prefix, date, externalLogger);
-	}
-
-	public CharSequenceDataPersistence(String rootPath, String prefix, Logger externalLogger) {
-		super(rootPath, prefix, externalLogger);
-	}
-
-	public CharSequenceDataPersistence(String rootPath, String prefix, LocalDate date, Logger externalLogger) {
-		super(rootPath, prefix, date, externalLogger);
+	public static Builder newBuilder() {
+		return new Builder();
 	}
 
 	@Override
-	public CharSequenceReader newQueueReader() {
-		return CharSequenceReader.wrap(queue.createTailer());
+	public StringReader createReader() {
+		return StringReader.wrap(queue.createTailer(), fileCycle);
 	}
 
 	@Override
-	public CharSequenceWriter newQueueWriter() {
-		return CharSequenceWriter.wrap(queue.acquireAppender());
+	public StringWriter createWriter() {
+		return StringWriter.wrap(queue.acquireAppender());
+	}
+
+	public static class Builder extends BaseBuilder<Builder> {
+
+		public StringDataPersistence build() {
+			return new StringDataPersistence(this);
+		}
+
+		@Override
+		protected Builder getThis() {
+			return this;
+		}
+
 	}
 
 	public static void main(String[] args) {
-		CharSequenceDataPersistence dataPersistence = new CharSequenceDataPersistence();
-		CharSequenceWriter queueWriter = dataPersistence.newQueueWriter();
-		CharSequenceReader queueReader = dataPersistence.newQueueReader();
+		StringDataPersistence dataPersistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.HOUR).build();
+		StringWriter queueWriter = dataPersistence.createWriter();
+		StringReader queueReader = dataPersistence.createReader();
 		new Thread(() -> {
 			for (;;) {
 				try {
-					queueWriter.write(String.valueOf(RandomNumber.unsafeRandomLong()));
+					queueWriter.append0(String.valueOf(RandomNumber.unsafeRandomLong()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -61,7 +54,7 @@ public class CharSequenceDataPersistence
 		long nanoTime0 = System.nanoTime();
 		do {
 			try {
-				read = queueReader.read();
+				read = queueReader.next();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

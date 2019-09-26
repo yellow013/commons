@@ -1,20 +1,20 @@
 package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.persistence.base.QueueWriter;
+import io.ffreedom.common.concurrent.persistence.base.DataWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
-public final class CharSequenceWriter extends QueueWriter<CharSequence> {
+public final class StringWriter extends DataWriter<String> {
 
-	private CharSequenceWriter(ExcerptAppender appender) {
+	private StringWriter(ExcerptAppender appender) {
 		super(appender);
 	}
 
-	public static CharSequenceWriter wrap(ExcerptAppender appender) {
-		return new CharSequenceWriter(appender);
+	public static StringWriter wrap(ExcerptAppender appender) {
+		return new StringWriter(appender);
 	}
 
 	@Override
-	protected void write0(CharSequence t) {
+	protected void append0(String t) {
 		appender.writeText(t);
 	}
 

@@ -1,20 +1,21 @@
 package io.ffreedom.common.concurrent.persistence;
 
-import io.ffreedom.common.concurrent.persistence.base.QueueReader;
+import io.ffreedom.common.concurrent.persistence.base.DataReader;
+import io.ffreedom.common.concurrent.persistence.base.FileCycle;
 import net.openhft.chronicle.queue.ExcerptTailer;
 
-public final class CharSequenceReader extends QueueReader<CharSequence> {
+public final class StringReader extends DataReader<String> {
 
-	private CharSequenceReader(ExcerptTailer tailer) {
-		super(tailer);
+	private StringReader(ExcerptTailer tailer, FileCycle fileCycle) {
+		super(tailer, fileCycle);
 	}
 
-	public static CharSequenceReader wrap(ExcerptTailer tailer) {
-		return new CharSequenceReader(tailer);
+	public static StringReader wrap(ExcerptTailer tailer, FileCycle fileCycle) {
+		return new StringReader(tailer, fileCycle);
 	}
 
 	@Override
-	protected CharSequence read0() {
+	protected String next0() {
 		return tailer.readText();
 	}
 
