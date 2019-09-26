@@ -2,23 +2,41 @@ package io.ffreedom.common.concurrent.persistence.base;
 
 import net.openhft.chronicle.queue.ExcerptTailer;
 
-public abstract class QueueReader<T> {
+public abstract class DataReader<T> {
 
 	protected ExcerptTailer tailer;
+	private FileCycle fileCycle;
 
-	protected QueueReader(ExcerptTailer tailer) {
+	protected DataReader(ExcerptTailer tailer, FileCycle fileCycle) {
 		super();
 		this.tailer = tailer;
+		this.fileCycle = fileCycle;
 	}
 
 	public ExcerptTailer getTailer() {
 		return tailer;
 	}
 
-	public T read() throws Exception {
-		return read0();
-	};
+	public boolean moveTo(long epochSecond) {
+		return tailer.moveToIndex(fileCycle.calculateIndex(epochSecond));
+	}
 
-	abstract protected T read0();
+	public void moveToStart() {
+		tailer.toStart();
+	}
+
+	public void moveToEnd() {
+		tailer.toEnd();
+	}
+
+	public int currentCycle() {
+		return tailer.cycle();
+	}
+
+	public T next() throws Exception {
+		return next0();
+	}
+
+	abstract protected T next0();
 
 }

@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 
 import net.openhft.chronicle.queue.ExcerptAppender;
 
-public abstract class QueueWriter<T> {
+public abstract class DataWriter<T> {
 
 	protected ExcerptAppender appender;
 
 	protected Logger logger;
 
-	protected QueueWriter(ExcerptAppender appender) {
+	protected DataWriter(ExcerptAppender appender) {
 		this.appender = appender;
 	}
 
@@ -18,10 +18,14 @@ public abstract class QueueWriter<T> {
 		return appender;
 	}
 
-	public void write(T t) throws Exception {
-		write0(t);
+	public int currentCycle() {
+		return appender.cycle();
+	}
+
+	public void append(T t) throws Exception {
+		append0(t);
 	};
 
-	abstract protected void write0(T t);
+	abstract protected void append0(T t);
 
 }
