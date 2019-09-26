@@ -51,6 +51,12 @@ public class BinaryUtil {
 		System.out.println(BinaryUtil.intToBinaryString(2));
 		System.out.println(Integer.toBinaryString(2));
 		System.out.println(BinaryUtil.intToBinaryString(-10));
+		
+		System.out.println(BinaryUtil.longToBinaryString(Long.MAX_VALUE));
+		System.out.println(BinaryUtil.longToBinaryString(Long.MIN_VALUE));
+		System.out.println(BinaryUtil.longToBinaryString(-1L));
+		
+		System.out.println(BinaryUtil.longToBinaryString(2L << 10));
 
 	}
 
