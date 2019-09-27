@@ -47,20 +47,19 @@
 			<version>3.9</version>
 		</dependency>
 
-		<!-- google guava -->
-<!--  		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>28.1-jre</version>
-		</dependency> -->
- 	
-		<!-- 
+		<!-- commons-collections4 -->
 		<dependency>
-			<groupId>org.pcollections</groupId>
-			<artifactId>pcollections</artifactId>
-			<version>3.1.0</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.4</version>
 		</dependency>
-		 -->
+
+		<!-- google guava -->
+		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
+			<version>28.1-jre</version> </dependency> -->
+
+		<!-- <dependency> <groupId>org.pcollections</groupId> <artifactId>pcollections</artifactId> 
+			<version>3.1.0</version> </dependency> -->
 
 		<!-- Logs dependency -->
 		<!-- slf4j + slf4j adaptor + log4j2 -->
@@ -105,6 +104,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 
 		<!-- Junit4 dependency -->
 		<dependency>
