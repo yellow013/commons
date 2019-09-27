@@ -14,12 +14,12 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 	private String savePath;
 	private String name;
 
-	protected SingleChronicleQueue queue;
+	private SingleChronicleQueue queue;
 
 	private String rootPath;
 	private String folder;
+	private FileCycle fileCycle;
 
-	protected FileCycle fileCycle = FileCycle.HOUR;
 	protected Logger logger;
 
 	protected ChronicleDataPersistence(BaseBuilder<?> builder) {
@@ -46,6 +46,10 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	public String getSavePath() {
 		return savePath;
+	}
+
+	public FileCycle getFileCycle() {
+		return fileCycle;
 	}
 
 	public SingleChronicleQueue getQueue() {

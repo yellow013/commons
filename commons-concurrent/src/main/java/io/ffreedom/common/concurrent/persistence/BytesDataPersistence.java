@@ -14,12 +14,12 @@ public class BytesDataPersistence extends ChronicleDataPersistence<byte[], Bytes
 
 	@Override
 	public BytesReader createReader() {
-		return BytesReader.wrap(queue.createTailer(), fileCycle);
+		return BytesReader.wrap(getQueue().createTailer(), getFileCycle());
 	}
 
 	@Override
 	public BytesWriter createWriter() {
-		return BytesWriter.wrap(queue.acquireAppender());
+		return BytesWriter.wrap(getQueue().acquireAppender());
 	}
 
 	public static class Builder extends BaseBuilder<Builder> {

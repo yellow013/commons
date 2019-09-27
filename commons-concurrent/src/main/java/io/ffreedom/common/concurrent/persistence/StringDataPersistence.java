@@ -16,12 +16,12 @@ public class StringDataPersistence extends ChronicleDataPersistence<String, Stri
 
 	@Override
 	public StringReader createReader() {
-		return StringReader.wrap(queue.createTailer(), fileCycle);
+		return StringReader.wrap(getQueue().createTailer(), getFileCycle());
 	}
 
 	@Override
 	public StringWriter createWriter() {
-		return StringWriter.wrap(queue.acquireAppender());
+		return StringWriter.wrap(getQueue().acquireAppender());
 	}
 
 	public static class Builder extends BaseBuilder<Builder> {
