@@ -31,21 +31,11 @@
 			<artifactId>disruptor</artifactId>
 		</dependency>
 		<!-- MapDB -->
-		<!-- <dependency>
-			<groupId>org.mapdb</groupId>
-			<artifactId>mapdb</artifactId>
-			<version>3.0.7</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.collections</groupId>
-					<artifactId>eclipse-collections-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.collections</groupId>
-					<artifactId>eclipse-collections</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.mapdb</groupId> <artifactId>mapdb</artifactId> 
+			<version>3.0.7</version> <exclusions> <exclusion> <groupId>org.eclipse.collections</groupId> 
+			<artifactId>eclipse-collections-api</artifactId> </exclusion> <exclusion> 
+			<groupId>org.eclipse.collections</groupId> <artifactId>eclipse-collections</artifactId> 
+			</exclusion> </exclusions> </dependency> -->
 
 		<!-- chronicle-map off-heap and high performance queue framework -->
 		<dependency>
