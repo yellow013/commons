@@ -16,4 +16,8 @@ public final class SysPropertys {
 		return System.getProperty(key);
 	}
 
+	public static void main(String[] args) {
+		SysPropertys.showAll();
+	}
+
 }
