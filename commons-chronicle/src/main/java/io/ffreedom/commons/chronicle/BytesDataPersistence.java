@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.persistence;
+package io.ffreedom.commons.chronicle;
 
-import io.ffreedom.common.concurrent.persistence.base.ChronicleDataPersistence;
+import io.ffreedom.commons.chronicle.base.ChronicleDataPersistence;
 
 public class BytesDataPersistence extends ChronicleDataPersistence<byte[], BytesReader, BytesWriter> {
 

@@ -1,6 +1,6 @@
-package io.ffreedom.common.concurrent.persistence;
+package io.ffreedom.commons.chronicle;
 
-import io.ffreedom.common.concurrent.persistence.base.DataWriter;
+import io.ffreedom.commons.chronicle.base.DataWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public final class BytesWriter extends DataWriter<byte[]> {

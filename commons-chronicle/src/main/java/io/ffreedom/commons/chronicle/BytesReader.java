@@ -1,7 +1,7 @@
-package io.ffreedom.common.concurrent.persistence;
+package io.ffreedom.commons.chronicle;
 
-import io.ffreedom.common.concurrent.persistence.base.DataReader;
-import io.ffreedom.common.concurrent.persistence.base.FileCycle;
+import io.ffreedom.commons.chronicle.base.DataReader;
+import io.ffreedom.commons.chronicle.base.FileCycle;
 import net.openhft.chronicle.queue.ExcerptTailer;
 
 public final class BytesReader extends DataReader<byte[]> {

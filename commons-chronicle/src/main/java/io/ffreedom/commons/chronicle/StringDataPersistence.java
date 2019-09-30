@@ -1,8 +1,8 @@
-package io.ffreedom.common.concurrent.persistence;
+package io.ffreedom.commons.chronicle;
 
-import io.ffreedom.common.concurrent.persistence.base.ChronicleDataPersistence;
-import io.ffreedom.common.concurrent.persistence.base.FileCycle;
 import io.ffreedom.common.number.RandomNumber;
+import io.ffreedom.commons.chronicle.base.ChronicleDataPersistence;
+import io.ffreedom.commons.chronicle.base.FileCycle;
 
 public class StringDataPersistence extends ChronicleDataPersistence<String, StringReader, StringWriter> {
 
