@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.persistence.base;
+package io.ffreedom.commons.chronicle.base;
 
 import net.openhft.chronicle.queue.RollCycle;
 import net.openhft.chronicle.queue.RollCycles;

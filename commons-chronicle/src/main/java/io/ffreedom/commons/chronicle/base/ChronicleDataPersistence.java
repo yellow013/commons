@@ -1,4 +1,4 @@
-package io.ffreedom.common.concurrent.persistence.base;
+package io.ffreedom.commons.chronicle.base;
 
 import java.io.File;
 

@@ -1,14 +1,11 @@
-package io.ffreedom.common.concurrent.persistence.base;
+package io.ffreedom.commons.chronicle.base;
 
-import org.slf4j.Logger;
-
+import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public abstract class DataWriter<T> {
 
 	protected ExcerptAppender appender;
-
-	protected Logger logger;
 
 	protected DataWriter(ExcerptAppender appender) {
 		this.appender = appender;
@@ -22,9 +19,14 @@ public abstract class DataWriter<T> {
 		return appender.cycle();
 	}
 
-	public void append(T t) throws Exception {
-		append0(t);
-	};
+	@MayThrowRuntimeException
+	public void append(T t) throws ChronicleWriteException {
+		try {
+			append0(t);
+		} catch (Exception e) {
+			throw new ChronicleWriteException(e.getMessage(), e);
+		}
+	}
 
 	abstract protected void append0(T t);
 
