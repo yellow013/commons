@@ -80,19 +80,27 @@ public final class StringUtil {
 		return !isDecimal(str);
 	}
 
-	public static String gbkConversionToUtf8(String gbkStr) {
-		return conversionToSpecified(gbkStr, Charsets.GBK, Charsets.UTF8);
+	public static String conversionGbkToUtf8(String gbkStr) {
+		return conversionTo(gbkStr, Charsets.GBK, Charsets.UTF8);
 	}
 
-	public static String utf8ConversionToGbk(String utf8Str) {
-		return conversionToSpecified(utf8Str, Charsets.UTF8, Charsets.GBK);
+	public static String conversionUtf8ToGbk(String utf8Str) {
+		return conversionTo(utf8Str, Charsets.UTF8, Charsets.GBK);
+	}
+
+	public static String conversionGb2312ToUtf8(String gbkStr) {
+		return conversionTo(gbkStr, Charsets.GB2312, Charsets.UTF8);
+	}
+
+	public static String conversionUtf8ToGb2312(String utf8Str) {
+		return conversionTo(utf8Str, Charsets.UTF8, Charsets.GB2312);
 	}
 
 	public static String conversionToUtf8(String sourceStr, Charset sourceCoding) {
-		return conversionToSpecified(sourceStr, sourceCoding, Charsets.UTF8);
+		return conversionTo(sourceStr, sourceCoding, Charsets.UTF8);
 	}
 
-	public static String conversionToSpecified(String sourceStr, Charset sourceCoding, Charset targetCoding) {
+	public static String conversionTo(String sourceStr, Charset sourceCoding, Charset targetCoding) {
 		return sourceStr == null ? sourceStr : new String(sourceStr.getBytes(sourceCoding), targetCoding);
 	}
 
