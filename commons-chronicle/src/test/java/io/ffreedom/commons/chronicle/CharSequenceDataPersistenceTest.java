@@ -1,11 +1,14 @@
-package io.ffreedom.common.concurrent.persistence;
+package io.ffreedom.commons.chronicle;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.junit.Test;
 
-import io.ffreedom.common.concurrent.persistence.base.FileCycle;
+import io.ffreedom.commons.chronicle.StringDataPersistence;
+import io.ffreedom.commons.chronicle.StringReader;
+import io.ffreedom.commons.chronicle.StringWriter;
+import io.ffreedom.commons.chronicle.base.FileCycle;
 
 public class CharSequenceDataPersistenceTest {
 
