@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.ffreedom</groupId>
+		<artifactId>commons</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>commons-chronicle</artifactId>
+	<name>commons-chronicle</name>
+
+	<properties>
+		<!-- chronicle-queue last version : 5.17.23 -->
+		<chronicle-queue.version>5.17.23</chronicle-queue.version>
+		<!-- chronicle-map last version : 3.17.5 -->
+		<chronicle-map.version>3.17.4</chronicle-map.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>io.ffreedom</groupId>
+			<artifactId>commons-core</artifactId>
+		</dependency>
+
+		<!-- chronicle-map off-heap and high performance queue framework -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-queue</artifactId>
+			<version>${chronicle-queue.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<!-- exclusion jna-platform version 4.2.1 -->
+				<!-- but must import latest version jna-platform -->
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna-platform</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.4.0</version>
+		</dependency>
+
+		<!-- chronicle-map off-heap and high performance map framework -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-map</artifactId>
+			<version>${chronicle-map.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna-platform</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.java.dev.jna</groupId>
+					<artifactId>jna</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-bytes</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-threads</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-wire</artifactId>
+				</exclusion>
+				<!-- java 11 use this exclusion -->
+				<exclusion>
+					<groupId>com.sun.java</groupId>
+					<artifactId>tools</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+	</dependencies>
+</project>
