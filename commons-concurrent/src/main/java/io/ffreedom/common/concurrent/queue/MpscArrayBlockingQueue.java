@@ -91,7 +91,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 			return false;
 		}
 		try {
-			while (!innerQueue.offer(e, 500, TimeUnit.MILLISECONDS))
+			while (!innerQueue.offer(e, 100, TimeUnit.MILLISECONDS))
 				;
 			return true;
 		} catch (InterruptedException exception) {
