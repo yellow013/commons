@@ -1,6 +1,7 @@
 package io.ffreedom.commons.chronicle.base;
 
 import java.io.File;
+import java.util.function.ObjIntConsumer;
 
 import org.slf4j.Logger;
 
@@ -19,6 +20,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 	private String rootPath;
 	private String folder;
 	private FileCycle fileCycle;
+	private ObjIntConsumer<File> storeFileListener;
 
 	protected Logger logger;
 
@@ -26,6 +28,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		this.rootPath = builder.rootPath;
 		this.folder = builder.folder;
 		this.fileCycle = builder.fileCycle;
+		this.storeFileListener = builder.storeFileListener;
 		this.logger = builder.logger;
 		init();
 	}
@@ -33,11 +36,21 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 	private void init() {
 		this.name = folder;
 		this.savePath = rootPath + folder;
-		this.queue = SingleChronicleQueueBuilder.single(savePath).rollCycle(fileCycle.getRollCycle()).build();
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			queue.close();
-			logger.info("Add ShutdownHook of {}", name);
-		}, "ChronicleQueue-Instance-Cleanup-Thread"));
+		this.queue = SingleChronicleQueueBuilder.single(savePath).rollCycle(fileCycle.getRollCycle())
+				.storeFileListener(this::storeFileHandle).build();
+		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup-Thread"));
+	}
+
+	private void shutdownHandle() {
+		queue.close();
+		logger.info("Run ShutdownHook of {}", name);
+	}
+
+	private void storeFileHandle(int cycle, File file) {
+		if (storeFileListener != null)
+			storeFileListener.accept(file, cycle);
+		else
+			logger.info("Released file : cycle==[{}], file==[{}]", cycle, file.getAbsolutePath());
 	}
 
 	public String getName() {
@@ -63,16 +76,17 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		return false;
 	}
 
-	abstract public RT createReader();
+	public abstract RT createReader();
 
-	abstract public WT createWriter();
+	public abstract WT createWriter();
 
 	protected abstract static class BaseBuilder<BT> {
 
-		protected String rootPath = SysProperty.JAVA_IO_TMPDIR + "/";;
-		protected String folder = "chronicle";
-		protected Logger logger = CommonLoggerFactory.getLogger(this.getClass());
-		protected FileCycle fileCycle = FileCycle.HOUR;
+		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/";;
+		private String folder = "chronicle";
+		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
+		private FileCycle fileCycle = FileCycle.HOUR;
+		private ObjIntConsumer<File> storeFileListener = null;
 
 		public BT setRootPath(String rootPath) {
 			this.rootPath = rootPath;
@@ -94,7 +108,12 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 			return getThis();
 		}
 
-		abstract protected BT getThis();
+		public BT setStoreFileListener(ObjIntConsumer<File> storeFileListener) {
+			this.storeFileListener = storeFileListener;
+			return getThis();
+		}
+
+		protected abstract BT getThis();
 
 	}
 

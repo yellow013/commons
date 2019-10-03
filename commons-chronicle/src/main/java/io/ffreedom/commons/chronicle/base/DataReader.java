@@ -19,6 +19,12 @@ public abstract class DataReader<T> {
 		return tailer;
 	}
 
+	/**
+	 * Move cursor to input epoch seconds.
+	 * 
+	 * @param epochSecond
+	 * @return
+	 */
 	public boolean moveTo(long epochSecond) {
 		return tailer.moveToIndex(fileCycle.calculateIndex(epochSecond));
 	}
@@ -35,6 +41,12 @@ public abstract class DataReader<T> {
 		return tailer.cycle();
 	}
 
+	/**
+	 * Get next element of current cursor position.
+	 * 
+	 * @return
+	 * @throws ChronicleReadException
+	 */
 	@MayThrowRuntimeException
 	public T next() throws ChronicleReadException {
 		try {
@@ -44,6 +56,6 @@ public abstract class DataReader<T> {
 		}
 	}
 
-	abstract protected T next0();
+	protected abstract T next0();
 
 }

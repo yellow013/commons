@@ -19,6 +19,12 @@ public abstract class DataWriter<T> {
 		return appender.cycle();
 	}
 
+	/**
+	 * append element to queue tail.
+	 * 
+	 * @param t
+	 * @throws ChronicleWriteException
+	 */
 	@MayThrowRuntimeException
 	public void append(T t) throws ChronicleWriteException {
 		try {
@@ -28,6 +34,6 @@ public abstract class DataWriter<T> {
 		}
 	}
 
-	abstract protected void append0(T t);
+	protected abstract void append0(T t);
 
 }
