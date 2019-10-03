@@ -19,13 +19,6 @@
 
 	<dependencies>
 
-		<!-- Eclipse Collections -->
-		<dependency>
-			<groupId>org.eclipse.collections</groupId>
-			<artifactId>eclipse-collections</artifactId>
-			<version>10.0.0</version>
-		</dependency>
-
 		<!-- jsr305 -->
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
@@ -52,6 +45,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.4</version>
+		</dependency>
+
+		<!-- Eclipse Collections -->
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections</artifactId>
+			<version>10.0.0</version>
 		</dependency>
 
 		<!-- google guava -->
