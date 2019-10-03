@@ -30,9 +30,10 @@ public class CharSequenceDataPersistenceTest {
 				while (true) {
 					try {
 						String text = reader.next();
-						if (text != null)
+						if (text != null) {
 							System.out.println(text);
-						Thread.sleep(500);
+							Thread.sleep(500);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
