@@ -17,7 +17,7 @@
 		<!-- chronicle-queue last version : 5.17.23 -->
 		<chronicle-queue.version>5.17.23</chronicle-queue.version>
 		<!-- chronicle-map last version : 3.17.5 -->
-		<chronicle-map.version>3.17.4</chronicle-map.version>
+		<chronicle-map.version>3.17.5</chronicle-map.version>
 	</properties>
 
 	<dependencies>
@@ -101,7 +101,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 
 	</dependencies>
 </project>
