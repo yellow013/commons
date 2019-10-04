@@ -1,6 +1,6 @@
-package io.ffreedom.commons.chronicle;
+package io.ffreedom.commons.chronicle.queue;
 
-import io.ffreedom.commons.chronicle.base.DataWriter;
+import io.ffreedom.commons.chronicle.queue.base.DataWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public final class BytesWriter extends DataWriter<byte[]> {

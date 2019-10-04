@@ -1,7 +1,7 @@
-package io.ffreedom.commons.chronicle;
+package io.ffreedom.commons.chronicle.queue;
 
-import io.ffreedom.commons.chronicle.base.DataReader;
-import io.ffreedom.commons.chronicle.base.FileCycle;
+import io.ffreedom.commons.chronicle.queue.base.DataReader;
+import io.ffreedom.commons.chronicle.queue.base.FileCycle;
 import net.openhft.chronicle.queue.ExcerptTailer;
 
 public final class StringReader extends DataReader<String> {

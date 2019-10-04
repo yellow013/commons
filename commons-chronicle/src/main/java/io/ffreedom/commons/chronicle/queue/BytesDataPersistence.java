@@ -1,6 +1,6 @@
-package io.ffreedom.commons.chronicle;
+package io.ffreedom.commons.chronicle.queue;
 
-import io.ffreedom.commons.chronicle.base.ChronicleDataPersistence;
+import io.ffreedom.commons.chronicle.queue.base.ChronicleDataPersistence;
 
 public class BytesDataPersistence extends ChronicleDataPersistence<byte[], BytesReader, BytesWriter> {
 
