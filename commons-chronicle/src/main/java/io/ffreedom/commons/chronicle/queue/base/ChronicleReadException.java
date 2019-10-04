@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.base;
+package io.ffreedom.commons.chronicle.queue.base;
 
 public class ChronicleReadException extends RuntimeException {
 

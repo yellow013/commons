@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.base;
+package io.ffreedom.commons.chronicle.queue.base;
 
 import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
 import net.openhft.chronicle.queue.ExcerptAppender;

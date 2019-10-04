@@ -1,4 +1,6 @@
-package io.ffreedom.commons.chronicle.base;
+package io.ffreedom.commons.chronicle.queue.base;
+
+import static io.ffreedom.common.utils.StringUtil.isPath;
 
 import java.io.File;
 import java.util.function.ObjIntConsumer;
@@ -82,19 +84,19 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	protected abstract static class BaseBuilder<BT> {
 
-		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/";;
-		private String folder = "chronicle";
+		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/chronicle-queue/";
+		private String folder = "default";
 		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
 		private FileCycle fileCycle = FileCycle.HOUR;
 		private ObjIntConsumer<File> storeFileListener = null;
 
 		public BT setRootPath(String rootPath) {
-			this.rootPath = rootPath;
+			this.rootPath = isPath(rootPath) ? rootPath : rootPath + "/";
 			return getThis();
 		}
 
 		public BT setFolder(String folder) {
-			this.folder = folder;
+			this.folder = isPath(folder) ? folder : folder + "/";
 			return getThis();
 		}
 
