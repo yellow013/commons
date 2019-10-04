@@ -5,10 +5,10 @@ import java.time.ZoneOffset;
 
 import org.junit.Test;
 
-import io.ffreedom.commons.chronicle.StringDataPersistence;
-import io.ffreedom.commons.chronicle.StringReader;
-import io.ffreedom.commons.chronicle.StringWriter;
-import io.ffreedom.commons.chronicle.base.FileCycle;
+import io.ffreedom.commons.chronicle.queue.StringDataPersistence;
+import io.ffreedom.commons.chronicle.queue.StringReader;
+import io.ffreedom.commons.chronicle.queue.StringWriter;
+import io.ffreedom.commons.chronicle.queue.base.FileCycle;
 
 public class CharSequenceDataPersistenceTest {
 
