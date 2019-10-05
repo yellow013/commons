@@ -21,6 +21,7 @@ public class ChronicleMapKeeper<K, V> {
 	private ChronicleMap<K, V> newChronicleMap(ChronicleMapSetter<K, V> setter) {
 		ChronicleMapBuilder<K, V> builder = ChronicleMapBuilder.of(setter.getKeyClass(), setter.getValueClass())
 				.entries(setter.getEntries());
+		
 		if (setter.getAverageKey() != null)
 			builder.averageKey(setter.getAverageKey());
 		if (setter.getAverageValue() != null)
