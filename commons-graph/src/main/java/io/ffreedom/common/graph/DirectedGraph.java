@@ -1,12 +1,13 @@
 package io.ffreedom.common.graph;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.collections.api.set.MutableSet;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.builder.GraphTypeBuilder;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
+import io.ffreedom.common.collections.MutableSets;
 import io.ffreedom.common.graph.base.Edge;
 
 public final class DirectedGraph<V> {
@@ -14,18 +15,17 @@ public final class DirectedGraph<V> {
 	private final Graph<V, Edge> graph;
 
 	private DirectedGraph(Class<V> VertexClass) {
-		this.graph = GraphTypeBuilder.directed()
-				.vertexClass(VertexClass).edgeSupplier(Edge.SUPPLIER).buildGraph();
+		this.graph = GraphTypeBuilder.directed().vertexClass(VertexClass).edgeSupplier(Edge.EdgeSupplier).buildGraph();
+	}
+
+	public static <V> DirectedGraph<V> buildOf(Class<V> VertexClass) {
+		return new DirectedGraph<>(VertexClass);
 	}
 
 	public DirectedGraph<V> addVertex(V vertex) {
 		if (vertex != null)
 			graph.addVertex(vertex);
 		return this;
-	}
-
-	public static <V> DirectedGraph<V> buildOf(Class<V> VertexClass) {
-		return new DirectedGraph<>(VertexClass);
 	}
 
 	public DirectedGraph<V> addEdge(V sourceVertex, V targetVertex) {
@@ -35,20 +35,28 @@ public final class DirectedGraph<V> {
 		return this;
 	}
 
-	public Set<V> allVertex() {
-		return graph.vertexSet();
+	public boolean contains(V v) {
+		return graph.containsVertex(v);
 	}
 
-	public Set<Edge> allEdge() {
-		return graph.edgeSet();
+	public boolean contains(Edge e) {
+		return graph.containsEdge(e);
 	}
 
-	public Set<V> allChildVertex(V vertex) {
-		BreadthFirstIterator<V, Edge> breadthFirstIterator = new BreadthFirstIterator<>(graph, vertex);
-		Set<V> hashSet = new HashSet<>();
-		while (breadthFirstIterator.hasNext())
-			hashSet.add(breadthFirstIterator.next());
-		return hashSet;
+	public boolean containsEdge(V source, V target) {
+		return graph.containsEdge(source, target);
+	}
+
+	public MutableSet<V> allVertex() {
+		return MutableSets.newUnifiedSet(graph.vertexSet());
+	}
+
+	public MutableSet<Edge> allEdge() {
+		return MutableSets.newUnifiedSet(graph.edgeSet());
+	}
+
+	public MutableSet<V> allChildVertex(V vertex) {
+		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(graph, vertex));
 	}
 
 	public Graph<V, Edge> getGraph() {
