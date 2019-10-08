@@ -2,6 +2,7 @@ package io.ffreedom.common.collections;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
@@ -64,6 +65,7 @@ public final class MutableSets {
 	public static MutableLongSet newLongHashSetWith(long... longValues) {
 		if (ArrayUtil.isNullOrEmpty(longValues))
 			return newLongHashSet();
+
 		return new LongHashSet(longValues);
 	}
 
@@ -76,6 +78,15 @@ public final class MutableSets {
 
 	public static <E> MutableSet<E> newUnifiedSet(int initialCapacity) {
 		return new UnifiedSet<>(initialCapacity);
+	}
+
+	public static <E> MutableSet<E> newUnifiedSet(Iterator<E> iterator) {
+		MutableSet<E> newUnifiedSet = newUnifiedSet();
+		if (iterator != null && iterator.hasNext()) {
+			while (iterator.hasNext())
+				newUnifiedSet.add(iterator.next());
+		}
+		return newUnifiedSet;
 	}
 
 	public static <E> MutableSet<E> newUnifiedSet(Collection<E> collection) {

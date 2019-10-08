@@ -1,5 +1,6 @@
 package io.ffreedom.common.collections;
 
+import java.util.Comparator;
 import java.util.Map;
 
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
@@ -255,6 +256,12 @@ public final class MutableMaps {
 		return FastListMultimap.newMultimap();
 	}
 
+	public static <K, V> MutableListMultimap<K, V> newFastListMultimap(Iterable<Pair<K, V>> iterable) {
+		if (iterable == null)
+			return newFastListMultimap();
+		return FastListMultimap.newMultimap(iterable);
+	}
+
 	@SafeVarargs
 	public static <K, V> MutableListMultimap<K, V> newFastListMultimap(Pair<K, V>... pairs) {
 		if (ArrayUtil.isNullOrEmpty(pairs))
@@ -266,6 +273,12 @@ public final class MutableMaps {
 		return UnifiedSetMultimap.newMultimap();
 	}
 
+	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap(Iterable<Pair<K, V>> iterable) {
+		if (iterable == null)
+			return newUnifiedSetMultimap();
+		return UnifiedSetMultimap.newMultimap(iterable);
+	}
+
 	@SafeVarargs
 	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap(Pair<K, V>... pairs) {
 		if (ArrayUtil.isNullOrEmpty(pairs))
@@ -275,6 +288,18 @@ public final class MutableMaps {
 
 	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap() {
 		return TreeSortedSetMultimap.newMultimap();
+	}
+
+	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Iterable<Pair<K, V>> iterable) {
+		if (iterable == null)
+			return newTreeSortedSetMultimap();
+		return TreeSortedSetMultimap.newMultimap(iterable);
+	}
+
+	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Comparator<V> comparator) {
+		if (comparator == null)
+			return newTreeSortedSetMultimap();
+		return TreeSortedSetMultimap.newMultimap(comparator);
 	}
 
 	@SafeVarargs
