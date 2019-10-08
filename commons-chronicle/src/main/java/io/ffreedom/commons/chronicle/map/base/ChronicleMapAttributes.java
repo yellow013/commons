@@ -6,7 +6,7 @@ import java.io.File;
 
 import io.ffreedom.common.env.SysProperty;
 
-public class ChronicleMapSetter<K, V> {
+public final class ChronicleMapAttributes<K, V> {
 
 	private Class<K> keyClass;
 	private Class<V> valueClass;
@@ -19,9 +19,13 @@ public class ChronicleMapSetter<K, V> {
 	public static final String DefaultRootPath = SysProperty.JAVA_IO_TMPDIR + "/chronicle-map/";
 	public static final String DefaultFolder = "default/";
 
-	public ChronicleMapSetter(Class<K> keyClass, Class<V> valueClass) {
+	private ChronicleMapAttributes(Class<K> keyClass, Class<V> valueClass) {
 		this.keyClass = keyClass;
 		this.valueClass = valueClass;
+	}
+
+	public static <K, V> ChronicleMapAttributes<K, V> buildOf(Class<K> keyClass, Class<V> valueClass) {
+		return new ChronicleMapAttributes<>(keyClass, valueClass);
 	}
 
 	public Class<K> getKeyClass() {

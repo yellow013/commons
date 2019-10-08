@@ -14,29 +14,29 @@ public class ChronicleMapKeeper<K, V> {
 	private ConcurrentMutableMap<String, ChronicleMap<K, V>> savedMap = ConcurrentHashMap.newMap(64);
 
 	@MayThrowRuntimeException
-	public ChronicleMap<K, V> acquire(String keyPrefix, ChronicleMapSetter<K, V> builder) throws ChronicleIOException {
-		return savedMap.getIfAbsentPutWith(generateKey(keyPrefix, builder), this::newChronicleMap, builder);
+	public ChronicleMap<K, V> acquire(String keyPrefix, ChronicleMapAttributes<K, V> attributes)
+			throws ChronicleIOException {
+		return savedMap.getIfAbsentPutWith(generateKey(keyPrefix, attributes), this::newChronicleMap, attributes);
 	}
 
-	private ChronicleMap<K, V> newChronicleMap(ChronicleMapSetter<K, V> setter) {
-		ChronicleMapBuilder<K, V> builder = ChronicleMapBuilder.of(setter.getKeyClass(), setter.getValueClass())
-				.entries(setter.getEntries());
-		
-		if (setter.getAverageKey() != null)
-			builder.averageKey(setter.getAverageKey());
-		if (setter.getAverageValue() != null)
-			builder.averageValue(setter.getAverageValue());
-		if (setter.getPersistedFile() != null) {
+	private ChronicleMap<K, V> newChronicleMap(ChronicleMapAttributes<K, V> attributes) {
+		ChronicleMapBuilder<K, V> builder = ChronicleMapBuilder.of(attributes.getKeyClass(), attributes.getValueClass())
+				.entries(attributes.getEntries());
+		if (attributes.getAverageKey() != null)
+			builder.averageKey(attributes.getAverageKey());
+		if (attributes.getAverageValue() != null)
+			builder.averageValue(attributes.getAverageValue());
+		if (attributes.getPersistedFile() != null) {
 			try {
-				return builder.createOrRecoverPersistedTo(setter.getPersistedFile());
+				return builder.createOrRecoverPersistedTo(attributes.getPersistedFile());
 			} catch (IOException e) {
-				throw new ChronicleIOException();
+				throw new ChronicleIOException(e);
 			}
 		} else
 			return builder.create();
 	}
 
-	private String generateKey(String keyPrefix, ChronicleMapSetter<K, V> setter) {
+	private String generateKey(String keyPrefix, ChronicleMapAttributes<K, V> setter) {
 		StringBuilder builder = new StringBuilder(128).append(keyPrefix).append("[KeyTyep:")
 				.append(setter.getKeyClass().getSimpleName()).append("][ValueTyep:")
 				.append(setter.getValueClass().getSimpleName()).append("]");
