@@ -1,25 +1,27 @@
 package io.ffreedom.commons.chronicle.map;
 
-import io.ffreedom.common.utils.BinaryUtil;
+import java.time.LocalDate;
+
+import io.ffreedom.common.env.SysProperty;
 import io.ffreedom.commons.chronicle.map.base.ChronicleMapAttributes;
-import net.openhft.chronicle.map.ChronicleMapBuilder;
+import net.openhft.chronicle.map.ChronicleMap;
 
 public class Snippet {
 
 	public static void main(String[] args) {
 
-		ChronicleMapAttributes<String, byte[]> bttributes = ChronicleMapAttributes.buildOf(String.class, byte[].class);
+		ChronicleMapAttributes<String, byte[]> attributes = ChronicleMapAttributes.buildOf(String.class, byte[].class)
+				.setRootPath(SysProperty.USER_HOME).setFolder("betting").setAverageKey("ABCD")
+				.setAverageValue("DEAFER".getBytes());
 
-		ChronicleMapBuilder<String, byte[]> builder = ChronicleMapBuilder.of(bttributes.getKeyClass(),
-				bttributes.getValueClass());
+		DateChronicleMapKeeper<String, byte[]> mapKeeper = new DateChronicleMapKeeper<>();
 
-		System.out.println(BinaryUtil.intToBinaryString(3));
+		ChronicleMap<String, byte[]> acquire = mapKeeper.acquire(LocalDate.now(), attributes);
 
-		System.out.println(32 << 16);
-
-		System.out.println(byte[].class.getSimpleName());
-
-		System.out.println("dasfa\\".endsWith("/") || "dasfa\\".endsWith("\\"));
+		acquire.put("1", "AA1".getBytes());
+		acquire.put("2", "BB2".getBytes());
+		acquire.put("3", "CC3".getBytes());
+		acquire.put("4", "DD4".getBytes());
 
 	}
 }
