@@ -35,9 +35,11 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		init();
 	}
 
+	private static final String Chronicle_Queue = "chronicle-queue/";
+
 	private void init() {
 		this.name = folder;
-		this.savePath = rootPath + folder;
+		this.savePath = rootPath + Chronicle_Queue + folder;
 		this.queue = SingleChronicleQueueBuilder.single(savePath).rollCycle(fileCycle.getRollCycle())
 				.storeFileListener(this::storeFileHandle).build();
 		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup-Thread"));
@@ -57,6 +59,14 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	public String getName() {
 		return name;
+	}
+
+	public String getRootPath() {
+		return rootPath;
+	}
+
+	public String getFolder() {
+		return folder;
 	}
 
 	public String getSavePath() {
@@ -84,8 +94,8 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	protected abstract static class BaseBuilder<BT> {
 
-		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/chronicle-queue/";
-		private String folder = "default";
+		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/";
+		private String folder = "default/";
 		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
 		private FileCycle fileCycle = FileCycle.HOUR;
 		private ObjIntConsumer<File> storeFileListener = null;

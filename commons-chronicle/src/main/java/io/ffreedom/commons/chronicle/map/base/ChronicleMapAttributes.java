@@ -1,8 +1,6 @@
 package io.ffreedom.commons.chronicle.map.base;
 
-import static io.ffreedom.common.utils.StringUtil.notPath;
-
-import java.io.File;
+import static io.ffreedom.common.utils.StringUtil.isPath;
 
 import io.ffreedom.common.env.SysProperty;
 
@@ -12,21 +10,20 @@ public final class ChronicleMapAttributes<K, V> {
 	private Class<V> valueClass;
 	private K averageKey;
 	private V averageValue;
-	private File persistedFile;
+	private String savePath;
 
 	private boolean putReturnsNull = false;
 	private boolean removeReturnsNull = false;
 	private boolean recover = false;
+	private boolean persistent = true;
 
+	private long entries = 32 << 16;
 	private int actualChunkSize;
-	private long entries = DefaultEntries;
-	private String rootPath = DefaultRootPath;
-	private String folder = DefaultFolder;
+	private String rootPath;
+	private String folder;
 
-	public static final long DefaultEntries = 32 << 16;
-	public static final String DefaultRootPath = SysProperty.JAVA_IO_TMPDIR + "/";
-	public static final String DefaultFolder = "default/";
-
+	private static final String DefaultRootPath = SysProperty.JAVA_IO_TMPDIR + "/";
+	private static final String DefaultFolder = "default/";
 	private static final String Chronicle_Map = "chronicle-map/";
 
 	private ChronicleMapAttributes(Class<K> keyClass, Class<V> valueClass) {
@@ -36,10 +33,22 @@ public final class ChronicleMapAttributes<K, V> {
 	private ChronicleMapAttributes(Class<K> keyClass, Class<V> valueClass, String rootPath, String folder) {
 		this.keyClass = keyClass;
 		this.valueClass = valueClass;
+		setSavePath(rootPath, folder);
+	}
+
+	private void setSavePath(String rootPath, String folder) {
+		this.rootPath = isPath(rootPath) ? rootPath : rootPath + "/";
+		this.folder = isPath(folder) ? folder : folder + "/";
+		this.savePath = this.rootPath + Chronicle_Map + this.folder;
 	}
 
 	public static <K, V> ChronicleMapAttributes<K, V> buildOf(Class<K> keyClass, Class<V> valueClass) {
 		return new ChronicleMapAttributes<>(keyClass, valueClass);
+	}
+
+	public static <K, V> ChronicleMapAttributes<K, V> buildOf(Class<K> keyClass, Class<V> valueClass, String rootPath,
+			String folder) {
+		return new ChronicleMapAttributes<>(keyClass, valueClass, rootPath, folder);
 	}
 
 	public Class<K> getKeyClass() {
@@ -50,20 +59,16 @@ public final class ChronicleMapAttributes<K, V> {
 		return valueClass;
 	}
 
-	public int getActualChunkSize() {
-		return actualChunkSize;
-	}
-
-	public long getEntries() {
-		return entries;
-	}
-
 	public K getAverageKey() {
 		return averageKey;
 	}
 
 	public V getAverageValue() {
 		return averageValue;
+	}
+
+	public String getSavePath() {
+		return savePath;
 	}
 
 	public boolean isPutReturnsNull() {
@@ -78,16 +83,24 @@ public final class ChronicleMapAttributes<K, V> {
 		return recover;
 	}
 
+	public boolean isPersistent() {
+		return persistent;
+	}
+
+	public int getActualChunkSize() {
+		return actualChunkSize;
+	}
+
+	public long getEntries() {
+		return entries;
+	}
+
 	public String getRootPath() {
 		return rootPath;
 	}
 
 	public String getFolder() {
 		return folder;
-	}
-
-	public File getPersistedFile() {
-		return persistedFile;
 	}
 
 	public ChronicleMapAttributes<K, V> setActualChunkSize(int actualChunkSize) {
@@ -125,22 +138,8 @@ public final class ChronicleMapAttributes<K, V> {
 		return this;
 	}
 
-	public ChronicleMapAttributes<K, V> setRootPath(String rootPath) {
-		this.rootPath = rootPath;
-		if (notPath(rootPath))
-			this.rootPath = rootPath + "/";
-		return this;
-	}
-
-	public ChronicleMapAttributes<K, V> setFolder(String folder) {
-		this.folder = folder;
-		if (notPath(folder))
-			this.folder = folder + "/";
-		return this;
-	}
-
-	public ChronicleMapAttributes<K, V> setPersistedFile(String fileName) {
-		this.persistedFile = new File(rootPath + Chronicle_Map + folder, fileName);
+	public ChronicleMapAttributes<K, V> setPersistent(boolean persistent) {
+		this.persistent = persistent;
 		return this;
 	}
 

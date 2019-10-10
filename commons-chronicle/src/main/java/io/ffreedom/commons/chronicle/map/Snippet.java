@@ -10,13 +10,13 @@ public class Snippet {
 
 	public static void main(String[] args) {
 
-		ChronicleMapAttributes<String, byte[]> attributes = ChronicleMapAttributes.buildOf(String.class, byte[].class)
-				.setRootPath(SysProperty.USER_HOME).setFolder("betting").setAverageKey("ABCD")
+		ChronicleMapAttributes<String, byte[]> attributes = ChronicleMapAttributes
+				.buildOf(String.class, byte[].class, SysProperty.USER_HOME, "betting").setAverageKey("ABCD")
 				.setAverageValue("DEAFER".getBytes());
 
-		DateChronicleMapKeeper<String, byte[]> mapKeeper = new DateChronicleMapKeeper<>();
+		DateChronicleMapKeeper<String, byte[]> mapKeeper = new DateChronicleMapKeeper<>(attributes);
 
-		ChronicleMap<String, byte[]> acquire = mapKeeper.acquire(LocalDate.now(), attributes);
+		ChronicleMap<String, byte[]> acquire = mapKeeper.acquire(LocalDate.now());
 
 		acquire.put("1", "AA1".getBytes());
 		acquire.put("2", "BB2".getBytes());

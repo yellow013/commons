@@ -3,6 +3,8 @@ package io.ffreedom.commons.chronicle.map.base;
 import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 
@@ -14,14 +16,20 @@ public class ChronicleMapKeeper<K, V> {
 
 	private ConcurrentMutableMap<String, ChronicleMap<K, V>> savedMap = ConcurrentHashMap.newMap(64);
 
-	@MayThrowRuntimeException
-	public ChronicleMap<K, V> acquire(String filename, ChronicleMapAttributes<K, V> attributes)
-			throws ChronicleIOException {
-		return savedMap.getIfAbsentPutWith(generateKey(filename, attributes), this::newChronicleMap,
-				attributes.setPersistedFile(filename));
+	private ChronicleMapAttributes<K, V> attributes;
+
+	public ChronicleMapKeeper(@Nonnull ChronicleMapAttributes<K, V> attributes) {
+		if (attributes == null)
+			throw new IllegalArgumentException("attributes can not be null");
+		this.attributes = attributes;
 	}
 
-	private ChronicleMap<K, V> newChronicleMap(ChronicleMapAttributes<K, V> attributes) {
+	@MayThrowRuntimeException
+	public ChronicleMap<K, V> acquire(String filename) throws ChronicleIOException {
+		return savedMap.getIfAbsentPutWith(fullKey(filename), this::newChronicleMap, filename);
+	}
+
+	private ChronicleMap<K, V> newChronicleMap(String filename) {
 		ChronicleMapBuilder<K, V> builder = ChronicleMapBuilder.of(attributes.getKeyClass(), attributes.getValueClass())
 				.putReturnsNull(attributes.isPutReturnsNull()).removeReturnsNull(attributes.isRemoveReturnsNull())
 				.entries(attributes.getEntries());
@@ -31,8 +39,8 @@ public class ChronicleMapKeeper<K, V> {
 			builder.averageKey(attributes.getAverageKey());
 		if (attributes.getAverageValue() != null)
 			builder.averageValue(attributes.getAverageValue());
-		File persistedFile = attributes.getPersistedFile();
-		if (persistedFile != null) {
+		if (attributes.isPersistent()) {
+			File persistedFile = new File(attributes.getSavePath(), filename);
 			try {
 				if (!persistedFile.exists()) {
 					File parentFile = persistedFile.getParentFile();
@@ -52,13 +60,12 @@ public class ChronicleMapKeeper<K, V> {
 			return builder.create();
 	}
 
-	private String generateKey(String filename, ChronicleMapAttributes<K, V> setter) {
-		StringBuilder builder = new StringBuilder(128).append(filename).append("[KeyTyep:")
-				.append(setter.getKeyClass().getSimpleName()).append("][ValueTyep:")
-				.append(setter.getValueClass().getSimpleName()).append("]");
-		return setter.getPersistedFile() == null ? builder.toString()
-				: builder.append("[FileAbsolutePath:").append(setter.getPersistedFile().getAbsolutePath()).append("]")
-						.toString();
+	private String fullKey(String filename) {
+		return new StringBuilder(96).append(filename).append("[KeyTyep:")
+				.append(attributes.getKeyClass().getSimpleName()).append("][ValueTyep:")
+				.append(attributes.getValueClass().getSimpleName()).append("][SavePath:")
+				.append(attributes.getSavePath()).append("]").toString();
+
 	}
 
 }
