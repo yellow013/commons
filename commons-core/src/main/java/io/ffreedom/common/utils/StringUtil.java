@@ -116,6 +116,10 @@ public final class StringUtil {
 		return isNullOrEmpty(path) ? false : path.endsWith("/") || path.endsWith("\\");
 	}
 
+	public static boolean notPath(String path) {
+		return !isPath(path);
+	}
+
 	/**
 	 * 使用','将字符串连接
 	 * 
