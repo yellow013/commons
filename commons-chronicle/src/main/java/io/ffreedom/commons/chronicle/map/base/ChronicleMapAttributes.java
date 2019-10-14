@@ -2,7 +2,7 @@ package io.ffreedom.commons.chronicle.map.base;
 
 import static io.ffreedom.common.utils.StringUtil.isPath;
 
-import io.ffreedom.common.env.SysProperty;
+import io.ffreedom.common.env.SystemPropertys;
 
 public final class ChronicleMapAttributes<K, V> {
 
@@ -22,7 +22,7 @@ public final class ChronicleMapAttributes<K, V> {
 	private String rootPath;
 	private String folder;
 
-	private static final String DefaultRootPath = SysProperty.JAVA_IO_TMPDIR + "/";
+	private static final String DefaultRootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
 	private static final String DefaultFolder = "default/";
 	private static final String Chronicle_Map = "chronicle-map/";
 

@@ -7,7 +7,7 @@ import java.util.function.ObjIntConsumer;
 
 import org.slf4j.Logger;
 
-import io.ffreedom.common.env.SysProperty;
+import io.ffreedom.common.env.SystemPropertys;
 import io.ffreedom.common.log.CommonLoggerFactory;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
@@ -94,7 +94,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	protected abstract static class BaseBuilder<BT> {
 
-		private String rootPath = SysProperty.JAVA_IO_TMPDIR + "/";
+		private String rootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
 		private String folder = "default/";
 		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
 		private FileCycle fileCycle = FileCycle.HOUR;
