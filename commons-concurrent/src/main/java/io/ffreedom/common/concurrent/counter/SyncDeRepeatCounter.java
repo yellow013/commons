@@ -69,7 +69,6 @@ public final class SyncDeRepeatCounter<T> {
 	public static void main(String[] args) {
 
 		SyncDeRepeatCounter<String> deRepeatCounter = new SyncDeRepeatCounter<String>(100);
-
 		System.out.println(deRepeatCounter.add("").add("fsdaf").add("dsfsad").add("").add("aaa").add("aaa").count());
 
 	}
