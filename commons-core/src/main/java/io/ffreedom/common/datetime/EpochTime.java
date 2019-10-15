@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 import static java.lang.System.currentTimeMillis;
 
-import static io.ffreedom.common.datetime.TimeZones.DEFAULT_ZONE_OFFSET;
+import static io.ffreedom.common.datetime.TimeZones.SYSTEM_DEFAULT_OFFSET;;
 
 public final class EpochTime {
 
@@ -28,7 +28,7 @@ public final class EpochTime {
 	}
 
 	public static long seconds(@Nonnull LocalDateTime datetime) {
-		return datetime.toEpochSecond(DEFAULT_ZONE_OFFSET);
+		return datetime.toEpochSecond(SYSTEM_DEFAULT_OFFSET);
 	}
 
 	public static long seconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
@@ -41,7 +41,7 @@ public final class EpochTime {
 
 	public static long milliseconds(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * 86400000L + datetime.toLocalTime().toSecondOfDay() * 1000
-				+ datetime.toLocalTime().getNano() / 1000000 - DEFAULT_ZONE_OFFSET.getTotalSeconds() * 1000;
+				+ datetime.toLocalTime().getNano() / 1000000 - SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * 1000;
 	}
 
 	public static long milliseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
@@ -55,7 +55,7 @@ public final class EpochTime {
 
 	public static long microseconds(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * 86400000000L + datetime.toLocalTime().toSecondOfDay() * 1000000L
-				+ datetime.toLocalTime().getNano() / 1000 - DEFAULT_ZONE_OFFSET.getTotalSeconds() * 1000000L;
+				+ datetime.toLocalTime().getNano() / 1000 - SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * 1000000L;
 	}
 
 	public static long microseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
