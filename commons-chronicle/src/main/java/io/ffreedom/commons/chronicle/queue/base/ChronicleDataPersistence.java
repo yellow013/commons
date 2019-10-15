@@ -14,7 +14,7 @@ import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
 public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT extends DataWriter<T>> {
 
-	private String savePath;
+	private final File savePath;
 	private String name;
 
 	private SingleChronicleQueue queue;
@@ -32,14 +32,16 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		this.fileCycle = builder.fileCycle;
 		this.storeFileListener = builder.storeFileListener;
 		this.logger = builder.logger;
-		init();
+		this.savePath = new File(rootPath + Chronicle_Queue + folder);
+		this.name = folder;
+		initChronicleQueue();
 	}
 
 	private static final String Chronicle_Queue = "chronicle-queue/";
 
-	private void init() {
-		this.name = folder;
-		this.savePath = rootPath + Chronicle_Queue + folder;
+	private void initChronicleQueue() {
+		if (!savePath.exists())
+			savePath.mkdirs();
 		this.queue = SingleChronicleQueueBuilder.single(savePath).rollCycle(fileCycle.getRollCycle())
 				.storeFileListener(this::storeFileHandle).build();
 		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup-Thread"));
@@ -69,7 +71,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		return folder;
 	}
 
-	public String getSavePath() {
+	public File getSavePath() {
 		return savePath;
 	}
 
@@ -81,10 +83,10 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		return queue;
 	}
 
+	@Deprecated
 	public boolean deleteFolder() {
-		File file = new File(savePath);
-		if (file.isAbsolute())
-			return file.delete();
+		if (savePath.isAbsolute())
+			return savePath.delete();
 		return false;
 	}
 
