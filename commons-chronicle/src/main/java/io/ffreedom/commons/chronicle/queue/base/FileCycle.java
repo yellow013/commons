@@ -1,15 +1,16 @@
 package io.ffreedom.commons.chronicle.queue.base;
 
+import io.ffreedom.common.datetime.TimeConstants;
 import net.openhft.chronicle.queue.RollCycle;
 import net.openhft.chronicle.queue.RollCycles;
 
 public enum FileCycle {
 
-	MINUTE(60, RollCycles.MINUTELY),
+	MINUTE(TimeConstants.SECONDS_PER_MINUTE, RollCycles.MINUTELY),
 
-	HOUR(60 * 60, RollCycles.HOURLY),
+	HOUR(TimeConstants.SECONDS_PER_HOUR, RollCycles.HOURLY),
 
-	DAY(24 * 60 * 60, RollCycles.DAILY),
+	DAY(TimeConstants.SECONDS_PER_DAY, RollCycles.DAILY),
 
 	;
 
@@ -19,6 +20,7 @@ public enum FileCycle {
 	private FileCycle(int seconds, RollCycle rollCycle) {
 		this.seconds = seconds;
 		this.rollCycle = rollCycle;
+
 	}
 
 	public int getSeconds() {
