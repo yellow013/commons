@@ -11,7 +11,7 @@ public class Example {
 
 		ChronicleMapAttributes<String, byte[]> attributes = ChronicleMapAttributes
 				.buildOf(String.class, byte[].class, SystemPropertys.USER_HOME, "betting")
-				.setAverageKey("uuid__game__merOrderId______").setAverageValue(new byte[256]);
+				.setAverageKey("uuid__game__merOrderId______").setAverageValue(new byte[128]);
 
 		DateChronicleMapKeeper<String, byte[]> mapKeeper = new DateChronicleMapKeeper<>(attributes);
 
