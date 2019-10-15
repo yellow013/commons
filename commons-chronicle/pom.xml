@@ -14,10 +14,10 @@
 	<name>commons-chronicle</name>
 
 	<properties>
-		<!-- chronicle-queue last version : 5.17.23 -->
-		<chronicle-queue.version>5.17.23</chronicle-queue.version>
-		<!-- chronicle-map last version : 3.17.5 -->
-		<chronicle-map.version>3.17.5</chronicle-map.version>
+		<!-- chronicle-queue last version : 5.17.25 -->
+		<chronicle-queue.version>5.17.25</chronicle-queue.version>
+		<!-- chronicle-map last version : 3.17.6 -->
+		<chronicle-map.version>3.17.6</chronicle-map.version>
 	</properties>
 
 	<dependencies>
@@ -99,8 +99,18 @@
 					<groupId>com.sun.java</groupId>
 					<artifactId>tools</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.thoughtworks.xstream</groupId>
+					<artifactId>xstream</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.11.1</version>
+		</dependency>
+		
 	</dependencies>
 </project>
