@@ -1,6 +1,6 @@
 package io.ffreedom.commons.chronicle.queue.base;
 
-import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
+import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 public abstract class DataWriter<T> {
@@ -25,7 +25,7 @@ public abstract class DataWriter<T> {
 	 * @param t
 	 * @throws ChronicleWriteException
 	 */
-	@MayThrowRuntimeException
+	@MayThrowsRuntimeException
 	public void append(T t) throws ChronicleWriteException {
 		try {
 			append0(t);

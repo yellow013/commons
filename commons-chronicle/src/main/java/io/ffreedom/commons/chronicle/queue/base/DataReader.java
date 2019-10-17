@@ -1,6 +1,6 @@
 package io.ffreedom.commons.chronicle.queue.base;
 
-import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
+import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import net.openhft.chronicle.queue.ExcerptTailer;
 
 public abstract class DataReader<T> {
@@ -47,7 +47,7 @@ public abstract class DataReader<T> {
 	 * @return
 	 * @throws ChronicleReadException
 	 */
-	@MayThrowRuntimeException
+	@MayThrowsRuntimeException
 	public T next() throws ChronicleReadException {
 		try {
 			return next0();

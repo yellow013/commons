@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 
-import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
+import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 
@@ -24,7 +24,7 @@ public class ChronicleMapKeeper<K, V> {
 		this.attributes = attributes;
 	}
 
-	@MayThrowRuntimeException
+	@MayThrowsRuntimeException
 	public ChronicleMap<K, V> acquire(String filename) throws ChronicleIOException {
 		return savedMap.getIfAbsentPutWith(fullKey(filename), this::newChronicleMap, filename);
 	}

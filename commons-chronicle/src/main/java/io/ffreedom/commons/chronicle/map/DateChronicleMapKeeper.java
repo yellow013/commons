@@ -2,7 +2,7 @@ package io.ffreedom.commons.chronicle.map;
 
 import java.time.LocalDate;
 
-import io.ffreedom.common.annotations.lang.MayThrowRuntimeException;
+import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import io.ffreedom.common.datetime.DateTimeUtil;
 import io.ffreedom.commons.chronicle.map.base.ChronicleIOException;
 import io.ffreedom.commons.chronicle.map.base.ChronicleMapAttributes;
@@ -15,7 +15,7 @@ public final class DateChronicleMapKeeper<K, V> extends ChronicleMapKeeper<K, V>
 		super(attributes);
 	}
 
-	@MayThrowRuntimeException
+	@MayThrowsRuntimeException
 	public ChronicleMap<K, V> acquire(LocalDate date) throws ChronicleIOException {
 		return super.acquire(String.valueOf(DateTimeUtil.date(date)));
 	}
