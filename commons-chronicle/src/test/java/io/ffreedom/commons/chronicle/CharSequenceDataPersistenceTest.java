@@ -14,7 +14,7 @@ public class CharSequenceDataPersistenceTest {
 
 	@Test
 	public void test0() {
-		StringDataPersistence persistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.MINUTE).build();
+		StringDataPersistence persistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.MINUTELY).build();
 		StringWriter writer = persistence.createWriter();
 		StringReader reader = persistence.createReader();
 
