@@ -38,7 +38,7 @@ public class StringDataPersistence extends ChronicleDataPersistence<String, Stri
 	}
 
 	public static void main(String[] args) {
-		StringDataPersistence dataPersistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.HOUR).build();
+		StringDataPersistence dataPersistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.HOURLY).build();
 		StringWriter queueWriter = dataPersistence.createWriter();
 		StringReader queueReader = dataPersistence.createReader();
 		new Thread(() -> {
