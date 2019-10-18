@@ -19,6 +19,10 @@ public abstract class DataWriter<T> {
 		return appender.cycle();
 	}
 
+	public int sourceId() {
+		return appender.sourceId();
+	}
+
 	/**
 	 * append element to queue tail.
 	 * 

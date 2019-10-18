@@ -44,7 +44,8 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 			savePath.mkdirs();
 		this.queue = SingleChronicleQueueBuilder.single(savePath).rollCycle(fileCycle.getRollCycle())
 				.storeFileListener(this::storeFileHandle).build();
-		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup-Thread"));
+		// TODO 解决CPU缓存行填充问题
+		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup"));
 	}
 
 	private void shutdownHandle() {
@@ -99,7 +100,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 		private String rootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
 		private String folder = "default/";
 		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
-		private FileCycle fileCycle = FileCycle.HOUR;
+		private FileCycle fileCycle = FileCycle.HOURLY;
 		private ObjIntConsumer<File> storeFileListener = null;
 
 		public BT setRootPath(String rootPath) {

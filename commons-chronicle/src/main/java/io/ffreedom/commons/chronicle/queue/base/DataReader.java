@@ -41,6 +41,10 @@ public abstract class DataReader<T> {
 		return tailer.cycle();
 	}
 
+	public long currentIndex() {
+		return tailer.index();
+	}
+
 	/**
 	 * Get next element of current cursor position.
 	 * 
