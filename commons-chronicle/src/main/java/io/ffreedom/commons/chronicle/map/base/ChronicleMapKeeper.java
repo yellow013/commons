@@ -28,7 +28,7 @@ public class ChronicleMapKeeper<K, V> {
 
 	@MayThrowsRuntimeException
 	public ChronicleMap<K, V> acquire(String filename) throws ChronicleIOException {
-		return savedMap.getIfAbsentPutWith(fullKey(filename), this::newChronicleMap, filename);
+		return savedMap.getIfAbsentPutWith(filename, this::newChronicleMap, filename);
 	}
 
 	private ChronicleMap<K, V> newChronicleMap(String filename) {
@@ -60,14 +60,6 @@ public class ChronicleMapKeeper<K, V> {
 			}
 		} else
 			return builder.create();
-	}
-
-	private String fullKey(String filename) {
-		return new StringBuilder(96).append(filename).append("[KeyTyep:")
-				.append(attributes.getKeyClass().getSimpleName()).append("][ValueTyep:")
-				.append(attributes.getValueClass().getSimpleName()).append("][SavePath:")
-				.append(attributes.getSavePath()).append("]").toString();
-
 	}
 
 }
