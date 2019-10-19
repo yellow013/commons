@@ -41,6 +41,10 @@ public abstract class DataReader<T> {
 		return tailer.cycle();
 	}
 
+	public long currentEpochSecond() {
+		return (long) tailer.cycle() * fileCycle.getSeconds();
+	}
+
 	public long currentIndex() {
 		return tailer.index();
 	}
