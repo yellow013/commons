@@ -5,16 +5,16 @@ import java.time.ZoneOffset;
 
 import org.junit.Test;
 
-import io.ffreedom.commons.chronicle.queue.StringDataPersistence;
-import io.ffreedom.commons.chronicle.queue.StringReader;
-import io.ffreedom.commons.chronicle.queue.StringWriter;
+import io.ffreedom.commons.chronicle.queue.ChronicleStringQueue;
+import io.ffreedom.commons.chronicle.queue.accessor.StringReader;
+import io.ffreedom.commons.chronicle.queue.accessor.StringWriter;
 import io.ffreedom.commons.chronicle.queue.base.FileCycle;
 
-public class CharSequenceDataPersistenceTest {
+public class ChronicleStringQueueTest {
 
 	@Test
 	public void test0() {
-		StringDataPersistence persistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.MINUTELY).build();
+		ChronicleStringQueue persistence = ChronicleStringQueue.newBuilder().setFileCycle(FileCycle.MINUTELY).build();
 		StringWriter writer = persistence.createWriter();
 		StringReader reader = persistence.createReader();
 
