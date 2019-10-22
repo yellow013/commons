@@ -12,9 +12,13 @@ public enum FileCycle {
 
 	HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.HOURLY),
 
+	LARGE_HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.LARGE_HOURLY),
+
 	SMALL_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.SMALL_DAILY),
 
 	DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.DAILY),
+
+	LARGE_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.LARGE_DAILY),
 
 	;
 

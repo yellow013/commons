@@ -12,7 +12,7 @@ import io.ffreedom.common.log.CommonLoggerFactory;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
-public abstract class ChronicleDataQueue<T, RT extends DataReader<T>, WT extends DataWriter<T>> {
+public abstract class ChronicleDataQueue<T, R extends DataReader<T>, W extends DataWriter<T>> {
 
 	private final File savePath;
 	private String name;
@@ -91,44 +91,44 @@ public abstract class ChronicleDataQueue<T, RT extends DataReader<T>, WT extends
 		return false;
 	}
 
-	public abstract RT createReader();
+	public abstract R createReader();
 
-	public abstract WT createWriter();
+	public abstract W acquireWriter();
 
-	protected abstract static class BaseBuilder<BT> {
+	protected abstract static class BaseBuilder<B extends BaseBuilder<B>> {
 
 		private String rootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
 		private String folder = "default/";
 		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataQueue.class);
-		private FileCycle fileCycle = FileCycle.HOURLY;
+		private FileCycle fileCycle = FileCycle.SMALL_DAILY;
 		private ObjIntConsumer<File> storeFileListener = null;
 
-		public BT setRootPath(String rootPath) {
+		public B setRootPath(String rootPath) {
 			this.rootPath = isPath(rootPath) ? rootPath : rootPath + "/";
 			return getThis();
 		}
 
-		public BT setFolder(String folder) {
+		public B setFolder(String folder) {
 			this.folder = isPath(folder) ? folder : folder + "/";
 			return getThis();
 		}
 
-		public BT setLogger(Logger logger) {
+		public B setLogger(Logger logger) {
 			this.logger = logger;
 			return getThis();
 		}
 
-		public BT setFileCycle(FileCycle fileCycle) {
+		public B setFileCycle(FileCycle fileCycle) {
 			this.fileCycle = fileCycle;
 			return getThis();
 		}
 
-		public BT setStoreFileListener(ObjIntConsumer<File> storeFileListener) {
+		public B setStoreFileListener(ObjIntConsumer<File> storeFileListener) {
 			this.storeFileListener = storeFileListener;
 			return getThis();
 		}
 
-		protected abstract BT getThis();
+		protected abstract B getThis();
 
 	}
 
