@@ -1,10 +1,12 @@
 package io.ffreedom.commons.chronicle.queue;
 
-import io.ffreedom.commons.chronicle.queue.base.ChronicleDataPersistence;
+import io.ffreedom.commons.chronicle.queue.accessor.BytesReader;
+import io.ffreedom.commons.chronicle.queue.accessor.BytesWriter;
+import io.ffreedom.commons.chronicle.queue.base.ChronicleDataQueue;
 
-public class BytesDataPersistence extends ChronicleDataPersistence<byte[], BytesReader, BytesWriter> {
+public class ChronicleBytesQueue extends ChronicleDataQueue<byte[], BytesReader, BytesWriter> {
 
-	private BytesDataPersistence(Builder builder) {
+	private ChronicleBytesQueue(Builder builder) {
 		super(builder);
 	}
 
@@ -24,8 +26,8 @@ public class BytesDataPersistence extends ChronicleDataPersistence<byte[], Bytes
 
 	public static class Builder extends BaseBuilder<Builder> {
 
-		public BytesDataPersistence build() {
-			return new BytesDataPersistence(this);
+		public ChronicleBytesQueue build() {
+			return new ChronicleBytesQueue(this);
 		}
 
 		@Override

@@ -1,12 +1,14 @@
 package io.ffreedom.commons.chronicle.queue;
 
 import io.ffreedom.common.number.RandomNumber;
-import io.ffreedom.commons.chronicle.queue.base.ChronicleDataPersistence;
+import io.ffreedom.commons.chronicle.queue.accessor.StringReader;
+import io.ffreedom.commons.chronicle.queue.accessor.StringWriter;
+import io.ffreedom.commons.chronicle.queue.base.ChronicleDataQueue;
 import io.ffreedom.commons.chronicle.queue.base.FileCycle;
 
-public class StringDataPersistence extends ChronicleDataPersistence<String, StringReader, StringWriter> {
+public class ChronicleStringQueue extends ChronicleDataQueue<String, StringReader, StringWriter> {
 
-	private StringDataPersistence(Builder builder) {
+	private ChronicleStringQueue(Builder builder) {
 		super(builder);
 	}
 
@@ -26,8 +28,8 @@ public class StringDataPersistence extends ChronicleDataPersistence<String, Stri
 
 	public static class Builder extends BaseBuilder<Builder> {
 
-		public StringDataPersistence build() {
-			return new StringDataPersistence(this);
+		public ChronicleStringQueue build() {
+			return new ChronicleStringQueue(this);
 		}
 
 		@Override
@@ -38,13 +40,13 @@ public class StringDataPersistence extends ChronicleDataPersistence<String, Stri
 	}
 
 	public static void main(String[] args) {
-		StringDataPersistence dataPersistence = StringDataPersistence.newBuilder().setFileCycle(FileCycle.HOURLY).build();
+		ChronicleStringQueue dataPersistence = ChronicleStringQueue.newBuilder().setFileCycle(FileCycle.HOURLY).build();
 		StringWriter queueWriter = dataPersistence.createWriter();
 		StringReader queueReader = dataPersistence.createReader();
 		new Thread(() -> {
 			for (;;) {
 				try {
-					queueWriter.append0(String.valueOf(RandomNumber.unsafeRandomLong()));
+					queueWriter.append(String.valueOf(RandomNumber.unsafeRandomLong()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
