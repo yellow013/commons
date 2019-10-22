@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.queue;
+package io.ffreedom.commons.chronicle.queue.accessor;
 
 import io.ffreedom.commons.chronicle.queue.base.DataWriter;
 import net.openhft.chronicle.queue.ExcerptAppender;

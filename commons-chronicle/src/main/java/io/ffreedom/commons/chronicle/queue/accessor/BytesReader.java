@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.queue;
+package io.ffreedom.commons.chronicle.queue.accessor;
 
 import io.ffreedom.commons.chronicle.queue.base.DataReader;
 import io.ffreedom.commons.chronicle.queue.base.FileCycle;
