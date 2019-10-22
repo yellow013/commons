@@ -8,17 +8,17 @@ import net.openhft.chronicle.queue.RollCycles;
 
 public enum FileCycle {
 
-	MINUTELY(TimeConstants.SECONDS_PER_MINUTE, RollCycles.MINUTELY),
+	MINUTELY(TimeConstants.SECONDS_PER_MINUTE, RollCycles.MINUTELY, "64 million entries per minute"),
 
-	HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.HOURLY),
+	HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.HOURLY, "256 million entries per hour"),
 
-	LARGE_HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.LARGE_HOURLY),
+	LARGE_HOURLY(TimeConstants.SECONDS_PER_HOUR, RollCycles.LARGE_HOURLY, "2 billion entries per hour"),
 
-	SMALL_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.SMALL_DAILY),
+	SMALL_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.SMALL_DAILY, "512 million entries per day"),
 
-	DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.DAILY),
+	DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.DAILY, "4 billion entries per day"),
 
-	LARGE_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.LARGE_DAILY),
+	LARGE_DAILY(TimeConstants.SECONDS_PER_DAY, RollCycles.LARGE_DAILY, "128 billion entries per day"),
 
 	;
 
@@ -27,7 +27,9 @@ public enum FileCycle {
 
 	private RollCycle rollCycle;
 
-	private FileCycle(int seconds, RollCycle rollCycle) {
+	private String desc;
+
+	private FileCycle(int seconds, RollCycle rollCycle, String desc) {
 		this.seconds = seconds;
 		this.rollCycle = rollCycle;
 	}
@@ -38,6 +40,10 @@ public enum FileCycle {
 
 	public RollCycle getRollCycle() {
 		return rollCycle;
+	}
+
+	public String getDesc() {
+		return desc;
 	}
 
 	/**

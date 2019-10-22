@@ -46,6 +46,7 @@ public abstract class ChronicleDataQueue<T, R extends DataReader<T>, W extends D
 				.storeFileListener(this::storeFileHandle).build();
 		// TODO 解决CPU缓存行填充问题
 		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHandle, "ChronicleQueue-Cleanup"));
+		logger.info("ChronicleDataQueue initialized -> name==[{}], desc==[{}]", name, fileCycle.getDesc());
 	}
 
 	private void shutdownHandle() {
