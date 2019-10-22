@@ -15,7 +15,7 @@ public class ChronicleStringQueueTest {
 	@Test
 	public void test0() {
 		ChronicleStringQueue persistence = ChronicleStringQueue.newBuilder().setFileCycle(FileCycle.MINUTELY).build();
-		StringWriter writer = persistence.createWriter();
+		StringWriter writer = persistence.acquireWriter();
 		StringReader reader = persistence.createReader();
 
 		LocalDateTime wantOf = LocalDateTime.of(2019, 9, 26, 20, 35);
