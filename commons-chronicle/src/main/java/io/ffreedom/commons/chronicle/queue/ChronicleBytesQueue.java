@@ -20,7 +20,7 @@ public class ChronicleBytesQueue extends ChronicleDataQueue<byte[], BytesReader,
 	}
 
 	@Override
-	public BytesWriter createWriter() {
+	public BytesWriter acquireWriter() {
 		return BytesWriter.wrap(getQueue().acquireAppender());
 	}
 

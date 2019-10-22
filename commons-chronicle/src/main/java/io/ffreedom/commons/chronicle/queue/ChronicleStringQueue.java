@@ -22,7 +22,7 @@ public class ChronicleStringQueue extends ChronicleDataQueue<String, StringReade
 	}
 
 	@Override
-	public StringWriter createWriter() {
+	public StringWriter acquireWriter() {
 		return StringWriter.wrap(getQueue().acquireAppender());
 	}
 
@@ -41,7 +41,7 @@ public class ChronicleStringQueue extends ChronicleDataQueue<String, StringReade
 
 	public static void main(String[] args) {
 		ChronicleStringQueue dataPersistence = ChronicleStringQueue.newBuilder().setFileCycle(FileCycle.HOURLY).build();
-		StringWriter queueWriter = dataPersistence.createWriter();
+		StringWriter queueWriter = dataPersistence.acquireWriter();
 		StringReader queueReader = dataPersistence.createReader();
 		new Thread(() -> {
 			for (;;) {
