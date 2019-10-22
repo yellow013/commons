@@ -12,7 +12,7 @@ import io.ffreedom.common.log.CommonLoggerFactory;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueue;
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder;
 
-public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT extends DataWriter<T>> {
+public abstract class ChronicleDataQueue<T, RT extends DataReader<T>, WT extends DataWriter<T>> {
 
 	private final File savePath;
 	private String name;
@@ -26,7 +26,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 	protected Logger logger;
 
-	protected ChronicleDataPersistence(BaseBuilder<?> builder) {
+	protected ChronicleDataQueue(BaseBuilder<?> builder) {
 		this.rootPath = builder.rootPath;
 		this.folder = builder.folder;
 		this.fileCycle = builder.fileCycle;
@@ -99,7 +99,7 @@ public abstract class ChronicleDataPersistence<T, RT extends DataReader<T>, WT e
 
 		private String rootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
 		private String folder = "default/";
-		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataPersistence.class);
+		private Logger logger = CommonLoggerFactory.getLogger(ChronicleDataQueue.class);
 		private FileCycle fileCycle = FileCycle.HOURLY;
 		private ObjIntConsumer<File> storeFileListener = null;
 
