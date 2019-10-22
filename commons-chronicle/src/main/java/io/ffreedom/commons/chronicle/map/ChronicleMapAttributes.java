@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.map.base;
+package io.ffreedom.commons.chronicle.map;
 
 import static io.ffreedom.common.utils.StringUtil.isPath;
 

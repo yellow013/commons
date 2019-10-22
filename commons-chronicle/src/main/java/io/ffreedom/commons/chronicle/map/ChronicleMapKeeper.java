@@ -1,4 +1,4 @@
-package io.ffreedom.commons.chronicle.map.base;
+package io.ffreedom.commons.chronicle.map;
 
 import java.io.File;
 import java.io.IOException;

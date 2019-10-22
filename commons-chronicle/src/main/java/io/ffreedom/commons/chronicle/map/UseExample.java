@@ -2,10 +2,9 @@ package io.ffreedom.commons.chronicle.map;
 
 import io.ffreedom.common.env.SystemPropertys;
 import io.ffreedom.common.thread.ThreadUtil;
-import io.ffreedom.commons.chronicle.map.base.ChronicleMapAttributes;
 import net.openhft.chronicle.map.ChronicleMap;
 
-public class Example {
+public class UseExample {
 
 	public static void main(String[] args) {
 
