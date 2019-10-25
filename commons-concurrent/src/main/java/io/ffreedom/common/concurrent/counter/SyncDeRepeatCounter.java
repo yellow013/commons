@@ -2,6 +2,7 @@ package io.ffreedom.common.concurrent.counter;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
 
 import io.ffreedom.common.annotations.thread.LockHeld;
@@ -19,7 +20,7 @@ public final class SyncDeRepeatCounter<T> {
 
 	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
 	private volatile int count;
-	private volatile int initCount;
+	private final int initCount;
 
 	// private boolean isArchived = false;
 
@@ -45,12 +46,20 @@ public final class SyncDeRepeatCounter<T> {
 		return this;
 	}
 
+	/**
+	 * 清空计数结果
+	 * 
+	 * @return
+	 */
 	@LockHeld
 	public synchronized SyncDeRepeatCounter<T> clear() {
 		deRepeatSet.clear();
 		count = 0;
-		initCount = 0;
 		return this;
+	}
+
+	public ImmutableSet<T> getDeRepeatSet() {
+		return deRepeatSet.toImmutable();
 	}
 
 	public long count() {
