@@ -76,7 +76,6 @@ public final class NetworkPropertys {
 			System.out.println(LocalInetAddress instanceof Inet6Address);
 			
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
