@@ -3,6 +3,7 @@ package io.ffreedom.common.concurrent.set;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.api.set.ImmutableSet;
 
 import io.ffreedom.common.annotations.thread.LockHeld;
 import io.ffreedom.common.collections.MutableMaps;
@@ -38,6 +39,14 @@ public final class DeRepeatCounterSet<T> {
 	public void putEvent(int groupId, T event) {
 		counter.add(event);
 		getCounterByGroup(groupId).add(event);
+	}
+
+	public ImmutableSet<T> getDeRepeatSet() {
+		return counter.getDeRepeatSet();
+	}
+
+	public ImmutableSet<T> getDeRepeatSet(int groupId) {
+		return getCounterByGroup(groupId).getDeRepeatSet();
 	}
 
 }
