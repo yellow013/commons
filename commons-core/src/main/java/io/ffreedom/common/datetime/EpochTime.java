@@ -8,15 +8,19 @@ import java.time.ZonedDateTime;
 import javax.annotation.Nonnull;
 
 import static java.lang.System.currentTimeMillis;
-
+import static io.ffreedom.common.datetime.TimeConstants.MICROS_PER_DAY;
+import static io.ffreedom.common.datetime.TimeConstants.MICROS_PER_MILLIS;
+import static io.ffreedom.common.datetime.TimeConstants.MICROS_PER_SECONDS;
+import static io.ffreedom.common.datetime.TimeConstants.MILLIS_PER_DAY;
+import static io.ffreedom.common.datetime.TimeConstants.MILLIS_PER_SECONDS;
+import static io.ffreedom.common.datetime.TimeConstants.NANOS_PER_MICROS;
+import static io.ffreedom.common.datetime.TimeConstants.NANOS_PER_MILLIS;
 import static io.ffreedom.common.datetime.TimeZones.SYSTEM_DEFAULT_OFFSET;;
 
 public final class EpochTime {
 
-	private final static int DAY_MILLIS = 24 * 60 * 60 * 1000;
-
 	public static long day() {
-		return currentTimeMillis() / DAY_MILLIS;
+		return currentTimeMillis() / MILLIS_PER_DAY;
 	}
 
 	public static long day(@Nonnull LocalDate date) {
@@ -24,7 +28,7 @@ public final class EpochTime {
 	}
 
 	public static long seconds() {
-		return currentTimeMillis() / 1000;
+		return currentTimeMillis() / MILLIS_PER_SECONDS;
 	}
 
 	public static long seconds(@Nonnull LocalDateTime datetime) {
@@ -40,27 +44,35 @@ public final class EpochTime {
 	}
 
 	public static long milliseconds(@Nonnull LocalDateTime datetime) {
-		return datetime.toLocalDate().toEpochDay() * 86400000L + datetime.toLocalTime().toSecondOfDay() * 1000
-				+ datetime.toLocalTime().getNano() / 1000000 - SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * 1000;
+		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
+				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS
+				+ datetime.toLocalTime().getNano() / NANOS_PER_MILLIS
+				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
-	public static long milliseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
-		return datetime.toLocalDate().toEpochDay() * 86400000L + datetime.toLocalTime().toSecondOfDay() * 1000
-				+ datetime.toLocalTime().getNano() / 1000000 - offset.getTotalSeconds() * 1000;
+	public static long milliseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
+		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
+				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS
+				+ datetime.toLocalTime().getNano() / NANOS_PER_MILLIS
+				- zoneOffset.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
 	public static long microseconds() {
-		return currentTimeMillis() * 1000;
+		return currentTimeMillis() * MICROS_PER_MILLIS;
 	}
 
 	public static long microseconds(@Nonnull LocalDateTime datetime) {
-		return datetime.toLocalDate().toEpochDay() * 86400000000L + datetime.toLocalTime().toSecondOfDay() * 1000000L
-				+ datetime.toLocalTime().getNano() / 1000 - SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * 1000000L;
+		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
+				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS
+				+ datetime.toLocalTime().getNano() / NANOS_PER_MICROS
+				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
-	public static long microseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
-		return datetime.toLocalDate().toEpochDay() * 86400000000L + datetime.toLocalTime().toSecondOfDay() * 1000000L
-				+ datetime.toLocalTime().getNano() / 1000 - offset.getTotalSeconds() * 1000000L;
+	public static long microseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
+		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
+				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS
+				+ datetime.toLocalTime().getNano() / NANOS_PER_MICROS
+				- zoneOffset.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
 	public static void main(String[] args) {
@@ -80,6 +92,8 @@ public final class EpochTime {
 		System.out.println(microseconds());
 		System.out.println(microseconds(now));
 		System.out.println(microseconds(now, offset));
+
+		System.out.println(24 >> 1);
 
 		// Charset.availableCharsets().entrySet().stream().forEach(entity ->
 		// System.out.println(entity));

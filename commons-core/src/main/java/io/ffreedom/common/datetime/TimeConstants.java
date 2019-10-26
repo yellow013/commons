@@ -6,6 +6,10 @@ public interface TimeConstants {
 	 * Hours per day.
 	 */
 	int HOURS_PER_DAY = 24;
+	/**
+	 * Hours per half day.
+	 */
+	int HOURS_PER_HALF_DAY = HOURS_PER_DAY >> 1;
 
 	/**
 	 * Minutes per hour.
@@ -15,6 +19,10 @@ public interface TimeConstants {
 	 * Minutes per day.
 	 */
 	int MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY;
+	/**
+	 * Minutes per half day.
+	 */
+	int MINUTES_PER_HALF_DAY = MINUTES_PER_DAY >> 1;
 
 	/**
 	 * Seconds per minute.
@@ -49,7 +57,11 @@ public interface TimeConstants {
 	 * Milliseconds per day.
 	 */
 	int MILLIS_PER_DAY = MILLIS_PER_SECONDS * SECONDS_PER_DAY;
-
+	/**
+	 * Milliseconds per half day.
+	 */
+	int MILLIS_PER_HALF_DAY = MILLIS_PER_DAY >> 1;
+	
 	/**
 	 * Microseconds per Milliseconds.
 	 */
@@ -70,7 +82,11 @@ public interface TimeConstants {
 	 * Microseconds per day.
 	 */
 	long MICROS_PER_DAY = MICROS_PER_SECONDS * SECONDS_PER_DAY;
-
+	/**
+	 * Microseconds per half day.
+	 */
+	long MICROS_PER_HALF_DAY = MICROS_PER_DAY >> 1;
+	
 	/**
 	 * Nanos per Microseconds.
 	 */
@@ -95,5 +111,9 @@ public interface TimeConstants {
 	 * Nanos per day.
 	 */
 	long NANOS_PER_DAY = NANOS_PER_SECOND * SECONDS_PER_DAY;
+	/**
+	 * Nanos per half day.
+	 */
+	long NANOS_PER_HALF_DAY = NANOS_PER_DAY >> 1;
 
 }

@@ -1,5 +1,7 @@
 package io.ffreedom.common.datetime;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
@@ -11,20 +13,20 @@ public class EpochTimestamp {
 	private ZonedDateTime zonedDateTime;
 
 	public EpochTimestamp() {
-		this.epochMilliseconds = System.currentTimeMillis();
+		this.epochMilliseconds = currentTimeMillis();
 	}
 
 	private void calculateEpochMicroseconds() {
 		this.epochMicroseconds = epochMilliseconds * 1000;
 	}
 
-	private void calculateInstant() {
+	private void newInstant() {
 		this.instant = Instant.ofEpochMilli(epochMilliseconds);
 	}
 
-	private void calculateZonedDateTime() {
+	private void newZonedDateTime() {
 		if (instant == null)
-			calculateInstant();
+			newInstant();
 		this.zonedDateTime = ZonedDateTime.ofInstant(instant, TimeZones.SYSTEM_DEFAULT);
 	}
 
@@ -44,13 +46,13 @@ public class EpochTimestamp {
 
 	public Instant getInstant() {
 		if (instant == null)
-			calculateInstant();
+			newInstant();
 		return instant;
 	}
 
 	public ZonedDateTime getZonedDateTime() {
 		if (zonedDateTime == null)
-			calculateZonedDateTime();
+			newZonedDateTime();
 		return zonedDateTime;
 	}
 
@@ -63,11 +65,18 @@ public class EpochTimestamp {
 			i++;
 			i--;
 		}
+		
+		for (int i = 0; i < 10000; i++) {
+			long l0_0 = System.nanoTime();
+			//EpochTime.milliseconds();
+			//EpochTimestamp.now();
+			Instant.now();
+			long l0_1 = System.nanoTime();
+			long l0 = l0_1 - l0_0;
+			System.out.println(l0);
+		}
 
-		long l0_0 = System.nanoTime();
-		EpochTime.milliseconds();
-		long l0_1 = System.nanoTime();
-
+	
 		long l1_0 = System.nanoTime();
 		EpochTimestamp.now();
 		long l1_1 = System.nanoTime();
@@ -76,11 +85,10 @@ public class EpochTimestamp {
 		Instant.now();
 		long l2_1 = System.nanoTime();
 
-		long l0 = l0_1 - l0_0;
+		
 		long l1 = l1_1 - l1_0;
 		long l2 = l2_1 - l2_0;
-
-		System.out.println(l0);
+		
 		System.out.println(l1);
 		System.out.println(l2);
 
