@@ -2,6 +2,7 @@ package io.ffreedom.commons.chronicle.queue.base;
 
 import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import net.openhft.chronicle.queue.ExcerptTailer;
+import net.openhft.chronicle.queue.TailerState;
 
 public abstract class DataReader<T> {
 
@@ -47,6 +48,10 @@ public abstract class DataReader<T> {
 
 	public long currentIndex() {
 		return tailer.index();
+	}
+
+	public TailerState state() {
+		return tailer.state();
 	}
 
 	/**
