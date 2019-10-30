@@ -1,10 +1,12 @@
 package io.ffreedom.commons.chronicle.queue;
 
+import java.nio.ByteBuffer;
+
 import io.ffreedom.commons.chronicle.queue.accessor.BytesReader;
 import io.ffreedom.commons.chronicle.queue.accessor.BytesWriter;
 import io.ffreedom.commons.chronicle.queue.base.ChronicleDataQueue;
 
-public class ChronicleBytesQueue extends ChronicleDataQueue<byte[], BytesReader, BytesWriter> {
+public class ChronicleBytesQueue extends ChronicleDataQueue<ByteBuffer, BytesReader, BytesWriter> {
 
 	private ChronicleBytesQueue(Builder builder) {
 		super(builder);
