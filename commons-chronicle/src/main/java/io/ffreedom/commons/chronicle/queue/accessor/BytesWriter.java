@@ -1,12 +1,15 @@
 package io.ffreedom.commons.chronicle.queue.accessor;
 
+import java.nio.ByteBuffer;
+
 import javax.annotation.concurrent.NotThreadSafe;
 
 import io.ffreedom.commons.chronicle.queue.base.DataWriter;
+import net.openhft.chronicle.bytes.BytesStore;
 import net.openhft.chronicle.queue.ExcerptAppender;
 
 @NotThreadSafe
-public final class BytesWriter extends DataWriter<byte[]> {
+public final class BytesWriter extends DataWriter<ByteBuffer> {
 
 	private BytesWriter(ExcerptAppender appender) {
 		super(appender);
@@ -17,10 +20,9 @@ public final class BytesWriter extends DataWriter<byte[]> {
 	}
 
 	@Override
-	protected void append0(byte[] t) {
-		
-		appender.writeBytes(wire -> {
-		});
+	protected void append0(ByteBuffer t) {
+		// use heap memory
+		appender.writeBytes(BytesStore.wrap(t));
 	}
 
 }
