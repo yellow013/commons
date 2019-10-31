@@ -15,7 +15,7 @@
 
 	<properties>
 		<!-- chronicle-queue last version : 5.17.25 -->
-		<chronicle-queue.version>5.17.25</chronicle-queue.version>
+		<chronicle-queue.version>5.17.26</chronicle-queue.version>
 		<!-- chronicle-map last version : 3.17.6 -->
 		<chronicle-map.version>3.17.6</chronicle-map.version>
 	</properties>
@@ -25,6 +25,18 @@
 		<dependency>
 			<groupId>io.ffreedom</groupId>
 			<artifactId>commons-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-core</artifactId>
+			<version>2.17.28</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- chronicle-map off-heap and high performance queue framework -->
@@ -46,6 +58,10 @@
 				<exclusion>
 					<groupId>net.java.dev.jna</groupId>
 					<artifactId>jna</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.openhft</groupId>
+					<artifactId>chronicle-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -105,12 +121,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.4.11.1</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>
