@@ -6,9 +6,9 @@ import io.ffreedom.common.annotations.lang.MayThrowsRuntimeException;
 import io.ffreedom.common.datetime.DateTimeUtil;
 import net.openhft.chronicle.map.ChronicleMap;
 
-public final class DateChronicleMapKeeper<K, V> extends ChronicleMapKeeper<K, V> {
+public final class ChronicleMapKeeperOfLocalDate<K, V> extends ChronicleMapKeeper<K, V> {
 
-	public DateChronicleMapKeeper(ChronicleMapAttributes<K, V> attributes) {
+	public ChronicleMapKeeperOfLocalDate(ChronicleMapAttributes<K, V> attributes) {
 		super(attributes);
 	}
 

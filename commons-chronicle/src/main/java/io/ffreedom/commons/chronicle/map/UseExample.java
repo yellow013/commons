@@ -12,7 +12,7 @@ public class UseExample {
 				.buildOf(String.class, byte[].class, SystemPropertys.USER_HOME, "betting")
 				.setAverageKey("uuid__game__merOrderId______").setAverageValue(new byte[128]);
 
-		DateChronicleMapKeeper<String, byte[]> mapKeeper = new DateChronicleMapKeeper<>(attributes);
+		ChronicleMapKeeperOfLocalDate<String, byte[]> mapKeeper = new ChronicleMapKeeperOfLocalDate<>(attributes);
 
 		ChronicleMap<String, byte[]> acquire = mapKeeper.acquire("2019.10.11");
 		
