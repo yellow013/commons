@@ -46,7 +46,7 @@ public class ChronicleStringQueue extends ChronicleDataQueue<String, StringReade
 		new Thread(() -> {
 			for (;;) {
 				try {
-					queueWriter.append(String.valueOf(RandomNumber.unsafeRandomLong()));
+					queueWriter.append(String.valueOf(RandomNumber.randomLong()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
