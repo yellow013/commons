@@ -149,12 +149,11 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 		}
 
 		public ThreadPoolExecutor build() {
-			return build(null);
+			return build("");
 		}
 
 		public ThreadPoolExecutor build(String threadPoolName) {
-			threadPoolName = StringUtil.isNullOrEmpty(threadPoolName)
-					? "CommonThreadPool-" + RandomNumber.safeRandomInt()
+			threadPoolName = StringUtil.isNullOrEmpty(threadPoolName) ? "CommonThreadPool-" + RandomNumber.randomInt()
 					: threadPoolName;
 			if (threadFactory != null && rejectedHandler != null)
 				return new CommonThreadPool(threadPoolName, this, threadFactory, rejectedHandler, beforeHandler,

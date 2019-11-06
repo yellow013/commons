@@ -10,59 +10,59 @@ public final class RandomNumber {
 
 	private static final Random RandomInstance = new Random();
 
-	public static void unsafeSetSeed(long seed) {
+	public static void setSeed(long seed) {
 		RandomInstance.setSeed(seed);
 	}
 
-	public static int unsafeRandomUnsignedInt() {
-		return Math.abs(RandomInstance.nextInt());
-	}
-
-	public static int unsafeRandomInt() {
+	public static int randomInt() {
 		return RandomInstance.nextInt();
 	}
 
-	public static long unsafeRandomUnsignedLong() {
-		return Math.abs(RandomInstance.nextLong());
+	public static int randomUnsignedInt() {
+		return Math.abs(RandomInstance.nextInt());
 	}
 
-	public static long unsafeRandomLong() {
+	public static long randomLong() {
 		return RandomInstance.nextLong();
 	}
 
-	public static double unsafeRandomUnsignedDouble() {
-		return Math.abs(RandomInstance.nextDouble());
+	public static long randomUnsignedLong() {
+		return Math.abs(RandomInstance.nextLong());
 	}
 
-	public static double unsafeRandomDouble() {
+	public static double randomDouble() {
 		return RandomInstance.nextDouble();
 	}
 
-	public static void safeSetSeed(long seed) {
+	public static double randomUnsignedDouble() {
+		return Math.abs(RandomInstance.nextDouble());
+	}
+
+	public static void setSeedOfSafe(long seed) {
 		ThreadLocalRandom.current().setSeed(seed);
 	}
 
-	public static int safeRandomUnsignedInt() {
+	public static int randomUnsignedIntOfSafe() {
 		return Math.abs(ThreadLocalRandom.current().nextInt());
 	}
 
-	public static int safeRandomInt() {
+	public static int randomIntOfSafe() {
 		return ThreadLocalRandom.current().nextInt();
 	}
 
-	public static long safeRandomUnsignedLong() {
+	public static long randomUnsignedLongOfSafe() {
 		return Math.abs(ThreadLocalRandom.current().nextLong());
 	}
 
-	public static long safeRandomLong() {
+	public static long randomLongOfSafe() {
 		return ThreadLocalRandom.current().nextLong();
 	}
 
-	public static double safeRandomUnsignedDouble() {
+	public static double randomUnsignedDoubleOfSafe() {
 		return Math.abs(ThreadLocalRandom.current().nextDouble());
 	}
 
-	public static double safeRandomDouble() {
+	public static double randomDoubleOfSafe() {
 		return ThreadLocalRandom.current().nextDouble();
 	}
 
