@@ -22,28 +22,25 @@ public final class ChronicleMapAttributes<K, V> {
 	private String rootPath;
 	private String folder;
 
-	private static final String DefaultRootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
-	private static final String DefaultFolder = "default/";
-	private static final String Chronicle_Map = "chronicle-map/";
-
-	private ChronicleMapAttributes(Class<K> keyClass, Class<V> valueClass) {
-		this(keyClass, valueClass, DefaultRootPath, DefaultFolder);
-	}
-
 	private ChronicleMapAttributes(Class<K> keyClass, Class<V> valueClass, String rootPath, String folder) {
 		this.keyClass = keyClass;
 		this.valueClass = valueClass;
-		setSavePath(rootPath, folder);
-	}
-
-	private void setSavePath(String rootPath, String folder) {
 		this.rootPath = isPath(rootPath) ? rootPath : rootPath + "/";
 		this.folder = isPath(folder) ? folder : folder + "/";
-		this.savePath = this.rootPath + Chronicle_Map + this.folder;
+		setSavePath();
 	}
 
+	private static final String ChronicleMapFolder = "chronicle-map/";
+
+	private void setSavePath() {
+		this.savePath = rootPath + ChronicleMapFolder + folder;
+	}
+
+	private static final String DefaultRootPath = SystemPropertys.JAVA_IO_TMPDIR + "/";
+	private static final String DefaultFolder = "default/";
+
 	public static <K, V> ChronicleMapAttributes<K, V> buildOf(Class<K> keyClass, Class<V> valueClass) {
-		return new ChronicleMapAttributes<>(keyClass, valueClass);
+		return new ChronicleMapAttributes<>(keyClass, valueClass, DefaultRootPath, DefaultFolder);
 	}
 
 	public static <K, V> ChronicleMapAttributes<K, V> buildOf(Class<K> keyClass, Class<V> valueClass, String rootPath,
