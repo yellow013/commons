@@ -22,7 +22,7 @@ public class ChronicleStringQueueTest {
 		// Start 2019-09-26T20:35:02.526
 
 		long epochSecond = wantOf.toEpochSecond(ZoneOffset.ofHours(8));
-
+		
 		new Thread(() -> {
 			try {
 				boolean moved = reader.moveTo(epochSecond);
