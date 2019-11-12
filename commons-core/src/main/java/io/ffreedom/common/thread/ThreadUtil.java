@@ -72,12 +72,27 @@ public final class ThreadUtil {
 		return thread;
 	}
 
+	public static void sleepIgnoreException(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sleepIgnoreException(long millis, int nanos) {
+		try {
+			Thread.sleep(millis, nanos);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void sleep(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e,
-					"Call ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
+			ErrorLogger.error(logger, e, "Call ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
 					e.getMessage());
 		}
 	}
@@ -87,8 +102,8 @@ public final class ThreadUtil {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
 			ErrorLogger.error(logger, e,
-					"Call ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}",
-					millis, nanos, e.getMessage());
+					"Call ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
+					e.getMessage());
 		}
 	}
 
@@ -97,8 +112,8 @@ public final class ThreadUtil {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
 			ErrorLogger.error(logger, e,
-					"Call ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}",
-					time, timeUnit, e.getMessage());
+					"Call ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
+					timeUnit, e.getMessage());
 		}
 	}
 
