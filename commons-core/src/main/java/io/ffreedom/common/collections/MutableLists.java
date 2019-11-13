@@ -1,5 +1,6 @@
 package io.ffreedom.common.collections;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.collections.api.list.MutableList;
@@ -74,13 +75,16 @@ public final class MutableLists {
 		return new FastList<>(initialCapacity);
 	}
 
+	public static <E> MutableList<E> newFastList(Collection<E> collection) {
+		return new FastList<>(collection);
+	}
+
 	public static <E> MutableList<E> newFastList(Iterator<E> iterator) {
-		MutableList<E> newFastList = newFastList();
-		if (iterator != null && iterator.hasNext()) {
+		MutableList<E> list = newFastList();
+		if (iterator != null && iterator.hasNext())
 			while (iterator.hasNext())
-				newFastList.add(iterator.next());
-		}
-		return newFastList;
+				list.add(iterator.next());
+		return list;
 	}
 
 	public static <E> MutableList<E> newFastList(Iterable<E> iterable) {
