@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.log.ErrorLogger;
 
 public final class ThreadUtil {
 
@@ -76,7 +75,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			// ignore exception
 		}
 	}
 
@@ -84,7 +83,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			// ignore exception
 		}
 	}
 
@@ -92,8 +91,8 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e, "Call ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis,
-					e.getMessage());
+			logger.error("Call ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(),
+					e);
 		}
 	}
 
@@ -101,9 +100,8 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e,
-					"Call ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
-					e.getMessage());
+			logger.error("Call ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis,
+					nanos, e.getMessage(), e);
 		}
 	}
 
@@ -111,9 +109,8 @@ public final class ThreadUtil {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e,
-					"Call ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
-					timeUnit, e.getMessage());
+			logger.error("Call ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
+					timeUnit, e.getMessage(), e);
 		}
 	}
 
@@ -125,8 +122,8 @@ public final class ThreadUtil {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			ErrorLogger.error(logger, e, "Thread join throw InterruptedException from thread -> id==[{}] name==[{}]",
-					thread.getId(), thread.getName());
+			logger.error("Thread join throw InterruptedException from thread -> id==[{}], name==[{}]", thread.getId(),
+					thread.getName(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}

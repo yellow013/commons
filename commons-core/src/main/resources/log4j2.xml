@@ -8,7 +8,7 @@
 		</Console>
 		<RollingFile name="rollingFile"
 			fileName="${sys:user.home}/log4j2/${sys:log4j2.folder}/${sys:log4j2.filename}.log"
-			filePattern="${sys:user.home}/log4j2/${sys:log4j2.folder}/${sys:log4j2.filename}.%d{yyyy-MM-dd}.log"
+			filePattern="${sys:user.home}/log4j2/${sys:log4j2.folder}/${sys:log4j2.filename}.%d{yyyyMMdd}.log"
 			append="true">
 			<!-- 日志输出格式 -->
 			<PatternLayout

@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 
 import io.ffreedom.common.functional.Runner;
 import io.ffreedom.common.log.CommonLoggerFactory;
-import io.ffreedom.common.log.ErrorLogger;
 
 public final class ScheduleTaskUtil {
 
@@ -36,7 +35,7 @@ public final class ScheduleTaskUtil {
 				try {
 					runner.run();
 				} catch (Exception e) {
-					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}, unit.toMillis(delay));
@@ -56,7 +55,7 @@ public final class ScheduleTaskUtil {
 				try {
 					runner.run();
 				} catch (Exception e) {
-					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}, unit.toMillis(delay), unit.toMillis(period));
@@ -76,7 +75,7 @@ public final class ScheduleTaskUtil {
 				try {
 					runner.run();
 				} catch (Exception e) {
-					ErrorLogger.error(logger, e, "TimerTask runner throw Exception -> {}", e.getMessage());
+					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}), unit.toMillis(delay), unit.toMillis(period));

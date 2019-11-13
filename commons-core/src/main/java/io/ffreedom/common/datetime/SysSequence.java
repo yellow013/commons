@@ -1,6 +1,8 @@
-package io.ffreedom.common.log;
+package io.ffreedom.common.datetime;
 
 import org.slf4j.Logger;
+
+import io.ffreedom.common.log.CommonLoggerFactory;
 
 public final class SysSequence {
 
