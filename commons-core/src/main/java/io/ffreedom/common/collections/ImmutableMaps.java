@@ -31,43 +31,43 @@ public final class ImmutableMaps {
 	 * 
 	 * factory
 	 */
-	public static ImmutableIntIntMapFactory immutableIntIntMapFactory() {
+	public static ImmutableIntIntMapFactory IntIntMapFactory() {
 		return ImmutableIntIntMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableIntLongMapFactory immutableIntLongMapFactory() {
+	public static ImmutableIntLongMapFactory IntLongMapFactory() {
 		return ImmutableIntLongMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableIntDoubleMapFactory immutableIntDoubleMapFactory() {
+	public static ImmutableIntDoubleMapFactory IntDoubleMapFactory() {
 		return ImmutableIntDoubleMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableIntObjectMapFactory immutableIntObjectMapFactory() {
+	public static ImmutableIntObjectMapFactory IntObjectMapFactory() {
 		return ImmutableIntObjectMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableLongIntMapFactory immutableLongIntMapFactory() {
+	public static ImmutableLongIntMapFactory LongIntMapFactory() {
 		return ImmutableLongIntMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableLongLongMapFactory immutableLongLongMapFactory() {
+	public static ImmutableLongLongMapFactory LongLongMapFactory() {
 		return ImmutableLongLongMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableLongDoubleMapFactory immutableLongDoubleMapFactory() {
+	public static ImmutableLongDoubleMapFactory LongDoubleMapFactory() {
 		return ImmutableLongDoubleMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableLongObjectMapFactory immutableLongObjectMapFactory() {
+	public static ImmutableLongObjectMapFactory LongObjectMapFactory() {
 		return ImmutableLongObjectMapFactoryImpl.INSTANCE;
 	}
 
-	public static ImmutableMapFactory immutableMapFactory() {
+	public static ImmutableMapFactory MapFactory() {
 		return ImmutableMapFactoryImpl.INSTANCE;
 	}
 
-	public static <K, V> ImmutableMap<K, V> newImmutableMap(Map<K, V> map) {
+	public static <K, V> ImmutableMap<K, V> newMap(Map<K, V> map) {
 		if (map == null || map.isEmpty())
 			return ImmutableMapFactoryImpl.INSTANCE.empty();
 		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
