@@ -11,6 +11,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableLists;
 import io.ffreedom.common.collections.MutableMaps;
 
@@ -26,15 +27,15 @@ public abstract class TemporalMap<K extends Temporal, V, T extends TemporalMap<K
 	private MutableLongObjectMap<V> savedMap;
 
 	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey) {
-		this(keyToLangFunc, nextKeyFunc, hasNextKey, 128);
+		this(keyToLangFunc, nextKeyFunc, hasNextKey, InitialCapacity.L07_Size_128);
 	}
 
 	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey,
-			int initialCapacity) {
+			InitialCapacity capacity) {
 		this.keyToLangFunc = keyToLangFunc;
 		this.nextKeyFunc = nextKeyFunc;
 		this.hasNextKey = hasNextKey;
-		this.savedMap = MutableMaps.newLongObjectHashMap(initialCapacity);
+		this.savedMap = MutableMaps.newLongObjectHashMap(capacity);
 	}
 
 	/**

@@ -7,6 +7,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.queue.api.SCQueue;
 import io.ffreedom.common.concurrent.queue.MpscArrayBlockingQueue;
@@ -22,9 +23,9 @@ import io.ffreedom.common.utils.StringUtil;
 @ThreadSafe
 public final class AsyncCacheMap<K, V> {
 
-	private MutableMap<K, V> mutableMap = MutableMaps.newUnifiedMap(256);
+	private MutableMap<K, V> mutableMap = MutableMaps.newUnifiedMap(InitialCapacity.L08_Size_256);
 
-	private MutableLongObjectMap<Consumer<V>> consumerMap = MutableMaps.newLongObjectHashMap(128);
+	private MutableLongObjectMap<Consumer<V>> consumerMap = MutableMaps.newLongObjectHashMap(InitialCapacity.L07_Size_128);
 
 	private String cacheName;
 

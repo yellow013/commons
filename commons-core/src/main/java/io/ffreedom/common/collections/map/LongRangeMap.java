@@ -8,6 +8,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableLists;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.MutableSets;
@@ -25,12 +26,12 @@ public final class LongRangeMap<V> {
 	private MutableLongSet savedKey;
 
 	public LongRangeMap() {
-		this(64);
+		this(InitialCapacity.L06_Size_64);
 	}
 
-	public LongRangeMap(int initialCapacity) {
-		this.savedMap = MutableMaps.newLongObjectHashMap(initialCapacity);
-		this.savedKey = MutableSets.newLongHashSet(initialCapacity);
+	public LongRangeMap(InitialCapacity capacity) {
+		this.savedMap = MutableMaps.newLongObjectHashMap(capacity);
+		this.savedKey = MutableSets.newLongHashSet(capacity);
 
 	}
 
@@ -84,7 +85,8 @@ public final class LongRangeMap<V> {
 //				longHashSet.add(next);
 //		}
 //		return longHashSet;
-		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(64));
+		return savedKey.select(key -> key >= startPoint && key <= endPoint,
+				MutableSets.newLongHashSet(InitialCapacity.L06_Size_64));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -95,7 +97,7 @@ public final class LongRangeMap<V> {
 	public static void main(String[] args) {
 
 		long startNano = System.nanoTime();
-		LongRangeMap<String> longRangeMap = new LongRangeMap<>(200000);
+		LongRangeMap<String> longRangeMap = new LongRangeMap<>(InitialCapacity.L25_Size_33554432);
 		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}

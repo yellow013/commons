@@ -8,6 +8,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableLists;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.MutableSets;
@@ -25,12 +26,12 @@ public final class ConcurrentLongRangeMap<V> {
 	private MutableLongSet savedKey;
 
 	public ConcurrentLongRangeMap() {
-		this(64);
+		this(InitialCapacity.L06_Size_64);
 	}
 
-	public ConcurrentLongRangeMap(int initialCapacity) {
-		this.savedMap = MutableMaps.newLongObjectHashMap(initialCapacity);
-		this.savedKey = MutableSets.newLongHashSet(initialCapacity);
+	public ConcurrentLongRangeMap(InitialCapacity capacity) {
+		this.savedMap = MutableMaps.newLongObjectHashMap(capacity);
+		this.savedKey = MutableSets.newLongHashSet(capacity);
 
 	}
 
@@ -84,7 +85,7 @@ public final class ConcurrentLongRangeMap<V> {
 //				longHashSet.add(next);
 //		}
 //		return longHashSet;
-		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(64));
+		return savedKey.select(key -> key >= startPoint && key <= endPoint, MutableSets.newLongHashSet(InitialCapacity.L06_Size_64));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -95,7 +96,7 @@ public final class ConcurrentLongRangeMap<V> {
 	public static void main(String[] args) {
 
 		long startNano = System.nanoTime();
-		ConcurrentLongRangeMap<String> longRangeMap = new ConcurrentLongRangeMap<>(200000);
+		ConcurrentLongRangeMap<String> longRangeMap = new ConcurrentLongRangeMap<>(InitialCapacity.L24_Size_16777216);
 		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}

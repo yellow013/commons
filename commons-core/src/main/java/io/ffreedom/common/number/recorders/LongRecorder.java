@@ -3,6 +3,7 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableLongIntMap;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.MutableSets;
 
@@ -11,9 +12,9 @@ public final class LongRecorder {
 	private MutableLongIntMap longCounter;
 	private MutableLongSet longSet;
 
-	public LongRecorder(int size) {
-		this.longCounter = MutableMaps.newLongIntHashMap(size);
-		this.longSet = MutableSets.newLongHashSet(size);
+	public LongRecorder(InitialCapacity capacity) {
+		this.longCounter = MutableMaps.newLongIntHashMap(capacity);
+		this.longSet = MutableSets.newLongHashSet(capacity);
 	}
 
 	public void put(long value) {

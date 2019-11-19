@@ -30,8 +30,8 @@ public final class MutableSets {
 		return new IntHashSet();
 	}
 
-	public static MutableIntSet newIntHashSet(int initialCapacity) {
-		return new IntHashSet(initialCapacity);
+	public static MutableIntSet newIntHashSet(InitialCapacity capacity) {
+		return new IntHashSet(capacity.size());
 	}
 
 	public static MutableIntSet newIntHashSetWith(int... intValues) {
@@ -44,8 +44,8 @@ public final class MutableSets {
 		return new DoubleHashSet();
 	}
 
-	public static MutableDoubleSet newDoubleHashSet(int initialCapacity) {
-		return new DoubleHashSet(initialCapacity);
+	public static MutableDoubleSet newDoubleHashSet(InitialCapacity capacity) {
+		return new DoubleHashSet(capacity.size());
 	}
 
 	public static MutableDoubleSet newDoubleHashSetWith(double... doubleValues) {
@@ -58,8 +58,8 @@ public final class MutableSets {
 		return new LongHashSet();
 	}
 
-	public static MutableLongSet newLongHashSet(int initialCapacity) {
-		return new LongHashSet(initialCapacity);
+	public static MutableLongSet newLongHashSet(InitialCapacity capacity) {
+		return new LongHashSet(capacity.size());
 	}
 
 	public static MutableLongSet newLongHashSetWith(long... longValues) {
@@ -76,8 +76,8 @@ public final class MutableSets {
 		return new UnifiedSet<>();
 	}
 
-	public static <E> MutableSet<E> newUnifiedSet(int initialCapacity) {
-		return new UnifiedSet<>(initialCapacity);
+	public static <E> MutableSet<E> newUnifiedSet(InitialCapacity capacity) {
+		return new UnifiedSet<>(capacity.size());
 	}
 
 	public static <E> MutableSet<E> newUnifiedSet(Iterator<E> iterator) {

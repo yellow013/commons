@@ -3,6 +3,7 @@ package io.ffreedom.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableMaps;
 import io.ffreedom.common.collections.MutableSets;
 
@@ -19,9 +20,9 @@ public final class DoubleRecorder {
 	private MutableDoubleIntMap doubleCounter;
 	private MutableDoubleSet doubleSet;
 
-	public DoubleRecorder(int size) {
-		this.doubleCounter = MutableMaps.newDoubleIntHashMap(size);
-		this.doubleSet = MutableSets.newDoubleHashSet(size);
+	public DoubleRecorder(InitialCapacity capacity) {
+		this.doubleCounter = MutableMaps.newDoubleIntHashMap(capacity);
+		this.doubleSet = MutableSets.newDoubleHashSet(capacity);
 	}
 
 	public void put(double value) {

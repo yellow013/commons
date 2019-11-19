@@ -6,6 +6,7 @@ import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
 
 import io.ffreedom.common.annotations.thread.LockHeld;
+import io.ffreedom.common.collections.InitialCapacity;
 import io.ffreedom.common.collections.MutableSets;
 
 /**
@@ -18,7 +19,7 @@ import io.ffreedom.common.collections.MutableSets;
 @ThreadSafe
 public final class SyncDeRepeatCounter<T> {
 
-	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(64);
+	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(InitialCapacity.L06_Size_64);
 	private volatile int count;
 	private final int initCount;
 
