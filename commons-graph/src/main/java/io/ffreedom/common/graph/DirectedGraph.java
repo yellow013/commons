@@ -14,12 +14,12 @@ public final class DirectedGraph<V> {
 
 	private final Graph<V, Edge> graph;
 
-	private DirectedGraph(Class<V> VertexClass) {
-		this.graph = GraphTypeBuilder.directed().vertexClass(VertexClass).edgeSupplier(Edge.EdgeSupplier).buildGraph();
+	private DirectedGraph(Class<V> vertexClass) {
+		this.graph = GraphTypeBuilder.directed().vertexClass(vertexClass).edgeSupplier(Edge.EdgeSupplier).buildGraph();
 	}
 
-	public static <V> DirectedGraph<V> buildOf(Class<V> VertexClass) {
-		return new DirectedGraph<>(VertexClass);
+	public static <V> DirectedGraph<V> buildOf(Class<V> vertexClass) {
+		return new DirectedGraph<>(vertexClass);
 	}
 
 	public DirectedGraph<V> addVertex(V vertex) {
@@ -28,10 +28,10 @@ public final class DirectedGraph<V> {
 		return this;
 	}
 
-	public DirectedGraph<V> addEdge(V sourceVertex, V targetVertex) {
-		graph.addVertex(sourceVertex);
-		graph.addVertex(targetVertex);
-		graph.addEdge(sourceVertex, targetVertex);
+	public DirectedGraph<V> addEdge(V source, V target) {
+		graph.addVertex(source);
+		graph.addVertex(target);
+		graph.addEdge(source, target);
 		return this;
 	}
 

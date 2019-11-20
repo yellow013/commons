@@ -9,8 +9,8 @@ public class Edge extends DefaultEdge {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -365779404810792993L;
+	private static final long serialVersionUID = 1L;
 
-	public final static Supplier<Edge> EdgeSupplier = () -> new Edge();
+	public final static Supplier<Edge> EdgeSupplier = Edge::new;
 
 }
