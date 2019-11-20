@@ -1,6 +1,7 @@
 package io.ffreedom.common.collections.customize;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
@@ -16,6 +17,11 @@ public abstract class Keeper<K, V> {
 	@Nonnull
 	public V acquire(@Nonnull K k) {
 		return savedMap.getIfAbsentPutWithKey(k, this::createWith);
+	}
+
+	@Nullable
+	public V get(@Nonnull K k) {
+		return savedMap.get(k);
 	}
 
 	protected abstract V createWith(K k);
