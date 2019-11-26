@@ -2,7 +2,7 @@ package io.ffreedom.common.env;
 
 import java.util.Properties;
 
-public final class SystemPropertys {
+public final class SysPropertys {
 
 	/*
 	 * System.getProperty("os.name")
