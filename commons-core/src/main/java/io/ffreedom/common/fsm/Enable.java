@@ -4,7 +4,9 @@ public interface Enable {
 
 	boolean isEnabled();
 
-	boolean isDisabled();
+	default boolean isDisabled() {
+		return !isEnabled();
+	}
 
 	void disable();
 
