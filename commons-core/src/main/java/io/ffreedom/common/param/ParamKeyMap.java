@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
+import java.util.function.Supplier;
 
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.primitive.MutableIntBooleanMap;
@@ -15,8 +16,6 @@ import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
-import io.ffreedom.common.functional.Initializer;
-
 public final class ParamKeyMap<K extends ParamKey> {
 
 	private MutableIntBooleanMap booleanParamMap = new IntBooleanHashMap();
@@ -25,8 +24,8 @@ public final class ParamKeyMap<K extends ParamKey> {
 	private MutableIntObjectMap<String> stringParamMap = new IntObjectHashMap<>();
 	private MutableIntObjectMap<Temporal> temporalParamMap = new IntObjectHashMap<>();
 
-	public ParamKeyMap(Initializer<ImmutableMap<K, Object>> initializer) {
-		ImmutableMap<K, Object> initMap = initializer.initialize();
+	public ParamKeyMap(Supplier<ImmutableMap<K, Object>> initializer) {
+		ImmutableMap<K, Object> initMap = initializer.get();
 		initMap.forEachKeyValue((K key, Object value) -> {
 			switch (key.getParamType()) {
 			case BOOLEAN:
