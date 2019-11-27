@@ -1,8 +1,6 @@
 package io.ffreedom.common.functional;
 
 @FunctionalInterface
-public interface Runner {
-
-	void run();
+public interface Runner extends Runnable {
 
 }

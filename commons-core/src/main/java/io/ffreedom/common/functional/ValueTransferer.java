@@ -3,13 +3,13 @@ package io.ffreedom.common.functional;
 import java.util.function.BiFunction;
 
 @FunctionalInterface
-public interface BiConverter<FROM, TO> extends BiFunction<FROM, TO, TO> {
+public interface ValueTransferer<F, T> extends BiFunction<F, T, T> {
 
-	TO convertTo(FROM from, TO to);
+	T transfer(F from, T to);
 
 	@Override
-	default TO apply(FROM from, TO to) {
-		return convertTo(from, to);
+	default T apply(F from, T to) {
+		return transfer(from, to);
 	}
 
 }
