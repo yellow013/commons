@@ -1,11 +1,15 @@
 package io.mercury.common.group;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+
+import org.eclipse.collections.api.list.ImmutableList;
 
 public interface Group<K, V> {
 
-	V getMember(K k);
-	
-	List<V> getMembers();
+	@Nonnull
+	V acquireMember(@Nonnull K k);
+
+	@Nonnull
+	ImmutableList<V> memberList();
 
 }

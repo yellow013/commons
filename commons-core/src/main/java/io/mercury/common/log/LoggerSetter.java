@@ -2,35 +2,35 @@ package io.mercury.common.log;
 
 public class LoggerSetter {
 
-	private static volatile boolean isLogFolderSetted;
-	private static volatile boolean isLogFilenameSetted;
-	private static volatile boolean isLogLevelSetted;
+	private static volatile boolean logFolderSetted;
+	private static volatile boolean logFilenameSetted;
+	private static volatile boolean logLevelSetted;
 
-	public static boolean isLogFolderSetted() {
-		return isLogFolderSetted;
+	public static boolean logFolderSetted() {
+		return logFolderSetted;
 	}
 
-	public static boolean isLogFilenameSetted() {
-		return isLogFilenameSetted;
+	public static boolean logFilenameSetted() {
+		return logFilenameSetted;
 	}
 
-	public static boolean isLogLevelSetted() {
-		return isLogLevelSetted;
+	public static boolean logLevelSetted() {
+		return logLevelSetted;
 	}
 
-	public static void setLogFolder(String logFolder) {
+	public static void logFolder(String logFolder) {
 		System.setProperty(LoggerConstant.LOG4J2_FOLDER, logFolder);
-		isLogFolderSetted = true;
+		logFolderSetted = true;
 	}
 
-	public static void setLogFileName(String logFileName) {
+	public static void logFileName(String logFileName) {
 		System.setProperty(LoggerConstant.LOG4J2_FILENAME, logFileName);
-		isLogFilenameSetted = true;
+		logFilenameSetted = true;
 	}
 
-	public static void setLogLevel(LogLevel logLevel) {
+	public static void logLevel(LogLevel logLevel) {
 		System.setProperty(LoggerConstant.LOG4J2_LEVEL, logLevel.name());
-		isLogLevelSetted = true;
+		logLevelSetted = true;
 	}
 
 }

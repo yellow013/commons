@@ -91,7 +91,7 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 		logger.info("CommonThreadPool {} is terminated", threadPoolName);
 	};
 
-	public String getThreadPoolName() {
+	public String threadPoolName() {
 		return threadPoolName;
 	}
 
@@ -108,43 +108,43 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 		private BiConsumer<Thread, Runnable> beforeHandler;
 		private BiConsumer<Runnable, Throwable> afterHandler;
 
-		public ThreadPoolBuilder setCorePoolSize(int corePoolSize) {
+		public ThreadPoolBuilder corePoolSize(int corePoolSize) {
 			this.corePoolSize = corePoolSize;
 			return this;
 		}
 
-		public ThreadPoolBuilder setMaximumPoolSize(int maximumPoolSize) {
+		public ThreadPoolBuilder maximumPoolSize(int maximumPoolSize) {
 			this.maximumPoolSize = maximumPoolSize;
 			return this;
 		}
 
-		public ThreadPoolBuilder setKeepAliveTime(long keepAliveTime, TimeUnit timeUnit) {
+		public ThreadPoolBuilder keepAliveTime(long keepAliveTime, TimeUnit timeUnit) {
 			this.keepAliveTime = keepAliveTime;
 			this.timeUnit = timeUnit;
 			return this;
 		}
 
-		public ThreadPoolBuilder setWorkQueue(BlockingQueue<Runnable> workQueue) {
+		public ThreadPoolBuilder workQueue(BlockingQueue<Runnable> workQueue) {
 			this.workQueue = workQueue;
 			return this;
 		}
 
-		public ThreadPoolBuilder setThreadFactory(ThreadFactory threadFactory) {
+		public ThreadPoolBuilder threadFactory(ThreadFactory threadFactory) {
 			this.threadFactory = threadFactory;
 			return this;
 		}
 
-		public ThreadPoolBuilder setRejectedHandler(RejectedExecutionHandler rejectedHandler) {
+		public ThreadPoolBuilder rejectedHandler(RejectedExecutionHandler rejectedHandler) {
 			this.rejectedHandler = rejectedHandler;
 			return this;
 		}
 
-		public ThreadPoolBuilder setBeforeHandler(BiConsumer<Thread, Runnable> beforeHandler) {
+		public ThreadPoolBuilder beforeHandler(BiConsumer<Thread, Runnable> beforeHandler) {
 			this.beforeHandler = beforeHandler;
 			return this;
 		}
 
-		public ThreadPoolBuilder setAfterHandler(BiConsumer<Runnable, Throwable> afterHandler) {
+		public ThreadPoolBuilder afterHandler(BiConsumer<Runnable, Throwable> afterHandler) {
 			this.afterHandler = afterHandler;
 			return this;
 		}

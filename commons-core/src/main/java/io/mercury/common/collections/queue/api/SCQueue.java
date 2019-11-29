@@ -38,7 +38,7 @@ public abstract class SCQueue<E> implements Queue<E> {
 	}
 
 	@Override
-	public String getQueueName() {
+	public String name() {
 		return queueName;
 	}
 

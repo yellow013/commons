@@ -16,7 +16,7 @@ public abstract class Keeper<K, V> {
 
 	@Nonnull
 	public V acquire(@Nonnull K k) {
-		return savedMap.getIfAbsentPutWithKey(k, this::createWith);
+		return savedMap.getIfAbsentPutWithKey(k, this::createWithKey);
 	}
 
 	@Nullable
@@ -24,6 +24,6 @@ public abstract class Keeper<K, V> {
 		return savedMap.get(k);
 	}
 
-	protected abstract V createWith(K k);
+	protected abstract V createWithKey(K k);
 
 }

@@ -2,10 +2,7 @@ package io.mercury.common.collections.list;
 
 import java.util.List;
 
-import javax.annotation.concurrent.NotThreadSafe;
-
-@NotThreadSafe
-public abstract class LimitedList<L extends List<E>, E> extends LimitedContainer<E> {
+abstract class LimitedList<L extends List<E>, E> extends LimitedContainer<E> {
 
 	private L innerList;
 

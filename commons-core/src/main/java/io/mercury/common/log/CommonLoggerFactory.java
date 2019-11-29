@@ -15,20 +15,20 @@ public class CommonLoggerFactory {
 	private static final String DefaultFileName = "jruntime";
 
 	public static Logger getLogger(Class<?> clazz) {
-		if (!LoggerSetter.isLogFolderSetted()) {
+		if (!LoggerSetter.logFolderSetted()) {
 			String logFolder = System.getProperty(LoggerConstant.LOG4J2_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder))
-				LoggerSetter.setLogFolder(DefaultFolder);
+				LoggerSetter.logFolder(DefaultFolder);
 		}
-		if (!LoggerSetter.isLogFilenameSetted()) {
+		if (!LoggerSetter.logFilenameSetted()) {
 			String logFilename = System.getProperty(LoggerConstant.LOG4J2_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
-				LoggerSetter.setLogFileName(DefaultFileName);
+				LoggerSetter.logFileName(DefaultFileName);
 		}
-		if (!LoggerSetter.isLogLevelSetted()) {
+		if (!LoggerSetter.logLevelSetted()) {
 			String logLevel = System.getProperty(LoggerConstant.LOG4J2_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel))
-				LoggerSetter.setLogLevel(LogLevel.INFO);
+				LoggerSetter.logLevel(LogLevel.INFO);
 		}
 		return LoggerFactory.getLogger(clazz);
 	}
@@ -36,9 +36,9 @@ public class CommonLoggerFactory {
 	public static void main(String[] args) {
 
 		System.out.println(System.getProperty("user.home"));
-		LoggerSetter.setLogFileName("new");
+		LoggerSetter.logFileName("new");
 
-		LoggerSetter.setLogLevel(LogLevel.ERROR);
+		LoggerSetter.logLevel(LogLevel.ERROR);
 		Logger logger = getLogger(CommonLoggerFactory.class);
 
 		logger.error("this is error");

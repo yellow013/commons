@@ -1,50 +1,31 @@
 package io.mercury.common.group;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
+
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ConcurrentMutableMap;
+
+import io.mercury.common.collections.ImmutableLists;
+import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.MutableMaps;
 
 @ThreadSafe
 public abstract class BaseGroup<K, V> implements Group<K, V> {
 
-	protected Map<K, V> group = new ConcurrentHashMap<>();
+	protected ConcurrentMutableMap<K, V> savedMap = MutableMaps.newConcurrentHashMap(InitialCapacity.L04_Size_16);
 
 	@Override
-	public synchronized V getMember(K k) {
-		V member = group.get(k);
-		if (member != null) {
-			return member;
-		} else {
-			if (registerMember(k))
-				return getMember(k);
-			else
-				return null;
-			//throw new RuntimeException("Call method -> createMember(" + k + ") return null, throw RuntimeException.");
-		}
+	public V acquireMember(K k) {
+		return savedMap.getIfAbsentPutWithKey(k, this::createMember);
 	}
 
 	@Override
-	public List<V> getMembers() {
-		return new ArrayList<>(group.values());
+	public ImmutableList<V> memberList() {
+		return ImmutableLists.newList(savedMap.values());
 	}
 
-	protected boolean isExisted(K k) {
-		return group.containsKey(k);
-	}
-
-	protected abstract V createMember(K k);
-
-	public synchronized boolean registerMember(K k) {
-		V member = createMember(k);
-		if (member != null) {
-			group.put(k, member);
-			return true;
-		} else {
-			return false;
-		}
-	}
+	@Nonnull
+	protected abstract V createMember(@Nonnull K k);
 
 }

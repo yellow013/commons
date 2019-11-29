@@ -14,9 +14,9 @@ import io.mercury.common.log.CommonLoggerFactory;
 import io.mercury.common.utils.FileUtil;
 import io.mercury.common.utils.StringUtil;
 
-public final class FromPropertiesFile {
+public final class PropertiesFileReader {
 
-	private static Logger logger = CommonLoggerFactory.getLogger(FromPropertiesFile.class);
+	private static Logger logger = CommonLoggerFactory.getLogger(PropertiesFileReader.class);
 
 	/**
 	 * TODO 增加重新加载配置文件的功能
@@ -30,7 +30,7 @@ public final class FromPropertiesFile {
 
 	static {
 		List<File> allPropertiesFile = FileUtil.loadAllChildFile(
-				new File(FromPropertiesFile.class.getResource("/").getPath()),
+				new File(PropertiesFileReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {
 			logger.info("Properties file -> [{}] start load", propertiesFile);
@@ -59,7 +59,7 @@ public final class FromPropertiesFile {
 			fileName = "";
 		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		return new StringBuilder(3).append(fileName).append("-").append(propertyName).toString();
+		return new StringBuilder(16).append(fileName).append("-").append(propertyName).toString();
 	}
 
 	public synchronized static String getProperty(String fileName, String propertyName) {

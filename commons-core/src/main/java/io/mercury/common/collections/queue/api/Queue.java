@@ -4,6 +4,6 @@ public interface Queue<E> {
 	
 	boolean enqueue(E e);
 	
-	String getQueueName();
+	String name();
 
 }
