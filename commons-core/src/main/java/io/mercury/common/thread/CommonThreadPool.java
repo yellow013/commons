@@ -1,5 +1,8 @@
 package io.mercury.common.thread;
 
+import static io.mercury.common.number.RandomNumber.randomInt;
+import static io.mercury.common.utils.StringUtil.isNullOrEmpty;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -11,16 +14,13 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.mercury.common.number.RandomNumber;
-import io.mercury.common.utils.StringUtil;
-
 public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private BiConsumer<Thread, Runnable> beforeHandler;
-	private boolean isBeforeHandle = false;
+	private boolean hasBeforeHandle = false;
 
 	private BiConsumer<Runnable, Throwable> afterHandler;
-	private boolean isAfterHandle = false;
+	private boolean hasAfterHandle = false;
 
 	private String threadPoolName;
 
@@ -60,11 +60,11 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 		this.threadPoolName = threadPoolName;
 		if (beforeHandler != null) {
 			this.beforeHandler = beforeHandler;
-			this.isBeforeHandle = true;
+			this.hasBeforeHandle = true;
 		}
 		if (afterHandler != null) {
 			this.afterHandler = afterHandler;
-			this.isAfterHandle = true;
+			this.hasAfterHandle = true;
 		}
 	}
 
@@ -74,20 +74,21 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	@Override
 	protected void beforeExecute(Thread thread, Runnable runnable) {
-		logger.debug("Thread name -> {}, Runnable -> {}, execute before.", thread.getName(), runnable.toString());
-		if (isBeforeHandle)
+		logger.debug("Thread name -> {}, Runnable -> {}, execute before", thread.getName(), runnable);
+		if (hasBeforeHandle)
 			beforeHandler.accept(thread, runnable);
 	}
 
 	@Override
 	protected void afterExecute(Runnable runnable, Throwable throwable) {
-		logger.debug("Runnable -> {}, execute after.", runnable.toString());
-		if (isAfterHandle)
+		logger.debug("Runnable -> {}, execute after", runnable);
+		if (hasAfterHandle)
 			afterHandler.accept(runnable, throwable);
 	}
 
 	@Override
 	protected void terminated() {
+		logger.info("CommonThreadPool {} is terminated", threadPoolName);
 	};
 
 	public String getThreadPoolName() {
@@ -149,12 +150,11 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 		}
 
 		public ThreadPoolExecutor build() {
-			return build("");
+			return build(null);
 		}
 
 		public ThreadPoolExecutor build(String threadPoolName) {
-			threadPoolName = StringUtil.isNullOrEmpty(threadPoolName) ? "CommonThreadPool-" + RandomNumber.randomInt()
-					: threadPoolName;
+			threadPoolName = isNullOrEmpty(threadPoolName) ? "CommonThreadPool-" + randomInt() : threadPoolName;
 			if (threadFactory != null && rejectedHandler != null)
 				return new CommonThreadPool(threadPoolName, this, threadFactory, rejectedHandler, beforeHandler,
 						afterHandler);
