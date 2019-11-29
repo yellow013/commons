@@ -146,7 +146,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 
 		int i = 0;
 
-		System.out.println(queue.getQueueName());
+		System.out.println(queue.name());
 		for (;;) {
 			queue.enqueue(++i);
 			System.out.println("enqueue ->" + i);

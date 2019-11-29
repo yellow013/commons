@@ -92,7 +92,7 @@ public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	}
 
 	@Override
-	public String getQueueName() {
+	public String name() {
 		return "MpmcPreloadingArrayBlockingQueue";
 	}
 
