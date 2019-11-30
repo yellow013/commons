@@ -1,4 +1,4 @@
-package io.mercury.common.graph.base;
+package io.mercury.common.graph;
 
 import java.util.function.Supplier;
 
@@ -9,7 +9,7 @@ public class Edge extends DefaultEdge {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1497450312630076892L;
 
 	public final static Supplier<Edge> EdgeSupplier = Edge::new;
 

@@ -8,14 +8,13 @@ import org.jgrapht.graph.builder.GraphTypeBuilder;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
 import io.mercury.common.collections.MutableSets;
-import io.mercury.common.graph.base.Edge;
 
 public final class DirectedGraph<V> {
 
-	private final Graph<V, Edge> graph;
+	private final Graph<V, Edge> internalGraph;
 
 	private DirectedGraph(Class<V> vertexClass) {
-		this.graph = GraphTypeBuilder.directed().vertexClass(vertexClass).edgeSupplier(Edge.EdgeSupplier).buildGraph();
+		this.internalGraph = GraphTypeBuilder.directed().vertexClass(vertexClass).edgeSupplier(Edge.EdgeSupplier).buildGraph();
 	}
 
 	public static <V> DirectedGraph<V> buildOf(Class<V> vertexClass) {
@@ -24,43 +23,43 @@ public final class DirectedGraph<V> {
 
 	public DirectedGraph<V> addVertex(V vertex) {
 		if (vertex != null)
-			graph.addVertex(vertex);
+			internalGraph.addVertex(vertex);
 		return this;
 	}
 
 	public DirectedGraph<V> addEdge(V source, V target) {
-		graph.addVertex(source);
-		graph.addVertex(target);
-		graph.addEdge(source, target);
+		internalGraph.addVertex(source);
+		internalGraph.addVertex(target);
+		internalGraph.addEdge(source, target);
 		return this;
 	}
 
-	public boolean contains(V v) {
-		return graph.containsVertex(v);
+	public boolean containsVertex(V v) {
+		return internalGraph.containsVertex(v);
 	}
 
-	public boolean contains(Edge e) {
-		return graph.containsEdge(e);
+	public boolean containsEdge(Edge e) {
+		return internalGraph.containsEdge(e);
 	}
 
 	public boolean containsEdge(V source, V target) {
-		return graph.containsEdge(source, target);
+		return internalGraph.containsEdge(source, target);
 	}
 
 	public MutableSet<V> allVertex() {
-		return MutableSets.newUnifiedSet(graph.vertexSet());
+		return MutableSets.newUnifiedSet(internalGraph.vertexSet());
 	}
 
 	public MutableSet<Edge> allEdge() {
-		return MutableSets.newUnifiedSet(graph.edgeSet());
+		return MutableSets.newUnifiedSet(internalGraph.edgeSet());
 	}
 
 	public MutableSet<V> allChildVertex(V vertex) {
-		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(graph, vertex));
+		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(internalGraph, vertex));
 	}
 
-	public Graph<V, Edge> getGraph() {
-		return graph;
+	public Graph<V, Edge> internalGraph() {
+		return internalGraph;
 	}
 
 	public static void main(String[] args) {
@@ -99,7 +98,7 @@ public final class DirectedGraph<V> {
 
 		System.out.println(allChildVertex);
 
-		System.out.println(graph.getGraph().getType());
+		System.out.println(graph.internalGraph().getType());
 
 	}
 
