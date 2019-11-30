@@ -1,5 +1,6 @@
 package io.mercury.common.thread;
 
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -12,6 +13,12 @@ public final class ThreadUtil {
 	}
 
 	private static Logger logger = CommonLoggerFactory.getLogger(ThreadUtil.class);
+
+	private static final ThreadPoolExecutor threadPoolExecutor = CommonThreadPool.newBuilder().build();
+
+	public static ThreadPoolExecutor threadPoolExecutor() {
+		return threadPoolExecutor;
+	}
 
 	public static Thread newThread(Runnable runnable) {
 		return new Thread(runnable);
@@ -91,8 +98,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			logger.error("Call ThreadUtil.sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(),
-					e);
+			logger.error("ThreadUtil#sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(), e);
 		}
 	}
 
@@ -100,8 +106,8 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			logger.error("Call ThreadUtil.sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis,
-					nanos, e.getMessage(), e);
+			logger.error("ThreadUtil#sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
+					e.getMessage(), e);
 		}
 	}
 
@@ -109,7 +115,7 @@ public final class ThreadUtil {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
-			logger.error("Call ThreadUtil.sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
+			logger.error("ThreadUtil#sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
 					timeUnit, e.getMessage(), e);
 		}
 	}

@@ -7,10 +7,10 @@ import io.mercury.common.thread.ThreadUtil;
 
 public final class LocalSerial {
 
-	private AtomicLong innerId;
+	private final AtomicLong internalSerial;
 
 	private LocalSerial(long initValue) {
-		this.innerId = new AtomicLong(initValue);
+		this.internalSerial = new AtomicLong(initValue);
 	}
 
 	public static LocalSerial newInstance(long initValue) {
@@ -22,7 +22,11 @@ public final class LocalSerial {
 	}
 
 	public long incrementAndGet() {
-		return innerId.incrementAndGet();
+		return internalSerial.incrementAndGet();
+	}
+
+	public AtomicLong internalSerial() {
+		return internalSerial;
 	}
 
 	public static void main(String[] args) {

@@ -4,13 +4,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public final class GlobalSerial {
 
-	private static AtomicLong InnerId = new AtomicLong(0L);;
+	public final static AtomicLong InternalSerial = new AtomicLong(0L);;
 
 	private GlobalSerial() {
 	}
 
 	public static long incrementAndGet() {
-		return InnerId.incrementAndGet();
+		return InternalSerial.incrementAndGet();
 	}
 
 }
