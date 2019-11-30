@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 import javax.annotation.Nonnull;
@@ -280,19 +281,19 @@ public final class DateTimeUtil {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
 	}
 
-	@MayThrowsRuntimeException
+	@MayThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalDate toLocalDate(@Nonnull DatePattern pattern, @Nonnull String str) {
 		checkFormatParam(pattern, str);
 		return LocalDate.parse(str, pattern.getFormatter());
 	}
 
-	@MayThrowsRuntimeException
+	@MayThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalTime toLocalTime(@Nonnull TimePattern pattern, @Nonnull String str) {
 		checkFormatParam(pattern, str);
 		return LocalTime.parse(str, pattern.getFormatter());
 	}
 
-	@MayThrowsRuntimeException
+	@MayThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalDateTime toLocalDateTime(@Nonnull DateTimePattern pattern, @Nonnull String str) {
 		checkFormatParam(pattern, str);
 		return LocalDateTime.parse(str, pattern.getFormatter());
