@@ -14,6 +14,8 @@ import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.mercury.common.sys.CurrentRuntime;
+
 public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private BiConsumer<Thread, Runnable> beforeHandler;
@@ -96,9 +98,9 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 	}
 
 	public final static class ThreadPoolBuilder {
-
-		private int corePoolSize = Runtime.getRuntime().availableProcessors();
-		private int maximumPoolSize = Runtime.getRuntime().availableProcessors() * 4;
+		
+		private int corePoolSize = CurrentRuntime.availableCores();
+		private int maximumPoolSize = CurrentRuntime.availableCores() * 4;
 		private long keepAliveTime = 60;
 		private TimeUnit timeUnit = TimeUnit.SECONDS;
 		private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();

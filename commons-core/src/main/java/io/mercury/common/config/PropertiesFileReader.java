@@ -29,7 +29,7 @@ public final class PropertiesFileReader {
 	private static final String PROPERTIES_FILE_SUFFIX = ".properties";
 
 	static {
-		List<File> allPropertiesFile = FileUtil.loadAllChildFile(
+		List<File> allPropertiesFile = FileUtil.findFileWith(
 				new File(PropertiesFileReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {

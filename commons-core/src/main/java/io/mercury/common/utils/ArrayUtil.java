@@ -28,7 +28,7 @@ public final class ArrayUtil {
 		return array == null ? true : array.length == 0 ? true : false;
 	}
 
-	public static boolean[] copyOf(boolean[] origin) {
+	public static boolean[] newOf(boolean[] origin) {
 		boolean[] newArray = new boolean[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -41,7 +41,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static byte[] copyOf(byte[] origin) {
+	public static byte[] newOf(byte[] origin) {
 		byte[] newArray = new byte[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -54,7 +54,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static char[] copyOf(char[] origin) {
+	public static char[] newOf(char[] origin) {
 		char[] newArray = new char[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -67,7 +67,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static int[] copyOf(int[] origin) {
+	public static int[] newOf(int[] origin) {
 		int[] newArray = new int[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -80,7 +80,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static long[] copyOf(long[] origin) {
+	public static long[] newOf(long[] origin) {
 		long[] newArray = new long[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -93,7 +93,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static float[] copyOf(float[] origin) {
+	public static float[] newOf(float[] origin) {
 		float[] newArray = new float[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -106,7 +106,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static double[] copyOf(double[] origin) {
+	public static double[] newOf(double[] origin) {
 		double[] newArray = new double[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -119,7 +119,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static String[] copyOf(String[] origin) {
+	public static String[] newOf(String[] origin) {
 		String[] newArray = new String[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -132,7 +132,7 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static Object[] copyOf(Object[] origin) {
+	public static Object[] newOf(Object[] origin) {
 		Object[] newArray = new Object[origin.length];
 		arraycopy(origin, 0, newArray, 0, origin.length);
 		return newArray;
@@ -145,27 +145,10 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static void println(Object... objs) {
-		if (objs == null)
-			return;
-		for (Object obj : objs)
-			System.out.println(obj);
-	}
-
-	public static void print(Object... objs) {
-		if (objs == null)
-			return;
-		for (int i = 0; i < objs.length; i++) {
-			System.out.print(objs[i]);
-			if (i < objs.length - 1)
-				System.out.print(" , ");
-		}
-	}
-
 	public static String toString(Object... objs) {
 		if (objs == null)
 			return "";
-		StringBuilder builder = new StringBuilder(objs.length * 2 * 16 + 1).append('[');
+		StringBuilder builder = new StringBuilder(objs.length * 2 * 16).append('[');
 		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
 			builder.append(objs[i].toString());
 			if (i < j)

@@ -1,4 +1,4 @@
-package io.mercury.common.env;
+package io.mercury.common.sys;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -8,9 +8,11 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-public final class NetworkPropertys {
+
+public final class NetworkProperties {
 
 	public static final InetAddress LocalInetAddress = getlocalInetAddress();
+
 //
 //	public static final String LocalHostAddress = LocalInetAddress.getHostAddress();
 //
@@ -21,6 +23,7 @@ public final class NetworkPropertys {
 	private static InetAddress getlocalInetAddress() {
 		try {
 			return InetAddress.getLocalHost();
+			//TODO
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		}
@@ -59,29 +62,28 @@ public final class NetworkPropertys {
 		try {
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 			while (networkInterfaces.hasMoreElements()) {
-				NetworkInterface networkInterface =  networkInterfaces.nextElement();
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
 				Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
 				while (inetAddresses.hasMoreElements()) {
 					InetAddress inetAddress = inetAddresses.nextElement();
 					System.out.println(inetAddress instanceof Inet4Address);
 					System.out.println(inetAddress instanceof Inet6Address);
-					
+
 					System.out.println(inetAddress.getHostAddress());
-					
+
 				}
 			}
-			
+
 			System.out.println(LocalInetAddress.getHostAddress());
 			System.out.println(LocalInetAddress instanceof Inet4Address);
 			System.out.println(LocalInetAddress instanceof Inet6Address);
-			
+
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		
-		
-		//System.out.println(NetworkPropertys.LocalHostAddress);
-		//System.out.println(NetworkPropertys.LocalMacAddress);
+
+		// System.out.println(NetworkPropertys.LocalHostAddress);
+		// System.out.println(NetworkPropertys.LocalMacAddress);
 	}
 
 }

@@ -12,28 +12,28 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
-import io.mercury.common.functional.Runner;
 import io.mercury.common.log.CommonLoggerFactory;
+import io.mercury.common.sys.CurrentRuntime;
 
-public final class ScheduleTaskUtil {
+public final class ScheduleTaskExecutor {
 
-	private ScheduleTaskUtil() {
+	private ScheduleTaskExecutor() {
 	}
 
-	private static Logger logger = CommonLoggerFactory.getLogger(ScheduleTaskUtil.class);
+	private static Logger logger = CommonLoggerFactory.getLogger(ScheduleTaskExecutor.class);
 
-	public static Timer startNewDelayTask(LocalDateTime firstTime, Runner runner) {
-		return startNewDelayTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
-				runner);
+	public static Timer startDelayTask(LocalDateTime firstTime, Runnable runnable) {
+		return startDelayTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
+				runnable);
 	}
 
-	public static Timer startNewDelayTask(long delay, TimeUnit unit, Runner runner) {
+	public static Timer startDelayTask(long delay, TimeUnit unit, Runnable runnable) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				try {
-					runner.run();
+					runnable.run();
 				} catch (Exception e) {
 					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
@@ -42,18 +42,18 @@ public final class ScheduleTaskUtil {
 		return timer;
 	}
 
-	public static Timer startNewCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runner runner) {
-		return startNewCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), unit.toMillis(period),
-				TimeUnit.MILLISECONDS, runner);
+	public static Timer startCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runnable runnable) {
+		return startCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), unit.toMillis(period),
+				TimeUnit.MILLISECONDS, runnable);
 	}
 
-	public static Timer startNewCycleTask(long delay, long period, TimeUnit unit, Runner runner) {
+	public static Timer startCycleTask(long delay, long period, TimeUnit unit, Runnable runnable) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				try {
-					runner.run();
+					runnable.run();
 				} catch (Exception e) {
 					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
@@ -62,18 +62,18 @@ public final class ScheduleTaskUtil {
 		return timer;
 	}
 
-	public static Timer startNewFixedRateCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runner runner) {
-		return startNewFixedRateCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
-				unit.toMillis(period), TimeUnit.MILLISECONDS, runner);
+	public static Timer startFixedRateCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runnable runnable) {
+		return startFixedRateCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
+				unit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
 	}
 
-	public static Timer startNewFixedRateCycleTask(long delay, long period, TimeUnit unit, Runner runner) {
+	public static Timer startFixedRateCycleTask(long delay, long period, TimeUnit unit, Runnable runnable) {
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate((new TimerTask() {
 			@Override
 			public void run() {
 				try {
-					runner.run();
+					runnable.run();
 				} catch (Exception e) {
 					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
@@ -200,7 +200,7 @@ public final class ScheduleTaskUtil {
 	 * MultipleThreadExecutor 线程数为核心数量 + 核心数量 * 1/2
 	 */
 	private static ScheduledExecutorService InnerMultipleThreadExecutor = Executors.newScheduledThreadPool(
-			Runtime.getRuntime().availableProcessors() + Runtime.getRuntime().availableProcessors() / 2,
+			CurrentRuntime.availableCores() + CurrentRuntime.availableCores() / 2,
 			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutor"));
 
 	/**
