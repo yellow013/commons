@@ -1,5 +1,6 @@
 package io.mercury.common.sys;
 
+import java.io.File;
 import java.util.Properties;
 
 public interface SysProperties {
@@ -44,6 +45,11 @@ public interface SysProperties {
 	 */
 	String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
+	/**
+	 * tmpdir file
+	 */
+	File JAVA_IO_TMPDIR_FILE = new File(JAVA_IO_TMPDIR + "/");
+
 	/*
 	 * System.getProperty("user.name")
 	 */
@@ -55,9 +61,19 @@ public interface SysProperties {
 	String USER_HOME = System.getProperty("user.home");
 
 	/*
+	 * user.home file
+	 */
+	File USER_HOME_FILE = new File(USER_HOME + "/");
+
+	/*
 	 * System.getProperty("user.dir")
 	 */
 	String USER_DIR = System.getProperty("user.dir");
+
+	/**
+	 * user.dir file
+	 */
+	File USER_DIR_FILE = new File(USER_DIR + "/");
 
 	/*
 	 * System.getProperty("user.timezone")

@@ -30,7 +30,7 @@ public final class MutableSets {
 		return new IntHashSet();
 	}
 
-	public static MutableIntSet newIntHashSet(InitialCapacity capacity) {
+	public static MutableIntSet newIntHashSet(Capacity capacity) {
 		return new IntHashSet(capacity.size());
 	}
 
@@ -44,7 +44,7 @@ public final class MutableSets {
 		return new DoubleHashSet();
 	}
 
-	public static MutableDoubleSet newDoubleHashSet(InitialCapacity capacity) {
+	public static MutableDoubleSet newDoubleHashSet(Capacity capacity) {
 		return new DoubleHashSet(capacity.size());
 	}
 
@@ -58,7 +58,7 @@ public final class MutableSets {
 		return new LongHashSet();
 	}
 
-	public static MutableLongSet newLongHashSet(InitialCapacity capacity) {
+	public static MutableLongSet newLongHashSet(Capacity capacity) {
 		return new LongHashSet(capacity.size());
 	}
 
@@ -76,7 +76,7 @@ public final class MutableSets {
 		return new UnifiedSet<>();
 	}
 
-	public static <E> MutableSet<E> newUnifiedSet(InitialCapacity capacity) {
+	public static <E> MutableSet<E> newUnifiedSet(Capacity capacity) {
 		return new UnifiedSet<>(capacity.size());
 	}
 

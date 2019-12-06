@@ -1,6 +1,6 @@
 package io.mercury.common.collections.map;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.eclipse.collections.api.block.procedure.primitive.LongProcedure;
@@ -8,7 +8,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableLists;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.collections.MutableSets;
@@ -26,10 +26,10 @@ public final class LongRangeMap<V> {
 	private MutableLongSet savedKey;
 
 	public LongRangeMap() {
-		this(InitialCapacity.L06_Size_64);
+		this(Capacity.L06_SIZE_64);
 	}
 
-	public LongRangeMap(InitialCapacity capacity) {
+	public LongRangeMap(Capacity capacity) {
 		this.savedMap = MutableMaps.newLongObjectHashMap(capacity);
 		this.savedKey = MutableSets.newLongHashSet(capacity);
 
@@ -41,12 +41,12 @@ public final class LongRangeMap<V> {
 		return this;
 	}
 
-	@Nullable
+	@CheckForNull
 	public V get(long key) {
 		return savedMap.get(key);
 	}
 
-	@Nullable
+	@CheckForNull
 	public synchronized V remove(long key) {
 		savedKey.remove(key);
 		return savedMap.remove(key);
@@ -86,7 +86,7 @@ public final class LongRangeMap<V> {
 //		}
 //		return longHashSet;
 		return savedKey.select(key -> key >= startPoint && key <= endPoint,
-				MutableSets.newLongHashSet(InitialCapacity.L06_Size_64));
+				MutableSets.newLongHashSet(Capacity.L06_SIZE_64));
 	}
 
 	private void operatingSelect(MutableLongSet selectKey, LongProcedure func) {
@@ -97,7 +97,7 @@ public final class LongRangeMap<V> {
 	public static void main(String[] args) {
 
 		long startNano = System.nanoTime();
-		LongRangeMap<String> longRangeMap = new LongRangeMap<>(InitialCapacity.L25_Size_33554432);
+		LongRangeMap<String> longRangeMap = new LongRangeMap<>(Capacity.L25_SIZE_33554432);
 		for (long l = 0L; l < 10000L; l++) {
 			longRangeMap.put(l, "l == " + l);
 		}

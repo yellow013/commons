@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 
+import io.mercury.common.io.FileSearcher;
 import io.mercury.common.log.CommonLoggerFactory;
-import io.mercury.common.utils.FileUtil;
 import io.mercury.common.utils.StringUtil;
 
 public final class PropertiesFileReader {
@@ -29,7 +29,7 @@ public final class PropertiesFileReader {
 	private static final String PROPERTIES_FILE_SUFFIX = ".properties";
 
 	static {
-		List<File> allPropertiesFile = FileUtil.findFileWith(
+		Set<File> allPropertiesFile = FileSearcher.findWith(
 				new File(PropertiesFileReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {

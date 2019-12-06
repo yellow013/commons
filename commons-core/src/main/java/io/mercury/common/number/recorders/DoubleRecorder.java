@@ -3,7 +3,7 @@ package io.mercury.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.collections.MutableSets;
 
@@ -20,7 +20,7 @@ public final class DoubleRecorder {
 	private MutableDoubleIntMap doubleCounter;
 	private MutableDoubleSet doubleSet;
 
-	public DoubleRecorder(InitialCapacity capacity) {
+	public DoubleRecorder(Capacity capacity) {
 		this.doubleCounter = MutableMaps.newDoubleIntHashMap(capacity);
 		this.doubleSet = MutableSets.newDoubleHashSet(capacity);
 	}

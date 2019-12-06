@@ -1,36 +1,31 @@
-package io.mercury.common.utils;
+package io.mercury.common.io;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
-public final class FileUtil {
+public final class FileSearcher {
 
-	public static void deleteFileWith(File parentFile, Predicate<File> fileFilter) {
-		List<File> allChildFile = findFileWith(parentFile, fileFilter);
-		for (File file : allChildFile) {
-			if (file.exists())
-				file.delete();
-		}
+	private FileSearcher() {
 	}
 
-	public static List<File> findFileWith(File parentFile, Predicate<File> fileFilter) {
-		List<File> allFiles = new ArrayList<>();
-		findFileWith0(allFiles, parentFile, fileFilter);
-		return allFiles;
+	public static Set<File> findWith(File parentFile, Predicate<File> fileFilter) {
+		Set<File> files = new HashSet<>();
+		findWith0(files, parentFile, fileFilter);
+		return files;
 	}
 
-	private static void findFileWith0(List<File> loadList, File parentFile, Predicate<File> fileFilter) {
+	private static void findWith0(Set<File> loadFiles, File parentFile, Predicate<File> fileFilter) {
 		if (parentFile == null || fileFilter == null)
 			return;
 		File[] listFiles = parentFile.listFiles();
 		if (listFiles != null && listFiles.length != 0)
 			for (File file : listFiles)
 				if (file.isDirectory())
-					findFileWith0(loadList, file, fileFilter);
+					findWith0(loadFiles, file, fileFilter);
 				else if (fileFilter.test(file))
-					loadList.add(file);
+					loadFiles.add(file);
 				else
 					continue;
 		else
@@ -38,7 +33,6 @@ public final class FileUtil {
 	}
 
 	public static void main(String[] args) {
-
 		for (int i = 0; i < 20; i++)
 			if (i == 0)
 				System.out.println("00" + 0);
@@ -46,7 +40,6 @@ public final class FileUtil {
 				System.out.println(i);
 			else
 				System.out.println("PPPP");
-
 	}
 
 }

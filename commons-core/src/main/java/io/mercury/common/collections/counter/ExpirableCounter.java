@@ -8,7 +8,7 @@ import org.eclipse.collections.api.iterator.MutableLongIterator;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.api.map.primitive.MutableLongLongMap;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableLists;
 import io.mercury.common.collections.MutableMaps;
 
@@ -36,7 +36,7 @@ public final class ExpirableCounter implements Counter<ExpirableCounter> {
 
 	private long expireNanos;
 
-	public ExpirableCounter(Duration expireTime, InitialCapacity capacity) {
+	public ExpirableCounter(Duration expireTime, Capacity capacity) {
 		this.expireNanos = expireTime.toNanos();
 		this.timeToTag = MutableMaps.newLongLongHashMap(capacity);
 		this.tagToDelta = MutableMaps.newLongLongHashMap(capacity);
@@ -116,7 +116,7 @@ public final class ExpirableCounter implements Counter<ExpirableCounter> {
 //			ThreadUtil.sleep(2000);
 //		}
 
-		MutableLongLongMap map = MutableMaps.newLongLongHashMap(InitialCapacity.L10_Size_1024);
+		MutableLongLongMap map = MutableMaps.newLongLongHashMap(Capacity.L10_SIZE_1024);
 
 		map.put(1, 10);
 

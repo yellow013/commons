@@ -2,19 +2,40 @@ package io.mercury.common.utils;
 
 import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import io.mercury.common.charset.Charsets;
-import io.mercury.common.charset.StrConstants;
 
 public final class StringUtil {
+
+	public interface StringConstants {
+		String NULL = "null";
+		String EMPTY = "";
+	}
 
 	private StringUtil() {
 	}
 
-	public static String toString(Object obj) {
-		return obj == null ? StrConstants.NULL : obj.toString();
+	@Nonnull
+	public static String toString(@Nullable Object obj) {
+		return obj == null ? StringConstants.NULL : obj.toString();
+	}
+
+	@Nonnull
+	public static String toString(@Nullable Object... objs) {
+		if (objs == null)
+			return "";
+		StringBuilder builder = new StringBuilder(objs.length * 2 * 16).append('[');
+		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
+			builder.append(objs[i].toString());
+			if (i < j)
+				builder.append(',');
+		}
+		return builder.append(']').toString();
 	}
 
 	/**
@@ -25,7 +46,7 @@ public final class StringUtil {
 	 * 
 	 */
 	public static String reflectionToString(Object obj) {
-		return obj == null ? StrConstants.NULL
+		return obj == null ? StringConstants.NULL
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
@@ -120,6 +141,10 @@ public final class StringUtil {
 		return !isPath(path);
 	}
 
+	public static String fixPath(String path) {
+		return isNullOrEmpty(path) ? "/" : path.endsWith("/") || path.endsWith("\\") ? path : path + "/";
+	}
+
 	/**
 	 * 使用','将字符串连接
 	 * 
@@ -162,7 +187,7 @@ public final class StringUtil {
 	 */
 	public static String concatenateStr(int capacity, char symbol, String... strs) {
 		if (strs == null || strs.length == 0)
-			return StrConstants.EMPTY;
+			return StringConstants.EMPTY;
 		StringBuilder builder = new StringBuilder(capacity);
 		for (int i = 0; i < strs.length; i++) {
 			builder.append(strs[i]);
@@ -172,7 +197,90 @@ public final class StringUtil {
 		return builder.toString();
 	}
 
+	/**
+	 * 将byte转换为二进制输出,高位补0
+	 * 
+	 * @param b
+	 * @return
+	 */
+	public static String byteBinaryStr(byte b) {
+		String binary = Integer.toBinaryString(b);
+		int blankLen = Byte.SIZE - binary.length();
+		return highPosFill(Byte.SIZE, blankLen, binary);
+	}
+
+	/**
+	 * 将char转换为二进制输出,高位补0
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public static String charBinaryStr(char c) {
+		String binaryStr = Integer.toBinaryString(c);
+		int blankLen = Character.SIZE - binaryStr.length();
+		return highPosFill(Character.SIZE, blankLen, binaryStr);
+	}
+
+	/**
+	 * 将int转换为二进制输出,高位补0
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public static String intBinaryStr(int i) {
+		String binaryStr = Integer.toBinaryString(i);
+		int blankLen = Integer.SIZE - binaryStr.length();
+		return highPosFill(Integer.SIZE, blankLen, binaryStr);
+	}
+
+	/**
+	 * 将long转换为二进制输出,高位补0
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public static String longBinaryStr(long l) {
+		String binaryStr = Long.toBinaryString(l);
+		int blankLen = Long.SIZE - binaryStr.length();
+		return highPosFill(Long.SIZE, blankLen, binaryStr);
+	}
+
+	/**
+	 * 指定总长度, 空白长度, 实际值, 返回的字符串填充指定长度的0
+	 * 
+	 * @param sumLen
+	 * @param blankLen
+	 * @param binaryStr
+	 * @return
+	 */
+	public static String highPosFill(int sumLen, int blankLen, String binaryStr) {
+		StringBuilder builder = new StringBuilder(sumLen);
+		for (int i = 0; i < blankLen; i++)
+			builder.append('0');
+		return builder.append(binaryStr).toString();
+	}
+
 	public static void main(String[] args) {
+
+		byte b = 3;
+
+		System.out.println(byteBinaryStr(b));
+
+		System.out.println(longBinaryStr(-3L));
+		System.out.println(intBinaryStr(-3));
+		System.out.println(charBinaryStr('3'));
+		System.out.println(intBinaryStr(2));
+		System.out.println(Integer.toBinaryString(2));
+		System.out.println(intBinaryStr(-10));
+
+		System.out.println(longBinaryStr(Long.MAX_VALUE));
+		System.out.println(longBinaryStr(Long.MIN_VALUE));
+		System.out.println(longBinaryStr(-1L));
+		System.out.println(longBinaryStr(2L << 10));
+
+		System.out.println(fixPath(null));
+		System.out.println(fixPath("ddd"));
+		System.out.println(fixPath("/user/"));
 
 		System.out.println(isDecimal("877f"));
 		System.out.println(isDecimal("877F"));

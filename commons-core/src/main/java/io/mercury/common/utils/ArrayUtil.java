@@ -145,16 +145,4 @@ public final class ArrayUtil {
 		return newArray;
 	}
 
-	public static String toString(Object... objs) {
-		if (objs == null)
-			return "";
-		StringBuilder builder = new StringBuilder(objs.length * 2 * 16).append('[');
-		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
-			builder.append(objs[i].toString());
-			if (i < j)
-				builder.append(',');
-		}
-		return builder.append(']').toString();
-	}
-
 }

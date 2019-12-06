@@ -11,7 +11,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableLists;
 import io.mercury.common.collections.MutableMaps;
 
@@ -27,11 +27,11 @@ public abstract class TemporalMap<K extends Temporal, V, T extends TemporalMap<K
 	private MutableLongObjectMap<V> savedMap;
 
 	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey) {
-		this(keyToLangFunc, nextKeyFunc, hasNextKey, InitialCapacity.L07_Size_128);
+		this(keyToLangFunc, nextKeyFunc, hasNextKey, Capacity.L07_SIZE_128);
 	}
 
 	public TemporalMap(ToLongFunction<K> keyToLangFunc, Function<K, K> nextKeyFunc, BiPredicate<K, K> hasNextKey,
-			InitialCapacity capacity) {
+			Capacity capacity) {
 		this.keyToLangFunc = keyToLangFunc;
 		this.nextKeyFunc = nextKeyFunc;
 		this.hasNextKey = hasNextKey;

@@ -3,7 +3,7 @@ package io.mercury.common.number.recorders;
 import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.collections.MutableSets;
 
@@ -12,7 +12,7 @@ public final class IntRecorder {
 	private MutableIntIntMap intCounter;
 	private MutableIntSet intSet;
 
-	public IntRecorder(InitialCapacity capacity) {
+	public IntRecorder(Capacity capacity) {
 		this.intCounter = MutableMaps.newIntIntHashMap(capacity);
 		this.intSet = MutableSets.newIntHashSet(capacity);
 	}
