@@ -6,7 +6,7 @@ import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
 
 import io.mercury.common.annotations.thread.LockHeld;
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableSets;
 
 /**
@@ -19,7 +19,7 @@ import io.mercury.common.collections.MutableSets;
 @ThreadSafe
 public final class SyncDeRepeatCounter<T> {
 
-	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(InitialCapacity.L06_Size_64);
+	private MutableSet<T> deRepeatSet = MutableSets.newUnifiedSet(Capacity.L06_SIZE_64);
 	private volatile int count;
 	private final int initCount;
 

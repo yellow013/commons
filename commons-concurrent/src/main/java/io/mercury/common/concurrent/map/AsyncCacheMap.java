@@ -7,7 +7,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableLongObjectMap;
 
-import io.mercury.common.collections.InitialCapacity;
+import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.collections.queue.api.SCQueue;
 import io.mercury.common.concurrent.queue.MpscArrayBlockingQueue;
@@ -23,9 +23,9 @@ import io.mercury.common.utils.StringUtil;
 @ThreadSafe
 public final class AsyncCacheMap<K, V> {
 
-	private MutableMap<K, V> mutableMap = MutableMaps.newUnifiedMap(InitialCapacity.L08_Size_256);
+	private MutableMap<K, V> mutableMap = MutableMaps.newUnifiedMap(Capacity.L08_SIZE_256);
 
-	private MutableLongObjectMap<Consumer<V>> consumerMap = MutableMaps.newLongObjectHashMap(InitialCapacity.L07_Size_128);
+	private MutableLongObjectMap<Consumer<V>> consumerMap = MutableMaps.newLongObjectHashMap(Capacity.L07_SIZE_128);
 
 	private String cacheName;
 
