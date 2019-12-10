@@ -65,7 +65,6 @@ public final class MutableSets {
 	public static MutableLongSet newLongHashSetWith(long... values) {
 		if (ArrayUtil.isNullOrEmpty(values))
 			return newLongHashSet();
-
 		return new LongHashSet(values);
 	}
 
@@ -82,10 +81,9 @@ public final class MutableSets {
 
 	public static <E> MutableSet<E> newUnifiedSet(Iterator<E> iterator) {
 		MutableSet<E> newUnifiedSet = newUnifiedSet();
-		if (iterator != null && iterator.hasNext()) {
+		if (iterator != null && iterator.hasNext())
 			while (iterator.hasNext())
 				newUnifiedSet.add(iterator.next());
-		}
 		return newUnifiedSet;
 	}
 
