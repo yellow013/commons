@@ -34,10 +34,10 @@ public final class MutableSets {
 		return new IntHashSet(capacity.size());
 	}
 
-	public static MutableIntSet newIntHashSetWith(int... intValues) {
-		if (ArrayUtil.isNullOrEmpty(intValues))
+	public static MutableIntSet newIntHashSetWith(int... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newIntHashSet();
-		return new IntHashSet(intValues);
+		return new IntHashSet(values);
 	}
 
 	public static MutableDoubleSet newDoubleHashSet() {
@@ -48,10 +48,10 @@ public final class MutableSets {
 		return new DoubleHashSet(capacity.size());
 	}
 
-	public static MutableDoubleSet newDoubleHashSetWith(double... doubleValues) {
-		if (ArrayUtil.isNullOrEmpty(doubleValues))
+	public static MutableDoubleSet newDoubleHashSetWith(double... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newDoubleHashSet();
-		return new DoubleHashSet(doubleValues);
+		return new DoubleHashSet(values);
 	}
 
 	public static MutableLongSet newLongHashSet() {
@@ -62,11 +62,11 @@ public final class MutableSets {
 		return new LongHashSet(capacity.size());
 	}
 
-	public static MutableLongSet newLongHashSetWith(long... longValues) {
-		if (ArrayUtil.isNullOrEmpty(longValues))
+	public static MutableLongSet newLongHashSetWith(long... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newLongHashSet();
 
-		return new LongHashSet(longValues);
+		return new LongHashSet(values);
 	}
 
 	/**

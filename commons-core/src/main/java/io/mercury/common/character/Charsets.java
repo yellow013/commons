@@ -1,4 +1,4 @@
-package io.mercury.common.charset;
+package io.mercury.common.character;
 
 import java.nio.charset.Charset;
 

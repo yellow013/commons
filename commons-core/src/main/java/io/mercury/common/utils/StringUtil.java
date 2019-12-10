@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import io.mercury.common.charset.Charsets;
+import io.mercury.common.character.Charsets;
 
 public final class StringUtil {
 
@@ -205,8 +205,7 @@ public final class StringUtil {
 	 */
 	public static String byteBinaryStr(byte b) {
 		String binary = Integer.toBinaryString(b);
-		int blankLen = Byte.SIZE - binary.length();
-		return highPosFill(Byte.SIZE, blankLen, binary);
+		return highPosFill(Byte.SIZE, Byte.SIZE - binary.length(), binary);
 	}
 
 	/**
@@ -217,8 +216,7 @@ public final class StringUtil {
 	 */
 	public static String charBinaryStr(char c) {
 		String binaryStr = Integer.toBinaryString(c);
-		int blankLen = Character.SIZE - binaryStr.length();
-		return highPosFill(Character.SIZE, blankLen, binaryStr);
+		return highPosFill(Character.SIZE, Character.SIZE - binaryStr.length(), binaryStr);
 	}
 
 	/**
@@ -229,8 +227,7 @@ public final class StringUtil {
 	 */
 	public static String intBinaryStr(int i) {
 		String binaryStr = Integer.toBinaryString(i);
-		int blankLen = Integer.SIZE - binaryStr.length();
-		return highPosFill(Integer.SIZE, blankLen, binaryStr);
+		return highPosFill(Integer.SIZE, Integer.SIZE - binaryStr.length(), binaryStr);
 	}
 
 	/**
@@ -241,8 +238,7 @@ public final class StringUtil {
 	 */
 	public static String longBinaryStr(long l) {
 		String binaryStr = Long.toBinaryString(l);
-		int blankLen = Long.SIZE - binaryStr.length();
-		return highPosFill(Long.SIZE, blankLen, binaryStr);
+		return highPosFill(Long.SIZE, Long.SIZE - binaryStr.length(), binaryStr);
 	}
 
 	/**

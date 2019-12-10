@@ -4,10 +4,14 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.list.primitive.MutableByteList;
+import org.eclipse.collections.api.list.primitive.MutableCharList;
 import org.eclipse.collections.api.list.primitive.MutableDoubleList;
 import org.eclipse.collections.api.list.primitive.MutableIntList;
 import org.eclipse.collections.api.list.primitive.MutableLongList;
 import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.list.mutable.primitive.ByteArrayList;
+import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
@@ -22,6 +26,34 @@ public final class MutableLists {
 	/**
 	 * primitive list
 	 */
+	public static MutableByteList newByteArrayList() {
+		return new ByteArrayList();
+	}
+
+	public static MutableByteList newByteArrayList(int initialCapacity) {
+		return new ByteArrayList(initialCapacity);
+	}
+
+	public static MutableByteList newByteArrayListWith(byte... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
+			return new ByteArrayList();
+		return new ByteArrayList(values);
+	}
+
+	public static MutableCharList newCharArrayList() {
+		return new CharArrayList();
+	}
+
+	public static MutableCharList newCharArrayList(int initialCapacity) {
+		return new CharArrayList(initialCapacity);
+	}
+
+	public static MutableCharList newCharArrayList(char... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
+			return new CharArrayList();
+		return new CharArrayList(values);
+	}
+
 	public static MutableIntList newIntArrayList() {
 		return new IntArrayList();
 	}
@@ -30,10 +62,10 @@ public final class MutableLists {
 		return new IntArrayList(initialCapacity);
 	}
 
-	public static MutableIntList newIntArrayListWith(int... intValues) {
-		if (ArrayUtil.isNullOrEmpty(intValues))
+	public static MutableIntList newIntArrayListWith(int... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newIntArrayList();
-		return new IntArrayList(intValues);
+		return new IntArrayList(values);
 	}
 
 	public static MutableLongList newLongArrayList() {
@@ -44,10 +76,10 @@ public final class MutableLists {
 		return new LongArrayList(initialCapacity);
 	}
 
-	public static MutableLongList newLongArrayListWith(long... longValues) {
-		if (ArrayUtil.isNullOrEmpty(longValues))
+	public static MutableLongList newLongArrayListWith(long... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newLongArrayList();
-		return new LongArrayList(longValues);
+		return new LongArrayList(values);
 	}
 
 	public static MutableDoubleList newDoubleArrayList() {
@@ -58,10 +90,10 @@ public final class MutableLists {
 		return new DoubleArrayList(initialCapacity);
 	}
 
-	public static MutableDoubleList newDoubleArrayListWith(double... doubleValues) {
-		if (ArrayUtil.isNullOrEmpty(doubleValues))
+	public static MutableDoubleList newDoubleArrayListWith(double... values) {
+		if (ArrayUtil.isNullOrEmpty(values))
 			return newDoubleArrayList();
-		return new DoubleArrayList(doubleValues);
+		return new DoubleArrayList(values);
 	}
 
 	/**
