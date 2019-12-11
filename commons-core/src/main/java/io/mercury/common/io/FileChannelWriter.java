@@ -36,12 +36,13 @@ public final class FileChannelWriter {
 			ByteBuffer buffer = ByteBuffer.allocateDirect(bufCapacity);
 			for (String line : lines) {
 				byte[] bytes = line.getBytes();
-				// 计算是否一次可以加载完成
-				int repeat = bytes.length / bufCapacity;
-				if (repeat == 0)
+
+				if (bytes.length < bufCapacity)
 					// bytes.length 小于 buffer capacity, 只需写一次
 					flipAndChannelWrite(buffer.put(bytes), channel);
 				else {
+					// 计算需要写入的次数
+					int repeat = bytes.length / bufCapacity;
 					int index = 0;
 					for (int i = 0; i < repeat; i++)
 						// 从上次写入的index开始继续写入
@@ -58,11 +59,10 @@ public final class FileChannelWriter {
 		return file;
 	}
 
-	private static void flipAndChannelWrite(ByteBuffer buffer, FileChannel channel) throws IOException {
+	private static final void flipAndChannelWrite(ByteBuffer buffer, FileChannel channel) throws IOException {
 		buffer.flip();
 		while (buffer.hasRemaining())
 			channel.write(buffer);
-		// TODO immediately clear?
 		buffer.clear();
 	}
 
