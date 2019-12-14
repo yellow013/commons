@@ -12,7 +12,7 @@ import io.mercury.common.collections.MutableMaps;
 @ThreadSafe
 public abstract class BaseKeeper<K, V> implements Keeper<K, V> {
 
-	protected ConcurrentMutableMap<K, V> savedMap = MutableMaps.newConcurrentHashMap(Capacity.L06_SIZE_64);
+	protected ConcurrentMutableMap<K, V> savedMap = MutableMaps.newConcurrentHashMap(Capacity.L08_SIZE_256);
 
 	@Nonnull
 	public V acquire(@Nonnull K k) {
