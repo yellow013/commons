@@ -261,7 +261,7 @@ public final class StringUtil {
 	 * @param b
 	 * @return
 	 */
-	public static String byteBinaryStr(byte b) {
+	public static String byteBinary(byte b) {
 		String binary = Integer.toBinaryString(b);
 		return highPosFill(Byte.SIZE, Byte.SIZE - binary.length(), binary);
 	}
@@ -272,9 +272,13 @@ public final class StringUtil {
 	 * @param c
 	 * @return
 	 */
-	public static String charBinaryStr(char c) {
+	public static String charBinary(char c) {
 		String binaryStr = Integer.toBinaryString(c);
 		return highPosFill(Character.SIZE, Character.SIZE - binaryStr.length(), binaryStr);
+	}
+
+	public static String formatCharBinary(char c) {
+		return new StringBuilder(charBinary(c)).insert(8, ' ').toString();
 	}
 
 	/**
@@ -283,9 +287,13 @@ public final class StringUtil {
 	 * @param i
 	 * @return
 	 */
-	public static String intBinaryStr(int i) {
+	public static String intBinary(int i) {
 		String binaryStr = Integer.toBinaryString(i);
 		return highPosFill(Integer.SIZE, Integer.SIZE - binaryStr.length(), binaryStr);
+	}
+
+	public static String formatIntBinary(int i) {
+		return new StringBuilder(intBinary(i)).insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
 
 	/**
@@ -294,9 +302,14 @@ public final class StringUtil {
 	 * @param l
 	 * @return
 	 */
-	public static String longBinaryStr(long l) {
+	public static String longBinary(long l) {
 		String binaryStr = Long.toBinaryString(l);
 		return highPosFill(Long.SIZE, Long.SIZE - binaryStr.length(), binaryStr);
+	}
+
+	public static String formatLongBinary(long l) {
+		return new StringBuilder(longBinary(l)).insert(56, ' ').insert(48, ' ').insert(40, ' ').insert(32, ' ')
+				.insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
 
 	/**
@@ -307,7 +320,7 @@ public final class StringUtil {
 	 * @param binaryStr
 	 * @return
 	 */
-	public static String highPosFill(int sumLen, int blankLen, String binaryStr) {
+	private static String highPosFill(int sumLen, int blankLen, String binaryStr) {
 		StringBuilder builder = new StringBuilder(sumLen);
 		for (int i = 0; i < blankLen; i++)
 			builder.append('0');
@@ -318,19 +331,28 @@ public final class StringUtil {
 
 		byte b = 3;
 
-		System.out.println(byteBinaryStr(b));
+		System.out.println(charBinary('b'));
+		System.out.println(formatCharBinary('b'));
 
-		System.out.println(longBinaryStr(-3L));
-		System.out.println(intBinaryStr(-3));
-		System.out.println(charBinaryStr('3'));
-		System.out.println(intBinaryStr(2));
+		System.out.println(intBinary(10777));
+		System.out.println(formatIntBinary(10777));
+
+		System.out.println(longBinary(106544777L));
+		System.out.println(formatLongBinary(106544777L));
+
+		System.out.println(byteBinary(b));
+
+		System.out.println(longBinary(-3L));
+		System.out.println(intBinary(-3));
+		System.out.println(charBinary('3'));
+		System.out.println(intBinary(2));
 		System.out.println(Integer.toBinaryString(2));
-		System.out.println(intBinaryStr(-10));
+		System.out.println(intBinary(-10));
 
-		System.out.println(longBinaryStr(Long.MAX_VALUE));
-		System.out.println(longBinaryStr(Long.MIN_VALUE));
-		System.out.println(longBinaryStr(-1L));
-		System.out.println(longBinaryStr(2L << 10));
+		System.out.println(longBinary(Long.MAX_VALUE));
+		System.out.println(longBinary(Long.MIN_VALUE));
+		System.out.println(longBinary(-1L));
+		System.out.println(longBinary(2L << 10));
 
 		System.out.println(fixPath(null));
 		System.out.println(fixPath("ddd"));
