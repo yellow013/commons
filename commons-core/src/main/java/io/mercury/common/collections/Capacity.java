@@ -149,5 +149,11 @@ public enum Capacity {
 	public int size() {
 		return size;
 	}
+	
+	public static void main(String[] args) {
+		
+		System.out.println(1 >> 31);
+		
+	}
 
 }
