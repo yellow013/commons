@@ -33,15 +33,26 @@ public final class BytesUtil {
 	public static final char bytesToChar(@Nonnull byte[] bytes) {
 		if (bytes == null || bytes.length < 2)
 			throw new ArrayIndexOutOfBoundsException("byte array length must be greater than [2]");
-		return (char) (((bytes[0] & 0xFF) << 8) | ((bytes[1] & 0xFF)));
+		return (char) (((bytes[0] & 0xFF) << 8) 
+				| ((bytes[1] & 0xFF)));
 	}
 
 	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
 	public static final char bytesToChar(@Nonnull byte[] bytes, int offset) {
 		if (bytes == null || bytes.length < offset + 2)
 			throw new ArrayIndexOutOfBoundsException("byte array length must be greater than [offset + 2]");
-		return (char) (((bytes[offset] & 0xFF) << 8) | ((bytes[offset + 1] & 0xFF)));
+		return (char) (((bytes[offset] & 0xFF) << 8) 
+				| ((bytes[offset + 1] & 0xFF)));
+	}
 
+	public static final long intMerge(int highPos, int lowPos) {
+		// TODO
+		return 0l;
+	}
+
+	public static final int longSplitHighPos(long l) {
+		// TODO
+		return 0;
 	}
 
 }
