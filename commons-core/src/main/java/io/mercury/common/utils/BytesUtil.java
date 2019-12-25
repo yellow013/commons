@@ -56,7 +56,16 @@ public final class BytesUtil {
 
 	public static void main(String[] args) {
 
+		System.out.println(StringUtil.formatBinaryInt(1002));
+		System.out.println(StringUtil.formatBinaryInt(10777));
+		System.out.println((mergeInt(1002, 10777)));
+		System.out.println(StringUtil.formatBinaryLong(mergeInt(1002, 10777)));
 		
+		System.out.println((splitLongWithHighPos(mergeInt(1002, 10777))));
+		System.out.println(StringUtil.formatBinaryInt(splitLongWithHighPos(mergeInt(1002, 10777))));
+		
+		System.out.println((splitLongWithLowPos(mergeInt(1002, 10777))));
+		System.out.println(StringUtil.formatBinaryInt(splitLongWithLowPos(mergeInt(1002, 10777))));
 	}
 
 }
