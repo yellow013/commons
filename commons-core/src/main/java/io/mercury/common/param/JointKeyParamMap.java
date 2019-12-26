@@ -1,5 +1,7 @@
 package io.mercury.common.param;
 
+import static io.mercury.common.utils.BytesUtil.mergeInt;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,35 +30,35 @@ public abstract class JointKeyParamMap {
 	}
 
 	public void put(int key1, int key2, boolean param) {
-		booleanParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		booleanParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, long param) {
-		longParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		longParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, double param) {
-		doubleParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		doubleParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, String param) {
-		stringParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		stringParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, LocalDate param) {
-		localDateParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		localDateParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, LocalTime param) {
-		localTimeParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		localTimeParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public void put(int key1, int key2, LocalDateTime param) {
-		localDateTimeParamMap.put(JointIdUtil.jointId(key1, key2), param);
+		localDateTimeParamMap.put(mergeInt(key1, key2), param);
 	}
 
 	public boolean getBoolean(int key1, int key2) {
-		return booleanParamMap.get(JointIdUtil.jointId(key1, key2));
+		return booleanParamMap.get(mergeInt(key1, key2));
 	}
 
 }
