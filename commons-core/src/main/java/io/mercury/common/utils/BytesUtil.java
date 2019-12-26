@@ -42,30 +42,42 @@ public final class BytesUtil {
 		return (((long) highPos) << 32) | ((long) lowPos);
 	}
 
-	private static final long HighPosMask = 0xFFFF_FFFF_0000_0000L;
-
-	public static final int splitLongWithHighPos(long l) {
-		return (int) ((l & HighPosMask) >> 32);
+	public static final int mergeChar(char highPos, char lowPos) {
+		return (((int) highPos) << 16) | ((int) lowPos);
 	}
 
-	private static final long LowPosMask = 0x0000_0000_FFFF_FFFFL;
+	public static final long mergeChar(char highPos, char second, char third, char lowPos) {
+		return (((long) highPos) << 48) | ((long) second << 32) | ((long) third << 16) | ((int) lowPos);
+	}
+
+	private static final long LongHighPosMask = 0xFFFF_FFFF_0000_0000L;
+
+	public static final int splitLongWithHighPos(long l) {
+		return (int) ((l & LongHighPosMask) >> 32);
+	}
+
+	private static final long LongLowPosMask = 0x0000_0000_FFFF_FFFFL;
 
 	public static final int splitLongWithLowPos(long l) {
-		return (int) (l & LowPosMask);
+		return (int) (l & LongLowPosMask);
 	}
 
 	public static void main(String[] args) {
 
-		System.out.println(StringUtil.formatBinaryInt(1002));
-		System.out.println(StringUtil.formatBinaryInt(10777));
-		System.out.println((mergeInt(1002, 10777)));
-		System.out.println(StringUtil.formatBinaryLong(mergeInt(1002, 10777)));
-		
-		System.out.println((splitLongWithHighPos(mergeInt(1002, 10777))));
-		System.out.println(StringUtil.formatBinaryInt(splitLongWithHighPos(mergeInt(1002, 10777))));
-		
-		System.out.println((splitLongWithLowPos(mergeInt(1002, 10777))));
-		System.out.println(StringUtil.formatBinaryInt(splitLongWithLowPos(mergeInt(1002, 10777))));
+		int i1 = 1002;
+		int i2 = 10777;
+
+		System.out.println(StringUtil.formatBinaryInt(i1));
+		System.out.println(StringUtil.formatBinaryInt(i2));
+
+		System.out.println((mergeInt(i1, i2)));
+		System.out.println(StringUtil.formatBinaryLong(mergeInt(i1, i2)));
+
+		System.out.println((splitLongWithHighPos(mergeInt(i1, i2))));
+		System.out.println(StringUtil.formatBinaryInt(splitLongWithHighPos(mergeInt(i1, i2))));
+
+		System.out.println((splitLongWithLowPos(mergeInt(i1, i2))));
+		System.out.println(StringUtil.formatBinaryInt(splitLongWithLowPos(mergeInt(i1, i2))));
 	}
 
 }
