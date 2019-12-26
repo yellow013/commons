@@ -1,6 +1,6 @@
 package io.mercury.common.datetime;
 
-public interface TimeConstants {
+public interface TimeConst {
 
 	/**
 	 * Hours per day.
@@ -9,7 +9,7 @@ public interface TimeConstants {
 	/**
 	 * Hours per half day.
 	 */
-	int HOURS_PER_HALF_DAY = HOURS_PER_DAY >> 1;
+	int HOURS_PER_HALF_DAY = HOURS_PER_DAY / 2;
 
 	/**
 	 * Minutes per hour.
@@ -22,7 +22,7 @@ public interface TimeConstants {
 	/**
 	 * Minutes per half day.
 	 */
-	int MINUTES_PER_HALF_DAY = MINUTES_PER_DAY >> 1;
+	int MINUTES_PER_HALF_DAY = MINUTES_PER_DAY / 2;
 
 	/**
 	 * Seconds per minute.
@@ -39,7 +39,7 @@ public interface TimeConstants {
 	/**
 	 * Seconds per half day.
 	 */
-	int SECONDS_PER_HALF_DAY = SECONDS_PER_DAY >> 1;
+	int SECONDS_PER_HALF_DAY = SECONDS_PER_DAY / 2;
 
 	/**
 	 * Milliseconds per Seconds.
@@ -60,7 +60,7 @@ public interface TimeConstants {
 	/**
 	 * Milliseconds per half day.
 	 */
-	int MILLIS_PER_HALF_DAY = MILLIS_PER_DAY >> 1;
+	int MILLIS_PER_HALF_DAY = MILLIS_PER_DAY / 2;
 	
 	/**
 	 * Microseconds per Milliseconds.
@@ -85,7 +85,7 @@ public interface TimeConstants {
 	/**
 	 * Microseconds per half day.
 	 */
-	long MICROS_PER_HALF_DAY = MICROS_PER_DAY >> 1;
+	long MICROS_PER_HALF_DAY = MICROS_PER_DAY / 2;
 	
 	/**
 	 * Nanos per Microseconds.
@@ -114,6 +114,6 @@ public interface TimeConstants {
 	/**
 	 * Nanos per half day.
 	 */
-	long NANOS_PER_HALF_DAY = NANOS_PER_DAY >> 1;
+	long NANOS_PER_HALF_DAY = NANOS_PER_DAY / 2;
 
 }

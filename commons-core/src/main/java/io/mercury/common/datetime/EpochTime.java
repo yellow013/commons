@@ -7,13 +7,13 @@ import java.time.ZonedDateTime;
 
 import javax.annotation.Nonnull;
 
-import static io.mercury.common.datetime.TimeConstants.MICROS_PER_DAY;
-import static io.mercury.common.datetime.TimeConstants.MICROS_PER_MILLIS;
-import static io.mercury.common.datetime.TimeConstants.MICROS_PER_SECONDS;
-import static io.mercury.common.datetime.TimeConstants.MILLIS_PER_DAY;
-import static io.mercury.common.datetime.TimeConstants.MILLIS_PER_SECONDS;
-import static io.mercury.common.datetime.TimeConstants.NANOS_PER_MICROS;
-import static io.mercury.common.datetime.TimeConstants.NANOS_PER_MILLIS;
+import static io.mercury.common.datetime.TimeConst.MICROS_PER_DAY;
+import static io.mercury.common.datetime.TimeConst.MICROS_PER_MILLIS;
+import static io.mercury.common.datetime.TimeConst.MICROS_PER_SECONDS;
+import static io.mercury.common.datetime.TimeConst.MILLIS_PER_DAY;
+import static io.mercury.common.datetime.TimeConst.MILLIS_PER_SECONDS;
+import static io.mercury.common.datetime.TimeConst.NANOS_PER_MICROS;
+import static io.mercury.common.datetime.TimeConst.NANOS_PER_MILLIS;
 import static io.mercury.common.datetime.TimeZones.SYSTEM_DEFAULT_OFFSET;
 import static java.lang.System.currentTimeMillis;;
 
