@@ -12,7 +12,7 @@ import io.mercury.common.character.Charsets;
 
 public final class StringUtil {
 
-	public interface StringConstants {
+	public interface StringConst {
 		String NULL = "null";
 		String EMPTY = "";
 	}
@@ -22,13 +22,13 @@ public final class StringUtil {
 
 	@Nonnull
 	public static String toString(@Nullable Object obj) {
-		return obj == null ? StringConstants.NULL : obj.toString();
+		return obj == null ? StringConst.NULL : obj.toString();
 	}
 
 	@Nonnull
 	public static String toString(@Nullable Object... objs) {
 		if (objs == null)
-			return StringConstants.EMPTY;
+			return StringConst.EMPTY;
 		StringBuilder builder = new StringBuilder(objs.length * 20).append('[');
 		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
 			builder.append(toString(objs[i]));
@@ -46,7 +46,7 @@ public final class StringUtil {
 	 * 
 	 */
 	public static String reflectionToString(Object obj) {
-		return obj == null ? StringConstants.NULL
+		return obj == null ? StringConst.NULL
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
@@ -156,7 +156,7 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static String replaceJoinChar(String str) {
-		return str == null ? StringConstants.EMPTY : str.replace(".", "").replace("-", "").replace("_", "");
+		return str == null ? StringConst.EMPTY : str.replace(".", "").replace("-", "").replace("_", "");
 	}
 
 	public static String conversionGbkToUtf8(String gbkStr) {
@@ -245,7 +245,7 @@ public final class StringUtil {
 	 */
 	public static String concatenateStr(int capacity, char symbol, String... strs) {
 		if (strs == null || strs.length == 0)
-			return StringConstants.EMPTY;
+			return StringConst.EMPTY;
 		StringBuilder builder = new StringBuilder(capacity);
 		for (int i = 0; i < strs.length; i++) {
 			builder.append(strs[i]);
