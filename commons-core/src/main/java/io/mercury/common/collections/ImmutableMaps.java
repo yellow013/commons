@@ -1,6 +1,7 @@
 package io.mercury.common.collections;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.eclipse.collections.api.factory.map.ImmutableMapFactory;
 import org.eclipse.collections.api.factory.map.primitive.ImmutableIntDoubleMapFactory;
@@ -71,6 +72,12 @@ public final class ImmutableMaps {
 		if (map == null || map.isEmpty())
 			return ImmutableMapFactoryImpl.INSTANCE.empty();
 		return ImmutableMapFactoryImpl.INSTANCE.withAll(map);
+	}
+
+	public static <K, V> ImmutableMap<K, V> newMap(Supplier<Map<K, V>> supplier) {
+		if (supplier == null)
+			return newMap(MutableMaps.newUnifiedMap());
+		return newMap(supplier.get());
 	}
 
 }

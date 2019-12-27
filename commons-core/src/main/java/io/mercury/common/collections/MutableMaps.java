@@ -2,6 +2,7 @@ package io.mercury.common.collections;
 
 import java.util.Comparator;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.api.map.MutableMap;
@@ -288,6 +289,12 @@ public final class MutableMaps {
 		if (map == null || map.isEmpty())
 			return newUnifiedMap();
 		return UnifiedMap.newMap(map);
+	}
+
+	public static <K, V> MutableMap<K, V> newUnifiedMap(Supplier<Map<K, V>> supplier) {
+		if (supplier == null)
+			return newUnifiedMap();
+		return newUnifiedMap(supplier.get());
 	}
 
 	/**
