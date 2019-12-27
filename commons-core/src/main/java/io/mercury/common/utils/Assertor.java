@@ -10,6 +10,34 @@ public final class Assertor {
 	private Assertor() {
 	}
 
+	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	public static long intGreaterThan(int i, int min, String objName) {
+		if (i > min)
+			return i;
+		throw new IllegalArgumentException(objName + " must > " + min);
+	}
+
+	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	public static long intLessThan(int i, int max, String objName) {
+		if (i < max)
+			return i;
+		throw new IllegalArgumentException(objName + " must < " + max);
+	}
+
+	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	public static long longGreaterThan(long l, long min, String objName) {
+		if (l > min)
+			return l;
+		throw new IllegalArgumentException(objName + " must > " + min);
+	}
+
+	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	public static long longLessThan(long l, long max, String objName) {
+		if (l < max)
+			return l;
+		throw new IllegalArgumentException(objName + " must < " + max);
+	}
+
 	@MayThrowsRuntimeException(NullPointerException.class)
 	public static <T> T nonNull(T t, String objName) {
 		if (t == null)
