@@ -14,7 +14,8 @@
 	<name>commons-core</name>
 
 	<properties>
-		<slf4j.version>1.7.28</slf4j.version>
+		<slf4j.version>1.7.30</slf4j.version>
+		<log4j2.version>2.13.0</log4j2.version>
 	</properties>
 
 	<dependencies>
@@ -89,13 +90,13 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.12.1</version>
+			<version>${log4j2.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>2.12.1</version>
+			<version>${log4j2.version}</version>
 			<scope>runtime</scope>
 			<exclusions>
 				<exclusion>
@@ -104,7 +105,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 
 		<!-- Junit4 dependency -->
 		<dependency>
