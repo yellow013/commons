@@ -78,6 +78,23 @@ public final class BytesUtil {
 
 		System.out.println((splitLongWithLowPos(mergeInt(i1, i2))));
 		System.out.println(StringUtil.formatBinaryInt(splitLongWithLowPos(mergeInt(i1, i2))));
+		
+		System.out.println(StringUtil.formatBinaryInt(1));
+		System.out.println(StringUtil.formatBinaryInt(~1));
+		
+		System.out.println(StringUtil.formatBinaryInt(10));
+		System.out.println(StringUtil.formatBinaryInt(20));
+		System.out.println(StringUtil.formatBinaryInt(10 ^ 20));
+		System.out.println(StringUtil.formatBinaryInt((10 ^ 20) ^ 20));
+		
+		
+		System.out.println(StringUtil.formatBinaryInt(10243250));
+		System.out.println(StringUtil.formatBinaryInt(1));
+		System.out.println(StringUtil.formatBinaryInt(10243250 & 1));
+		System.out.println(StringUtil.formatBinaryInt(1123121));
+		System.out.println(StringUtil.formatBinaryInt(1));
+		System.out.println(StringUtil.formatBinaryInt(1123121 & 1));
+		
 	}
 
 }
