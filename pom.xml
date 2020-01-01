@@ -18,6 +18,7 @@
 		<module>commons-core</module>
 		<module>commons-concurrent</module>
 		<module>commons-graph</module>
+		<module>commons-jmh</module>
 	</modules>
 
 	<properties>

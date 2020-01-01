@@ -14,15 +14,13 @@
 	<name>commons-graph</name>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<dependencies>
 
+	<dependencies>
 		<dependency>
 			<groupId>io.mercury</groupId>
 			<artifactId>commons-core</artifactId>
 		</dependency>
-
 		<!-- JVM Graph implement -->
 		<dependency>
 			<groupId>org.jgrapht</groupId>
@@ -40,6 +38,5 @@
 			<artifactId>jheaps</artifactId>
 			<version>0.13</version>
 		</dependency>
-
 	</dependencies>
 </project>
