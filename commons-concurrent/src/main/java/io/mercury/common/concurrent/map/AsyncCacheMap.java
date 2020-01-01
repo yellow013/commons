@@ -11,7 +11,7 @@ import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.collections.queue.api.SCQueue;
 import io.mercury.common.concurrent.queue.MpscArrayBlockingQueue;
-import io.mercury.common.utils.StringUtil;
+import io.mercury.common.util.StringUtil;
 
 /**
  * 

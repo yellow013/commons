@@ -12,7 +12,7 @@ import io.mercury.common.collections.queue.api.SCQueue;
 import io.mercury.common.functional.Processor;
 import io.mercury.common.log.CommonLoggerFactory;
 import io.mercury.common.thread.ThreadUtil;
-import io.mercury.common.utils.StringUtil;
+import io.mercury.common.util.StringUtil;
 
 public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 
