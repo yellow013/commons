@@ -46,6 +46,15 @@ public final class Assertor {
 	}
 
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	public static String nonNullAndEmpty(String str, String objName) {
+		if (str == null)
+			throw new NullPointerException(objName + " can not be null");
+		if (str.isEmpty())
+			throw new IllegalArgumentException(objName + " can not be empty");
+		return str;
+	}
+
+	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static <T extends Collection<?>> T nonNullAndEmpty(T t, String objName) {
 		if (t == null)
 			throw new NullPointerException(objName + " can not be null");

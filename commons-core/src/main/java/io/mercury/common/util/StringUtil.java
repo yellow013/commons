@@ -150,13 +150,14 @@ public final class StringUtil {
 	}
 
 	/**
-	 * 去除连接符号<b> "." </b>&<b> "-" </b>&<b> "_" </b>
+	 * 去除分割符<b> "." </b>,<b> "-" </b>,<b> "_" </b>,<b> "/" </b>,<b> "\" </b>
 	 * 
 	 * @param str
 	 * @return
 	 */
-	public static String replaceJoinChar(String str) {
-		return str == null ? StringConst.EMPTY : str.replace(".", "").replace("-", "").replace("_", "");
+	public static String deleteSplitChar(String str) {
+		return str == null ? StringConst.EMPTY
+				: str.replace(".", "").replace("-", "").replace("_", "").replace("/", "").replace("\\", "");
 	}
 
 	public static String conversionGbkToUtf8(String gbkStr) {
