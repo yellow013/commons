@@ -10,7 +10,7 @@ import org.eclipse.collections.impl.list.immutable.ImmutableListFactoryImpl;
 import org.eclipse.collections.impl.list.immutable.primitive.ImmutableIntListFactoryImpl;
 import org.eclipse.collections.impl.list.immutable.primitive.ImmutableLongListFactoryImpl;
 
-import io.mercury.common.utils.ArrayUtil;
+import io.mercury.common.util.ArrayUtil;
 
 public final class ImmutableLists {
 

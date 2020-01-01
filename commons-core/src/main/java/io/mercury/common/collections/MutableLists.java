@@ -16,7 +16,7 @@ import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList;
 
-import io.mercury.common.utils.ArrayUtil;
+import io.mercury.common.util.ArrayUtil;
 
 public final class MutableLists {
 

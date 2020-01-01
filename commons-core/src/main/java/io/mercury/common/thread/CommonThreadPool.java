@@ -1,7 +1,7 @@
 package io.mercury.common.thread;
 
 import static io.mercury.common.number.RandomNumber.randomInt;
-import static io.mercury.common.utils.StringUtil.isNullOrEmpty;
+import static io.mercury.common.util.StringUtil.isNullOrEmpty;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

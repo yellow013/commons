@@ -16,7 +16,7 @@ import org.eclipse.collections.impl.set.mutable.primitive.LongHashSet;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 import org.eclipse.collections.impl.utility.Iterate;
 
-import io.mercury.common.utils.ArrayUtil;
+import io.mercury.common.util.ArrayUtil;
 
 public final class MutableSets {
 

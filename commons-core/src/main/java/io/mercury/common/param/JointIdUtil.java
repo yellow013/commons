@@ -1,6 +1,6 @@
 package io.mercury.common.param;
 
-import io.mercury.common.utils.BytesUtil;
+import io.mercury.common.util.BytesUtil;
 
 public final class JointIdUtil {
 

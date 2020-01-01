@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 
 import io.mercury.common.io.FileSearcher;
 import io.mercury.common.log.CommonLoggerFactory;
-import io.mercury.common.utils.StringUtil;
+import io.mercury.common.util.StringUtil;
 
 public final class PropertiesFileReader {
 

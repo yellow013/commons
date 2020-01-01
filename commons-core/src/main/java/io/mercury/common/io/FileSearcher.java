@@ -10,16 +10,20 @@ public final class FileSearcher {
 	private FileSearcher() {
 	}
 
-	public static Set<File> findWith(File parentFile, Predicate<File> fileFilter) {
+	public static Set<File> findWith(File searchPath) {
+		return findWith(searchPath, anyFile -> true);
+	}
+
+	public static Set<File> findWith(File searchPath, Predicate<File> fileFilter) {
 		Set<File> files = new HashSet<>();
-		findWith0(files, parentFile, fileFilter);
+		findWith0(files, searchPath, fileFilter);
 		return files;
 	}
 
-	private static void findWith0(Set<File> loadFiles, File parentFile, Predicate<File> fileFilter) {
-		if (parentFile == null || fileFilter == null)
+	private static void findWith0(Set<File> loadFiles, File searchPath, Predicate<File> fileFilter) {
+		if (searchPath == null || fileFilter == null)
 			return;
-		File[] listFiles = parentFile.listFiles();
+		File[] listFiles = searchPath.listFiles();
 		if (listFiles != null && listFiles.length != 0)
 			for (File file : listFiles)
 				if (file.isDirectory())

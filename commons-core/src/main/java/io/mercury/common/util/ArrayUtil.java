@@ -1,4 +1,4 @@
-package io.mercury.common.utils;
+package io.mercury.common.util;
 
 import static java.lang.System.arraycopy;
 

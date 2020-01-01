@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.mercury.common.thread.ThreadUtil;
-import io.mercury.common.utils.StringUtil;
+import io.mercury.common.util.StringUtil;
 
 public class CommonLoggerFactory {
 

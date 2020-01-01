@@ -1,6 +1,6 @@
 package io.mercury.common.collections;
 
-import static io.mercury.common.utils.ArrayUtil.isNullOrEmpty;
+import static io.mercury.common.util.ArrayUtil.isNullOrEmpty;
 
 import javax.annotation.Nonnull;
 

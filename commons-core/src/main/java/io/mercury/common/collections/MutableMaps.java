@@ -51,7 +51,7 @@ import org.eclipse.collections.impl.multimap.list.FastListMultimap;
 import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
 import org.eclipse.collections.impl.multimap.set.sorted.TreeSortedSetMultimap;
 
-import io.mercury.common.utils.ArrayUtil;
+import io.mercury.common.util.ArrayUtil;
 
 public final class MutableMaps {
 
