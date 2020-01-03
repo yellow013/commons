@@ -20,47 +20,44 @@
 
 	<dependencies>
 
-		<!-- jsr305 -->
+		<!-- JSR305 Annotations for Findbugs -->
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
 		</dependency>
 
-		<!-- commons-io -->
+		<!-- The Apache Commons IO library contains utility classes, stream implementations, 
+			file filters, file comparators, endian transformation classes, and much more. -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
 
-		<!-- commons-lang3 -->
+		<!-- Apache Commons Lang, a package of Java utility classes for the classes 
+			that are in java.lang's hierarchy, or are considered to be so standard as 
+			to justify existence in java.lang. -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
 		</dependency>
 
-		<!-- commons-collections4 -->
+		<!-- The Apache Commons Collections package contains types that extend 
+			and augment the Java Collections Framework. -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.4</version>
 		</dependency>
 
-		<!-- Eclipse Collections -->
+		<!-- Eclipse Collections Main Library -->
 		<dependency>
 			<groupId>org.eclipse.collections</groupId>
 			<artifactId>eclipse-collections</artifactId>
 			<version>10.1.0</version>
 		</dependency>
-
-		<!-- google guava -->
-		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
-			<version>28.1-jre</version> </dependency> -->
-
-		<!-- <dependency> <groupId>org.pcollections</groupId> <artifactId>pcollections</artifactId> 
-			<version>3.1.0</version> </dependency> -->
 
 		<!-- Logs dependency -->
 		<!-- slf4j + slf4j adaptor + log4j2 -->
@@ -106,7 +103,7 @@
 			</exclusions>
 		</dependency>
 
-		<!-- Junit4 dependency -->
+		<!-- Junit4 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
