@@ -140,7 +140,7 @@ public enum Capacity {
 
 	;
 
-	private int size;
+	private final int size;
 
 	private Capacity(int size) {
 		this.size = size;
@@ -149,11 +149,11 @@ public enum Capacity {
 	public int size() {
 		return size;
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		System.out.println(1 >> 31);
-		
+
 	}
 
 }

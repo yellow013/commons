@@ -71,6 +71,7 @@ public final class MutableMaps {
 		return new IntIntHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableIntIntMap newIntIntHashMap(int capacity) {
 		return new IntIntHashMap(capacity);
 	}
@@ -83,6 +84,7 @@ public final class MutableMaps {
 		return new IntLongHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableIntLongMap newIntLongHashMap(int capacity) {
 		return new IntLongHashMap(capacity);
 	}
@@ -95,6 +97,7 @@ public final class MutableMaps {
 		return new IntDoubleHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableIntDoubleMap newIntDoubleHashMap(int capacity) {
 		return new IntDoubleHashMap(capacity);
 	}
@@ -107,6 +110,7 @@ public final class MutableMaps {
 		return new IntBooleanHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableIntBooleanMap newIntBooleanHashMap(int capacity) {
 		return new IntBooleanHashMap(capacity);
 	}
@@ -119,6 +123,7 @@ public final class MutableMaps {
 		return new IntObjectHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap(int capacity) {
 		return new IntObjectHashMap<>(capacity);
 	}
@@ -132,6 +137,7 @@ public final class MutableMaps {
 		return new LongLongHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableLongLongMap newLongLongHashMap(int capacity) {
 		return new LongLongHashMap(capacity);
 	}
@@ -144,6 +150,7 @@ public final class MutableMaps {
 		return new LongIntHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableLongIntMap newLongIntHashMap(int capacity) {
 		return new LongIntHashMap(capacity);
 	}
@@ -156,6 +163,7 @@ public final class MutableMaps {
 		return new LongDoubleHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableLongDoubleMap newLongDoubleHashMap(int capacity) {
 		return new LongDoubleHashMap(capacity);
 	}
@@ -168,6 +176,7 @@ public final class MutableMaps {
 		return new LongBooleanHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableLongBooleanMap newLongBooleanHashMap(int capacity) {
 		return new LongBooleanHashMap(capacity);
 	}
@@ -180,6 +189,7 @@ public final class MutableMaps {
 		return new LongObjectHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(int capacity) {
 		return new LongObjectHashMap<>(capacity);
 	}
@@ -193,6 +203,7 @@ public final class MutableMaps {
 		return new DoubleBooleanHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableDoubleBooleanMap newDoubleBooleanHashMap(int capacity) {
 		return new DoubleBooleanHashMap(capacity);
 	}
@@ -205,6 +216,7 @@ public final class MutableMaps {
 		return new DoubleIntHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableDoubleIntMap newDoubleIntHashMap(int capacity) {
 		return new DoubleIntHashMap(capacity);
 	}
@@ -217,6 +229,7 @@ public final class MutableMaps {
 		return new DoubleLongHashMap(capacity.size());
 	}
 
+	@Deprecated
 	public static MutableDoubleLongMap newDoubleLongHashMap(int capacity) {
 		return new DoubleLongHashMap(capacity);
 	}
@@ -230,6 +243,7 @@ public final class MutableMaps {
 		return new ObjectBooleanHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <K> MutableObjectBooleanMap<K> newObjectBooleanHashMap(int capacity) {
 		return new ObjectBooleanHashMap<>(capacity);
 	}
@@ -242,6 +256,7 @@ public final class MutableMaps {
 		return new ObjectIntHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <K> MutableObjectIntMap<K> newObjectIntHashMap(int capacity) {
 		return new ObjectIntHashMap<>(capacity);
 	}
@@ -254,6 +269,7 @@ public final class MutableMaps {
 		return new ObjectLongHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <K> MutableObjectLongMap<K> newObjectLongHashMap(int capacity) {
 		return new ObjectLongHashMap<>(capacity);
 	}
@@ -266,6 +282,7 @@ public final class MutableMaps {
 		return new ObjectDoubleHashMap<>(capacity.size());
 	}
 
+	@Deprecated
 	public static <K> MutableObjectDoubleMap<K> newObjectDoubleHashMap(int capacity) {
 		return new ObjectDoubleHashMap<>(capacity);
 	}
@@ -281,6 +298,7 @@ public final class MutableMaps {
 		return UnifiedMap.newMap(capacity.size());
 	}
 
+	@Deprecated
 	public static <K, V> MutableMap<K, V> newUnifiedMap(int capacity) {
 		return UnifiedMap.newMap(capacity);
 	}
@@ -308,6 +326,7 @@ public final class MutableMaps {
 		return ConcurrentHashMap.newMap(capacity.size());
 	}
 
+	@Deprecated
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int capacity) {
 		return ConcurrentHashMap.newMap(capacity);
 	}
@@ -326,6 +345,7 @@ public final class MutableMaps {
 		return ConcurrentHashMapUnsafe.newMap(capacity.size());
 	}
 
+	@Deprecated
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMapUnsafe(int capacity) {
 		return ConcurrentHashMapUnsafe.newMap(capacity);
 	}
@@ -336,9 +356,8 @@ public final class MutableMaps {
 		return ConcurrentHashMapUnsafe.newMap(map);
 	}
 
-	/**
-	 * multimap
-	 */
+	// multimap
+
 	public static <K, V> MutableListMultimap<K, V> newFastListMultimap() {
 		return FastListMultimap.newMultimap();
 	}
@@ -377,16 +396,16 @@ public final class MutableMaps {
 		return TreeSortedSetMultimap.newMultimap();
 	}
 
-	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Iterable<Pair<K, V>> iterable) {
-		if (iterable == null)
-			return newTreeSortedSetMultimap();
-		return TreeSortedSetMultimap.newMultimap(iterable);
-	}
-
 	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Comparator<V> comparator) {
 		if (comparator == null)
 			return newTreeSortedSetMultimap();
 		return TreeSortedSetMultimap.newMultimap(comparator);
+	}
+
+	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Iterable<Pair<K, V>> iterable) {
+		if (iterable == null)
+			return newTreeSortedSetMultimap();
+		return TreeSortedSetMultimap.newMultimap(iterable);
 	}
 
 	@SafeVarargs

@@ -75,6 +75,16 @@ public final class MutableSets {
 		return new UnifiedSet<>();
 	}
 
+	@SafeVarargs
+	public static <E> MutableSet<E> newUnifiedSet(E... values) {
+		UnifiedSet<E> unifiedSet = new UnifiedSet<>();
+		if (ArrayUtil.isNullOrEmpty(values))
+			return unifiedSet;
+		for (E e : values)
+			unifiedSet.add(e);
+		return unifiedSet;
+	}
+
 	public static <E> MutableSet<E> newUnifiedSet(Capacity capacity) {
 		return new UnifiedSet<>(capacity.size());
 	}
