@@ -1,6 +1,5 @@
 package io.mercury.common.collections;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -23,10 +22,6 @@ import org.eclipse.collections.api.map.primitive.MutableObjectBooleanMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectIntMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectLongMap;
-import org.eclipse.collections.api.multimap.list.MutableListMultimap;
-import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
-import org.eclipse.collections.api.multimap.sortedset.MutableSortedSetMultimap;
-import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMapUnsafe;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
@@ -47,11 +42,6 @@ import org.eclipse.collections.impl.map.mutable.primitive.ObjectBooleanHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectLongHashMap;
-import org.eclipse.collections.impl.multimap.list.FastListMultimap;
-import org.eclipse.collections.impl.multimap.set.UnifiedSetMultimap;
-import org.eclipse.collections.impl.multimap.set.sorted.TreeSortedSetMultimap;
-
-import io.mercury.common.util.ArrayUtil;
 
 public final class MutableMaps {
 
@@ -71,22 +61,12 @@ public final class MutableMaps {
 		return new IntIntHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableIntIntMap newIntIntHashMap(int capacity) {
-		return new IntIntHashMap(capacity);
-	}
-
 	public static MutableIntLongMap newIntLongHashMap() {
 		return new IntLongHashMap();
 	}
 
 	public static MutableIntLongMap newIntLongHashMap(Capacity capacity) {
 		return new IntLongHashMap(capacity.size());
-	}
-
-	@Deprecated
-	public static MutableIntLongMap newIntLongHashMap(int capacity) {
-		return new IntLongHashMap(capacity);
 	}
 
 	public static MutableIntDoubleMap newIntDoubleHashMap() {
@@ -97,11 +77,6 @@ public final class MutableMaps {
 		return new IntDoubleHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableIntDoubleMap newIntDoubleHashMap(int capacity) {
-		return new IntDoubleHashMap(capacity);
-	}
-
 	public static MutableIntBooleanMap newIntBooleanHashMap() {
 		return new IntBooleanHashMap();
 	}
@@ -110,22 +85,12 @@ public final class MutableMaps {
 		return new IntBooleanHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableIntBooleanMap newIntBooleanHashMap(int capacity) {
-		return new IntBooleanHashMap(capacity);
-	}
-
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap() {
 		return new IntObjectHashMap<>();
 	}
 
 	public static <V> MutableIntObjectMap<V> newIntObjectHashMap(Capacity capacity) {
 		return new IntObjectHashMap<>(capacity.size());
-	}
-
-	@Deprecated
-	public static <V> MutableIntObjectMap<V> newIntObjectHashMap(int capacity) {
-		return new IntObjectHashMap<>(capacity);
 	}
 
 	// Key -> long
@@ -137,22 +102,12 @@ public final class MutableMaps {
 		return new LongLongHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableLongLongMap newLongLongHashMap(int capacity) {
-		return new LongLongHashMap(capacity);
-	}
-
 	public static MutableLongIntMap newLongIntHashMap() {
 		return new LongIntHashMap();
 	}
 
 	public static MutableLongIntMap newLongIntHashMap(Capacity capacity) {
 		return new LongIntHashMap(capacity.size());
-	}
-
-	@Deprecated
-	public static MutableLongIntMap newLongIntHashMap(int capacity) {
-		return new LongIntHashMap(capacity);
 	}
 
 	public static MutableLongDoubleMap newLongDoubleHashMap() {
@@ -163,11 +118,6 @@ public final class MutableMaps {
 		return new LongDoubleHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableLongDoubleMap newLongDoubleHashMap(int capacity) {
-		return new LongDoubleHashMap(capacity);
-	}
-
 	public static MutableLongBooleanMap newLongBooleanHashMap() {
 		return new LongBooleanHashMap();
 	}
@@ -176,22 +126,12 @@ public final class MutableMaps {
 		return new LongBooleanHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableLongBooleanMap newLongBooleanHashMap(int capacity) {
-		return new LongBooleanHashMap(capacity);
-	}
-
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap() {
 		return new LongObjectHashMap<>();
 	}
 
 	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(Capacity capacity) {
 		return new LongObjectHashMap<>(capacity.size());
-	}
-
-	@Deprecated
-	public static <V> MutableLongObjectMap<V> newLongObjectHashMap(int capacity) {
-		return new LongObjectHashMap<>(capacity);
 	}
 
 	// Key -> double
@@ -203,11 +143,6 @@ public final class MutableMaps {
 		return new DoubleBooleanHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableDoubleBooleanMap newDoubleBooleanHashMap(int capacity) {
-		return new DoubleBooleanHashMap(capacity);
-	}
-
 	public static MutableDoubleIntMap newDoubleIntHashMap() {
 		return new DoubleIntHashMap();
 	}
@@ -216,22 +151,12 @@ public final class MutableMaps {
 		return new DoubleIntHashMap(capacity.size());
 	}
 
-	@Deprecated
-	public static MutableDoubleIntMap newDoubleIntHashMap(int capacity) {
-		return new DoubleIntHashMap(capacity);
-	}
-
 	public static MutableDoubleLongMap newDoubleLongHashMap() {
 		return new DoubleLongHashMap();
 	}
 
 	public static MutableDoubleLongMap newDoubleLongHashMap(Capacity capacity) {
 		return new DoubleLongHashMap(capacity.size());
-	}
-
-	@Deprecated
-	public static MutableDoubleLongMap newDoubleLongHashMap(int capacity) {
-		return new DoubleLongHashMap(capacity);
 	}
 
 	// Key -> Object
@@ -243,22 +168,12 @@ public final class MutableMaps {
 		return new ObjectBooleanHashMap<>(capacity.size());
 	}
 
-	@Deprecated
-	public static <K> MutableObjectBooleanMap<K> newObjectBooleanHashMap(int capacity) {
-		return new ObjectBooleanHashMap<>(capacity);
-	}
-
 	public static <K> MutableObjectIntMap<K> newObjectIntHashMap() {
 		return new ObjectIntHashMap<>();
 	}
 
 	public static <K> MutableObjectIntMap<K> newObjectIntHashMap(Capacity capacity) {
 		return new ObjectIntHashMap<>(capacity.size());
-	}
-
-	@Deprecated
-	public static <K> MutableObjectIntMap<K> newObjectIntHashMap(int capacity) {
-		return new ObjectIntHashMap<>(capacity);
 	}
 
 	public static <K> MutableObjectLongMap<K> newObjectLongHashMap() {
@@ -269,22 +184,12 @@ public final class MutableMaps {
 		return new ObjectLongHashMap<>(capacity.size());
 	}
 
-	@Deprecated
-	public static <K> MutableObjectLongMap<K> newObjectLongHashMap(int capacity) {
-		return new ObjectLongHashMap<>(capacity);
-	}
-
 	public static <K> MutableObjectDoubleMap<K> newObjectDoubleHashMap() {
 		return new ObjectDoubleHashMap<>();
 	}
 
 	public static <K> MutableObjectDoubleMap<K> newObjectDoubleHashMap(Capacity capacity) {
 		return new ObjectDoubleHashMap<>(capacity.size());
-	}
-
-	@Deprecated
-	public static <K> MutableObjectDoubleMap<K> newObjectDoubleHashMap(int capacity) {
-		return new ObjectDoubleHashMap<>(capacity);
 	}
 
 	/**
@@ -296,11 +201,6 @@ public final class MutableMaps {
 
 	public static <K, V> MutableMap<K, V> newUnifiedMap(Capacity capacity) {
 		return UnifiedMap.newMap(capacity.size());
-	}
-
-	@Deprecated
-	public static <K, V> MutableMap<K, V> newUnifiedMap(int capacity) {
-		return UnifiedMap.newMap(capacity);
 	}
 
 	public static <K, V> MutableMap<K, V> newUnifiedMap(Map<K, V> map) {
@@ -326,11 +226,6 @@ public final class MutableMaps {
 		return ConcurrentHashMap.newMap(capacity.size());
 	}
 
-	@Deprecated
-	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(int capacity) {
-		return ConcurrentHashMap.newMap(capacity);
-	}
-
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMap(Map<K, V> map) {
 		if (map == null || map.isEmpty())
 			return newConcurrentHashMap();
@@ -345,74 +240,12 @@ public final class MutableMaps {
 		return ConcurrentHashMapUnsafe.newMap(capacity.size());
 	}
 
-	@Deprecated
-	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMapUnsafe(int capacity) {
-		return ConcurrentHashMapUnsafe.newMap(capacity);
-	}
-
 	public static <K, V> ConcurrentMutableMap<K, V> newConcurrentHashMapUnsafe(Map<K, V> map) {
 		if (map == null || map.isEmpty())
 			return newConcurrentHashMapUnsafe();
 		return ConcurrentHashMapUnsafe.newMap(map);
 	}
 
-	// multimap
-
-	public static <K, V> MutableListMultimap<K, V> newFastListMultimap() {
-		return FastListMultimap.newMultimap();
-	}
-
-	public static <K, V> MutableListMultimap<K, V> newFastListMultimap(Iterable<Pair<K, V>> iterable) {
-		if (iterable == null)
-			return newFastListMultimap();
-		return FastListMultimap.newMultimap(iterable);
-	}
-
-	@SafeVarargs
-	public static <K, V> MutableListMultimap<K, V> newFastListMultimap(Pair<K, V>... pairs) {
-		if (ArrayUtil.isNullOrEmpty(pairs))
-			return newFastListMultimap();
-		return FastListMultimap.newMultimap(pairs);
-	}
-
-	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap() {
-		return UnifiedSetMultimap.newMultimap();
-	}
-
-	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap(Iterable<Pair<K, V>> iterable) {
-		if (iterable == null)
-			return newUnifiedSetMultimap();
-		return UnifiedSetMultimap.newMultimap(iterable);
-	}
-
-	@SafeVarargs
-	public static <K, V> MutableSetMultimap<K, V> newUnifiedSetMultimap(Pair<K, V>... pairs) {
-		if (ArrayUtil.isNullOrEmpty(pairs))
-			return newUnifiedSetMultimap();
-		return UnifiedSetMultimap.newMultimap(pairs);
-	}
-
-	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap() {
-		return TreeSortedSetMultimap.newMultimap();
-	}
-
-	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Comparator<V> comparator) {
-		if (comparator == null)
-			return newTreeSortedSetMultimap();
-		return TreeSortedSetMultimap.newMultimap(comparator);
-	}
-
-	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Iterable<Pair<K, V>> iterable) {
-		if (iterable == null)
-			return newTreeSortedSetMultimap();
-		return TreeSortedSetMultimap.newMultimap(iterable);
-	}
-
-	@SafeVarargs
-	public static <K, V> MutableSortedSetMultimap<K, V> newTreeSortedSetMultimap(Pair<K, V>... pairs) {
-		if (ArrayUtil.isNullOrEmpty(pairs))
-			return newTreeSortedSetMultimap();
-		return TreeSortedSetMultimap.newMultimap(pairs);
-	}
+	
 
 }
