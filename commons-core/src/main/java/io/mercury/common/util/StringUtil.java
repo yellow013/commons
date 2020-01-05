@@ -47,7 +47,7 @@ public final class StringUtil {
 	 */
 	public static String reflectionToString(Object obj) {
 		return obj == null ? StringConst.NULL
-				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE);
+				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE, false);
 	}
 
 	public static boolean isNullOrEmpty(String str) {
