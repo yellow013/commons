@@ -3,6 +3,7 @@ package io.mercury.common.collections;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.eclipse.collections.api.bimap.MutableBiMap;
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleBooleanMap;
@@ -22,6 +23,7 @@ import org.eclipse.collections.api.map.primitive.MutableObjectBooleanMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectDoubleMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectIntMap;
 import org.eclipse.collections.api.map.primitive.MutableObjectLongMap;
+import org.eclipse.collections.impl.bimap.mutable.HashBiMap;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMapUnsafe;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
@@ -246,6 +248,12 @@ public final class MutableMaps {
 		return ConcurrentHashMapUnsafe.newMap(map);
 	}
 
-	
+	public static <K, V> MutableBiMap<K, V> newHashBiMap() {
+		return new HashBiMap<>();
+	}
+
+	public static <K, V> MutableBiMap<K, V> newHashBiMap(Capacity capacity) {
+		return new HashBiMap<>(capacity.size());
+	}
 
 }
