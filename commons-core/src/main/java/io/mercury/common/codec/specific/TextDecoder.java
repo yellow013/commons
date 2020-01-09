@@ -1,14 +1,12 @@
-package io.mercury.common.codec;
-
-import java.util.function.Function;
+package io.mercury.common.codec.specific;
 
 @FunctionalInterface
-public interface TextDecoder<R> extends Function<CharSequence, R> {
+public interface TextDecoder<R> extends Codec<CharSequence, R> {
 
-	R decode(CharSequence t);
+	R decode(CharSequence sequence);
 
 	@Override
-	default R apply(CharSequence t) {
+	default R codec(CharSequence t) {
 		return decode(t);
 	}
 

@@ -1,14 +1,12 @@
-package io.mercury.common.codec;
-
-import java.util.function.Function;
+package io.mercury.common.codec.specific;
 
 @FunctionalInterface
-public interface TextEncoder<T> extends Function<T, CharSequence> {
+public interface TextEncoder<T> extends Codec<T, CharSequence> {
 
 	CharSequence encode(T t);
 
 	@Override
-	default CharSequence apply(T t) {
+	default CharSequence codec(T t) {
 		return encode(t);
 	}
 

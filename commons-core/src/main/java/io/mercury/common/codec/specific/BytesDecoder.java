@@ -1,15 +1,14 @@
-package io.mercury.common.codec;
+package io.mercury.common.codec.specific;
 
 import java.nio.ByteBuffer;
-import java.util.function.Function;
 
 @FunctionalInterface
-public interface BytesDecoder<R> extends Function<ByteBuffer, R> {
+public interface BytesDecoder<R> extends Codec<ByteBuffer, R> {
 
-	R decode(ByteBuffer t);
+	R decode(ByteBuffer buffer);
 
 	@Override
-	default R apply(ByteBuffer t) {
+	default R codec(ByteBuffer t) {
 		return decode(t);
 	}
 
