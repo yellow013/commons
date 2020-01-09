@@ -10,7 +10,7 @@ import java.util.Date;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import io.mercury.common.annotations.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
 import io.mercury.common.datetime.Pattern.DatePattern;
 import io.mercury.common.datetime.Pattern.DateTimePattern;
 import io.mercury.common.datetime.Pattern.TimePattern;

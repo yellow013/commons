@@ -2,7 +2,7 @@ package io.mercury.common.util;
 
 import javax.annotation.Nonnull;
 
-import io.mercury.common.annotations.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
 
 public final class BytesUtil {
 

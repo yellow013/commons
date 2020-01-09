@@ -2,6 +2,7 @@ package io.mercury.common.collections.queue.api;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.mercury.common.annotation.lang.ProtectedAbstractMethod;
 import io.mercury.common.functional.Processor;
 import io.mercury.common.number.RandomNumber;
 
@@ -26,6 +27,7 @@ public abstract class SCQueue<E> implements Queue<E> {
 		this.processor = processor;
 	}
 
+	@ProtectedAbstractMethod
 	protected abstract void startProcessThread();
 
 	public void start() {

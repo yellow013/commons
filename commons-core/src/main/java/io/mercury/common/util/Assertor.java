@@ -3,7 +3,7 @@ package io.mercury.common.util;
 import java.util.Collection;
 import java.util.Map;
 
-import io.mercury.common.annotations.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
 
 public final class Assertor {
 

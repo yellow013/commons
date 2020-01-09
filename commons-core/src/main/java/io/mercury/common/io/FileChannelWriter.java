@@ -8,7 +8,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.mercury.common.annotations.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
 import io.mercury.common.character.Separator;
 import io.mercury.common.sys.SysProperties;
 
