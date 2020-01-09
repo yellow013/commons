@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 
@@ -30,6 +31,26 @@ public final class DateTimeUtil {
 	}
 
 	/**
+	 * 根据指定 LocalDateTime 返回 primitive int 表示的 yyyyMMdd
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int date(@Nonnull LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate());
+	}
+
+	/**
+	 * 根据指定 ZonedDateTime 返回 primitive int 表示的 yyyyMMdd
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int date(@Nonnull ZonedDateTime zonedDateTime) {
+		return date(zonedDateTime.toLocalDate());
+	}
+
+	/**
 	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyMMdd
 	 * 
 	 * @param date
@@ -40,7 +61,47 @@ public final class DateTimeUtil {
 	}
 
 	/**
-	 * 返回 primitive int 表示的 yyyyMMdd
+	 * 返回 primitive int 表示的 yyyyMM
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int dateOfMonth() {
+		return dateOfMonth(LocalDate.now());
+	}
+
+	/**
+	 * 根据指定 LocalDateTime 返回 primitive int 表示的 yyyyMM
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int dateOfMonth(@Nonnull LocalDateTime dateTime) {
+		return dateOfMonth(dateTime.toLocalDate());
+	}
+
+	/**
+	 * 根据指定 ZonedDateTime 返回 primitive int 表示的 yyyyMM
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int dateOfMonth(@Nonnull ZonedDateTime zonedDateTime) {
+		return dateOfMonth(zonedDateTime.toLocalDate());
+	}
+
+	/**
+	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyMM
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public final static int dateOfMonth(@Nonnull LocalDate date) {
+		return date.getYear() * 100 + date.getMonth().getValue();
+	}
+
+	/**
+	 * 返回 primitive int 表示的 yyyyXXX
 	 * 
 	 * @param date
 	 * @return
@@ -50,7 +111,7 @@ public final class DateTimeUtil {
 	}
 
 	/**
-	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyMMdd
+	 * 根据指定 LocalDate 返回 primitive int 表示的 yyyyXXX
 	 * 
 	 * @param date
 	 * @return
@@ -64,8 +125,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static int timeToHour() {
-		return timeToHour(LocalTime.now());
+	public final static int timeOfHour() {
+		return timeOfHour(LocalTime.now());
 	}
 
 	/**
@@ -74,7 +135,7 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static int timeToHour(@Nonnull LocalTime time) {
+	public final static int timeOfHour(@Nonnull LocalTime time) {
 		return time.getHour();
 	}
 
@@ -83,8 +144,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static int timeToMinute() {
-		return timeToMinute(LocalTime.now());
+	public final static int timeOfMinute() {
+		return timeOfMinute(LocalTime.now());
 	}
 
 	/**
@@ -93,7 +154,7 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static int timeToMinute(@Nonnull LocalTime time) {
+	public final static int timeOfMinute(@Nonnull LocalTime time) {
 		return time.getHour() * 100 + time.getMinute();
 	}
 
@@ -102,8 +163,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static int timeToSecond() {
-		return timeToSecond(LocalTime.now());
+	public final static int timeOfSecond() {
+		return timeOfSecond(LocalTime.now());
 	}
 
 	/**
@@ -112,7 +173,7 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static int timeToSecond(@Nonnull LocalTime time) {
+	public final static int timeOfSecond(@Nonnull LocalTime time) {
 		return time.getHour() * 10000 + time.getMinute() * 100 + time.getSecond();
 	}
 
@@ -121,8 +182,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static int timeToMillisecond() {
-		return timeToMillisecond(LocalTime.now());
+	public final static int timeOfMillisecond() {
+		return timeOfMillisecond(LocalTime.now());
 	}
 
 	/**
@@ -131,8 +192,8 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static int timeToMillisecond(@Nonnull LocalTime time) {
-		return timeToSecond(time) * 1000 + time.getNano() / 1000000;
+	public final static int timeOfMillisecond(@Nonnull LocalTime time) {
+		return timeOfSecond(time) * 1000 + time.getNano() / 1000000;
 	}
 
 	/**
@@ -140,8 +201,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long timeToMicrosecond() {
-		return timeToMicrosecond(LocalTime.now());
+	public final static long timeOfMicrosecond() {
+		return timeOfMicrosecond(LocalTime.now());
 	}
 
 	/**
@@ -150,8 +211,8 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static long timeToMicrosecond(@Nonnull LocalTime time) {
-		return timeToSecond(time) * 1000000L + time.getNano() / 1000;
+	public final static long timeOfMicrosecond(@Nonnull LocalTime time) {
+		return timeOfSecond(time) * 1000000L + time.getNano() / 1000;
 	}
 
 	/**
@@ -159,8 +220,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long timeToNanosecond() {
-		return timeToNanosecond(LocalTime.now());
+	public final static long timeOfNanosecond() {
+		return timeOfNanosecond(LocalTime.now());
 	}
 
 	/**
@@ -169,8 +230,8 @@ public final class DateTimeUtil {
 	 * @param time
 	 * @return
 	 */
-	public final static long timeToNanosecond(@Nonnull LocalTime time) {
-		return timeToSecond(time) * 1000000000L + time.getNano();
+	public final static long timeOfNanosecond(@Nonnull LocalTime time) {
+		return timeOfSecond(time) * 1000000000L + time.getNano();
 	}
 
 	/**
@@ -178,8 +239,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long datetimeToHour() {
-		return datetimeToHour(LocalDateTime.now());
+	public final static long datetimeOfHour() {
+		return datetimeOfHour(LocalDateTime.now());
 	}
 
 	/**
@@ -188,8 +249,8 @@ public final class DateTimeUtil {
 	 * @param dateTime
 	 * @return
 	 */
-	public final static long datetimeToHour(@Nonnull LocalDateTime dateTime) {
-		return date(dateTime.toLocalDate()) * 100L + timeToHour(dateTime.toLocalTime());
+	public final static long datetimeOfHour(@Nonnull LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate()) * 100L + timeOfHour(dateTime.toLocalTime());
 	}
 
 	/**
@@ -197,8 +258,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long datetimeToMinute() {
-		return datetimeToMinute(LocalDateTime.now());
+	public final static long datetimeOfMinute() {
+		return datetimeOfMinute(LocalDateTime.now());
 	}
 
 	/**
@@ -207,8 +268,8 @@ public final class DateTimeUtil {
 	 * @param dateTime
 	 * @return
 	 */
-	public final static long datetimeToMinute(@Nonnull LocalDateTime dateTime) {
-		return date(dateTime.toLocalDate()) * 10000L + timeToMinute(dateTime.toLocalTime());
+	public final static long datetimeOfMinute(@Nonnull LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate()) * 10000L + timeOfMinute(dateTime.toLocalTime());
 	}
 
 	/**
@@ -216,8 +277,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long datetimeToSecond() {
-		return datetimeToSecond(LocalDateTime.now());
+	public final static long datetimeOfSecond() {
+		return datetimeOfSecond(LocalDateTime.now());
 	}
 
 	/**
@@ -226,8 +287,8 @@ public final class DateTimeUtil {
 	 * @param dateTime
 	 * @return
 	 */
-	public final static long datetimeToSecond(@Nonnull LocalDateTime dateTime) {
-		return date(dateTime.toLocalDate()) * 1000000L + timeToSecond(dateTime.toLocalTime());
+	public final static long datetimeOfSecond(@Nonnull LocalDateTime dateTime) {
+		return date(dateTime.toLocalDate()) * 1000000L + timeOfSecond(dateTime.toLocalTime());
 	}
 
 	/**
@@ -235,8 +296,8 @@ public final class DateTimeUtil {
 	 * 
 	 * @return
 	 */
-	public final static long datetimeToMillisecond() {
-		return datetimeToMillisecond(LocalDateTime.now());
+	public final static long datetimeOfMillisecond() {
+		return datetimeOfMillisecond(LocalDateTime.now());
 	}
 
 	/**
@@ -246,8 +307,8 @@ public final class DateTimeUtil {
 	 * @param dateTime
 	 * @return
 	 */
-	public final static long datetimeToMillisecond(@Nonnull LocalDateTime dateTime) {
-		return datetimeToSecond(dateTime) * 1000L + dateTime.toLocalTime().getNano() / 1000000;
+	public final static long datetimeOfMillisecond(@Nonnull LocalDateTime dateTime) {
+		return datetimeOfSecond(dateTime) * 1000L + dateTime.toLocalTime().getNano() / 1000000;
 	}
 
 	/**
@@ -387,16 +448,16 @@ public final class DateTimeUtil {
 		System.out.println(Integer.MAX_VALUE);
 		System.out.println(Long.MAX_VALUE);
 		System.out.println(date(dateTime.toLocalDate()));
-		System.out.println(timeToHour(dateTime.toLocalTime()));
-		System.out.println(timeToMinute(dateTime.toLocalTime()));
-		System.out.println(timeToSecond(dateTime.toLocalTime()));
-		System.out.println(timeToMillisecond(dateTime.toLocalTime()));
-		System.out.println(timeToMicrosecond(dateTime.toLocalTime()));
-		System.out.println(timeToNanosecond(dateTime.toLocalTime()));
-		System.out.println(datetimeToHour(dateTime));
-		System.out.println(datetimeToMinute(dateTime));
-		System.out.println(datetimeToSecond(dateTime));
-		System.out.println(datetimeToMillisecond(dateTime));
+		System.out.println(timeOfHour(dateTime.toLocalTime()));
+		System.out.println(timeOfMinute(dateTime.toLocalTime()));
+		System.out.println(timeOfSecond(dateTime.toLocalTime()));
+		System.out.println(timeOfMillisecond(dateTime.toLocalTime()));
+		System.out.println(timeOfMicrosecond(dateTime.toLocalTime()));
+		System.out.println(timeOfNanosecond(dateTime.toLocalTime()));
+		System.out.println(datetimeOfHour(dateTime));
+		System.out.println(datetimeOfMinute(dateTime));
+		System.out.println(datetimeOfSecond(dateTime));
+		System.out.println(datetimeOfMillisecond(dateTime));
 		System.out.println(toLocalDate(20161223));
 		System.out.println(toLocalTime(234554987));
 		System.out.println(toLocalDateTime(20161223234554987L));

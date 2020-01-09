@@ -1,8 +1,8 @@
 package io.mercury.common.collections.map;
 
-import static io.mercury.common.datetime.DateTimeUtil.datetimeToHour;
-import static io.mercury.common.datetime.DateTimeUtil.datetimeToMinute;
-import static io.mercury.common.datetime.DateTimeUtil.datetimeToSecond;
+import static io.mercury.common.datetime.DateTimeUtil.datetimeOfHour;
+import static io.mercury.common.datetime.DateTimeUtil.datetimeOfMinute;
+import static io.mercury.common.datetime.DateTimeUtil.datetimeOfSecond;
 
 import java.time.LocalDateTime;
 import java.util.function.BiPredicate;
@@ -24,13 +24,13 @@ public final class LocalDateTimeMap<V> extends TemporalMap<LocalDateTime, V, Loc
 		super(keyToLangFunc, nextKeyFunc, hasNextKey);
 	}
 
-	private static ToLongFunction<LocalDateTime> keyToLangFuncWithHour = key -> datetimeToHour(key);
+	private static ToLongFunction<LocalDateTime> keyToLangFuncWithHour = key -> datetimeOfHour(key);
 	private static Function<LocalDateTime, LocalDateTime> nextKeyFuncWithHour = key -> key.plusHours(1);
 
-	private static ToLongFunction<LocalDateTime> keyToLangFuncWithMinute = key -> datetimeToMinute(key);
+	private static ToLongFunction<LocalDateTime> keyToLangFuncWithMinute = key -> datetimeOfMinute(key);
 	private static Function<LocalDateTime, LocalDateTime> nextKeyFuncWithMinute = key -> key.plusMinutes(1);
 
-	private static ToLongFunction<LocalDateTime> keyToLangFuncWithSecond = key -> datetimeToSecond(key);
+	private static ToLongFunction<LocalDateTime> keyToLangFuncWithSecond = key -> datetimeOfSecond(key);
 	private static Function<LocalDateTime, LocalDateTime> nextKeyFuncWithSecond = key -> key.plusSeconds(1);
 
 	private static BiPredicate<LocalDateTime, LocalDateTime> hasNextKey = (nextKey,

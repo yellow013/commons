@@ -1,7 +1,7 @@
 package io.mercury.common.datetime;
 
 import static io.mercury.common.datetime.DateTimeUtil.date;
-import static io.mercury.common.datetime.DateTimeUtil.timeToSecond;
+import static io.mercury.common.datetime.DateTimeUtil.timeOfSecond;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public final class TimePoint implements Comparable<TimePoint> {
 	// TODO 使用位运算实现
 	public static TimePoint now() {
 		LocalDateTime now = LocalDateTime.now();
-		return of(date(now.toLocalDate()), timeToSecond(now.toLocalTime()), now.getNano());
+		return of(date(now.toLocalDate()), timeOfSecond(now.toLocalTime()), now.getNano());
 	}
 
 	public static TimePoint of(int date, int time, int nano) {

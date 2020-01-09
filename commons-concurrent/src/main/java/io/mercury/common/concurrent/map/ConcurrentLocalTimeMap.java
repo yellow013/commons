@@ -1,8 +1,8 @@
 package io.mercury.common.concurrent.map;
 
-import static io.mercury.common.datetime.DateTimeUtil.timeToHour;
-import static io.mercury.common.datetime.DateTimeUtil.timeToMinute;
-import static io.mercury.common.datetime.DateTimeUtil.timeToSecond;
+import static io.mercury.common.datetime.DateTimeUtil.timeOfHour;
+import static io.mercury.common.datetime.DateTimeUtil.timeOfMinute;
+import static io.mercury.common.datetime.DateTimeUtil.timeOfSecond;
 
 import java.time.LocalTime;
 import java.util.function.BiPredicate;
@@ -22,13 +22,13 @@ public final class ConcurrentLocalTimeMap<V> extends ConcurrentTemporalMap<Local
 		super(keyToLangFunc, nextKeyFunc, hasNextKey);
 	}
 
-	private static ToLongFunction<LocalTime> keyToLangFuncWithHour = key -> timeToHour(key);
+	private static ToLongFunction<LocalTime> keyToLangFuncWithHour = key -> timeOfHour(key);
 	private static Function<LocalTime, LocalTime> nextKeyFuncWithHour = key -> key.plusHours(1);
 
-	private static ToLongFunction<LocalTime> keyToLangFuncWithMinute = key -> timeToMinute(key);
+	private static ToLongFunction<LocalTime> keyToLangFuncWithMinute = key -> timeOfMinute(key);
 	private static Function<LocalTime, LocalTime> nextKeyFuncWithMinute = key -> key.plusMinutes(1);
 
-	private static ToLongFunction<LocalTime> keyToLangFuncWithSecond = key -> timeToSecond(key);
+	private static ToLongFunction<LocalTime> keyToLangFuncWithSecond = key -> timeOfSecond(key);
 	private static Function<LocalTime, LocalTime> nextKeyFuncWithSecond = key -> key.plusSeconds(1);
 
 	private static BiPredicate<LocalTime, LocalTime> hasNextKey = (nextKey, endPoint) -> nextKey.isBefore(endPoint)
@@ -55,7 +55,7 @@ public final class ConcurrentLocalTimeMap<V> extends ConcurrentTemporalMap<Local
 	public static void main(String[] args) {
 
 		System.out.println(Long.MAX_VALUE);
-		System.out.println(DateTimeUtil.datetimeToMillisecond());
+		System.out.println(DateTimeUtil.datetimeOfMillisecond());
 
 	}
 
