@@ -5,7 +5,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.set.ImmutableSet;
 
-import io.mercury.common.annotations.thread.LockHeld;
+import io.mercury.common.annotation.thread.LockHeld;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.concurrent.counter.SyncDeRepeatCounter;
 

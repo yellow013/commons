@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 
-import io.mercury.common.annotations.thread.SpinWaiting;
+import io.mercury.common.annotation.thread.SpinWaiting;
 import io.mercury.common.collections.queue.RunMode;
 import io.mercury.common.collections.queue.api.SCQueue;
 import io.mercury.common.functional.Processor;
