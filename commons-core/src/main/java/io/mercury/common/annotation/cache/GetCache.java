@@ -1,4 +1,4 @@
-package io.mercury.common.annotations.cache;
+package io.mercury.common.annotation.cache;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
