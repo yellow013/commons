@@ -62,6 +62,14 @@ public final class BytesUtil {
 		return (int) (l & LongLowPosMask);
 	}
 
+	public static final boolean isOdd(int i) {
+		return (i & 1) != 0;
+	}
+
+	public static final boolean isOdd(long l) {
+		return (l & 1) != 0;
+	}
+
 	public static void main(String[] args) {
 
 		int i1 = 1002;
@@ -78,23 +86,22 @@ public final class BytesUtil {
 
 		System.out.println((splitLongWithLowPos(mergeInt(i1, i2))));
 		System.out.println(StringUtil.formatBinaryInt(splitLongWithLowPos(mergeInt(i1, i2))));
-		
+
 		System.out.println(StringUtil.formatBinaryInt(1));
 		System.out.println(StringUtil.formatBinaryInt(~1));
-		
+
 		System.out.println(StringUtil.formatBinaryInt(10));
 		System.out.println(StringUtil.formatBinaryInt(20));
 		System.out.println(StringUtil.formatBinaryInt(10 ^ 20));
 		System.out.println(StringUtil.formatBinaryInt((10 ^ 20) ^ 20));
-		
-		
+
 		System.out.println(StringUtil.formatBinaryInt(10243250));
 		System.out.println(StringUtil.formatBinaryInt(1));
 		System.out.println(StringUtil.formatBinaryInt(10243250 & 1));
 		System.out.println(StringUtil.formatBinaryInt(1123121));
 		System.out.println(StringUtil.formatBinaryInt(1));
 		System.out.println(StringUtil.formatBinaryInt(1123121 & 1));
-		
+
 	}
 
 }
