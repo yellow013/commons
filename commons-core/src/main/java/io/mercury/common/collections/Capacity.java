@@ -1,5 +1,7 @@
 package io.mercury.common.collections;
 
+import io.mercury.common.util.StringUtil;
+
 public enum Capacity {
 
 	/**
@@ -152,7 +154,10 @@ public enum Capacity {
 
 	public static void main(String[] args) {
 
-		System.out.println(1 >> 31);
+		System.out.println(1 << 31);
+		System.out.println(StringUtil.formatBinaryInt(1));
+		System.out.println(StringUtil.formatBinaryInt(Integer.MIN_VALUE << 65));
+		
 
 	}
 
