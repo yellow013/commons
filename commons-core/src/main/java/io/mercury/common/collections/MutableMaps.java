@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import org.eclipse.collections.api.bimap.MutableBiMap;
+import org.eclipse.collections.api.block.procedure.Procedure2;
 import org.eclipse.collections.api.map.ConcurrentMutableMap;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleBooleanMap;
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
@@ -254,6 +256,12 @@ public final class MutableMaps {
 
 	public static <K, V> MutableBiMap<K, V> newHashBiMap(Capacity capacity) {
 		return new HashBiMap<>(capacity.size());
+	}
+
+	public static <K, V> MutableMap<K, V> toMutableMap(ImmutableMap<K, V> immutableMap) {
+		MutableMap<K, V> newUnifiedMap = newUnifiedMap();
+		immutableMap.forEachKeyValue((K key, V value) -> newUnifiedMap.put(key, value));
+		return newUnifiedMap;
 	}
 
 }
