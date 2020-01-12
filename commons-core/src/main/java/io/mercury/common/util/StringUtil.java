@@ -123,7 +123,7 @@ public final class StringUtil {
 			// 如果没有数字可以检查且第一位与最后一位都跳过了检查, 则[index == endPoint], 且输入参数绝对不是数字
 			if (index == endPoint)
 				return false;
-			// 小数点标识
+			// 是否已出现小数点
 			boolean hasDecimalPoint = false;
 			for (; index < endPoint; index++) {
 				// 判断每个字母是否为数字
@@ -142,6 +142,7 @@ public final class StringUtil {
 			}
 			return true;
 		} else
+			// 长度为一,则判断是否是数字字符
 			return str.charAt(0) >= '0' && str.charAt(0) <= '9';
 	}
 
@@ -156,7 +157,7 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static String deleteSplitChar(String str) {
-		return str == null ? StringConst.EMPTY
+		return isNullOrEmpty(str) ? StringConst.EMPTY
 				: str.replace(".", "").replace("-", "").replace("_", "").replace("/", "").replace("\\", "");
 	}
 
