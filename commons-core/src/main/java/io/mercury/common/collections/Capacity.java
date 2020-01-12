@@ -1,6 +1,6 @@
 package io.mercury.common.collections;
 
-import io.mercury.common.util.StringUtil;
+import io.mercury.common.util.BytesUtil;
 
 public enum Capacity {
 
@@ -155,9 +155,8 @@ public enum Capacity {
 	public static void main(String[] args) {
 
 		System.out.println(1 << 31);
-		System.out.println(StringUtil.formatBinaryInt(1));
-		System.out.println(StringUtil.formatBinaryInt(Integer.MIN_VALUE << 65));
-		
+		System.out.println(BytesUtil.formatBinaryInt(1));
+		System.out.println(BytesUtil.formatBinaryInt(Integer.MIN_VALUE << 65));
 
 	}
 
