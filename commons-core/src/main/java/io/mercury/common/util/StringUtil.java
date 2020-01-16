@@ -62,40 +62,41 @@ public final class StringUtil {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
-	// TODO
-	// 改进性能,使用str.charAt(index)
-	// 不进行char数组的copy
-//	public static boolean isDecimal(String str) {
-//		// Character.isDigit(ch);
-//		if (isNullOrEmpty(str))
-//			return false;
-//		char[] chars = str.toCharArray();
-//		// 判断是否负数
-//		if (chars[0] == '-')
-//			chars[0] = '0';
-//		// 获取最后一个字符
-//		char lastChar = chars[chars.length - 1];
-//		// 判断是否为long double float的写法
-//		if (lastChar == 'L' || lastChar == 'l' || lastChar == 'D' || lastChar == 'd' || lastChar == 'F'
-//				|| lastChar == 'f')
-//			chars[chars.length - 1] = '0';
-//		// 小数点标识
-//		boolean decimalPointFlag = false;
-//		for (char ch : chars) {
-//			// 判断每个字母是否为数字
-//			if (!(ch >= '0' && ch <= '9'))
-//				// 出现第二个小数点返回false
-//				if (decimalPointFlag)
-//					return false;
-//				// 标识已出现一个小数点
-//				else if (ch == '.')
-//					decimalPointFlag = true;
-//				// 出现其他字符返回false
-//				else
-//					return false;
-//		}
-//		return true;
-//	}
+	/**
+	 * 
+	 */
+	@Deprecated
+	public static boolean isDecimalDeprecated(String str) {
+		// Character.isDigit(ch);
+		if (isNullOrEmpty(str))
+			return false;
+		char[] chars = str.toCharArray();
+		// 判断是否负数
+		if (chars[0] == '-')
+			chars[0] = '0';
+		// 获取最后一个字符
+		char lastChar = chars[chars.length - 1];
+		// 判断是否为long double float的写法
+		if (lastChar == 'L' || lastChar == 'l' || lastChar == 'D' || lastChar == 'd' || lastChar == 'F'
+				|| lastChar == 'f')
+			chars[chars.length - 1] = '0';
+		// 小数点标识
+		boolean decimalPointFlag = false;
+		for (char ch : chars) {
+			// 判断每个字母是否为数字
+			if (!(ch >= '0' && ch <= '9'))
+				// 出现第二个小数点返回false
+				if (decimalPointFlag)
+					return false;
+				// 标识已出现一个小数点
+				else if (ch == '.')
+					decimalPointFlag = true;
+				// 出现其他字符返回false
+				else
+					return false;
+		}
+		return true;
+	}
 
 	/**
 	 * 检查输入参数是否为数字
@@ -104,14 +105,18 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static boolean isDecimal(String str) {
+		// null或空字符串
 		if (isNullOrEmpty(str))
 			return false;
-		if (str.length() > 1) {
+		// 长度为1, 则判断是否是数字字符
+		if (str.length() == 1)
+			return str.charAt(0) >= '0' && str.charAt(0) <= '9';
+		else {
 			// 定义开始检查索引
-			int index = 0;
+			int offset = 0;
 			// 判断是否负数,如果是负数,跳过第一位的检查
 			if (str.charAt(0) == '-')
-				index = 1;
+				offset = 1;
 			// 定义结束位置
 			int endPoint = str.length();
 			// 获取最后一个字符
@@ -120,16 +125,16 @@ public final class StringUtil {
 			if (lastChar == 'L' || lastChar == 'l' || lastChar == 'D' || lastChar == 'd' || lastChar == 'F'
 					|| lastChar == 'f')
 				endPoint = str.length() - 1;
-			// 如果没有数字可以检查且第一位与最后一位都跳过了检查, 则[index == endPoint], 且输入参数绝对不是数字
-			if (index == endPoint)
+			// 如果没有数字可以检查且第一位与最后一位都跳过了检查, 则[offset == endPoint], 此时输入参数不是数字
+			if (offset == endPoint)
 				return false;
-			// 小数点标识
+			// 是否已出现小数点
 			boolean hasDecimalPoint = false;
-			for (; index < endPoint; index++) {
+			for (; offset < endPoint; offset++) {
 				// 判断每个字母是否为数字
-				char ch = str.charAt(index);
+				char ch = str.charAt(offset);
 				if (!(ch >= '0' && ch <= '9')) {
-					// 出现第二个小数点,返回false
+					// 已出现小数点后再出现其他任何字符, 返回false
 					if (hasDecimalPoint)
 						return false;
 					// 标识出现了一个小数点
@@ -141,8 +146,8 @@ public final class StringUtil {
 				}
 			}
 			return true;
-		} else
-			return str.charAt(0) >= '0' && str.charAt(0) <= '9';
+		}
+
 	}
 
 	public static boolean notDecimal(String str) {
@@ -156,7 +161,7 @@ public final class StringUtil {
 	 * @return
 	 */
 	public static String deleteSplitChar(String str) {
-		return str == null ? StringConst.EMPTY
+		return isNullOrEmpty(str) ? StringConst.EMPTY
 				: str.replace(".", "").replace("-", "").replace("_", "").replace("/", "").replace("\\", "");
 	}
 
