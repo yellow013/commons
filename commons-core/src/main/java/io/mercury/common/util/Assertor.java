@@ -10,28 +10,28 @@ public final class Assertor {
 	private Assertor() {
 	}
 
-	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	@MayThrowsRuntimeException(IllegalArgumentException.class)
 	public static int intGreaterThan(int i, int min, String objName) {
 		if (i > min)
 			return i;
 		throw new IllegalArgumentException(objName + " must greater than " + min);
 	}
 
-	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	@MayThrowsRuntimeException(IllegalArgumentException.class)
 	public static int intLessThan(int i, int max, String objName) {
 		if (i < max)
 			return i;
 		throw new IllegalArgumentException(objName + " must less than " + max);
 	}
 
-	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	@MayThrowsRuntimeException(IllegalArgumentException.class)
 	public static long longGreaterThan(long l, long min, String objName) {
 		if (l > min)
 			return l;
 		throw new IllegalArgumentException(objName + " must greater than " + min);
 	}
 
-	@MayThrowsRuntimeException({ IllegalArgumentException.class })
+	@MayThrowsRuntimeException(IllegalArgumentException.class)
 	public static long longLessThan(long l, long max, String objName) {
 		if (l < max)
 			return l;

@@ -50,12 +50,12 @@ public final class StringUtil {
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE, false);
 	}
 
-	public static boolean isNullOrEmpty(String str) {
-		return str == null || str.isEmpty();
+	public static boolean isNullOrEmpty(CharSequence cs) {
+		return cs == null || cs.length() == 0;
 	}
 
-	public static boolean notNullAndEmpty(String str) {
-		return str != null && !str.isEmpty();
+	public static boolean notNullAndEmpty(CharSequence cs) {
+		return cs != null && cs.length() != 0;
 	}
 
 	public static boolean isEquals(String str1, String str2) {
