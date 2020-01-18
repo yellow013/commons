@@ -30,8 +30,8 @@ public final class MutableLists {
 		return new ByteArrayList();
 	}
 
-	public static MutableByteList newByteArrayList(int initialCapacity) {
-		return new ByteArrayList(initialCapacity);
+	public static MutableByteList newByteArrayList(int capacity) {
+		return new ByteArrayList(capacity);
 	}
 
 	public static MutableByteList newByteArrayListWith(byte... values) {
@@ -44,8 +44,8 @@ public final class MutableLists {
 		return new CharArrayList();
 	}
 
-	public static MutableCharList newCharArrayList(int initialCapacity) {
-		return new CharArrayList(initialCapacity);
+	public static MutableCharList newCharArrayList(int capacity) {
+		return new CharArrayList(capacity);
 	}
 
 	public static MutableCharList newCharArrayList(char... values) {
@@ -58,8 +58,8 @@ public final class MutableLists {
 		return new IntArrayList();
 	}
 
-	public static MutableIntList newIntArrayList(int initialCapacity) {
-		return new IntArrayList(initialCapacity);
+	public static MutableIntList newIntArrayList(int capacity) {
+		return new IntArrayList(capacity);
 	}
 
 	public static MutableIntList newIntArrayListWith(int... values) {
@@ -72,8 +72,8 @@ public final class MutableLists {
 		return new LongArrayList();
 	}
 
-	public static MutableLongList newLongArrayList(int initialCapacity) {
-		return new LongArrayList(initialCapacity);
+	public static MutableLongList newLongArrayList(int capacity) {
+		return new LongArrayList(capacity);
 	}
 
 	public static MutableLongList newLongArrayListWith(long... values) {
@@ -86,8 +86,8 @@ public final class MutableLists {
 		return new DoubleArrayList();
 	}
 
-	public static MutableDoubleList newDoubleArrayList(int initialCapacity) {
-		return new DoubleArrayList(initialCapacity);
+	public static MutableDoubleList newDoubleArrayList(int capacity) {
+		return new DoubleArrayList(capacity);
 	}
 
 	public static MutableDoubleList newDoubleArrayListWith(double... values) {
@@ -103,8 +103,8 @@ public final class MutableLists {
 		return new FastList<>();
 	}
 
-	public static <E> MutableList<E> newFastList(int initialCapacity) {
-		return new FastList<>(initialCapacity);
+	public static <E> MutableList<E> newFastList(int capacity) {
+		return new FastList<>(capacity);
 	}
 
 	public static <E> MutableList<E> newFastList(Collection<E> collection) {

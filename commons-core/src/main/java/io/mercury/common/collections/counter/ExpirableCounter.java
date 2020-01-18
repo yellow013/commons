@@ -117,9 +117,7 @@ public final class ExpirableCounter implements Counter<ExpirableCounter> {
 //		}
 
 		MutableLongLongMap map = MutableMaps.newLongLongHashMap(Capacity.L10_SIZE_1024);
-
 		map.put(1, 10);
-
 		System.out.println(-19 + -15);
 
 	}
