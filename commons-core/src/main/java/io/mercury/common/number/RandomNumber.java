@@ -19,7 +19,10 @@ public final class RandomNumber {
 	}
 
 	public static int randomUnsignedInt() {
-		return Math.abs(RandomInstance.nextInt());
+		int nextInt = RandomInstance.nextInt();
+		if (nextInt == Integer.MIN_VALUE)
+			return nextInt >>> 1;
+		return Math.abs(nextInt);
 	}
 
 	public static long randomLong() {
@@ -27,7 +30,10 @@ public final class RandomNumber {
 	}
 
 	public static long randomUnsignedLong() {
-		return Math.abs(RandomInstance.nextLong());
+		long nextLong = RandomInstance.nextLong();
+		if (nextLong == Long.MIN_VALUE)
+			return nextLong >>> 1;
+		return Math.abs(nextLong);
 	}
 
 	public static double randomDouble() {
