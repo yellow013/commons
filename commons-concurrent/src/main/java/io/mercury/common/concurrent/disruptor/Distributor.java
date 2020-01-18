@@ -50,7 +50,7 @@ public class Distributor<T> extends SCQueue<T> {
 				// 实现EventFactory<LoadContainer<>>的Lambda
 				LoadContainer::new,
 				// 队列容量
-				bufferSize.size(),
+				bufferSize.value(),
 				// 实现ThreadFactory的Lambda
 				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable,
 						"DisruptorQueue-" + super.queueName + "-WorkingThread"),
@@ -118,7 +118,7 @@ public class Distributor<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		Distributor<Integer> queue = new Distributor<>("Test-Queue", BufferSize.POW2_5, true,
+		Distributor<Integer> queue = new Distributor<>("Test-Queue", BufferSize.POW2_6, true,
 				(integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {

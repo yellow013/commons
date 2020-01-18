@@ -35,7 +35,7 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 				// 实现EventFactory的Lambda
 				() -> supplier.get(),
 				// 队列容量
-				bufferSize.size(),
+				bufferSize.value(),
 				// 实现ThreadFactory的Lambda
 				(Runnable runnable) -> ThreadUtil.newMaxPriorityThread(runnable,
 						"DisruptorQueue-" + super.queueName + "-WorkingThread"),
