@@ -21,10 +21,6 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 
 	private WaitingStrategy waitingStrategy;
 
-	public static enum WaitingStrategy {
-		SpinWaiting, SleepWaiting,
-	}
-
 	private SpscQueueWithJCT(String queueName, int capacity, RunMode mode, long delayMillis,
 			WaitingStrategy waitingStrategy, Processor<E> processor) {
 		super(processor);

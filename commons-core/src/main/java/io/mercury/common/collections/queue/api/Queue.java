@@ -5,5 +5,9 @@ public interface Queue<E> {
 	boolean enqueue(E e);
 	
 	String name();
+	
+	public static enum WaitingStrategy {
+		SpinWaiting, SleepWaiting,
+	}
 
 }
