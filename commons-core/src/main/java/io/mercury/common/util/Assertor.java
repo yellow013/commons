@@ -45,6 +45,12 @@ public final class Assertor {
 		return t;
 	}
 
+	public static <T, E extends Throwable> T nonNull(T t, E e) throws E {
+		if (t == null)
+			throw e;
+		return t;
+	}
+
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static String nonNullAndEmpty(String str, String objName) {
 		if (str == null)
