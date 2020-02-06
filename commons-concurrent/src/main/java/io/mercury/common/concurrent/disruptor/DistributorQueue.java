@@ -21,7 +21,7 @@ import io.mercury.common.thread.ThreadUtil;
  *
  * @param <T>
  */
-public class Distributor<T> extends SCQueue<T> {
+public class DistributorQueue<T> extends SCQueue<T> {
 
 	private Logger logger = CommonLoggerFactory.getLogger(getClass());
 
@@ -31,15 +31,15 @@ public class Distributor<T> extends SCQueue<T> {
 
 	private AtomicBoolean isStop = new AtomicBoolean(false);
 
-	public Distributor(String queueName, BufferSize bufferSize, Processor<T> processor) {
+	public DistributorQueue(String queueName, BufferSize bufferSize, Processor<T> processor) {
 		this(queueName, bufferSize, false, processor);
 	}
 
-	public Distributor(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
+	public DistributorQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor) {
 		this(queueName, bufferSize, autoRun, processor, WaitStrategyOption.BusySpin);
 	}
 
-	public Distributor(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
+	public DistributorQueue(String queueName, BufferSize bufferSize, boolean autoRun, Processor<T> processor,
 			WaitStrategyOption option) {
 		super(processor);
 		if (queueName != null)
@@ -118,7 +118,7 @@ public class Distributor<T> extends SCQueue<T> {
 
 	public static void main(String[] args) {
 
-		Distributor<Integer> queue = new Distributor<>("Test-Queue", BufferSize.POW2_6, true,
+		DistributorQueue<Integer> queue = new DistributorQueue<>("Test-Queue", BufferSize.POW2_6, true,
 				(integer) -> System.out.println(integer));
 
 		ThreadUtil.startNewThread(() -> {
