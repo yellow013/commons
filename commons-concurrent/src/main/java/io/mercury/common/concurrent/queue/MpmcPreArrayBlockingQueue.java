@@ -14,7 +14,7 @@ import io.mercury.common.collections.queue.base.LoadContainer;
 import io.mercury.common.log.CommonLoggerFactory;
 
 @ThreadSafe
-public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
+public class MpmcPreArrayBlockingQueue<E> implements MCQueue<E> {
 
 	private LoadContainer<E>[] containers;
 
@@ -29,10 +29,10 @@ public class MpmcPreloadingArrayBlockingQueue<E> implements MCQueue<E> {
 	private Condition notEmpty;
 	private Condition notFull;
 
-	private Logger logger = CommonLoggerFactory.getLogger(MpmcPreloadingArrayBlockingQueue.class);
+	private Logger logger = CommonLoggerFactory.getLogger(MpmcPreArrayBlockingQueue.class);
 
 	@SuppressWarnings("unchecked")
-	public MpmcPreloadingArrayBlockingQueue(int size) {
+	public MpmcPreArrayBlockingQueue(int size) {
 		if (size <= 0) {
 			throw new IllegalArgumentException("size is too big.");
 		}

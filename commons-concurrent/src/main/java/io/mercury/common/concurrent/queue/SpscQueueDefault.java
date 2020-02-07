@@ -2,6 +2,7 @@ package io.mercury.common.concurrent.queue;
 
 import org.jctools.queues.SpscArrayQueue;
 
+import io.mercury.common.annotation.thread.OnlySingleThreadCall;
 import io.mercury.common.annotation.thread.SpinWaiting;
 import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.queue.api.Queue;
@@ -26,12 +27,14 @@ public class SpscQueueDefault<E> implements Queue<E> {
 
 	@Override
 	@SpinWaiting
+	@OnlySingleThreadCall
 	public boolean enqueue(E e) {
 		while (!queue.offer(e))
 			waiting();
 		return true;
 	}
 
+	@OnlySingleThreadCall
 	public E poll() {
 		do {
 			E e = queue.poll();
