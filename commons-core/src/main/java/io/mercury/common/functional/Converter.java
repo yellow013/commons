@@ -2,14 +2,17 @@ package io.mercury.common.functional;
 
 import java.util.function.BiFunction;
 
-@FunctionalInterface
-public interface ValueTransferer<F, T> extends BiFunction<F, T, T> {
+import javax.annotation.Nonnull;
 
-	T transfer(F from, T to);
+@FunctionalInterface
+public interface Converter<F, T> extends BiFunction<F, T, T> {
+
+	@Nonnull
+	T conversion(@Nonnull F from, @Nonnull T to);
 
 	@Override
 	default T apply(F from, T to) {
-		return transfer(from, to);
+		return conversion(from, to);
 	}
 
 }
