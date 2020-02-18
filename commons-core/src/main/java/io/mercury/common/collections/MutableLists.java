@@ -96,15 +96,21 @@ public final class MutableLists {
 		return new DoubleArrayList(values);
 	}
 
+	private static final int DEFAULT_CAPACITY = 10;
+
 	/**
 	 * list
 	 */
+	public static <E> MutableList<E> emptyFastList() {
+		return new FastList<>();
+	}
+
 	public static <E> MutableList<E> newFastList() {
 		return new FastList<>();
 	}
 
 	public static <E> MutableList<E> newFastList(int capacity) {
-		return new FastList<>(capacity);
+		return new FastList<>(capacity > DEFAULT_CAPACITY ? capacity : DEFAULT_CAPACITY);
 	}
 
 	public static <E> MutableList<E> newFastList(Collection<E> collection) {
@@ -112,11 +118,13 @@ public final class MutableLists {
 	}
 
 	public static <E> MutableList<E> newFastList(Iterator<E> iterator) {
-		MutableList<E> list = newFastList();
-		if (iterator != null && iterator.hasNext())
+		if (iterator != null && iterator.hasNext()) {
+			MutableList<E> list = newFastList(DEFAULT_CAPACITY);
 			while (iterator.hasNext())
 				list.add(iterator.next());
-		return list;
+			return list;
+		} else
+			return newFastList();
 	}
 
 	public static <E> MutableList<E> newFastList(Iterable<E> iterable) {

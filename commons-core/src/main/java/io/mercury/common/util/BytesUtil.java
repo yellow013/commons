@@ -142,6 +142,24 @@ public final class BytesUtil {
 		return (l & 1) != 0;
 	}
 
+	private static final int MAXIMUM_CAPACITY = 1 << 30;
+
+	/**
+	 * 返回参数的最小的2的幂
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public static final int minPow2(int i) {
+		int n = i - 1;
+		n |= n >>> 1;
+		n |= n >>> 2;
+		n |= n >>> 4;
+		n |= n >>> 8;
+		n |= n >>> 16;
+		return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+	}
+
 	public static void main(String[] args) {
 
 		int i1 = 1002;
