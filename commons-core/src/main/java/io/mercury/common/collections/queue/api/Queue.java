@@ -7,11 +7,11 @@ public interface Queue<E> {
 	boolean enqueue(E e);
 
 	default E poll() {
-		throw new UnsupportedOperationException("Interface [Queue] defined method [poll()] is not implement");
+		throw new UnsupportedOperationException("Interface [Queue] defined method [poll] is not implement");
 	}
 
 	default boolean pollAndApply(PollFunction<E> function) {
-		throw new UnsupportedOperationException("Interface [Queue] defined method [poll()] is not implement");
+		throw new UnsupportedOperationException("Interface [Queue] defined method [pollAndApply] is not implement");
 	}
 
 	String name();
