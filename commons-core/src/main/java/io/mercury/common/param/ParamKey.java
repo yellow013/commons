@@ -2,8 +2,8 @@ package io.mercury.common.param;
 
 public interface ParamKey {
 
-	int getKeyId();
+	int id();
 
-	ParamType getParamType();
+	ParamType type();
 
 }

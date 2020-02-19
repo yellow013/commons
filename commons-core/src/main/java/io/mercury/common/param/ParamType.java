@@ -8,7 +8,7 @@ public enum ParamType {
 	
 	DOUBLE,
 
-	INTEGER,
+	INT,
 
 	DATE,
 

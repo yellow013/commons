@@ -78,48 +78,48 @@ public final class Assertor {
 		return t;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	@MayThrowsRuntimeException({ NullPointerException.class, ArrayIndexOutOfBoundsException.class })
 	public static <T> T[] validArray(T[] array, int minLength, String arrayName) {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+			throw new ArrayIndexOutOfBoundsException(arrayName + " length must be greater than " + minLength);
 		return array;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	@MayThrowsRuntimeException({ NullPointerException.class, ArrayIndexOutOfBoundsException.class })
 	public static byte[] validArray(byte[] array, int minLength, String arrayName) {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+			throw new ArrayIndexOutOfBoundsException(arrayName + " length must be greater than " + minLength);
 		return array;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	@MayThrowsRuntimeException({ NullPointerException.class, ArrayIndexOutOfBoundsException.class })
 	public static char[] validArray(char[] array, int minLength, String arrayName) {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+			throw new ArrayIndexOutOfBoundsException(arrayName + " length must be greater than " + minLength);
 		return array;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	@MayThrowsRuntimeException({ NullPointerException.class, ArrayIndexOutOfBoundsException.class })
 	public static int[] validArray(int[] array, int minLength, String arrayName) {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+			throw new ArrayIndexOutOfBoundsException(arrayName + " length must be greater than " + minLength);
 		return array;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
+	@MayThrowsRuntimeException({ NullPointerException.class, ArrayIndexOutOfBoundsException.class })
 	public static long[] validArray(long[] array, int minLength, String arrayName) {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+			throw new ArrayIndexOutOfBoundsException(arrayName + " length must be greater than " + minLength);
 		return array;
 	}
 
