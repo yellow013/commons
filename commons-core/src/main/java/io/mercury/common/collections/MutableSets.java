@@ -90,11 +90,11 @@ public final class MutableSets {
 	}
 
 	public static <E> MutableSet<E> newUnifiedSet(Iterator<E> iterator) {
-		MutableSet<E> newUnifiedSet = newUnifiedSet();
+		MutableSet<E> mutableSet = newUnifiedSet();
 		if (iterator != null && iterator.hasNext())
 			while (iterator.hasNext())
-				newUnifiedSet.add(iterator.next());
-		return newUnifiedSet;
+				mutableSet.add(iterator.next());
+		return mutableSet;
 	}
 
 	public static <E> MutableSet<E> newUnifiedSet(Collection<E> collection) {
