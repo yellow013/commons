@@ -1,21 +1,19 @@
 package io.mercury.common.graph;
 
-import java.util.Set;
-
-import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.ImmutableSet;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.builder.GraphTypeBuilder;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
+import io.mercury.common.collections.ImmutableSets;
 import io.mercury.common.collections.MutableSets;
 
 public final class DirectedGraph<V> {
 
 	private final Graph<V, Edge> internalGraph;
 
-	private DirectedGraph(Class<V> vertexClass) {
-		this.internalGraph = GraphTypeBuilder.directed().vertexClass(vertexClass).edgeSupplier(Edge.EdgeSupplier)
-				.buildGraph();
+	private DirectedGraph(Class<V> vClass) {
+		this.internalGraph = GraphTypeBuilder.directed().vertexClass(vClass).edgeSupplier(Edge.Supplier).buildGraph();
 	}
 
 	public static <V> DirectedGraph<V> buildOf(Class<V> vertexClass) {
@@ -47,16 +45,16 @@ public final class DirectedGraph<V> {
 		return internalGraph.containsEdge(source, target);
 	}
 
-	public MutableSet<V> allVertex() {
-		return MutableSets.newUnifiedSet(internalGraph.vertexSet());
+	public ImmutableSet<V> allVertex() {
+		return ImmutableSets.newSet(internalGraph.vertexSet());
 	}
 
-	public MutableSet<Edge> allEdge() {
-		return MutableSets.newUnifiedSet(internalGraph.edgeSet());
+	public ImmutableSet<Edge> allEdge() {
+		return ImmutableSets.newSet(internalGraph.edgeSet());
 	}
 
-	public MutableSet<V> allChildVertex(V vertex) {
-		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(internalGraph, vertex));
+	public ImmutableSet<V> allChildVertex(V vertex) {
+		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(internalGraph, vertex)).toImmutable();
 	}
 
 	public Graph<V, Edge> internalGraph() {
@@ -95,7 +93,7 @@ public final class DirectedGraph<V> {
 		graph.addEdge(222, 2221);
 		graph.addEdge(222, 2222);
 
-		Set<Integer> allChildVertex = graph.allChildVertex(12);
+		ImmutableSet<Integer> allChildVertex = graph.allChildVertex(12);
 
 		System.out.println(allChildVertex);
 

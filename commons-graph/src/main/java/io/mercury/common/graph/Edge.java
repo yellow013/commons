@@ -11,6 +11,6 @@ public class Edge extends DefaultEdge {
 	 */
 	private static final long serialVersionUID = 1497450312630076892L;
 
-	public final static Supplier<Edge> EdgeSupplier = Edge::new;
+	public final static Supplier<Edge> Supplier = Edge::new;
 
 }
