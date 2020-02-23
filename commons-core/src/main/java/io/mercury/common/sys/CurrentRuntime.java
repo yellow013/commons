@@ -1,6 +1,6 @@
 package io.mercury.common.sys;
 
-public interface CurrentRuntime {
+public final class CurrentRuntime {
 
 	public static int availableCores() {
 		return Runtime.getRuntime().availableProcessors();
