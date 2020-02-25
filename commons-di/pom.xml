@@ -10,7 +10,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>commons-di</artifactId>
-	<name>common-di</name>
+	<name>commons-di</name>
 
 	<dependencies>
 
