@@ -4,7 +4,8 @@ import java.util.function.Supplier;
 
 /**
  * 
- * 定义可序列化的对象
+ * 定义可编码的对象
+ * 
  * @author yellow013
  *
  * @param <R>

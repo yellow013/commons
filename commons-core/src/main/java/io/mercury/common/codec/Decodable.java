@@ -3,7 +3,7 @@ package io.mercury.common.codec;
 import java.util.function.Function;
 
 /**
- * 定义可反序列化的对象
+ * 定义可解码的对象
  * 
  * @author yellow013
  *
