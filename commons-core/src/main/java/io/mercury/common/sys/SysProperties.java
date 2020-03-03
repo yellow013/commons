@@ -62,6 +62,11 @@ public final class SysProperties {
 	public static final String JAVA_RUNTIME_VERSION = System.getProperty("java.runtime.version");
 
 	/*
+	 * System.getProperty("java.library.path")
+	 */
+	public static final String JAVA_LIBRARY_PATH = System.getProperty("java.library.path");
+
+	/*
 	 * System.getProperty("java.io.tmpdir")
 	 */
 	public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
@@ -112,23 +117,23 @@ public final class SysProperties {
 	public static final String USER_COUNTRY = System.getProperty("user.country");
 
 	public static void main(String[] args) {
-		System.getProperties().entrySet()
-		.forEach(entity -> System.out.println(entity.getKey().toString() + "---" + entity.getValue().toString()));
-		
-		//All.forEachKeyValue((key, value) -> System.out.println(key + " -> " + value));
+		All.forEachKeyValue((key, value) -> System.out.println(key + " -> " + value));
+
+		System.getProperties().entrySet().forEach(
+				entity -> System.out.println(entity.getKey().toString() + "---" + entity.getValue().toString()));
 		try {
 			addLibraryDir("11111");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.getProperties().entrySet()
-		.forEach(entity -> System.out.println(entity.getKey().toString() + "|||" + entity.getValue().toString()));
+
+		System.getProperties().entrySet().forEach(
+				entity -> System.out.println(entity.getKey().toString() + "|||" + entity.getValue().toString()));
 	}
-	
-	//可添加java.library.path
-    private static void addLibraryDir(String libraryPath) throws Exception {
+
+	// 可添加java.library.path
+	private static void addLibraryDir(String libraryPath) throws Exception {
 		Field userPathsField = ClassLoader.class.getDeclaredField("usr_paths");
 		userPathsField.setAccessible(true);
 		String[] paths = (String[]) userPathsField.get(null);
