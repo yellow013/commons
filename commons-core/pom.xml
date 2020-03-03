@@ -11,6 +11,8 @@
 	</parent>
 
 	<artifactId>commons-core</artifactId>
+	<packaging>jar</packaging>
+	
 	<name>commons-core</name>
 
 	<properties>

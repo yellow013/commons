@@ -12,6 +12,8 @@
 	</parent>
 
 	<artifactId>commons-concurrent</artifactId>
+	<packaging>jar</packaging>
+	
 	<name>commons-concurrent</name>
 
 	<dependencies>
