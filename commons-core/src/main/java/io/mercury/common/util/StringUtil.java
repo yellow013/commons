@@ -54,12 +54,16 @@ public final class StringUtil {
 		return cs == null || cs.length() == 0;
 	}
 
-	public static boolean notNullAndEmpty(CharSequence cs) {
+	public static boolean nonEmpty(CharSequence cs) {
 		return cs != null && cs.length() != 0;
 	}
 
 	public static boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
+	}
+
+	public static boolean nonEquals(String str1, String str2) {
+		return !isEquals(str1, str2);
 	}
 
 	/**

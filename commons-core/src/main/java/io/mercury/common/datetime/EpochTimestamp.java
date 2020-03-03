@@ -5,14 +5,14 @@ import static java.lang.System.currentTimeMillis;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
-public class EpochTimestamp {
+public final class EpochTimestamp {
 
 	private long epochMilliseconds;
 	private long epochMicroseconds;
 	private Instant instant;
 	private ZonedDateTime zonedDateTime;
 
-	public EpochTimestamp() {
+	private EpochTimestamp() {
 		this.epochMilliseconds = currentTimeMillis();
 	}
 
