@@ -8,6 +8,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
 import io.mercury.common.character.Separator;
 import io.mercury.common.sys.SysProperties;
@@ -22,55 +24,71 @@ public final class FileChannelWriter {
 	private FileChannelWriter() {
 	}
 
-	public static File writing(List<String> source, final File target) throws IOException {
-		return writing(source, target, 8192);
+	/**
+	 * 
+	 * @param data   : Written data
+	 * @param target : Written target file
+	 * @return
+	 * @throws IOException
+	 */
+	public static final File write(List<String> data, final File target) throws IOException {
+		return write(data, target, 8192);
 	}
 
+	/**
+	 * 
+	 * @param data     : Written data
+	 * @param target   : Written target file
+	 * @param capacity : Buffer capacity
+	 * @return
+	 * @throws IOException
+	 */
 	@MayThrowsRuntimeException(NullPointerException.class)
-	public static File writing(List<String> source, final File target, final int bufferCapacity) throws IOException {
+	public static final File write(List<String> data, final File target, final int capacity) throws IOException {
 		if (target == null)
 			throw new NullPointerException("target file must not be null.");
-		if (source == null)
-			source = new ArrayList<>();
 		File parentFile = target.getParentFile();
 		if (!parentFile.exists())
 			parentFile.mkdirs();
 		if (!target.exists())
 			target.createNewFile();
-		try (RandomAccessFile rafile = new RandomAccessFile(target, "rw"); FileChannel channel = rafile.getChannel()) {
-			// 根据输入的[buffer capacity]分配堆外缓冲区
-			ByteBuffer buffer = ByteBuffer.allocateDirect(bufferCapacity);
-			for (String data : source) {
-				byte[] bytes = data.getBytes();
-				if (bytes.length < bufferCapacity)
-					// [bytes.length]小于[buffer capacity], 只需写一次
-					flipAndChannelWriting(buffer.put(bytes), channel);
-				else {
-					// 计算需要写入的次数
-					int repeat = bytes.length / bufferCapacity;
-					int index = 0;
-					for (int i = 0; i < repeat; i++)
-						// 从上次写入的[index]开始写入, 每次增加[buffer capacity]的长度
-						flipAndChannelWriting(buffer.put(bytes, index = i * bufferCapacity, bufferCapacity), channel);
-					// 计算剩余的长度
-					int remaining = bytes.length % bufferCapacity;
-					if (remaining > 0)
-						// 从上次写入的[index]开始写入剩余的数据, [index]需要加上最后一次写入的[buffer capacity]长度
-						flipAndChannelWriting(buffer.put(bytes, index += bufferCapacity, remaining), channel);
+		if (CollectionUtils.isNotEmpty(data)) {
+			try (RandomAccessFile rafile = new RandomAccessFile(target, "rw");
+					FileChannel channel = rafile.getChannel()) {
+				// Allocate [capacity] direct buffer
+				ByteBuffer buffer = ByteBuffer.allocateDirect(capacity);
+				for (int i = 0; i < data.size(); i++) {
+					byte[] bytes = data.get(i).getBytes();
+					if (bytes.length < capacity)
+						// [bytes#length] < [capacity], Only need to write once
+						flipAndChannelWrite(buffer.put(bytes), channel);
+					else {
+						// Count writes
+						int count = bytes.length / capacity;
+						int offset = 0;
+						for (int r = 0; r < count; r++)
+							// Write from the last [offset], Write length is buffer [capacity]
+							flipAndChannelWrite(buffer.put(bytes, offset = r * capacity, capacity), channel);
+						// Remaining data
+						int remaining = bytes.length % capacity;
+						if (remaining > 0)
+							// Write from the last [offset], Write length is remaining
+							flipAndChannelWrite(buffer.put(bytes, offset += capacity, remaining), channel);
+					}
 				}
+				channel.force(true);
 			}
-			channel.force(true);
 		}
 		return target;
 	}
 
-	private static final void flipAndChannelWriting(ByteBuffer buffer, FileChannel channel) throws IOException {
-		// 转换buffer为写入
+	private static final void flipAndChannelWrite(ByteBuffer buffer, FileChannel channel) throws IOException {
+		// Flip buffer to output
 		buffer.flip();
-		// 检查是否还有剩余数据
+		// Loop write
 		while (buffer.hasRemaining())
 			channel.write(buffer);
-		// 清空指针, 转换为写入状态
+		// Clear buffer to input
 		buffer.clear();
 	}
 
@@ -88,7 +106,7 @@ public final class FileChannelWriter {
 		}
 
 		try {
-			writing(lines, new File(SysProperties.JAVA_IO_TMPDIR_FILE, "test.csv"), 2048);
+			write(lines, new File(SysProperties.JAVA_IO_TMPDIR_FILE, "test.csv"), 2048);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
