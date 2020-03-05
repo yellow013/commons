@@ -27,6 +27,14 @@ public final class EpochTime {
 		return date.toEpochDay();
 	}
 
+	public static long day(@Nonnull LocalDateTime dateTime) {
+		return day(dateTime.toLocalDate());
+	}
+
+	public static long day(@Nonnull ZonedDateTime dateTime) {
+		return day(dateTime.toLocalDate());
+	}
+
 	public static long seconds() {
 		return currentTimeMillis() / MILLIS_PER_SECONDS;
 	}
@@ -43,17 +51,19 @@ public final class EpochTime {
 		return currentTimeMillis();
 	}
 
+	public static long milliseconds(@Nonnull ZonedDateTime datetime) {
+		return datetime.toEpochSecond() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS;
+	}
+
 	public static long milliseconds(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
-				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS
-				+ datetime.toLocalTime().getNano() / NANOS_PER_MILLIS
+				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS
 				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
 	public static long milliseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
 		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
-				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS
-				+ datetime.toLocalTime().getNano() / NANOS_PER_MILLIS
+				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS
 				- zoneOffset.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
@@ -61,17 +71,19 @@ public final class EpochTime {
 		return currentTimeMillis() * MICROS_PER_MILLIS;
 	}
 
+	public static long microseconds(@Nonnull ZonedDateTime datetime) {
+		return datetime.toEpochSecond() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS;
+	}
+
 	public static long microseconds(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
-				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS
-				+ datetime.toLocalTime().getNano() / NANOS_PER_MICROS
+				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
 				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
 	public static long microseconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
-				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS
-				+ datetime.toLocalTime().getNano() / NANOS_PER_MICROS
+				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
 				- zoneOffset.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
