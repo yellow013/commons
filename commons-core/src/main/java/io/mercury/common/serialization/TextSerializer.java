@@ -1,7 +1,8 @@
 package io.mercury.common.serialization;
 
-import io.mercury.common.serialization.Serializer;
+@FunctionalInterface
+public interface TextSerializer<T> {
 
-public interface TextSerializer<F> extends Serializer<String, F> {
+	CharSequence serialization(T obj);
 
 }
