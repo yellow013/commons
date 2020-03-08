@@ -10,90 +10,197 @@ public final class Assertor {
 	private Assertor() {
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @param min
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static int greaterThan(int i, int min, String objName) {
+	public static int greaterThan(int i, int min, String objName) throws IllegalArgumentException {
 		if (i > min)
 			return i;
 		throw new IllegalArgumentException(objName + " must greater than " + min);
 	}
 
+	/**
+	 * 
+	 * @param l
+	 * @param min
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static long greaterThan(long l, long min, String objName) {
+	public static long greaterThan(long l, long min, String objName) throws IllegalArgumentException {
 		if (l > min)
 			return l;
 		throw new IllegalArgumentException(objName + " must greater than " + min);
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @param max
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static int lessThan(int i, int max, String objName) {
+	public static int lessThan(int i, int max, String objName) throws IllegalArgumentException {
 		if (i < max)
 			return i;
 		throw new IllegalArgumentException(objName + " must less than " + max);
 	}
 
+	/**
+	 * 
+	 * @param l
+	 * @param max
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static long lessThan(long l, long max, String objName) {
+	public static long lessThan(long l, long max, String objName) throws IllegalArgumentException {
 		if (l < max)
 			return l;
 		throw new IllegalArgumentException(objName + " must less than " + max);
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @param min
+	 * @param max
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static int withinRange(int i, int min, int max, String objName) {
+	public static int withinRange(int i, int min, int max, String objName) throws IllegalArgumentException {
 		if (i >= min && i <= max)
 			return i;
 		throw new IllegalArgumentException(objName + " must in the range of [" + min + "] to [" + max + "]");
 	}
 
+	/**
+	 * 
+	 * @param l
+	 * @param min
+	 * @param max
+	 * @param objName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException(IllegalArgumentException.class)
-	public static long withinRange(long l, long min, long max, String objName) {
+	public static long withinRange(long l, long min, long max, String objName) throws IllegalArgumentException {
 		if (l >= min && l <= max)
 			return l;
 		throw new IllegalArgumentException(objName + " must in the range of [" + min + "] to [" + max + "]");
 	}
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param obj
+	 * @param objName
+	 * @return
+	 * @throws NullPointerException
+	 */
 	@MayThrowsRuntimeException(NullPointerException.class)
-	public static <T> T nonNull(T t, String objName) {
-		if (t == null)
+	public static <T> T nonNull(T obj, String objName) throws NullPointerException {
+		if (obj == null)
 			throw new NullPointerException(objName + " can not be null");
-		return t;
+		return obj;
 	}
 
-	public static <T, E extends Throwable> T nonNull(T t, E e) throws E {
-		if (t == null)
+	/**
+	 * 
+	 * @param <T>
+	 * @param <E>
+	 * @param obj
+	 * @param e
+	 * @return
+	 * @throws E
+	 */
+	public static <T, E extends Throwable> T nonNull(T obj, E e) throws E {
+		if (obj == null)
 			throw e;
-		return t;
+		return obj;
 	}
 
+	/**
+	 * 
+	 * @param str
+	 * @param objName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static String nonNullAndEmpty(String str, String objName) {
+	public static <T extends CharSequence> T nonEmpty(T str, String objName)
+			throws NullPointerException, IllegalArgumentException {
 		if (str == null)
 			throw new NullPointerException(objName + " can not be null");
-		if (str.isEmpty())
+		if (str.length() <= 0)
 			throw new IllegalArgumentException(objName + " can not be empty");
 		return str;
 	}
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param collection
+	 * @param objName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static <T extends Collection<?>> T nonNullAndEmpty(T t, String objName) {
-		if (t == null)
+	public static <T extends Collection<?>> T nonEmpty(T collection, String objName)
+			throws NullPointerException, IllegalArgumentException {
+		if (collection == null)
 			throw new NullPointerException(objName + " can not be null");
-		if (t.isEmpty())
+		if (collection.isEmpty())
 			throw new IllegalArgumentException(objName + " can not be empty");
-		return t;
+		return collection;
 	}
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param map
+	 * @param objName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static <T extends Map<?, ?>> T nonNullAndEmpty(T t, String objName) {
-		if (t == null)
+	public static <T extends Map<?, ?>> T nonEmpty(T map, String objName)
+			throws NullPointerException, IllegalArgumentException {
+		if (map == null)
 			throw new NullPointerException(objName + " can not be null");
-		if (t.isEmpty())
+		if (map.isEmpty())
 			throw new IllegalArgumentException(objName + " can not be empty");
-		return t;
+		return map;
 	}
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param array
+	 * @param minLength
+	 * @param arrayName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static <T> T[] validArray(T[] array, int minLength, String arrayName) {
+	public static <T> T[] requiredLength(T[] array, int minLength, String arrayName)
+			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
@@ -101,8 +208,18 @@ public final class Assertor {
 		return array;
 	}
 
+	/**
+	 * 
+	 * @param array
+	 * @param minLength
+	 * @param arrayName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static byte[] validArray(byte[] array, int minLength, String arrayName) {
+	public static byte[] requiredLength(byte[] array, int minLength, String arrayName)
+			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
@@ -110,8 +227,18 @@ public final class Assertor {
 		return array;
 	}
 
+	/**
+	 * 
+	 * @param array
+	 * @param minLength
+	 * @param arrayName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static char[] validArray(char[] array, int minLength, String arrayName) {
+	public static char[] requiredLength(char[] array, int minLength, String arrayName)
+			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
@@ -119,8 +246,18 @@ public final class Assertor {
 		return array;
 	}
 
+	/**
+	 * 
+	 * @param array
+	 * @param minLength
+	 * @param arrayName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static int[] validArray(int[] array, int minLength, String arrayName) {
+	public static int[] requiredLength(int[] array, int minLength, String arrayName)
+			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
 		if (array.length < minLength)
@@ -128,12 +265,21 @@ public final class Assertor {
 		return array;
 	}
 
-	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static long[] validArray(long[] array, int minLength, String arrayName) {
+	/**
+	 * 
+	 * @param array
+	 * @param minLength
+	 * @param arrayName
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
+	public static long[] requiredLength(long[] array, int requiredLength, String arrayName)
+			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
 			throw new NullPointerException(arrayName + " can not be null");
-		if (array.length < minLength)
-			throw new IllegalArgumentException(arrayName + " length must be greater than " + minLength);
+		if (array.length < requiredLength)
+			throw new IllegalArgumentException(arrayName + " length must be greater than " + requiredLength);
 		return array;
 	}
 

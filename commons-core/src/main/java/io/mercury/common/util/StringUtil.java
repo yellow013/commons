@@ -50,18 +50,40 @@ public final class StringUtil {
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE, false);
 	}
 
+	/**
+	 * 
+	 * @param cs
+	 * @return
+	 */
 	public static boolean isNullOrEmpty(CharSequence cs) {
 		return cs == null || cs.length() == 0;
 	}
 
+	/**
+	 * 
+	 * @param cs
+	 * @return
+	 */
 	public static boolean nonEmpty(CharSequence cs) {
 		return cs != null && cs.length() != 0;
 	}
 
+	/**
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
 	public static boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
+	/**
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
 	public static boolean nonEquals(String str1, String str2) {
 		return !isEquals(str1, str2);
 	}

@@ -83,7 +83,7 @@ public final class BytesUtil {
 
 	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
 	public static final char bytesToChar(@Nonnull byte[] bytes) {
-		Assertor.validArray(bytes, 2, "bytes array");
+		Assertor.requiredLength(bytes, 2, "bytes array");
 		return (char) (((bytes[0] & 0xFF) << 8) | ((bytes[1] & 0xFF)));
 	}
 
@@ -96,7 +96,7 @@ public final class BytesUtil {
 
 	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
 	public static final int bytesToInt(@Nonnull byte[] bytes) {
-		Assertor.validArray(bytes, 4, "bytes array");
+		Assertor.requiredLength(bytes, 4, "bytes array");
 		return ((bytes[0] & 0xFF) << 24) | ((bytes[1] & 0xFF) << 16) | ((bytes[2] & 0xFF) << 8) | ((bytes[3] & 0xFF));
 	}
 
