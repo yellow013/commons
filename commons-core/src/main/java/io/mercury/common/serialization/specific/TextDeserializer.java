@@ -1,8 +1,7 @@
-package io.mercury.common.serialization;
+package io.mercury.common.serialization.specific;
 
-@FunctionalInterface
-public interface TextDeserializer<T> {
+import io.mercury.common.serialization.Deserializer;
 
-	T deserialization(CharSequence source);
+public interface TextDeserializer<T> extends Deserializer<String, T> {
 
 }

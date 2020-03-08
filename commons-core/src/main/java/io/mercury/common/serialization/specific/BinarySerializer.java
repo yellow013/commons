@@ -1,10 +1,10 @@
-package io.mercury.common.serialization;
+package io.mercury.common.serialization.specific;
 
 import java.nio.ByteBuffer;
 
-@FunctionalInterface
-public interface BinarySerializer<T> {
+import io.mercury.common.serialization.Serializer;
 
-	ByteBuffer serialization(T obj);
+@FunctionalInterface
+public interface BinarySerializer<T> extends Serializer<T, ByteBuffer> {
 
 }
