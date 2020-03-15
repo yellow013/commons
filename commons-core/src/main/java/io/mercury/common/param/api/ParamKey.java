@@ -1,9 +1,12 @@
-package io.mercury.common.param;
+package io.mercury.common.param.api;
 
-public interface ParamKey {
+public interface ParamKey  {
 
-	int id();
+	int paramId();
 
-	ParamType type();
+	String paramName();
+
+	ParamType paramType();
+
 
 }

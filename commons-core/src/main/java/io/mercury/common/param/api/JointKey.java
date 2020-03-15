@@ -1,7 +1,9 @@
-package io.mercury.common.param;
+package io.mercury.common.param.api;
 
 public interface JointKey {
 
-	int id();
+	int key0();
 
+	int key1();
+	
 }

@@ -1,4 +1,4 @@
-package io.mercury.common.param;
+package io.mercury.common.param.api;
 
 public enum ParamType {
 
