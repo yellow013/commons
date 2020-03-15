@@ -15,7 +15,9 @@ import org.eclipse.collections.impl.map.mutable.primitive.LongDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongLongHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.LongObjectHashMap;
 
-public abstract class JointKeyParamMap {
+import io.mercury.common.param.api.JointKey;
+
+public class JointKeyParamMap<K extends JointKey> {
 
 	private MutableLongBooleanMap booleanParamMap = new LongBooleanHashMap();
 	private MutableLongLongMap longParamMap = new LongLongHashMap();
@@ -29,36 +31,36 @@ public abstract class JointKeyParamMap {
 
 	}
 
-	public void put(int key1, int key2, boolean param) {
-		booleanParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, boolean param) {
+		booleanParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, long param) {
-		longParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, long param) {
+		longParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, double param) {
-		doubleParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, double param) {
+		doubleParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, String param) {
-		stringParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, String param) {
+		stringParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, LocalDate param) {
-		localDateParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, LocalDate param) {
+		localDateParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, LocalTime param) {
-		localTimeParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, LocalTime param) {
+		localTimeParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public void put(int key1, int key2, LocalDateTime param) {
-		localDateTimeParamMap.put(mergeInt(key1, key2), param);
+	public void put(K key, LocalDateTime param) {
+		localDateTimeParamMap.put(mergeInt(key.key0(), key.key1()), param);
 	}
 
-	public boolean getBoolean(int key1, int key2) {
-		return booleanParamMap.get(mergeInt(key1, key2));
+	public boolean getBoolean(K key) {
+		return booleanParamMap.get(mergeInt(key.key0(), key.key1()));
 	}
 
 }
