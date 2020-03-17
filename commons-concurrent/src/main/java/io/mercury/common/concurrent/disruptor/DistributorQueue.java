@@ -23,7 +23,7 @@ import io.mercury.common.thread.ThreadUtil;
  */
 public class DistributorQueue<T> extends SCQueue<T> {
 
-	private Logger logger = CommonLoggerFactory.getLogger(getClass());
+	private Logger log = CommonLoggerFactory.getLogger(getClass());
 
 	private Disruptor<LoadContainer<T>> disruptor;
 
@@ -69,7 +69,7 @@ public class DistributorQueue<T> extends SCQueue<T> {
 		try {
 			processor.process(t);
 		} catch (Exception e) {
-			logger.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
+			log.error("processor.process(t) throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -97,7 +97,7 @@ public class DistributorQueue<T> extends SCQueue<T> {
 			producer.onEvent(t);
 			return true;
 		} catch (Exception e) {
-			logger.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
+			log.error("producer.onData(t) throw exception -> [{}]", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -113,7 +113,7 @@ public class DistributorQueue<T> extends SCQueue<T> {
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(1);
 		disruptor.shutdown();
-		logger.info("Call stop() success, disruptor is shutdown.");
+		log.info("Call stop() success, disruptor is shutdown.");
 	}
 
 	public static void main(String[] args) {

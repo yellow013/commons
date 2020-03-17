@@ -141,7 +141,7 @@ public final class Assertor {
 	 * @throws IllegalArgumentException
 	 */
 	@MayThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static <T extends CharSequence> T nonEmpty(T str, String objName)
+	public static String nonEmpty(String str, String objName)
 			throws NullPointerException, IllegalArgumentException {
 		if (str == null)
 			throw new NullPointerException(objName + " can not be null");

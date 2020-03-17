@@ -20,7 +20,7 @@ public final class ScheduleTaskExecutor {
 	private ScheduleTaskExecutor() {
 	}
 
-	private static Logger logger = CommonLoggerFactory.getLogger(ScheduleTaskExecutor.class);
+	private static Logger log = CommonLoggerFactory.getLogger(ScheduleTaskExecutor.class);
 
 	public static Timer startDelayTask(LocalDateTime firstTime, Runnable runnable) {
 		return startDelayTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(), TimeUnit.MILLISECONDS,
@@ -35,7 +35,7 @@ public final class ScheduleTaskExecutor {
 				try {
 					runnable.run();
 				} catch (Exception e) {
-					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
+					log.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}, unit.toMillis(delay));
@@ -55,7 +55,7 @@ public final class ScheduleTaskExecutor {
 				try {
 					runnable.run();
 				} catch (Exception e) {
-					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
+					log.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}, unit.toMillis(delay), unit.toMillis(period));
@@ -75,7 +75,7 @@ public final class ScheduleTaskExecutor {
 				try {
 					runnable.run();
 				} catch (Exception e) {
-					logger.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
+					log.error("TimerTask runner throw Exception -> {}", e.getMessage(), e);
 				}
 			}
 		}), unit.toMillis(delay), unit.toMillis(period));

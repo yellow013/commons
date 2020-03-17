@@ -12,7 +12,7 @@ public final class ThreadUtil {
 	private ThreadUtil() {
 	}
 
-	private static Logger logger = CommonLoggerFactory.getLogger(ThreadUtil.class);
+	private static final Logger log = CommonLoggerFactory.getLogger(ThreadUtil.class);
 
 	private static final ThreadPoolExecutor threadPoolExecutor = CommonThreadPool.newBuilder().build();
 
@@ -98,7 +98,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			logger.error("ThreadUtil#sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(), e);
+			log.error("ThreadUtil#sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(), e);
 		}
 	}
 
@@ -106,7 +106,7 @@ public final class ThreadUtil {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
-			logger.error("ThreadUtil#sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
+			log.error("ThreadUtil#sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
 					e.getMessage(), e);
 		}
 	}
@@ -115,8 +115,8 @@ public final class ThreadUtil {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
-			logger.error("ThreadUtil#sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time,
-					timeUnit, e.getMessage(), e);
+			log.error("ThreadUtil#sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time, timeUnit,
+					e.getMessage(), e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public final class ThreadUtil {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			logger.error("Thread join throw InterruptedException from thread -> id==[{}], name==[{}]", thread.getId(),
+			log.error("Thread join throw InterruptedException from thread -> id==[{}], name==[{}]", thread.getId(),
 					thread.getName(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}

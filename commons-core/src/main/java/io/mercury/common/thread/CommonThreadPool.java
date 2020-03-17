@@ -26,7 +26,7 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	private String threadPoolName;
 
-	private final Logger logger = LoggerFactory.getLogger(CommonThreadPool.class);
+	private final Logger log = LoggerFactory.getLogger(CommonThreadPool.class);
 
 	private CommonThreadPool(String threadPoolName, ThreadPoolBuilder builder,
 			BiConsumer<Thread, Runnable> beforeHandler, BiConsumer<Runnable, Throwable> afterHandler) {
@@ -76,21 +76,21 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	@Override
 	protected void beforeExecute(Thread thread, Runnable runnable) {
-		logger.debug("Thread name -> {}, Runnable -> {}, execute before", thread.getName(), runnable);
+		log.debug("Thread name -> {}, Runnable -> {}, execute before", thread.getName(), runnable);
 		if (hasBeforeHandle)
 			beforeHandler.accept(thread, runnable);
 	}
 
 	@Override
 	protected void afterExecute(Runnable runnable, Throwable throwable) {
-		logger.debug("Runnable -> {}, execute after", runnable);
+		log.debug("Runnable -> {}, execute after", runnable);
 		if (hasAfterHandle)
 			afterHandler.accept(runnable, throwable);
 	}
 
 	@Override
 	protected void terminated() {
-		logger.info("CommonThreadPool {} is terminated", threadPoolName);
+		log.info("CommonThreadPool {} is terminated", threadPoolName);
 	};
 
 	public String threadPoolName() {

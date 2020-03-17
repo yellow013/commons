@@ -18,7 +18,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 
 	private ArrayBlockingQueue<E> innerQueue;
 
-	private Logger logger = CommonLoggerFactory.getLogger(MpscArrayBlockingQueue.class);
+	private Logger log = CommonLoggerFactory.getLogger(MpscArrayBlockingQueue.class);
 
 	private AtomicBoolean isRun = new AtomicBoolean(false);
 
@@ -87,7 +87,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 	@SpinWaiting
 	public boolean enqueue(E e) {
 		if (!isClose.get()) {
-			logger.error("enqueue(t) failure, This queue is closed...");
+			log.error("enqueue(t) failure, This queue is closed...");
 			return false;
 		}
 		try {
@@ -95,7 +95,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 				;
 			return true;
 		} catch (InterruptedException exception) {
-			logger.error("innerQueue.offer(t, 500, TimeUnit.MILLISECONDS) throws InterruptedException!", exception);
+			log.error("innerQueue.offer(t, 500, TimeUnit.MILLISECONDS) throws InterruptedException!", exception);
 			return false;
 		}
 	}
@@ -103,7 +103,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 	@Override
 	public void startProcessThread() {
 		if (!isRun.compareAndSet(false, true)) {
-			logger.error("Error call ->  This queue is started.");
+			log.error("Error call ->  This queue is started.");
 			return;
 		}
 		ThreadUtil.startNewThread(() -> {
@@ -115,7 +115,7 @@ public class MpscArrayBlockingQueue<E> extends SCQueue<E> {
 						processor.process(e);
 				}
 			} catch (InterruptedException e) {
-				logger.error("innerQueue.poll(500, TimeUnit.MILLISECONDS) throws InterruptedException!", e);
+				log.error("innerQueue.poll(500, TimeUnit.MILLISECONDS) throws InterruptedException!", e);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

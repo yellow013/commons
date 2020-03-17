@@ -39,21 +39,21 @@ public class CommonLoggerFactory {
 		LoggerSetter.logFileName("new");
 
 		LoggerSetter.logLevel(LogLevel.ERROR);
-		Logger logger = getLogger(CommonLoggerFactory.class);
+		Logger log = getLogger(CommonLoggerFactory.class);
 
-		logger.error("this is error");
-		logger.warn("this is warn");
-		logger.info("this is info");
-		logger.debug("this is debug");
+		log.error("this is error");
+		log.warn("this is warn");
+		log.info("this is info");
+		log.debug("this is debug");
 		
 		System.out.println(System.getProperty(LoggerConstant.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
 		
 		for(;;) {
-			logger.error("this is error");
-			logger.warn("this is warn");
-			logger.info("this is info");
-			logger.debug("this is debug");
+			log.error("this is error");
+			log.warn("this is warn");
+			log.info("this is info");
+			log.debug("this is debug");
 			ThreadUtil.sleep(3000);
 		}
 		

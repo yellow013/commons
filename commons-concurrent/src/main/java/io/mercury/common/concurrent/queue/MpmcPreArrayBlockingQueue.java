@@ -29,7 +29,7 @@ public class MpmcPreArrayBlockingQueue<E> implements MCQueue<E> {
 	private Condition notEmpty;
 	private Condition notFull;
 
-	private Logger logger = CommonLoggerFactory.getLogger(MpmcPreArrayBlockingQueue.class);
+	private Logger log = CommonLoggerFactory.getLogger(MpmcPreArrayBlockingQueue.class);
 
 	@SuppressWarnings("unchecked")
 	public MpmcPreArrayBlockingQueue(int size) {
@@ -59,7 +59,7 @@ public class MpmcPreArrayBlockingQueue<E> implements MCQueue<E> {
 			notEmpty.signal();
 			return true;
 		} catch (InterruptedException exception) {
-			logger.error("PreloadingArrayBlockingQueue.enQueue(t)", exception);
+			log.error("PreloadingArrayBlockingQueue.enQueue(t)", exception);
 			return false;
 		} finally {
 			lock.unlock();
@@ -80,7 +80,7 @@ public class MpmcPreArrayBlockingQueue<E> implements MCQueue<E> {
 			notFull.signal();
 			return e;
 		} catch (InterruptedException e) {
-			logger.error("PreloadingArrayBlockingQueue.deQueue() : " + e.getMessage());
+			log.error("PreloadingArrayBlockingQueue.deQueue() : " + e.getMessage());
 			return null;
 		} finally {
 			lock.unlock();

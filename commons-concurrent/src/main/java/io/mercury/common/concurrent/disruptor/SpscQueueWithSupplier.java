@@ -17,7 +17,7 @@ import io.mercury.common.thread.ThreadUtil;
 
 public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 
-	private Logger logger = CommonLoggerFactory.getLogger(SpscQueueWithSupplier.class);
+	private Logger log = CommonLoggerFactory.getLogger(SpscQueueWithSupplier.class);
 
 	private Disruptor<T> disruptor;
 
@@ -54,7 +54,7 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 		try {
 			processor.process(t);
 		} catch (Exception e) {
-			logger.error("processor throw exception -> [{}]", e.getMessage(), e);
+			log.error("processor throw exception -> [{}]", e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -99,7 +99,7 @@ public class SpscQueueWithSupplier<T> extends SCQueue<T> {
 		while (disruptor.getBufferSize() != 0)
 			ThreadUtil.sleep(10);
 		disruptor.shutdown();
-		logger.info("Call stop() success, disruptor is shutdown.");
+		log.info("Call stop() success, disruptor is shutdown.");
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import io.mercury.common.util.StringUtil;
 
 public final class PropertiesFileReader {
 
-	private static Logger logger = CommonLoggerFactory.getLogger(PropertiesFileReader.class);
+	private static final Logger log = CommonLoggerFactory.getLogger(PropertiesFileReader.class);
 
 	/**
 	 * TODO 增加重新加载配置文件的功能
@@ -33,7 +33,7 @@ public final class PropertiesFileReader {
 				new File(PropertiesFileReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {
-			logger.info("Properties file -> [{}] start load", propertiesFile);
+			log.info("Properties file -> [{}] start load", propertiesFile);
 			String fileName = propertiesFile.getName();
 			try {
 				Properties properties = new Properties();
@@ -41,14 +41,14 @@ public final class PropertiesFileReader {
 				for (String propertyName : properties.stringPropertyNames()) {
 					String propertiesKey = getPropertiesKey(fileName, propertyName);
 					String propertyValue = properties.getProperty(propertyName);
-					logger.info("Put property, propertiesKey==[{}], propertyValue==[{}]", propertiesKey, propertyValue);
+					log.info("Put property, propertiesKey==[{}], propertyValue==[{}]", propertiesKey, propertyValue);
 					AllPropertiesMap.put(propertiesKey, propertyValue);
 				}
 			} catch (FileNotFoundException e) {
-				logger.error("File -> [{}] is not found");
+				log.error("File -> [{}] is not found");
 				throw new RuntimeException(e);
 			} catch (IOException e) {
-				logger.error("File -> [{}] load failed");
+				log.error("File -> [{}] load failed");
 				throw new RuntimeException(e);
 			}
 		}
@@ -65,7 +65,7 @@ public final class PropertiesFileReader {
 	public synchronized static String getProperty(String fileName, String propertyName) {
 		String propertyValue = AllPropertiesMap.get(getPropertiesKey(fileName, propertyName));
 		if (propertyValue == null) {
-			logger.error("Property name -> [{}] is not found of file name -> [{}]", propertyName, fileName);
+			log.error("Property name -> [{}] is not found of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		return propertyValue;
@@ -74,13 +74,13 @@ public final class PropertiesFileReader {
 	public static int getIntProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
 		if (StringUtil.notDecimal(propertyValue)) {
-			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
+			log.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
 			return Integer.parseInt(propertyValue);
 		} catch (NumberFormatException e) {
-			logger.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
+			log.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
 					propertyName, propertyValue, fileName);
 			throw new RuntimeException(e);
 		}
@@ -89,13 +89,13 @@ public final class PropertiesFileReader {
 	public static long getLongProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
 		if (StringUtil.notDecimal(propertyValue)) {
-			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
+			log.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
 			return Long.parseLong(propertyValue);
 		} catch (NumberFormatException e) {
-			logger.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
+			log.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
 					propertyName, propertyValue, fileName);
 			throw new RuntimeException(e);
 		}
@@ -104,13 +104,13 @@ public final class PropertiesFileReader {
 	public static double getDoubleProperty(String fileName, String propertyName) {
 		String propertyValue = getProperty(fileName, propertyName);
 		if (StringUtil.notDecimal(propertyValue)) {
-			logger.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
+			log.error("Property name -> [{}] is not decimal of file name -> [{}]", propertyName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
 		try {
 			return Double.parseDouble(propertyValue);
 		} catch (NumberFormatException e) {
-			logger.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
+			log.error("Property name -> [{}], value -> [{}] from file name -> [{}] throw NumberFormatException",
 					propertyName, propertyValue, fileName);
 			throw new RuntimeException(e);
 		}
