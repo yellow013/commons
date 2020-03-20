@@ -85,14 +85,20 @@ public abstract class Pattern {
 		return DateTimeFormatter.ofPattern(pattern);
 	}
 
-	public static final class SpecificPattern extends Pattern {
+	/**
+	 * 指定的日期时间模式
+	 * 
+	 * @author yellow013
+	 *
+	 */
+	public static final class SpecifiedPattern extends Pattern {
 
-		private SpecificPattern(String pattern) {
+		private SpecifiedPattern(String pattern) {
 			super(pattern);
 		}
 
-		public static SpecificPattern ofPattern(String pattern) {
-			return new SpecificPattern(pattern);
+		public static SpecifiedPattern ofPattern(String pattern) {
+			return new SpecifiedPattern(pattern);
 		}
 
 	}
