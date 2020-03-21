@@ -11,9 +11,12 @@ import static io.mercury.common.datetime.TimeConst.MICROS_PER_DAY;
 import static io.mercury.common.datetime.TimeConst.MICROS_PER_MILLIS;
 import static io.mercury.common.datetime.TimeConst.MICROS_PER_SECONDS;
 import static io.mercury.common.datetime.TimeConst.MILLIS_PER_DAY;
+import static io.mercury.common.datetime.TimeConst.MILLIS_PER_HOUR;
+import static io.mercury.common.datetime.TimeConst.MILLIS_PER_MINUTE;
 import static io.mercury.common.datetime.TimeConst.MILLIS_PER_SECONDS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MICROS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MILLIS;
+import static io.mercury.common.datetime.TimeConst.SECONDS_PER_MINUTE;
 import static io.mercury.common.datetime.TimeZones.SYSTEM_DEFAULT_OFFSET;
 import static java.lang.System.currentTimeMillis;;
 
@@ -31,8 +34,40 @@ public final class EpochTime {
 		return day(dateTime.toLocalDate());
 	}
 
-	public static long day(@Nonnull ZonedDateTime dateTime) {
-		return day(dateTime.toLocalDate());
+	public static long day(@Nonnull ZonedDateTime zdateTime) {
+		return day(zdateTime.toLocalDate());
+	}
+
+	public static long hour() {
+		return currentTimeMillis() / MILLIS_PER_HOUR;
+	}
+
+	public static long hour(@Nonnull LocalDateTime datetime) {
+		return datetime.toEpochSecond(SYSTEM_DEFAULT_OFFSET) / TimeConst.SECONDS_PER_HOUR;
+	}
+
+	public static long hour(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
+		return datetime.toEpochSecond(offset) / TimeConst.SECONDS_PER_HOUR;
+	}
+
+	public static long hour(@Nonnull ZonedDateTime zdateTime) {
+		return zdateTime.toEpochSecond() / TimeConst.SECONDS_PER_HOUR;
+	}
+
+	public static long minute() {
+		return currentTimeMillis() / MILLIS_PER_MINUTE;
+	}
+
+	public static long minute(@Nonnull LocalDateTime datetime) {
+		return minute(datetime, SYSTEM_DEFAULT_OFFSET);
+	}
+
+	public static long minute(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
+		return datetime.toEpochSecond(offset);
+	}
+
+	public static long minute(@Nonnull ZonedDateTime zdateTime) {
+		return zdateTime.toEpochSecond() / SECONDS_PER_MINUTE;
 	}
 
 	public static long seconds() {
@@ -45,6 +80,10 @@ public final class EpochTime {
 
 	public static long seconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
 		return datetime.toEpochSecond(offset);
+	}
+
+	public static long seconds(@Nonnull ZonedDateTime zdateTime) {
+		return zdateTime.toEpochSecond();
 	}
 
 	public static long millis() {
@@ -105,8 +144,9 @@ public final class EpochTime {
 		System.out.println(micros(now));
 		System.out.println(micros(now, offset));
 
-		System.out.println(24 >> 1);
 
+		
+		System.out.println(hour());
 		// Charset.availableCharsets().entrySet().stream().forEach(entity ->
 		// System.out.println(entity));
 
