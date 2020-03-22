@@ -2,7 +2,7 @@ package io.mercury.common.sys;
 
 public final class CurrentRuntime {
 
-	public static int availableCores() {
+	public static int availableProcessors() {
 		return Runtime.getRuntime().availableProcessors();
 	}
 

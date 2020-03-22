@@ -99,8 +99,8 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 
 	public final static class ThreadPoolBuilder {
 		
-		private int corePoolSize = CurrentRuntime.availableCores();
-		private int maximumPoolSize = CurrentRuntime.availableCores() * 4;
+		private int corePoolSize = CurrentRuntime.availableProcessors();
+		private int maximumPoolSize = CurrentRuntime.availableProcessors() * 4;
 		private long keepAliveTime = 60;
 		private TimeUnit timeUnit = TimeUnit.SECONDS;
 		private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();

@@ -62,7 +62,8 @@ public final class ScheduleTaskExecutor {
 		return timer;
 	}
 
-	public static Timer startFixedRateCycleTask(LocalDateTime firstTime, long period, TimeUnit unit, Runnable runnable) {
+	public static Timer startFixedRateCycleTask(LocalDateTime firstTime, long period, TimeUnit unit,
+			Runnable runnable) {
 		return startFixedRateCycleTask(Duration.between(LocalDateTime.now(), firstTime).toMillis(),
 				unit.toMillis(period), TimeUnit.MILLISECONDS, runnable);
 	}
@@ -197,10 +198,10 @@ public final class ScheduleTaskExecutor {
 	}
 
 	/**
-	 * MultipleThreadExecutor 线程数为核心数量 + 核心数量 * 1/2
+	 * MultipleThreadExecutor 线程数为: 核心数量 + 核心数量 * 1/2
 	 */
 	private static ScheduledExecutorService InnerMultipleThreadExecutor = Executors.newScheduledThreadPool(
-			CurrentRuntime.availableCores() + CurrentRuntime.availableCores() / 2,
+			CurrentRuntime.availableProcessors() + CurrentRuntime.availableProcessors() / 2,
 			runnable -> new Thread(runnable, "MultipleThreadScheduledExecutor"));
 
 	/**
