@@ -64,7 +64,7 @@ public abstract class Pattern {
 	private final String pattern;
 	private final DateTimeFormatter formatter;
 
-	protected Pattern(String pattern) {
+	Pattern(String pattern) {
 		this.pattern = pattern;
 		this.formatter = DateTimeFormatter.ofPattern(pattern);
 	}

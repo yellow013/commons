@@ -28,7 +28,7 @@ public final class EpochTimestamp {
 	private ZonedDateTime newZonedDateTime() {
 		if (instant == null)
 			newInstant();
-		return updateDateTimeOf(TimeZones.SYSTEM_DEFAULT);
+		return updateDateTimeOf(TimeZone.SYS_DEFAULT);
 	}
 
 	public ZonedDateTime updateDateTimeOf(ZoneId zoneId) {

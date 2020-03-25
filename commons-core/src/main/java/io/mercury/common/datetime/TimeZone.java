@@ -5,15 +5,23 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
-public interface TimeZones {
+public interface TimeZone {
 
+	/**
+	 * UTC ZoneOffset
+	 */
 	ZoneOffset UTC = ZoneOffset.UTC;
 
-	ZoneId SYSTEM_DEFAULT = ZoneId.systemDefault();
-	
-	
+	/**
+	 * ZoneId from runtime
+	 */
+	ZoneId SYS_DEFAULT = ZoneId.systemDefault();
 
-	ZoneOffset SYSTEM_DEFAULT_OFFSET = ZonedDateTime.ofInstant(Instant.EPOCH, SYSTEM_DEFAULT).getOffset();
+	/**
+	 * ZoneOffset from runtime
+	 */
+	ZoneOffset SYS_DEFAULT_OFFSET = ZonedDateTime.ofInstant(Instant.EPOCH, SYS_DEFAULT).getOffset();
+
 	/**
 	 * Chinese Standard Time
 	 */

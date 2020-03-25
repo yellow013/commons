@@ -6,7 +6,7 @@ import java.time.ZoneOffset;
 
 import org.junit.Test;
 
-import io.mercury.common.datetime.TimeZones;
+import io.mercury.common.datetime.TimeZone;
 
 public class TimeZonesTest {
 
@@ -17,15 +17,15 @@ public class TimeZonesTest {
 		
 		System.out.println(standardOffset);
 		
-		System.out.println(TimeZones.SYSTEM_DEFAULT_OFFSET);
-		System.out.println(TimeZones.CST_OFFSET);
-		System.out.println(TimeZones.JST_OFFSET);
+		System.out.println(TimeZone.SYS_DEFAULT_OFFSET);
+		System.out.println(TimeZone.CST_OFFSET);
+		System.out.println(TimeZone.JST_OFFSET);
 		
 		ZoneOffset ofHours = ZoneOffset.ofHours(8);
 
-		System.out.println(TimeZones.SYSTEM_DEFAULT_OFFSET.equals(ofHours));
+		System.out.println(TimeZone.SYS_DEFAULT_OFFSET.equals(ofHours));
 		
-		System.out.println(TimeZones.SYSTEM_DEFAULT_OFFSET.equals(standardOffset));
+		System.out.println(TimeZone.SYS_DEFAULT_OFFSET.equals(standardOffset));
 
 		ZoneId.getAvailableZoneIds().forEach(this::println);
 		

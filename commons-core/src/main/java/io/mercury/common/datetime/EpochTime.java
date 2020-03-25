@@ -17,7 +17,7 @@ import static io.mercury.common.datetime.TimeConst.MILLIS_PER_SECONDS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MICROS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MILLIS;
 import static io.mercury.common.datetime.TimeConst.SECONDS_PER_MINUTE;
-import static io.mercury.common.datetime.TimeZones.SYSTEM_DEFAULT_OFFSET;
+import static io.mercury.common.datetime.TimeZone.SYS_DEFAULT_OFFSET;
 import static java.lang.System.currentTimeMillis;;
 
 public final class EpochTime {
@@ -43,7 +43,7 @@ public final class EpochTime {
 	}
 
 	public static long hour(@Nonnull LocalDateTime datetime) {
-		return datetime.toEpochSecond(SYSTEM_DEFAULT_OFFSET) / TimeConst.SECONDS_PER_HOUR;
+		return datetime.toEpochSecond(SYS_DEFAULT_OFFSET) / TimeConst.SECONDS_PER_HOUR;
 	}
 
 	public static long hour(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
@@ -59,7 +59,7 @@ public final class EpochTime {
 	}
 
 	public static long minute(@Nonnull LocalDateTime datetime) {
-		return minute(datetime, SYSTEM_DEFAULT_OFFSET);
+		return minute(datetime, SYS_DEFAULT_OFFSET);
 	}
 
 	public static long minute(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
@@ -75,7 +75,7 @@ public final class EpochTime {
 	}
 
 	public static long seconds(@Nonnull LocalDateTime datetime) {
-		return datetime.toEpochSecond(SYSTEM_DEFAULT_OFFSET);
+		return datetime.toEpochSecond(SYS_DEFAULT_OFFSET);
 	}
 
 	public static long seconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
@@ -97,7 +97,7 @@ public final class EpochTime {
 	public static long millis(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS
-				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MILLIS_PER_SECONDS;
+				- SYS_DEFAULT_OFFSET.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
 	public static long millis(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
@@ -117,7 +117,7 @@ public final class EpochTime {
 	public static long micros(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
-				- SYSTEM_DEFAULT_OFFSET.getTotalSeconds() * MICROS_PER_SECONDS;
+				- SYS_DEFAULT_OFFSET.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
 	public static long micros(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {

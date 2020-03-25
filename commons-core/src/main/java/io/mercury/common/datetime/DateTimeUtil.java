@@ -386,7 +386,7 @@ public final class DateTimeUtil {
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date) {
-		return LocalDateTime.ofInstant(date.toInstant(), TimeZones.SYSTEM_DEFAULT);
+		return LocalDateTime.ofInstant(date.toInstant(), TimeZone.SYS_DEFAULT);
 	}
 
 	public final static LocalDateTime dateToLocalDateTime(@Nonnull Date date, @Nonnull ZoneId zoneId) {
