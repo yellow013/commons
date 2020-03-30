@@ -1,5 +1,6 @@
 package io.mercury.common.thread;
 
+import java.lang.Thread.State;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -73,12 +74,21 @@ public final class ThreadUtil {
 		return startThread(newMinPriorityThread(runnable, threadName));
 	}
 
+	/**
+	 * 
+	 * @param thread
+	 * @return
+	 */
 	private static Thread startThread(Thread thread) {
 		thread.start();
 		return thread;
 	}
 
-	public static void sleepIgnoreException(long millis) {
+	/**
+	 * 
+	 * @param millis
+	 */
+	public static void sleepIgnoreInterrupted(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
@@ -86,7 +96,12 @@ public final class ThreadUtil {
 		}
 	}
 
-	public static void sleepIgnoreException(long millis, int nanos) {
+	/**
+	 * 
+	 * @param millis
+	 * @param nanos
+	 */
+	public static void sleepIgnoreInterrupted(long millis, int nanos) {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
@@ -94,29 +109,49 @@ public final class ThreadUtil {
 		}
 	}
 
-	public static void sleep(long millis) {
+	/**
+	 * 
+	 * @param millis
+	 * @throws RuntimeInterruptedException
+	 */
+	public static void sleep(long millis) throws RuntimeInterruptedException {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 			log.error("ThreadUtil#sleep(millis==[{}]) throw InterruptedException -> {}", millis, e.getMessage(), e);
+			throw new RuntimeInterruptedException(e);
 		}
 	}
 
-	public static void sleep(long millis, int nanos) {
+	/**
+	 * 
+	 * @param millis
+	 * @param nanos
+	 * @throws RuntimeInterruptedException
+	 */
+	public static void sleep(long millis, int nanos) throws RuntimeInterruptedException {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {
 			log.error("ThreadUtil#sleep(millis==[{}], nanos==[{}]) throw InterruptedException -> {}", millis, nanos,
 					e.getMessage(), e);
+			throw new RuntimeInterruptedException(e);
 		}
 	}
 
-	public static void sleep(TimeUnit timeUnit, long time) {
+	/**
+	 * 
+	 * @param timeUnit
+	 * @param time
+	 * @throws RuntimeInterruptedException
+	 */
+	public static void sleep(TimeUnit timeUnit, long time) throws RuntimeInterruptedException {
 		try {
 			timeUnit.sleep(time);
 		} catch (InterruptedException e) {
 			log.error("ThreadUtil#sleep(time==[{}], timeUnit==[{}]) throw InterruptedException -> {}", time, timeUnit,
 					e.getMessage(), e);
+			throw new RuntimeInterruptedException(e);
 		}
 	}
 
