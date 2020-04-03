@@ -161,7 +161,7 @@ public final class ThreadUtil {
 	 * 
 	 * @param millis
 	 */
-	public static void sleepIgnoreInterrupted(long millis) {
+	public static void sleepIgnoreInterrupts(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
@@ -174,7 +174,7 @@ public final class ThreadUtil {
 	 * @param millis
 	 * @param nanos
 	 */
-	public static void sleepIgnoreInterrupted(long millis, int nanos) {
+	public static void sleepIgnoreInterrupts(long millis, int nanos) {
 		try {
 			Thread.sleep(millis, nanos);
 		} catch (InterruptedException e) {

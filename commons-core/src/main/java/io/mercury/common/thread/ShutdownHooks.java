@@ -26,11 +26,11 @@ public final class ShutdownHooks {
 			executor.execute(runnable);
 		executor.shutdown();
 		while (executor.isTerminated())
-			ThreadUtil.sleepIgnoreInterrupted(100);
+			ThreadUtil.sleepIgnoreInterrupts(100);
 		System.out.println("all shutdown hook execution completed");
 	}
 
-	public static void addShutdownHookTask(Runnable runnable) {
+	public static synchronized void addShutdownHookTask(Runnable runnable) {
 		INSTANCE.runnables.add(runnable);
 	}
 
