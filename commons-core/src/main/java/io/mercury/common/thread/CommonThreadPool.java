@@ -91,7 +91,7 @@ public final class CommonThreadPool extends ThreadPoolExecutor {
 	@Override
 	protected void terminated() {
 		log.info("CommonThreadPool {} is terminated", threadPoolName);
-	};
+	}
 
 	public String threadPoolName() {
 		return threadPoolName;
