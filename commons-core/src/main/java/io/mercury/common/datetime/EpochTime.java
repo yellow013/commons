@@ -22,111 +22,112 @@ import static java.lang.System.currentTimeMillis;;
 
 public final class EpochTime {
 
-	public static long day() {
+	public static final long day() {
 		return currentTimeMillis() / MILLIS_PER_DAY;
 	}
 
-	public static long day(@Nonnull LocalDate date) {
+	public static final long day(@Nonnull LocalDate date) {
 		return date.toEpochDay();
 	}
 
-	public static long day(@Nonnull LocalDateTime dateTime) {
+	public static final long day(@Nonnull LocalDateTime dateTime) {
 		return day(dateTime.toLocalDate());
 	}
 
-	public static long day(@Nonnull ZonedDateTime zdateTime) {
+	public static final long day(@Nonnull ZonedDateTime zdateTime) {
 		return day(zdateTime.toLocalDate());
 	}
 
-	public static long hour() {
+	public static final long hour() {
 		return currentTimeMillis() / MILLIS_PER_HOUR;
 	}
 
-	public static long hour(@Nonnull LocalDateTime datetime) {
+	public static final long hour(@Nonnull LocalDateTime datetime) {
 		return datetime.toEpochSecond(SYS_DEFAULT_OFFSET) / TimeConst.SECONDS_PER_HOUR;
 	}
 
-	public static long hour(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
+	public static final long hour(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
 		return datetime.toEpochSecond(offset) / TimeConst.SECONDS_PER_HOUR;
 	}
 
-	public static long hour(@Nonnull ZonedDateTime zdateTime) {
+	public static final long hour(@Nonnull ZonedDateTime zdateTime) {
 		return zdateTime.toEpochSecond() / TimeConst.SECONDS_PER_HOUR;
 	}
 
-	public static long minute() {
+	public static final long minute() {
 		return currentTimeMillis() / MILLIS_PER_MINUTE;
 	}
 
-	public static long minute(@Nonnull LocalDateTime datetime) {
+	public static final long minute(@Nonnull LocalDateTime datetime) {
 		return minute(datetime, SYS_DEFAULT_OFFSET);
 	}
 
-	public static long minute(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
+	public static final long minute(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
 		return datetime.toEpochSecond(offset);
 	}
 
-	public static long minute(@Nonnull ZonedDateTime zdateTime) {
+	public static final long minute(@Nonnull ZonedDateTime zdateTime) {
 		return zdateTime.toEpochSecond() / SECONDS_PER_MINUTE;
 	}
 
-	public static long seconds() {
+	public static final long seconds() {
 		return currentTimeMillis() / MILLIS_PER_SECONDS;
 	}
 
-	public static long seconds(@Nonnull LocalDateTime datetime) {
+	public static final long seconds(@Nonnull LocalDateTime datetime) {
 		return datetime.toEpochSecond(SYS_DEFAULT_OFFSET);
 	}
 
-	public static long seconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
+	public static final long seconds(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset offset) {
 		return datetime.toEpochSecond(offset);
 	}
 
-	public static long seconds(@Nonnull ZonedDateTime zdateTime) {
+	public static final long seconds(@Nonnull ZonedDateTime zdateTime) {
 		return zdateTime.toEpochSecond();
 	}
 
-	public static long millis() {
+	public static final long millis() {
 		return currentTimeMillis();
 	}
 
-	public static long millis(@Nonnull ZonedDateTime datetime) {
+	public static final long millis(@Nonnull ZonedDateTime datetime) {
 		return datetime.toEpochSecond() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS;
 	}
 
-	public static long millis(@Nonnull LocalDateTime datetime) {
+	public static final long millis(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS
 				- SYS_DEFAULT_OFFSET.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
-	public static long millis(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
+	public static final long millis(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
 		return datetime.toLocalDate().toEpochDay() * MILLIS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MILLIS_PER_SECONDS + datetime.getNano() / NANOS_PER_MILLIS
 				- zoneOffset.getTotalSeconds() * MILLIS_PER_SECONDS;
 	}
 
-	public static long micros() {
+	public static final long micros() {
 		return currentTimeMillis() * MICROS_PER_MILLIS;
 	}
 
-	public static long micros(@Nonnull ZonedDateTime datetime) {
+	public static final long micros(@Nonnull ZonedDateTime datetime) {
 		return datetime.toEpochSecond() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS;
 	}
 
-	public static long micros(@Nonnull LocalDateTime datetime) {
+	public static final long micros(@Nonnull LocalDateTime datetime) {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
 				- SYS_DEFAULT_OFFSET.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
-	public static long micros(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
+	public static final long micros(@Nonnull LocalDateTime datetime, @Nonnull ZoneOffset zoneOffset) {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
 				- zoneOffset.getTotalSeconds() * MICROS_PER_SECONDS;
 	}
 
 	public static void main(String[] args) {
+
 		long epoch = currentTimeMillis();
 		LocalDateTime now = LocalDateTime.now();
 		ZoneOffset offset = ZonedDateTime.now().getOffset();
@@ -144,8 +145,6 @@ public final class EpochTime {
 		System.out.println(micros(now));
 		System.out.println(micros(now, offset));
 
-
-		
 		System.out.println(hour());
 		// Charset.availableCharsets().entrySet().stream().forEach(entity ->
 		// System.out.println(entity));

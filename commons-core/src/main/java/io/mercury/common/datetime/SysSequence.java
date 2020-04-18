@@ -6,15 +6,15 @@ import io.mercury.common.log.CommonLoggerFactory;
 
 public final class SysSequence {
 
-	public static long millisecond() {
+	public static long milli() {
 		return System.nanoTime() / 1000_000;
 	}
 
-	public static long microsecond() {
+	public static long micro() {
 		return System.nanoTime() / 1000;
 	}
 
-	public static long nanosecond() {
+	public static long nano() {
 		return System.nanoTime();
 	}
 
@@ -23,9 +23,9 @@ public final class SysSequence {
 		Logger log = CommonLoggerFactory.getLogger(SysSequence.class);
 
 		for (int i = 0; i < 20; i++) {
-			log.debug(String.valueOf(SysSequence.microsecond()));
+			log.debug(String.valueOf(SysSequence.micro()));
 		}
-		
+
 	}
 
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.ThrowsRuntimeException;
 import io.mercury.common.datetime.Pattern.DatePattern;
 import io.mercury.common.datetime.Pattern.DateTimePattern;
 import io.mercury.common.datetime.Pattern.TimePattern;
@@ -342,20 +342,23 @@ public final class DateTimeUtil {
 		return LocalDateTime.of(toLocalDate((int) (datetime / 1000000000)), toLocalTime((int) (datetime % 1000000000)));
 	}
 
-	@MayThrowsRuntimeException(DateTimeParseException.class)
-	public final static LocalDate toLocalDate(@Nonnull DatePattern pattern, @Nonnull String str) {
+	@ThrowsRuntimeException(DateTimeParseException.class)
+	public final static LocalDate toLocalDate(@Nonnull DatePattern pattern, @Nonnull String str)
+			throws DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalDate.parse(str, pattern.getFormatter());
 	}
 
-	@MayThrowsRuntimeException(DateTimeParseException.class)
-	public final static LocalTime toLocalTime(@Nonnull TimePattern pattern, @Nonnull String str) {
+	@ThrowsRuntimeException(DateTimeParseException.class)
+	public final static LocalTime toLocalTime(@Nonnull TimePattern pattern, @Nonnull String str)
+			throws DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalTime.parse(str, pattern.getFormatter());
 	}
 
-	@MayThrowsRuntimeException(DateTimeParseException.class)
-	public final static LocalDateTime toLocalDateTime(@Nonnull DateTimePattern pattern, @Nonnull String str) {
+	@ThrowsRuntimeException(DateTimeParseException.class)
+	public final static LocalDateTime toLocalDateTime(@Nonnull DateTimePattern pattern, @Nonnull String str)
+			throws DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalDateTime.parse(str, pattern.getFormatter());
 	}
