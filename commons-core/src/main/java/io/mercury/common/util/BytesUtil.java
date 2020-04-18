@@ -2,8 +2,6 @@ package io.mercury.common.util;
 
 import javax.annotation.Nonnull;
 
-import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
-
 public final class BytesUtil {
 
 	private BytesUtil() {
@@ -15,7 +13,7 @@ public final class BytesUtil {
 	 * @param b
 	 * @return
 	 */
-	public static String binaryByte(byte b) {
+	public static final String binaryByte(byte b) {
 		String binary = Integer.toBinaryString(b);
 		return highPosFill(Byte.SIZE, Byte.SIZE - binary.length(), binary);
 	}
@@ -26,42 +24,54 @@ public final class BytesUtil {
 	 * @param c
 	 * @return
 	 */
-	public static String binaryChar(char c) {
+	public static final String binaryChar(char c) {
 		String binaryStr = Integer.toBinaryString(c);
 		return highPosFill(Character.SIZE, Character.SIZE - binaryStr.length(), binaryStr);
 	}
 
-	public static String formatBinaryChar(char c) {
+	public static final String formatBinaryChar(char c) {
 		return new StringBuilder(binaryChar(c)).insert(8, ' ').toString();
 	}
 
 	/**
-	 * 将int转换为二进制输出,高位补0
+	 * 将int转换为二进制输出, 高位补0
 	 * 
 	 * @param i
 	 * @return
 	 */
-	public static String binaryInt(int i) {
+	public static final String binaryInt(int i) {
 		String binaryStr = Integer.toBinaryString(i);
 		return highPosFill(Integer.SIZE, Integer.SIZE - binaryStr.length(), binaryStr);
 	}
 
-	public static String formatBinaryInt(int i) {
+	/**
+	 * 将int转换为二进制输出并格式化, 高位补0
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public static final String formatBinaryInt(int i) {
 		return new StringBuilder(binaryInt(i)).insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
 
 	/**
-	 * 将long转换为二进制输出,高位补0
+	 * 将long转换为二进制输出, 高位补0
 	 * 
 	 * @param l
 	 * @return
 	 */
-	public static String binaryLong(long l) {
+	public static final String binaryLong(long l) {
 		String binaryStr = Long.toBinaryString(l);
 		return highPosFill(Long.SIZE, Long.SIZE - binaryStr.length(), binaryStr);
 	}
 
-	public static String formatBinaryLong(long l) {
+	/**
+	 * 将long转换为二进制输出并格式化, 高位补0
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public static final String formatBinaryLong(long l) {
 		return new StringBuilder(binaryLong(l)).insert(56, ' ').insert(48, ' ').insert(40, ' ').insert(32, ' ')
 				.insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
@@ -74,34 +84,56 @@ public final class BytesUtil {
 	 * @param binaryStr
 	 * @return
 	 */
-	private static String highPosFill(int sumLen, int blankLen, String binaryStr) {
+	private static final String highPosFill(int sumLen, int blankLen, String binaryStr) {
 		StringBuilder builder = new StringBuilder(sumLen);
 		for (int i = 0; i < blankLen; i++)
 			builder.append('0');
 		return builder.append(binaryStr).toString();
 	}
 
-	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
-	public static final char bytesToChar(@Nonnull byte[] bytes) {
+	/**
+	 * 
+	 * @param bytes
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static final char bytesToChar(@Nonnull byte[] bytes) throws ArrayIndexOutOfBoundsException {
 		Assertor.requiredLength(bytes, 2, "bytes array");
 		return (char) (((bytes[0] & 0xFF) << 8) | ((bytes[1] & 0xFF)));
 	}
 
-	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
-	public static final char bytesToChar(@Nonnull byte[] bytes, int offset) {
+	/**
+	 * 
+	 * @param bytes
+	 * @param offset
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static final char bytesToChar(@Nonnull byte[] bytes, int offset) throws ArrayIndexOutOfBoundsException {
 		if (bytes == null || bytes.length < offset + 2)
 			throw new ArrayIndexOutOfBoundsException("byte array length must be greater than [offset + 2]");
 		return (char) (((bytes[offset] & 0xFF) << 8) | ((bytes[offset + 1] & 0xFF)));
 	}
 
-	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
-	public static final int bytesToInt(@Nonnull byte[] bytes) {
+	/**
+	 * 
+	 * @param bytes
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static final int bytesToInt(@Nonnull byte[] bytes) throws ArrayIndexOutOfBoundsException {
 		Assertor.requiredLength(bytes, 4, "bytes array");
 		return ((bytes[0] & 0xFF) << 24) | ((bytes[1] & 0xFF) << 16) | ((bytes[2] & 0xFF) << 8) | ((bytes[3] & 0xFF));
 	}
 
-	@MayThrowsRuntimeException(ArrayIndexOutOfBoundsException.class)
-	public static final int bytesToInt(@Nonnull byte[] bytes, int offset) {
+	/**
+	 * 
+	 * @param bytes
+	 * @param offset
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static final int bytesToInt(@Nonnull byte[] bytes, int offset) throws ArrayIndexOutOfBoundsException {
 		if (bytes == null || bytes.length < offset + 4)
 			throw new ArrayIndexOutOfBoundsException("byte array length must be greater than [offset + 4]");
 		return ((bytes[offset] & 0xFF) << 24) | ((bytes[offset + 1] & 0xFF) << 16) | ((bytes[offset + 2] & 0xFF) << 8)
@@ -120,13 +152,13 @@ public final class BytesUtil {
 		return (((long) highPos) << 48) | ((long) second << 32) | ((long) third << 16) | ((int) lowPos);
 	}
 
-	private static final long LongHighPosMask = 0xFFFF_FFFF_0000_0000L;
+	public static final long LongHighPosMask = 0xFFFF_FFFF_0000_0000L;
 
 	public static final int splitLongWithHighPos(long l) {
 		return (int) ((l & LongHighPosMask) >> 32);
 	}
 
-	private static final long LongLowPosMask = 0x0000_0000_FFFF_FFFFL;
+	public static final long LongLowPosMask = 0x0000_0000_FFFF_FFFFL;
 
 	public static final int splitLongWithLowPos(long l) {
 		return (int) (l & LongLowPosMask);

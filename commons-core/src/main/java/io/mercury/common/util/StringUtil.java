@@ -12,7 +12,7 @@ import io.mercury.common.character.Charsets;
 
 public final class StringUtil {
 
-	public interface StringConst {
+	public static interface StringConst {
 		String NULL = "null";
 		String EMPTY = "";
 	}
@@ -21,15 +21,15 @@ public final class StringUtil {
 	}
 
 	@Nonnull
-	public static String toString(@Nullable Object obj) {
+	public static final String toString(@Nullable Object obj) {
 		return obj == null ? StringConst.NULL : obj.toString();
 	}
 
 	@Nonnull
-	public static String toString(@Nullable Object... objs) {
+	public static final String toString(@Nullable Object... objs) {
 		if (objs == null)
 			return StringConst.EMPTY;
-		StringBuilder builder = new StringBuilder(objs.length * 20).append('[');
+		StringBuilder builder = new StringBuilder(objs.length * 16).append('[');
 		for (int i = 0, j = objs.length - 1; i < objs.length; i++) {
 			builder.append(toString(objs[i]));
 			if (i < j)
@@ -45,7 +45,7 @@ public final class StringUtil {
 	 * @return String
 	 * 
 	 */
-	public static String reflectionToString(Object obj) {
+	public static final String reflectionToString(Object obj) {
 		return obj == null ? StringConst.NULL
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE, false);
 	}
@@ -55,7 +55,7 @@ public final class StringUtil {
 	 * @param cs
 	 * @return
 	 */
-	public static boolean isNullOrEmpty(CharSequence cs) {
+	public static final boolean isNullOrEmpty(CharSequence cs) {
 		return cs == null || cs.length() == 0;
 	}
 
@@ -64,7 +64,7 @@ public final class StringUtil {
 	 * @param cs
 	 * @return
 	 */
-	public static boolean nonEmpty(CharSequence cs) {
+	public static final boolean nonEmpty(CharSequence cs) {
 		return cs != null && cs.length() != 0;
 	}
 
@@ -74,7 +74,7 @@ public final class StringUtil {
 	 * @param str2
 	 * @return
 	 */
-	public static boolean isEquals(String str1, String str2) {
+	public static final boolean isEquals(String str1, String str2) {
 		return str1 != null ? str1.equals(str2) : str2 != null ? str2.equals(str1) : true;
 	}
 
@@ -84,7 +84,7 @@ public final class StringUtil {
 	 * @param str2
 	 * @return
 	 */
-	public static boolean nonEquals(String str1, String str2) {
+	public static final boolean nonEquals(String str1, String str2) {
 		return !isEquals(str1, str2);
 	}
 
@@ -92,7 +92,7 @@ public final class StringUtil {
 	 * 
 	 */
 	@Deprecated
-	public static boolean isDecimalDeprecated(String str) {
+	public static final boolean isDecimalDeprecated(String str) {
 		// Character.isDigit(ch);
 		if (isNullOrEmpty(str))
 			return false;
@@ -130,7 +130,7 @@ public final class StringUtil {
 	 * @param str
 	 * @return
 	 */
-	public static boolean isDecimal(String str) {
+	public static final boolean isDecimal(String str) {
 		// null或空字符串
 		if (isNullOrEmpty(str))
 			return false;
@@ -176,7 +176,7 @@ public final class StringUtil {
 
 	}
 
-	public static boolean notDecimal(String str) {
+	public static final boolean notDecimal(String str) {
 		return !isDecimal(str);
 	}
 
@@ -186,52 +186,52 @@ public final class StringUtil {
 	 * @param str
 	 * @return
 	 */
-	public static String deleteSplitChar(String str) {
+	public static final String deleteSplitChar(String str) {
 		return isNullOrEmpty(str) ? StringConst.EMPTY
 				: str.replace(".", "").replace("-", "").replace("_", "").replace("/", "").replace("\\", "");
 	}
 
-	public static String conversionGbkToUtf8(String gbkStr) {
+	public static final String conversionGbkToUtf8(String gbkStr) {
 		return conversionTo(gbkStr, Charsets.GBK, Charsets.UTF8);
 	}
 
-	public static String conversionUtf8ToGbk(String utf8Str) {
+	public static final String conversionUtf8ToGbk(String utf8Str) {
 		return conversionTo(utf8Str, Charsets.UTF8, Charsets.GBK);
 	}
 
-	public static String conversionGb2312ToUtf8(String gbkStr) {
+	public static final String conversionGb2312ToUtf8(String gbkStr) {
 		return conversionTo(gbkStr, Charsets.GB2312, Charsets.UTF8);
 	}
 
-	public static String conversionUtf8ToGb2312(String utf8Str) {
+	public static final String conversionUtf8ToGb2312(String utf8Str) {
 		return conversionTo(utf8Str, Charsets.UTF8, Charsets.GB2312);
 	}
 
-	public static String conversionToUtf8(String sourceStr, Charset sourceCoding) {
+	public static final String conversionToUtf8(String sourceStr, Charset sourceCoding) {
 		return conversionTo(sourceStr, sourceCoding, Charsets.UTF8);
 	}
 
-	public static String conversionTo(String sourceStr, Charset sourceCoding, Charset targetCoding) {
+	public static final String conversionTo(String sourceStr, Charset sourceCoding, Charset targetCoding) {
 		return sourceStr == null ? sourceStr : new String(sourceStr.getBytes(sourceCoding), targetCoding);
 	}
 
-	public static String bytesToStr(byte[] bytes) {
+	public static final String bytesToStr(byte[] bytes) {
 		return bytesToStr(bytes, Charsets.UTF8);
 	}
 
-	public static String bytesToStr(byte[] bytes, Charset charset) {
+	public static final String bytesToStr(byte[] bytes, Charset charset) {
 		return new String(bytes, charset);
 	}
 
-	public static boolean isPath(String path) {
+	public static final boolean isPath(String path) {
 		return isNullOrEmpty(path) ? false : path.endsWith("/") || path.endsWith("\\");
 	}
 
-	public static boolean notPath(String path) {
+	public static final boolean notPath(String path) {
 		return !isPath(path);
 	}
 
-	public static String fixPath(String path) {
+	public static final String fixPath(String path) {
 		return isNullOrEmpty(path) ? "/" : path.endsWith("/") || path.endsWith("\\") ? path : path + "/";
 	}
 
@@ -241,7 +241,7 @@ public final class StringUtil {
 	 * @param strs
 	 * @return
 	 */
-	public static String concatenateStr(String... strs) {
+	public static final String concatenateStr(String... strs) {
 		return concatenateStr(strs.length * 16 + strs.length, ',', strs);
 	}
 
@@ -252,7 +252,7 @@ public final class StringUtil {
 	 * @param strs     字符串数组
 	 * @return
 	 */
-	public static String concatenateStr(int capacity, String... strs) {
+	public static final String concatenateStr(int capacity, String... strs) {
 		return concatenateStr(capacity, ',', strs);
 	}
 
@@ -263,7 +263,7 @@ public final class StringUtil {
 	 * @param strs   字符串数组
 	 * @return
 	 */
-	public static String concatenateStr(char symbol, String... strs) {
+	public static final String concatenateStr(char symbol, String... strs) {
 		return concatenateStr(strs.length * 16 + strs.length, symbol, strs);
 	}
 
@@ -275,7 +275,7 @@ public final class StringUtil {
 	 * @param strs     字符串数组
 	 * @return
 	 */
-	public static String concatenateStr(int capacity, char symbol, String... strs) {
+	public static final String concatenateStr(int capacity, char symbol, String... strs) {
 		if (strs == null || strs.length == 0)
 			return StringConst.EMPTY;
 		StringBuilder builder = new StringBuilder(capacity);
