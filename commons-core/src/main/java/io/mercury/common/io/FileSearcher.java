@@ -10,17 +10,17 @@ public final class FileSearcher {
 	private FileSearcher() {
 	}
 
-	public static Set<File> findWith(File searchPath) {
+	public static final Set<File> findWith(File searchPath) {
 		return findWith(searchPath, anyFile -> true);
 	}
 
-	public static Set<File> findWith(File searchPath, Predicate<File> fileFilter) {
+	public static final Set<File> findWith(File searchPath, Predicate<File> fileFilter) {
 		Set<File> files = new HashSet<>();
 		findWith0(files, searchPath, fileFilter);
 		return files;
 	}
 
-	private static void findWith0(Set<File> loadFiles, File searchPath, Predicate<File> fileFilter) {
+	private static final void findWith0(Set<File> loadFiles, File searchPath, Predicate<File> fileFilter) {
 		if (searchPath == null || fileFilter == null)
 			return;
 		File[] listFiles = searchPath.listFiles();

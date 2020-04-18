@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import io.mercury.common.annotation.lang.MayThrowsRuntimeException;
+import io.mercury.common.annotation.lang.ThrowsRuntimeException;
 import io.mercury.common.character.Separator;
 import io.mercury.common.sys.SysProperties;
 
@@ -43,7 +43,7 @@ public final class FileChannelWriter {
 	 * @return
 	 * @throws IOException
 	 */
-	@MayThrowsRuntimeException(NullPointerException.class)
+	@ThrowsRuntimeException(NullPointerException.class)
 	public static final File write(List<String> data, final File target, final int capacity) throws IOException {
 		if (target == null)
 			throw new NullPointerException("target file must not be null.");
