@@ -16,13 +16,14 @@ public final class ImmutableParamMap<K extends ParamKey> {
 
 	private ImmutableMap<K, String> immutableMap;
 
-	@SafeVarargs
-	public ImmutableParamMap(@Nonnull Properties properties, K... keys) {
-		Assertor.nonNull(properties, "properties");
+	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Properties... props) {
+		Assertor.requiredLength(props, 1, "props");
 		Assertor.requiredLength(keys, 1, "keys");
 		MutableMap<K, String> unifiedMap = MutableMaps.newUnifiedMap();
-		for (K key : keys)
-			unifiedMap.put(key, properties.getProperty(key.paramName()));
+		for (Properties prop : props)
+			for (K key : keys)
+				if (prop.containsKey(key.paramName()))
+					unifiedMap.put(key, prop.getProperty(key.paramName()));
 		this.immutableMap = unifiedMap.toImmutable();
 	}
 
