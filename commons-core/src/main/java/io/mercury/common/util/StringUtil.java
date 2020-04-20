@@ -38,6 +38,26 @@ public final class StringUtil {
 		return builder.append(']').toString();
 	}
 
+	@Nonnull
+	public static final String toString(@Nonnull byte b) {
+		return toString(new byte[] { b });
+	}
+
+	@Nonnull
+	public static final String toString(@Nonnull byte[] bytes) {
+		return new String(bytes);
+	}
+
+	@Nonnull
+	public static final String toString(@Nonnull char c) {
+		return toString(new char[] { c });
+	}
+
+	@Nonnull
+	public static final String toString(@Nonnull char[] chars) {
+		return new String(chars);
+	}
+
 	/**
 	 * Use ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE)
 	 * 
