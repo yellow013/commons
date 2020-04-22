@@ -1,4 +1,4 @@
-package io.mercury.common.param;
+package io.mercury.common.param.map;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +16,8 @@ import org.eclipse.collections.impl.map.mutable.primitive.IntDoubleHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
-import io.mercury.common.param.api.ParamKey;
-import io.mercury.common.param.api.ParamType;
+import io.mercury.common.param.ParamKey;
+import io.mercury.common.param.ParamType;
 
 public final class MutableParamMap<K extends ParamKey> {
 
