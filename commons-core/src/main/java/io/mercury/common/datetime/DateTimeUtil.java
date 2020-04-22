@@ -344,21 +344,21 @@ public final class DateTimeUtil {
 
 	@ThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalDate toLocalDate(@Nonnull DatePattern pattern, @Nonnull String str)
-			throws DateTimeParseException {
+			throws IllegalArgumentException, DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalDate.parse(str, pattern.getFormatter());
 	}
 
 	@ThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalTime toLocalTime(@Nonnull TimePattern pattern, @Nonnull String str)
-			throws DateTimeParseException {
+			throws IllegalArgumentException, DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalTime.parse(str, pattern.getFormatter());
 	}
 
 	@ThrowsRuntimeException(DateTimeParseException.class)
 	public final static LocalDateTime toLocalDateTime(@Nonnull DateTimePattern pattern, @Nonnull String str)
-			throws DateTimeParseException {
+			throws IllegalArgumentException, DateTimeParseException {
 		checkFormatParam(pattern, str);
 		return LocalDateTime.parse(str, pattern.getFormatter());
 	}
@@ -396,53 +396,66 @@ public final class DateTimeUtil {
 		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
 	}
 
-	public final static String nowDateStr(@Nonnull DatePattern pattern) {
-		return dateStr(LocalDate.now(), pattern);
-	}
-
-	public final static String dateStr(@Nonnull LocalDate date, @Nonnull DatePattern pattern) {
+	/**
+	 * 
+	 * @param date
+	 * @param pattern
+	 * @return
+	 */
+	public final static String fmtDate(@Nonnull LocalDate date, @Nonnull DatePattern pattern) {
 		return pattern.getFormatter().format(date);
 	}
 
-	public final static String nowTimeStr(@Nonnull TimePattern pattern) {
-		return timeStr(LocalTime.now(), pattern);
+	public final static String fmtDateWithNow(@Nonnull DatePattern pattern) {
+		return fmtDate(LocalDate.now(), pattern);
 	}
 
-	public final static String timeStr(@Nonnull LocalTime time, @Nonnull TimePattern pattern) {
+	public final static String fmtTime(@Nonnull LocalTime time, @Nonnull TimePattern pattern) {
 		return pattern.getFormatter().format(time);
 	}
 
-	public final static String nowDatetimeStr(@Nonnull DateTimePattern pattern) {
-		return datetimeStr(LocalDateTime.now(), pattern);
+	public final static String fmtTimeWithNow(@Nonnull TimePattern pattern) {
+		return fmtTime(LocalTime.now(), pattern);
 	}
 
-	public final static String datetimeStr(@Nonnull LocalDateTime datetime, @Nonnull DateTimePattern pattern) {
+	public final static String fmtDatetime(@Nonnull LocalDateTime datetime, @Nonnull DateTimePattern pattern) {
 		return pattern.getFormatter().format(datetime);
 	}
 
-	private static LocalDate CurrentDate = LocalDate.now();
-
-	private static LocalDate PreviousDate = CurrentDate.minusDays(1);
-
-	private static LocalDate NextDate = CurrentDate.plusDays(1);
-
-	public static LocalDate resetCurrentDate(LocalDate date) {
-		CurrentDate = date;
-		PreviousDate = CurrentDate.minusDays(1);
-		NextDate = CurrentDate.plusDays(1);
-		return CurrentDate;
+	public final static String fmtDatetimeWithNow(@Nonnull DateTimePattern pattern) {
+		return fmtDatetime(LocalDateTime.now(), pattern);
 	}
 
-	public static LocalDate CurrentDate() {
-		return CurrentDate;
+	/**
+	 * 
+	 * @return
+	 */
+	public static LocalDate currentDate() {
+		return LocalDate.now();
 	}
 
-	public static LocalDate PreviousDate() {
-		return PreviousDate;
+	/**
+	 * 
+	 * @return
+	 */
+	public static LocalDate previousDate() {
+		return previousDate(LocalDate.now());
 	}
 
-	public static LocalDate NextDate() {
-		return NextDate;
+	public static LocalDate previousDate(LocalDate date) {
+		return date.minusDays(1);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static LocalDate nextDate() {
+		return nextDate(LocalDate.now());
+	}
+
+	public static LocalDate nextDate(LocalDate date) {
+		return date.plusDays(1);
 	}
 
 	public static void main(String[] args) {
