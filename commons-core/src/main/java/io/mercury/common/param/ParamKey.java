@@ -1,4 +1,4 @@
-package io.mercury.common.param.api;
+package io.mercury.common.param;
 
 public interface ParamKey  {
 

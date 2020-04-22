@@ -2,7 +2,7 @@ package io.mercury.common.param;
 
 import io.mercury.common.util.BytesUtil;
 
-public final class JointIdUtil {
+public final class JointIdSupporter {
 
 	/**
 	 * 将两个int value合并为long value<br>
