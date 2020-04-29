@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>4.2.2</version>
+			<version>4.2.3</version>
 			<classifier>no_aop</classifier>
 			<exclusions>
 				<exclusion>
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>28.2-android</version>
+			<version>29.0-jre</version>
 		</dependency>
 
 	</dependencies>

@@ -12,7 +12,7 @@
 
 	<artifactId>commons-graph</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>commons-graph</name>
 
 	<dependencies>
