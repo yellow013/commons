@@ -154,9 +154,9 @@ public enum Capacity {
 
 	public static void main(String[] args) {
 
-		System.out.println(1 << 31);
-		System.out.println(BytesUtil.formatBinaryInt(1));
-		System.out.println(BytesUtil.formatBinaryInt(Integer.MIN_VALUE << 65));
+		System.out.println(1 << 30);
+		System.out.println(BytesUtil.intBinaryFormat(1 << 30));
+		System.out.println(BytesUtil.intBinaryFormat(Integer.MIN_VALUE << 65));
 
 	}
 

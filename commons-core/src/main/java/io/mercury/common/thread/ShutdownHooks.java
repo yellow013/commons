@@ -56,8 +56,6 @@ public final class ShutdownHooks {
 
 	public static void main(String[] args) {
 
-		System.out.println("TEST");
-
 		ShutdownHooks.addShutdownHookTask(new Thread(() -> System.out.println("关闭钩子1")));
 		ShutdownHooks.addShutdownHookTask(new Thread(() -> System.out.println("关闭钩子2")));
 		ShutdownHooks.addShutdownHookTask(new Thread(() -> System.out.println("关闭钩子3")));
