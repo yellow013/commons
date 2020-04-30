@@ -5,7 +5,9 @@ import java.util.Map;
 
 import io.mercury.common.annotation.lang.ThrowsRuntimeException;
 
-public final class Assertor {
+public enum Assertor {
+
+	;
 
 	private Assertor() {
 	}
@@ -141,8 +143,7 @@ public final class Assertor {
 	 * @throws IllegalArgumentException
 	 */
 	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
-	public static String nonEmpty(String str, String objName)
-			throws NullPointerException, IllegalArgumentException {
+	public static String nonEmpty(String str, String objName) throws NullPointerException, IllegalArgumentException {
 		if (str == null)
 			throw new NullPointerException(objName + " can not be null");
 		if (str.length() <= 0)

@@ -1,5 +1,7 @@
 package io.mercury.common.util;
 
+import static java.lang.Integer.toBinaryString;
+
 import javax.annotation.Nonnull;
 
 public final class BytesUtil {
@@ -8,72 +10,78 @@ public final class BytesUtil {
 	}
 
 	/**
-	 * 将byte转换为二进制输出,高位补0
+	 * 将[byte]转换为二进制输出,高位补0
 	 * 
 	 * @param b
 	 * @return
 	 */
-	public static final String binaryByte(byte b) {
+	public static final String byteBinary(byte b) {
 		String binary = Integer.toBinaryString(b);
 		return highPosFill(Byte.SIZE, Byte.SIZE - binary.length(), binary);
 	}
 
 	/**
-	 * 将char转换为二进制输出,高位补0
+	 * 将[char]转换为二进制输出,高位补0
 	 * 
 	 * @param c
 	 * @return
 	 */
-	public static final String binaryChar(char c) {
+	public static final String charBinary(char c) {
 		String binaryStr = Integer.toBinaryString(c);
 		return highPosFill(Character.SIZE, Character.SIZE - binaryStr.length(), binaryStr);
 	}
 
-	public static final String formatBinaryChar(char c) {
-		return new StringBuilder(binaryChar(c)).insert(8, ' ').toString();
+	/**
+	 * 将[char]转换为二进制输出并格式化, 高位补0
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public static final String charBinaryFormat(char c) {
+		return new StringBuilder(17).append(charBinary(c)).insert(8, ' ').toString();
 	}
 
 	/**
-	 * 将int转换为二进制输出, 高位补0
+	 * 将[int]转换为二进制输出, 高位补0
 	 * 
 	 * @param i
 	 * @return
 	 */
-	public static final String binaryInt(int i) {
+	public static final String intBinary(int i) {
 		String binaryStr = Integer.toBinaryString(i);
 		return highPosFill(Integer.SIZE, Integer.SIZE - binaryStr.length(), binaryStr);
 	}
 
 	/**
-	 * 将int转换为二进制输出并格式化, 高位补0
+	 * 将[int]转换为二进制输出并格式化, 高位补0
 	 * 
 	 * @param i
 	 * @return
 	 */
-	public static final String formatBinaryInt(int i) {
-		return new StringBuilder(binaryInt(i)).insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
+	public static final String intBinaryFormat(int i) {
+		return new StringBuilder(35).append(intBinary(i)).insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
 
 	/**
-	 * 将long转换为二进制输出, 高位补0
+	 * 将[long]转换为二进制输出, 高位补0
 	 * 
 	 * @param l
 	 * @return
 	 */
-	public static final String binaryLong(long l) {
+	public static final String longBinary(long l) {
 		String binaryStr = Long.toBinaryString(l);
 		return highPosFill(Long.SIZE, Long.SIZE - binaryStr.length(), binaryStr);
 	}
 
 	/**
-	 * 将long转换为二进制输出并格式化, 高位补0
+	 * 将[long]转换为二进制输出并格式化, 高位补0
 	 * 
 	 * @param l
 	 * @return
 	 */
-	public static final String formatBinaryLong(long l) {
-		return new StringBuilder(binaryLong(l)).insert(56, ' ').insert(48, ' ').insert(40, ' ').insert(32, ' ')
-				.insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
+	public static final String longBinaryFormat(long l) {
+		return new StringBuilder(71).append(longBinary(l)).insert(56, ' ').insert(48, ' ').insert(40, ' ')
+				.insert(32, ' ').insert(24, ' ').insert(16, ' ').insert(8, ' ').toString();
 	}
 
 	/**
@@ -140,26 +148,59 @@ public final class BytesUtil {
 				| ((bytes[offset + 3] & 0xFF));
 	}
 
-	public static final long mergeInt(int highPos, int lowPos) {
-		return (((long) highPos) << 32) | ((long) lowPos);
-	}
-
+	/**
+	 * 两个[char]合并为[int]
+	 * 
+	 * @param highPos
+	 * @param lowPos
+	 * @return
+	 */
 	public static final int mergeChar(char highPos, char lowPos) {
 		return (((int) highPos) << 16) | ((int) lowPos);
 	}
 
+	/**
+	 * 四个[char]合并为[long]
+	 * 
+	 * @param highPos
+	 * @param second
+	 * @param third
+	 * @param lowPos
+	 * @return
+	 */
 	public static final long mergeChar(char highPos, char second, char third, char lowPos) {
 		return (((long) highPos) << 48) | ((long) second << 32) | ((long) third << 16) | ((int) lowPos);
 	}
 
+	/**
+	 * 两个[int]合并为[long]
+	 * 
+	 * @param highPos
+	 * @param lowPos
+	 * @return
+	 */
+	public static final long mergeInt(int highPos, int lowPos) {
+		return (((long) highPos) << 32) | ((long) lowPos);
+	}
+
 	public static final long LongHighPosMask = 0xFFFF_FFFF_0000_0000L;
 
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static final int splitLongWithHighPos(long l) {
 		return (int) ((l & LongHighPosMask) >> 32);
 	}
 
 	public static final long LongLowPosMask = 0x0000_0000_FFFF_FFFFL;
 
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static final int splitLongWithLowPos(long l) {
 		return (int) (l & LongLowPosMask);
 	}
@@ -195,57 +236,57 @@ public final class BytesUtil {
 		int i1 = 1002;
 		int i2 = 10777;
 
-		System.out.println(formatBinaryInt(i1));
-		System.out.println(formatBinaryInt(i2));
+		System.out.println(intBinaryFormat(i1));
+		System.out.println(intBinaryFormat(i2));
 
 		System.out.println((mergeInt(i1, i2)));
-		System.out.println(formatBinaryLong(mergeInt(i1, i2)));
+		System.out.println(longBinaryFormat(mergeInt(i1, i2)));
 
 		System.out.println((splitLongWithHighPos(mergeInt(i1, i2))));
-		System.out.println(formatBinaryInt(splitLongWithHighPos(mergeInt(i1, i2))));
+		System.out.println(intBinaryFormat(splitLongWithHighPos(mergeInt(i1, i2))));
 
 		System.out.println((splitLongWithLowPos(mergeInt(i1, i2))));
-		System.out.println(formatBinaryInt(splitLongWithLowPos(mergeInt(i1, i2))));
+		System.out.println(intBinaryFormat(splitLongWithLowPos(mergeInt(i1, i2))));
 
-		System.out.println(formatBinaryInt(1));
-		System.out.println(formatBinaryInt(~1));
+		System.out.println(intBinaryFormat(1));
+		System.out.println(intBinaryFormat(~1));
 
-		System.out.println(formatBinaryInt(10));
-		System.out.println(formatBinaryInt(20));
-		System.out.println(formatBinaryInt(10 ^ 20));
-		System.out.println(formatBinaryInt((10 ^ 20) ^ 20));
+		System.out.println(intBinaryFormat(10));
+		System.out.println(intBinaryFormat(20));
+		System.out.println(intBinaryFormat(10 ^ 20));
+		System.out.println(intBinaryFormat((10 ^ 20) ^ 20));
 
-		System.out.println(formatBinaryInt(10243250));
-		System.out.println(formatBinaryInt(1));
-		System.out.println(formatBinaryInt(10243250 & 1));
-		System.out.println(formatBinaryInt(1123121));
-		System.out.println(formatBinaryInt(1));
-		System.out.println(formatBinaryInt(1123121 & 1));
+		System.out.println(intBinaryFormat(10243250));
+		System.out.println(intBinaryFormat(1));
+		System.out.println(intBinaryFormat(10243250 & 1));
+		System.out.println(intBinaryFormat(1123121));
+		System.out.println(intBinaryFormat(1));
+		System.out.println(intBinaryFormat(1123121 & 1));
 
 		byte b = 3;
 
-		System.out.println(binaryChar('b'));
-		System.out.println(formatBinaryChar('b'));
+		System.out.println(charBinary('b'));
+		System.out.println(charBinaryFormat('b'));
 
-		System.out.println(binaryInt(10777));
-		System.out.println(formatBinaryInt(10777));
+		System.out.println(intBinary(10777));
+		System.out.println(intBinaryFormat(10777));
 
-		System.out.println(binaryLong(106544777L));
-		System.out.println(formatBinaryLong(106544777L));
+		System.out.println(longBinary(106544777L));
+		System.out.println(longBinaryFormat(106544777L));
 
-		System.out.println(binaryByte(b));
+		System.out.println(byteBinary(b));
 
-		System.out.println(binaryLong(-3L));
-		System.out.println(binaryInt(-3));
-		System.out.println(binaryChar('3'));
-		System.out.println(binaryInt(2));
-		System.out.println(Integer.toBinaryString(2));
-		System.out.println(binaryInt(-10));
+		System.out.println(longBinary(-3L));
+		System.out.println(intBinary(-3));
+		System.out.println(charBinary('3'));
+		System.out.println(intBinary(2));
+		System.out.println(toBinaryString(2));
+		System.out.println(intBinary(-10));
 
-		System.out.println(binaryLong(Long.MAX_VALUE));
-		System.out.println(binaryLong(Long.MIN_VALUE));
-		System.out.println(binaryLong(-1L));
-		System.out.println(binaryLong(2L << 10));
+		System.out.println(longBinary(Long.MAX_VALUE));
+		System.out.println(longBinary(Long.MIN_VALUE));
+		System.out.println(longBinary(-1L));
+		System.out.println(longBinary(2L << 10));
 
 	}
 
