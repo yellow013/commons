@@ -10,7 +10,7 @@ import io.mercury.common.collections.queue.RunMode;
 import io.mercury.common.collections.queue.api.SCQueue;
 import io.mercury.common.functional.Processor;
 import io.mercury.common.log.CommonLoggerFactory;
-import io.mercury.common.thread.ThreadUtil;
+import io.mercury.common.thread.ThreadHelper;
 import io.mercury.common.util.StringUtil;
 
 public class SpscQueueWithJCT<E> extends SCQueue<E> {
@@ -34,7 +34,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 			start();
 			break;
 		case Delay:
-			ThreadUtil.sleep(delayMillis);
+			ThreadHelper.sleep(delayMillis);
 			start();
 			break;
 		default:
@@ -92,7 +92,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 		case SpinWaiting:
 			break;
 		case SleepWaiting:
-			ThreadUtil.sleep(50);
+			ThreadHelper.sleep(50);
 			break;
 		default:
 			break;
@@ -117,7 +117,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 			log.error("Error call -> This queue is started.");
 			return;
 		}
-		ThreadUtil.startNewMaxPriorityThread(() -> {
+		ThreadHelper.startNewMaxPriorityThread(() -> {
 			try {
 				while (isRun.get() || !queue.isEmpty()) {
 					@SpinWaiting
@@ -137,7 +137,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 
 		SpscQueueWithJCT<Integer> queue = SpscQueueWithJCT.autoStartQueue(6, WaitingStrategy.SleepWaiting, (value) -> {
 			System.out.println(value);
-			ThreadUtil.sleep(500);
+			ThreadHelper.sleep(500);
 		});
 
 		int i = 0;

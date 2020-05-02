@@ -6,7 +6,7 @@ import io.mercury.common.annotation.thread.OnlySingleThreadCall;
 import io.mercury.common.annotation.thread.SpinWaiting;
 import io.mercury.common.collections.Capacity;
 import io.mercury.common.collections.queue.api.Queue;
-import io.mercury.common.thread.ThreadUtil;
+import io.mercury.common.thread.ThreadHelper;
 import io.mercury.common.util.StringUtil;
 
 public class SpscQueueDefault<E> implements Queue<E> {
@@ -54,7 +54,7 @@ public class SpscQueueDefault<E> implements Queue<E> {
 		case SpinWaiting:
 			break;
 		case SleepWaiting:
-			ThreadUtil.sleep(150);
+			ThreadHelper.sleep(150);
 			break;
 		default:
 			break;
