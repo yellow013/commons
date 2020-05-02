@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.mercury.common.thread.ThreadUtil;
+import io.mercury.common.thread.ThreadHelper;
 import io.mercury.common.util.StringUtil;
 
 public class CommonLoggerFactory {
@@ -54,7 +54,7 @@ public class CommonLoggerFactory {
 			log.warn("this is warn");
 			log.info("this is info");
 			log.debug("this is debug");
-			ThreadUtil.sleep(3000);
+			ThreadHelper.sleep(3000);
 		}
 		
 		

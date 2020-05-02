@@ -26,7 +26,7 @@ public final class ShutdownHooks {
 			executor.execute(runnable);
 		executor.shutdown();
 		while (!executor.isTerminated())
-			ThreadUtil.sleepIgnoreInterrupts(100);
+			ThreadHelper.sleepIgnoreInterrupts(100);
 		System.out.println("all shutdown hook execution completed");
 	}
 

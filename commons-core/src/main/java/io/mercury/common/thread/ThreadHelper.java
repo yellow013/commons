@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 
 import io.mercury.common.log.CommonLoggerFactory;
 
-public final class ThreadUtil {
+public final class ThreadHelper {
 
-	private ThreadUtil() {
+	private ThreadHelper() {
 	}
 
-	private static final Logger log = CommonLoggerFactory.getLogger(ThreadUtil.class);
+	private static final Logger log = CommonLoggerFactory.getLogger(ThreadHelper.class);
 
 	/**
 	 * 
