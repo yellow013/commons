@@ -1,6 +1,6 @@
 package io.mercury.common.param;
 
-import io.mercury.common.util.BytesUtil;
+import io.mercury.common.util.BitOperator;
 
 public final class JointIdSupporter {
 
@@ -9,7 +9,7 @@ public final class JointIdSupporter {
 	 * long value高32位为第一个int值, 低32位为第二个int值
 	 */
 	public static long jointId(int highPos, int lowPos) {
-		return BytesUtil.mergeInt(highPos, lowPos);
+		return BitOperator.mergeInt(highPos, lowPos);
 	}
 
 	/**
@@ -19,7 +19,7 @@ public final class JointIdSupporter {
 	 * @return
 	 */
 	public static int getHighPos(long jointId) {
-		return BytesUtil.splitLongWithHighPos(jointId);
+		return BitOperator.splitLongWithHighPos(jointId);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public final class JointIdSupporter {
 	 * @return
 	 */
 	public static int getLowPos(long jointId) {
-		return BytesUtil.splitLongWithLowPos(jointId);
+		return BitOperator.splitLongWithLowPos(jointId);
 	}
 
 }

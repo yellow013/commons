@@ -4,9 +4,9 @@ import static java.lang.Integer.toBinaryString;
 
 import javax.annotation.Nonnull;
 
-public final class BytesUtil {
+public final class BitOperator {
 
-	private BytesUtil() {
+	private BitOperator() {
 	}
 
 	/**

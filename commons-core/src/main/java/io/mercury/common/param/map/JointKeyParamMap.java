@@ -1,6 +1,6 @@
 package io.mercury.common.param.map;
 
-import static io.mercury.common.util.BytesUtil.mergeInt;
+import static io.mercury.common.util.BitOperator.mergeInt;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

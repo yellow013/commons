@@ -12,7 +12,7 @@
 
 	<artifactId>commons-core</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>commons-core</name>
 
 	<properties>
@@ -61,41 +61,36 @@
 			<version>10.2.0</version>
 		</dependency>
 
-		<!-- Logs dependency -->
-		<!-- slf4j + slf4j adaptor + log4j2 -->
+		<!-- ################### Log dependency ################### -->
+		<!-- #### slf4j API + slf4j Adaptor + log4j2 Implement #### -->
+		<!-- The slf4j API -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- Log4j implemented over SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- JCL 1.2 implemented over SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- JUL to SLF4J bridge -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-to-slf4j</artifactId> 
-			<version>${log4j.version}</version> <scope>runtime</scope> <exclusions> <exclusion> 
-			<groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> </exclusion> 
-			</exclusions> </dependency> -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j2.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- The Apache Log4j SLF4J API binding to Log4j 2 Core -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
@@ -116,7 +111,6 @@
 			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- EasyMock provides an easy way to create Mock Objects for interfaces 
 			and classes generating them on the fly -->
 		<dependency>
