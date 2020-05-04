@@ -1,4 +1,4 @@
-package io.mercury.common.number.recorders;
+package io.mercury.common.number.recorder;
 
 import org.eclipse.collections.api.map.primitive.MutableLongIntMap;
 import org.eclipse.collections.api.set.primitive.MutableLongSet;

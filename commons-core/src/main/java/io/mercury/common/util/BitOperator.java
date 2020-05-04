@@ -10,7 +10,7 @@ public final class BitOperator {
 	}
 
 	/**
-	 * 将[byte]转换为二进制输出,高位补0
+	 * 将[byte]转换为二进制输出, 高位补0
 	 * 
 	 * @param b
 	 * @return
@@ -21,7 +21,7 @@ public final class BitOperator {
 	}
 
 	/**
-	 * 将[char]转换为二进制输出,高位补0
+	 * 将[char]转换为二进制输出, 高位补0
 	 * 
 	 * @param c
 	 * @return
@@ -205,12 +205,40 @@ public final class BitOperator {
 		return (int) (l & LongLowPosMask);
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public static final boolean isOdd(int i) {
 		return (i & 1) != 0;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public static final boolean isEven(int i) {
+		return !isOdd(i);
+	}
+
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static final boolean isOdd(long l) {
 		return (l & 1) != 0;
+	}
+
+	/**
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public static final boolean isEven(long l) {
+		return !isOdd(l);
 	}
 
 	private static final int MAXIMUM_CAPACITY = 1 << 30;

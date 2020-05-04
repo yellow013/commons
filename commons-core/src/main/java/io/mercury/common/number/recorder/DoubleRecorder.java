@@ -1,4 +1,4 @@
-package io.mercury.common.number.recorders;
+package io.mercury.common.number.recorder;
 
 import org.eclipse.collections.api.map.primitive.MutableDoubleIntMap;
 import org.eclipse.collections.api.set.primitive.MutableDoubleSet;
@@ -25,11 +25,15 @@ public final class DoubleRecorder {
 		this.doubleSet = MutableSets.newDoubleHashSet(capacity);
 	}
 
-	public void put(double value) {
-		int count = doubleCounter.get(value);
+	/**
+	 * 
+	 * @param d
+	 */
+	public void put(double d) {
+		int count = doubleCounter.get(d);
 		if (count == 0)
-			doubleSet.add(value);
-		doubleCounter.put(value, ++count);
+			doubleSet.add(d);
+		doubleCounter.put(d, ++count);
 	}
 
 	public void remove(double value) {

@@ -1,6 +1,6 @@
 package io.mercury.common.number.api;
 
-public interface Num<N extends Num<?>> extends Comparable<N> {
+public interface Num<N extends Num<N>> extends Comparable<N> {
 
 	int IntZero = 0;
 	long LongZero = 0L;
