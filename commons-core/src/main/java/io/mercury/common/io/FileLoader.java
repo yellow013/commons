@@ -1,36 +1,43 @@
 package io.mercury.common.io;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Predicate;
 
-public final class FileSearcher {
+import javax.annotation.Nonnull;
 
-	private FileSearcher() {
+import org.eclipse.collections.api.set.MutableSet;
+
+import io.mercury.common.collections.MutableSets;
+
+public final class FileLoader {
+
+	private FileLoader() {
 	}
 
-	public static final Set<File> findWith(File searchPath) {
-		return findWith(searchPath, anyFile -> true);
+	public static final MutableSet<File> recursiveLoad(File path) {
+		return recursiveLoad(path, any -> true);
 	}
 
-	public static final Set<File> findWith(File searchPath, Predicate<File> fileFilter) {
-		Set<File> files = new HashSet<>();
-		findWith0(files, searchPath, fileFilter);
+	public static final MutableSet<File> recursiveLoad(File path, @Nonnull Predicate<File> fileFilter) {
+		MutableSet<File> files = MutableSets.newUnifiedSet();
+		recursiveLoad0(files, path, fileFilter);
 		return files;
 	}
 
-	private static final void findWith0(Set<File> loadFiles, File searchPath, Predicate<File> fileFilter) {
-		if (searchPath == null || fileFilter == null)
+	private static final void recursiveLoad0(MutableSet<File> files, File path, Predicate<File> fileFilter) {
+		if (path == null || fileFilter == null)
 			return;
-		File[] listFiles = searchPath.listFiles();
+		File[] listFiles = path.listFiles();
 		if (listFiles != null && listFiles.length != 0)
 			for (File file : listFiles)
-				if (file.isDirectory())
-					findWith0(loadFiles, file, fileFilter);
-				else if (fileFilter.test(file))
-					loadFiles.add(file);
-				else
+				if (file.isDirectory()) {
+					// 如果文件是一个目录, 递归执行
+					recursiveLoad0(files, file, fileFilter);
+				} else if (fileFilter.test(file)) {
+					// 如果文件符合过滤器断言, 则加入Set
+					files.add(file);
+				} else
+					// 否则忽略此文件
 					continue;
 		else
 			return;

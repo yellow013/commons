@@ -8,6 +8,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 import io.mercury.common.annotation.lang.ThrowsRuntimeException;
@@ -31,7 +33,7 @@ public final class FileChannelWriter {
 	 * @return
 	 * @throws IOException
 	 */
-	public static final File write(List<String> data, final File target) throws IOException {
+	public static final File write(List<String> data, @Nonnull final File target) throws IOException {
 		return write(data, target, 8192);
 	}
 
@@ -44,7 +46,8 @@ public final class FileChannelWriter {
 	 * @throws IOException
 	 */
 	@ThrowsRuntimeException(NullPointerException.class)
-	public static final File write(List<String> data, final File target, final int capacity) throws IOException {
+	public static final File write(List<String> data, @Nonnull final File target, final int capacity)
+			throws IOException {
 		if (target == null)
 			throw new NullPointerException("target file must not be null.");
 		File parentFile = target.getParentFile();

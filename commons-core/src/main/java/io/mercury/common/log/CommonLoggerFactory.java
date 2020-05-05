@@ -16,17 +16,17 @@ public class CommonLoggerFactory {
 
 	public static Logger getLogger(Class<?> clazz) {
 		if (!LoggerSetter.logFolderSetted()) {
-			String logFolder = System.getProperty(LoggerConstant.LOG4J2_FOLDER);
+			String logFolder = System.getProperty(LoggerConst.LOG4J2_FOLDER);
 			if (StringUtil.isNullOrEmpty(logFolder))
 				LoggerSetter.logFolder(DefaultFolder);
 		}
 		if (!LoggerSetter.logFilenameSetted()) {
-			String logFilename = System.getProperty(LoggerConstant.LOG4J2_FILENAME);
+			String logFilename = System.getProperty(LoggerConst.LOG4J2_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
 				LoggerSetter.logFileName(DefaultFileName);
 		}
 		if (!LoggerSetter.logLevelSetted()) {
-			String logLevel = System.getProperty(LoggerConstant.LOG4J2_LEVEL);
+			String logLevel = System.getProperty(LoggerConst.LOG4J2_LEVEL);
 			if (StringUtil.isNullOrEmpty(logLevel))
 				LoggerSetter.logLevel(LogLevel.INFO);
 		}
@@ -46,7 +46,7 @@ public class CommonLoggerFactory {
 		log.info("this is info");
 		log.debug("this is debug");
 		
-		System.out.println(System.getProperty(LoggerConstant.LOG4J2_FOLDER));
+		System.out.println(System.getProperty(LoggerConst.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
 		
 		for(;;) {

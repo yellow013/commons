@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 
-import io.mercury.common.io.FileSearcher;
+import io.mercury.common.io.FileLoader;
 import io.mercury.common.log.CommonLoggerFactory;
 import io.mercury.common.util.StringUtil;
 
@@ -29,7 +29,7 @@ public final class PropertiesFileReader {
 	private static final String PROPERTIES_FILE_SUFFIX = ".properties";
 
 	static {
-		Set<File> allPropertiesFile = FileSearcher.findWith(
+		Set<File> allPropertiesFile = FileLoader.recursiveLoad(
 				new File(PropertiesFileReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
 		for (File propertiesFile : allPropertiesFile) {

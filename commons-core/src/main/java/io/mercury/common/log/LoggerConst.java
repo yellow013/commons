@@ -1,6 +1,6 @@
 package io.mercury.common.log;
 
-public interface LoggerConstant {
+public interface LoggerConst {
 
 	String LOG4J2_LEVEL = "log4j2.level";
 
