@@ -1,4 +1,4 @@
-package io.mercury.common.datetime;
+package io.mercury.common.sequence;
 
 import org.slf4j.Logger;
 
