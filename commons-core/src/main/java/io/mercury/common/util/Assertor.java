@@ -5,9 +5,7 @@ import java.util.Map;
 
 import io.mercury.common.annotation.lang.ThrowsRuntimeException;
 
-public enum Assertor {
-
-	;
+public final class Assertor {
 
 	private Assertor() {
 	}
