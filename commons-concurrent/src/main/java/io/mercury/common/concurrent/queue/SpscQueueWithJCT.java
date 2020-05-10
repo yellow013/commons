@@ -17,7 +17,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 
 	private SpscArrayQueue<E> queue;
 
-	private Logger log = CommonLoggerFactory.getLogger(SpscQueueWithJCT.class);
+	private Logger log = CommonLoggerFactory.getLogger(getClass());
 
 	private WaitingStrategy waitingStrategy;
 
@@ -37,7 +37,8 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 			ThreadHelper.sleep(delayMillis);
 			start();
 			break;
-		default:
+		case Manual:
+			log.info("SpscQueueWithJCT :: Run mode is [Manual], wating start...");
 			break;
 		}
 	}
@@ -92,7 +93,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 		case SpinWaiting:
 			break;
 		case SleepWaiting:
-			ThreadHelper.sleep(50);
+			ThreadHelper.sleep(20);
 			break;
 		default:
 			break;
@@ -103,7 +104,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 	@SpinWaiting
 	public boolean enqueue(E e) {
 		if (!isClose.get()) {
-			log.error("enqueue(t) failure, This queue is closed...");
+			log.error("SpscQueueWithJCT :: Call enqueue(e) failure, This queue is closed.");
 			return false;
 		}
 		while (!queue.offer(e))
@@ -114,7 +115,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 	@Override
 	public void startProcessThread() {
 		if (!isRun.compareAndSet(false, true)) {
-			log.error("Error call -> This queue is started.");
+			log.error("SpscQueueWithJCT :: Error call, This queue is started.");
 			return;
 		}
 		ThreadHelper.startNewMaxPriorityThread(() -> {
@@ -130,7 +131,7 @@ public class SpscQueueWithJCT<E> extends SCQueue<E> {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-		}, queueName);
+		}, queueName + "-RuningThread");
 	}
 
 	public static void main(String[] args) {
