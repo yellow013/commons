@@ -1,6 +1,6 @@
 package io.mercury.common.fsm;
 
-public interface Enable {
+public interface Enable<T extends Enable<T>> {
 
 	boolean isEnabled();
 
@@ -8,8 +8,8 @@ public interface Enable {
 		return !isEnabled();
 	}
 
-	void disable();
+	T disable();
 
-	void enable();
+	T enable();
 
 }

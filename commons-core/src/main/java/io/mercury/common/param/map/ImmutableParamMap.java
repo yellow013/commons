@@ -1,6 +1,7 @@
 package io.mercury.common.param.map;
 
 import java.util.Map;
+import java.util.Properties;
 
 import javax.annotation.Nonnull;
 
@@ -24,15 +25,33 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Map<?, ?>... maps)
+	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Map<?, ?> map)
 			throws NullPointerException, IllegalArgumentException {
-		Assertor.requiredLength(maps, 1, "maps");
 		Assertor.requiredLength(keys, 1, "keys");
+		Assertor.nonEmpty(map, "maps");
 		MutableMap<K, String> unifiedMap = MutableMaps.newUnifiedMap();
-		for (Map<?, ?> map : maps)
-			for (K key : keys)
-				if (map.containsKey(key.paramName()))
-					unifiedMap.put(key, map.get(key.paramName()).toString());
+		for (K key : keys)
+			if (map.containsKey(key.paramName()))
+				unifiedMap.put(key, map.get(key.paramName()).toString());
+		this.immutableMap = unifiedMap.toImmutable();
+	}
+
+	/**
+	 * 根据传入的Key获取Map中的相应字段
+	 * 
+	 * @param keys
+	 * @param maps
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
+	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Properties properties)
+			throws NullPointerException, IllegalArgumentException {
+		Assertor.requiredLength(keys, 1, "keys");
+		Assertor.nonNull(properties, "properties");
+		MutableMap<K, String> unifiedMap = MutableMaps.newUnifiedMap();
+		for (K key : keys)
+			if (properties.containsKey(key.paramName()))
+				unifiedMap.put(key, properties.get(key.paramName()).toString());
 		this.immutableMap = unifiedMap.toImmutable();
 	}
 

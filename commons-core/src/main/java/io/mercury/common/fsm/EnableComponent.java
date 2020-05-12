@@ -2,10 +2,12 @@ package io.mercury.common.fsm;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-@NotThreadSafe
-public abstract class EnableComponent implements Enable {
+import io.mercury.common.annotation.lang.ProtectedAbstractMethod;
 
-	private boolean isEnable;
+@NotThreadSafe
+public abstract class EnableComponent<T extends Enable<T>> implements Enable<T> {
+
+	private volatile boolean isEnable;
 
 	@Override
 	public boolean isEnabled() {
@@ -18,13 +20,18 @@ public abstract class EnableComponent implements Enable {
 	}
 
 	@Override
-	public void disable() {
-		isEnable = false;
+	public T disable() {
+		this.isEnable = false;
+		return returnThis();
 	}
 
 	@Override
-	public void enable() {
-		isEnable = true;
+	public T enable() {
+		this.isEnable = true;
+		return returnThis();
 	}
+
+	@ProtectedAbstractMethod
+	protected abstract T returnThis();
 
 }
