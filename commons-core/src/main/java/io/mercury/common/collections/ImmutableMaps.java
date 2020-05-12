@@ -68,6 +68,12 @@ public final class ImmutableMaps {
 		return ImmutableMapFactoryImpl.INSTANCE;
 	}
 
+	public static <K, V> ImmutableMap<K, V> newMap(K key, V value) {
+		if (key == null || value == null)
+			return ImmutableMapFactoryImpl.INSTANCE.empty();
+		return ImmutableMapFactoryImpl.INSTANCE.with(key, value);
+	}
+
 	public static <K, V> ImmutableMap<K, V> newMap(Map<K, V> map) {
 		if (map == null || map.isEmpty())
 			return ImmutableMapFactoryImpl.INSTANCE.empty();

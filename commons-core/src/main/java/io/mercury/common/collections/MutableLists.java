@@ -34,10 +34,10 @@ public final class MutableLists {
 		return new ByteArrayList(capacity);
 	}
 
-	public static MutableByteList newByteArrayListWith(byte... values) {
-		if (ArrayUtil.isNullOrEmpty(values))
+	public static MutableByteList newByteArrayListWith(byte... bytes) {
+		if (ArrayUtil.isNullOrEmpty(bytes))
 			return new ByteArrayList();
-		return new ByteArrayList(values);
+		return new ByteArrayList(bytes);
 	}
 
 	public static MutableCharList newCharArrayList() {
@@ -48,10 +48,10 @@ public final class MutableLists {
 		return new CharArrayList(capacity);
 	}
 
-	public static MutableCharList newCharArrayList(char... values) {
-		if (ArrayUtil.isNullOrEmpty(values))
+	public static MutableCharList newCharArrayList(char... chars) {
+		if (ArrayUtil.isNullOrEmpty(chars))
 			return new CharArrayList();
-		return new CharArrayList(values);
+		return new CharArrayList(chars);
 	}
 
 	public static MutableIntList newIntArrayList() {
@@ -62,10 +62,10 @@ public final class MutableLists {
 		return new IntArrayList(capacity);
 	}
 
-	public static MutableIntList newIntArrayListWith(int... values) {
-		if (ArrayUtil.isNullOrEmpty(values))
+	public static MutableIntList newIntArrayListWith(int... ints) {
+		if (ArrayUtil.isNullOrEmpty(ints))
 			return newIntArrayList();
-		return new IntArrayList(values);
+		return new IntArrayList(ints);
 	}
 
 	public static MutableLongList newLongArrayList() {
@@ -76,10 +76,10 @@ public final class MutableLists {
 		return new LongArrayList(capacity);
 	}
 
-	public static MutableLongList newLongArrayListWith(long... values) {
-		if (ArrayUtil.isNullOrEmpty(values))
+	public static MutableLongList newLongArrayListWith(long... longs) {
+		if (ArrayUtil.isNullOrEmpty(longs))
 			return newLongArrayList();
-		return new LongArrayList(values);
+		return new LongArrayList(longs);
 	}
 
 	public static MutableDoubleList newDoubleArrayList() {
@@ -90,13 +90,13 @@ public final class MutableLists {
 		return new DoubleArrayList(capacity);
 	}
 
-	public static MutableDoubleList newDoubleArrayListWith(double... values) {
-		if (ArrayUtil.isNullOrEmpty(values))
+	public static MutableDoubleList newDoubleArrayListWith(double... doubles) {
+		if (ArrayUtil.isNullOrEmpty(doubles))
 			return newDoubleArrayList();
-		return new DoubleArrayList(values);
+		return new DoubleArrayList(doubles);
 	}
 
-	private static final int DEFAULT_CAPACITY = 10;
+	private static final int DEFAULT_CAPACITY = 16;
 
 	/**
 	 * list

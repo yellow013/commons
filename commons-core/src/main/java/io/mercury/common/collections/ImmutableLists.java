@@ -59,6 +59,12 @@ public final class ImmutableLists {
 		return ImmutableListFactoryImpl.INSTANCE.withAll(iterable);
 	}
 
+	public static <E> ImmutableList<E> newList(E e) {
+		if (e == null)
+			return ImmutableListFactoryImpl.INSTANCE.empty();
+		return ImmutableListFactoryImpl.INSTANCE.with(e);
+	}
+
 	@SafeVarargs
 	public static <E> ImmutableList<E> newList(E... values) {
 		if (ArrayUtil.isNullOrEmpty(values))

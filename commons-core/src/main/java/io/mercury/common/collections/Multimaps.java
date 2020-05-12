@@ -18,7 +18,6 @@ public final class Multimaps {
 	}
 
 	// multimap
-
 	public static <K, V> MutableListMultimap<K, V> newFastListMultimap() {
 		return FastListMultimap.newMultimap();
 	}

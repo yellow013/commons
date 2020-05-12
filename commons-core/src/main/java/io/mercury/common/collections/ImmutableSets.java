@@ -32,6 +32,10 @@ public final class ImmutableSets {
 		return ImmutableIntSetFactoryImpl.INSTANCE;
 	}
 
+	public static ImmutableIntSet newIntSet(int i) {
+		return ImmutableIntSetFactoryImpl.INSTANCE.with(i);
+	}
+
 	public static ImmutableIntSet newIntSet(@Nonnull int... values) {
 		if (isNullOrEmpty(values))
 			return ImmutableIntSetFactoryImpl.INSTANCE.empty();
@@ -45,6 +49,10 @@ public final class ImmutableSets {
 		return ImmutableLongSetFactoryImpl.INSTANCE;
 	}
 
+	public static ImmutableLongSet newLongSet(long l) {
+		return ImmutableLongSetFactoryImpl.INSTANCE.with(l);
+	}
+
 	public static ImmutableLongSet newLongSet(@Nonnull long... values) {
 		if (isNullOrEmpty(values))
 			return ImmutableLongSetFactoryImpl.INSTANCE.empty();
@@ -56,6 +64,10 @@ public final class ImmutableSets {
 	 */
 	public static ImmutableDoubleSetFactory DoubleSetFactory() {
 		return ImmutableDoubleSetFactoryImpl.INSTANCE;
+	}
+
+	public static ImmutableDoubleSet newDoubleSet(double d) {
+		return ImmutableDoubleSetFactoryImpl.INSTANCE.with(d);
 	}
 
 	public static ImmutableDoubleSet newDoubleSet(@Nonnull double... values) {
@@ -75,6 +87,12 @@ public final class ImmutableSets {
 		if (iterable == null)
 			return ImmutableSetFactoryImpl.INSTANCE.empty();
 		return ImmutableSetFactoryImpl.INSTANCE.withAll(iterable);
+	}
+
+	public static <E> ImmutableSet<E> newSet(E e) {
+		if (e == null)
+			return ImmutableSetFactoryImpl.INSTANCE.empty();
+		return ImmutableSetFactoryImpl.INSTANCE.with(e);
 	}
 
 	@SafeVarargs
