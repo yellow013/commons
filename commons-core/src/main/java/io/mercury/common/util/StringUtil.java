@@ -58,6 +58,10 @@ public final class StringUtil {
 		return new String(chars);
 	}
 
+	public static final String toText(Object obj) {
+		return "\"" + obj + "\"";
+	}
+
 	/**
 	 * Use ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE)
 	 * 

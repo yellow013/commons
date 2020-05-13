@@ -12,7 +12,6 @@ public final class TimePoint implements Comparable<TimePoint> {
 	private int nano;
 
 	public TimePoint(int date, int time, int nano) {
-		super();
 		this.date = date;
 		this.time = time;
 		this.nano = nano;
@@ -53,7 +52,6 @@ public final class TimePoint implements Comparable<TimePoint> {
 	public static void main(String[] args) {
 
 		TimePoint now = TimePoint.now();
-
 		System.out.println(now.getDate());
 		System.out.println(now.getTime());
 		System.out.println(now.getNano());

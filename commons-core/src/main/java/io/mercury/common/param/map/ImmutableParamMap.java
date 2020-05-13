@@ -1,5 +1,12 @@
 package io.mercury.common.param.map;
 
+import static io.mercury.common.util.Assertor.nonEmpty;
+import static io.mercury.common.util.Assertor.nonNull;
+import static io.mercury.common.util.Assertor.requiredLength;
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,7 +18,6 @@ import org.eclipse.collections.api.map.MutableMap;
 import io.mercury.common.collections.MutableMaps;
 import io.mercury.common.param.ParamKey;
 import io.mercury.common.param.ParamType;
-import io.mercury.common.util.Assertor;
 
 public final class ImmutableParamMap<K extends ParamKey> {
 
@@ -27,13 +33,14 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	 */
 	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Map<?, ?> map)
 			throws NullPointerException, IllegalArgumentException {
-		Assertor.requiredLength(keys, 1, "keys");
-		Assertor.nonEmpty(map, "maps");
-		MutableMap<K, String> unifiedMap = MutableMaps.newUnifiedMap();
-		for (K key : keys)
+		requiredLength(keys, 1, "keys");
+		nonEmpty(map, "maps");
+		MutableMap<K, String> mutableMap = MutableMaps.newUnifiedMap();
+		for (K key : keys) {
 			if (map.containsKey(key.paramName()))
-				unifiedMap.put(key, map.get(key.paramName()).toString());
-		this.immutableMap = unifiedMap.toImmutable();
+				mutableMap.put(key, map.get(key.paramName()).toString());
+		}
+		this.immutableMap = mutableMap.toImmutable();
 	}
 
 	/**
@@ -46,13 +53,14 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	 */
 	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Properties properties)
 			throws NullPointerException, IllegalArgumentException {
-		Assertor.requiredLength(keys, 1, "keys");
-		Assertor.nonNull(properties, "properties");
-		MutableMap<K, String> unifiedMap = MutableMaps.newUnifiedMap();
-		for (K key : keys)
+		requiredLength(keys, 1, "keys");
+		nonNull(properties, "properties");
+		MutableMap<K, String> mutableMap = MutableMaps.newUnifiedMap();
+		for (K key : keys) {
 			if (properties.containsKey(key.paramName()))
-				unifiedMap.put(key, properties.get(key.paramName()).toString());
-		this.immutableMap = unifiedMap.toImmutable();
+				mutableMap.put(key, properties.get(key.paramName()).toString());
+		}
+		this.immutableMap = mutableMap.toImmutable();
 	}
 
 	/**
@@ -64,7 +72,7 @@ public final class ImmutableParamMap<K extends ParamKey> {
 		if (key.paramType() != ParamType.BOOLEAN)
 			throw new IllegalArgumentException(
 					"Key -> " + key + " ParamType is not BOOLEAN. paramType==" + key.paramType());
-		return Boolean.parseBoolean(Assertor.nonNull(immutableMap.get(key.paramName()), key.paramName()));
+		return parseBoolean(nonNull(immutableMap.get(key.paramName()), key.paramName()));
 	}
 
 	/**
@@ -75,8 +83,8 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	public int getInt(K key) throws IllegalArgumentException, NullPointerException {
 		if (key.paramType() != ParamType.INT)
 			throw new IllegalArgumentException(
-					"Key -> " + key + " ParamType is not INT. paramType==" + key.paramType());
-		return Integer.parseInt(Assertor.nonNull(immutableMap.get(key.paramName()), key.paramName()));
+					"Key -> " + key + " ParamType is not [INT]. paramType==" + key.paramType());
+		return parseInt(nonNull(immutableMap.get(key.paramName()), key.paramName()));
 	}
 
 	/**
@@ -87,8 +95,8 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	public double getDouble(K key) throws IllegalArgumentException, NullPointerException {
 		if (key.paramType() != ParamType.DOUBLE)
 			throw new IllegalArgumentException(
-					"Key -> " + key + " ParamType is not DOUBLE. paramType==" + key.paramType());
-		return Double.parseDouble(Assertor.nonNull(immutableMap.get(key.paramName()), key.paramName()));
+					"Key -> " + key + " ParamType is not [DOUBLE], paramType==" + key.paramType());
+		return parseDouble(nonNull(immutableMap.get(key.paramName()), key.paramName()));
 	}
 
 	/**
@@ -99,8 +107,8 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	public String getString(K key) throws IllegalArgumentException, NullPointerException {
 		if (key.paramType() != ParamType.STRING)
 			throw new IllegalArgumentException(
-					"Key -> " + key + " ParamType is not STRING. paramType==" + key.paramType());
-		return Assertor.nonNull(immutableMap.get(key.paramName()), key.paramName());
+					"Key -> " + key + " ParamType is not [STRING], paramType==" + key.paramType());
+		return nonNull(immutableMap.get(key.paramName()), key.paramName());
 	}
 
 }

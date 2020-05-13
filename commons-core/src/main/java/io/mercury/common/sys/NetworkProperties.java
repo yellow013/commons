@@ -8,7 +8,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-
 public final class NetworkProperties {
 
 	public static final InetAddress LocalInetAddress = getlocalInetAddress();
@@ -23,7 +22,7 @@ public final class NetworkProperties {
 	private static InetAddress getlocalInetAddress() {
 		try {
 			return InetAddress.getLocalHost();
-			//TODO
+			// TODO
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		}
