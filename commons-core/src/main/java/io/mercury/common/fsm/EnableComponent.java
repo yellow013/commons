@@ -1,10 +1,10 @@
 package io.mercury.common.fsm;
 
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.ThreadSafe;
 
 import io.mercury.common.annotation.lang.ProtectedAbstractMethod;
 
-@NotThreadSafe
+@ThreadSafe
 public abstract class EnableComponent<T extends Enable<T>> implements Enable<T> {
 
 	private volatile boolean isEnable;

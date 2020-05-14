@@ -1,5 +1,6 @@
 package io.mercury.common.datetime;
 
+import static io.mercury.common.util.StringUtil.toText;
 import static java.lang.System.currentTimeMillis;
 
 import java.time.Instant;
@@ -23,12 +24,6 @@ public final class EpochTimestamp {
 
 	private void newInstant() {
 		this.instant = Instant.ofEpochMilli(epochMillis);
-	}
-
-	private ZonedDateTime newZonedDateTime() {
-		if (instant == null)
-			newInstant();
-		return updateDateTimeOf(TimeZone.SYS_DEFAULT);
 	}
 
 	public ZonedDateTime updateDateTimeOf(ZoneId zoneId) {
@@ -60,11 +55,44 @@ public final class EpochTimestamp {
 
 	public ZonedDateTime dateTime() {
 		if (dateTime == null)
-			return newZonedDateTime();
+			return updateDateTimeOf(TimeZone.SYS_DEFAULT_OFFSET);
 		return dateTime;
 	}
 
+	private static final String str0 = "{\"epochMillis\" : ";
+	private static final String str1 = ", \"epochMicros\" : ";
+	private static final String str2 = ", \"instant\" : ";
+	private static final String str3 = ", \"dateTime\" : ";
+	private static final String str4 = "}";
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(90);
+		builder.append(str0);
+		builder.append(epochMillis);
+		if (epochMicros != 0L) {
+			builder.append(str1);
+			builder.append(epochMicros);
+		}
+		if (instant != null) {
+			builder.append(str2);
+			builder.append(toText(instant));
+		}
+		if (dateTime != null) {
+			builder.append(str3);
+			builder.append(toText(dateTime));
+		}
+		builder.append(str4);
+		return builder.toString();
+	}
+
 	public static void main(String[] args) {
+
+		EpochTimestamp timestamp = EpochTimestamp.now();
+		timestamp.epochMicros();
+		timestamp.instant();
+		timestamp.dateTime();
+		System.out.println(timestamp);
 
 		for (int i = 0; i < 100000; i++) {
 			EpochTime.millis();
