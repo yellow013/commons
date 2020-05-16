@@ -14,61 +14,61 @@ import io.mercury.common.io.FileLoader;
 import io.mercury.common.log.CommonLoggerFactory;
 import io.mercury.common.util.StringUtil;
 
-public final class PropertiesFileReader {
+public final class PropertiesReader {
 
-	private static final Logger log = CommonLoggerFactory.getLogger(PropertiesFileReader.class);
+	private static final Logger log = CommonLoggerFactory.getLogger(PropertiesReader.class);
 
 	/**
 	 * TODO 增加重新加载配置文件的功能
 	 */
 	// fileName-propertyName -> value
-	private static final ConcurrentHashMap<String, String> AllPropertiesMap = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<String, String> AllPropMap = new ConcurrentHashMap<>();
 
 	private static final String APPLICATION_FILE_NAME = "application";
 
 	private static final String PROPERTIES_FILE_SUFFIX = ".properties";
 
 	static {
-		Set<File> allPropertiesFile = FileLoader.recursiveLoad(
-				new File(PropertiesFileReader.class.getResource("/").getPath()),
+		Set<File> allPropFile = FileLoader.recursiveLoad(
+				new File(PropertiesReader.class.getResource("/").getPath()),
 				file -> file.getName().endsWith(PROPERTIES_FILE_SUFFIX));
-		for (File propertiesFile : allPropertiesFile) {
-			log.info("Properties file -> [{}] start load", propertiesFile);
-			String fileName = propertiesFile.getName();
-			try {
-				Properties properties = new Properties();
-				properties.load(new FileInputStream(propertiesFile));
-				for (String propertyName : properties.stringPropertyNames()) {
-					String propertiesKey = getPropertiesKey(fileName, propertyName);
-					String propertyValue = properties.getProperty(propertyName);
-					log.info("Put property, propertiesKey==[{}], propertyValue==[{}]", propertiesKey, propertyValue);
-					AllPropertiesMap.put(propertiesKey, propertyValue);
+		try {
+			for (File propFile : allPropFile) {
+				log.info("Properties file -> [{}] start load", propFile);
+				String fileName = propFile.getName();
+				Properties prop = new Properties();
+				prop.load(new FileInputStream(propFile));
+				for (String propName : prop.stringPropertyNames()) {
+					String propKey = getPropertiesKey(fileName, propName);
+					String propValue = prop.getProperty(propName);
+					log.info("Put property, propertiesKey==[{}], propertyValue==[{}]", propKey, propValue);
+					AllPropMap.put(propKey, propValue);
 				}
-			} catch (FileNotFoundException e) {
-				log.error("File -> [{}] is not found");
-				throw new RuntimeException(e);
-			} catch (IOException e) {
-				log.error("File -> [{}] load failed");
-				throw new RuntimeException(e);
 			}
+		} catch (FileNotFoundException e) {
+			log.error("File -> [{}] is not found");
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			log.error("File -> [{}] load failed");
+			throw new RuntimeException(e);
 		}
 	}
 
-	private static String getPropertiesKey(String fileName, String propertyName) {
+	private static String getPropertiesKey(String fileName, String propName) {
 		if (fileName == null)
 			fileName = "";
 		if (fileName.endsWith(PROPERTIES_FILE_SUFFIX))
 			fileName = fileName.split(PROPERTIES_FILE_SUFFIX)[0];
-		return new StringBuilder(16).append(fileName).append("-").append(propertyName).toString();
+		return new StringBuilder(16).append(fileName).append("-").append(propName).toString();
 	}
 
-	public synchronized static String getProperty(String fileName, String propertyName) {
-		String propertyValue = AllPropertiesMap.get(getPropertiesKey(fileName, propertyName));
-		if (propertyValue == null) {
-			log.error("Property name -> [{}] is not found of file name -> [{}]", propertyName, fileName);
+	public synchronized static String getProperty(String fileName, String propName) {
+		String propValue = AllPropMap.get(getPropertiesKey(fileName, propName));
+		if (propValue == null) {
+			log.error("Property name -> [{}] is not found of file name -> [{}]", propName, fileName);
 			throw new RuntimeException("Read property error.");
 		}
-		return propertyValue;
+		return propValue;
 	}
 
 	public static int getIntProperty(String fileName, String propertyName) {
