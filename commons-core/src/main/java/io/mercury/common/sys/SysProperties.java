@@ -122,7 +122,7 @@ public final class SysProperties {
 		System.getProperties().entrySet().forEach(
 				entity -> System.out.println(entity.getKey().toString() + "---" + entity.getValue().toString()));
 		try {
-			addLibraryDir("11111");
+			addLibraryDir("/java_lib");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -45,21 +45,18 @@ public class CommonLoggerFactory {
 		log.warn("this is warn");
 		log.info("this is info");
 		log.debug("this is debug");
-		
+
 		System.out.println(System.getProperty(LoggerConst.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
-		
-		for(;;) {
+
+		for (;;) {
 			log.error("this is error");
 			log.warn("this is warn");
 			log.info("this is info");
 			log.debug("this is debug");
 			ThreadHelper.sleep(3000);
 		}
-		
-		
 
-		
 	}
 
 }

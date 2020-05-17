@@ -12,13 +12,12 @@ public final class NetworkProperties {
 
 	public static final InetAddress LocalInetAddress = getlocalInetAddress();
 
-//
 //	public static final String LocalHostAddress = LocalInetAddress.getHostAddress();
 //
 //	public static final String LocalMacAddress = getMacAddress(LocalInetAddress);
 //
 //	public static final NetworkInterface LocalNetworkInterface = getNetworkInterface(LocalInetAddress);
-//
+
 	private static InetAddress getlocalInetAddress() {
 		try {
 			return InetAddress.getLocalHost();
@@ -27,7 +26,7 @@ public final class NetworkProperties {
 			throw new RuntimeException(e);
 		}
 	}
-//
+
 //	public static NetworkInterface getNetworkInterface(InetAddress inetAddress) {
 //		try {
 //			return NetworkInterface.getByInetAddress(inetAddress);
@@ -35,7 +34,7 @@ public final class NetworkProperties {
 //			throw new RuntimeException(e);
 //		}
 //	}
-//
+
 //	public static String getMacAddress(InetAddress inetAddress) {
 //		//NetworkInterface networkInterface = getNetworkInterface(inetAddress);
 //		try {
@@ -69,7 +68,6 @@ public final class NetworkProperties {
 					System.out.println(inetAddress instanceof Inet6Address);
 
 					System.out.println(inetAddress.getHostAddress());
-
 				}
 			}
 

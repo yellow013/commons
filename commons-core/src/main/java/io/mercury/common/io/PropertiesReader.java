@@ -36,8 +36,8 @@ public final class PropertiesReader {
 				log.info("Properties file -> [{}] start load", propFile);
 				String fileName = propFile.getName();
 				Properties prop = new Properties();
-				AllPropMap.put(deleteSuffix(fileName), prop);
 				prop.load(new FileInputStream(propFile));
+				AllPropMap.put(deleteSuffix(fileName), prop);
 				for (String propName : prop.stringPropertyNames()) {
 					String propKey = mergePropertiesKey(fileName, propName);
 					String propValue = prop.getProperty(propName);
@@ -68,7 +68,7 @@ public final class PropertiesReader {
 			return "";
 		if (fileName.endsWith(FILE_SUFFIX))
 			return fileName.split(FILE_SUFFIX)[0];
-		return "";
+		return fileName;
 	}
 
 	public static Properties getProperty(String fileName) {
@@ -79,9 +79,11 @@ public final class PropertiesReader {
 	}
 
 	public static String getProperty(String fileName, String propName) {
-		String propValue = AllPropItemMap.get(mergePropertiesKey(fileName, propName));
+		String mergeKey = mergePropertiesKey(fileName, propName);
+		String propValue = AllPropItemMap.get(mergeKey);
 		if (propValue == null) {
-			log.error("Property name -> [{}] is not found of file name -> [{}]", propName, fileName);
+			log.error("Property name -> [{}] is not found of file name -> [{}], mergeKey==[{}]", propName, fileName,
+					mergeKey);
 			throw new RuntimeException("Read property error.");
 		}
 		return propValue;
