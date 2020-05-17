@@ -8,7 +8,7 @@ public final class JointIdSupporter {
 	 * 将两个int value合并为long value<br>
 	 * long value高32位为第一个int值, 低32位为第二个int值
 	 */
-	public static long jointId(int highPos, int lowPos) {
+	public static long mergeJointId(int highPos, int lowPos) {
 		return BitOperator.mergeInt(highPos, lowPos);
 	}
 

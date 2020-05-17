@@ -14,11 +14,28 @@ public final class FileLoader {
 	private FileLoader() {
 	}
 
-	public static final MutableSet<File> recursiveLoad(File path) {
+	/**
+	 * 收集指定路径下全部文件
+	 * 
+	 * @param path
+	 * @return
+	 */
+	@Nonnull
+	public static final MutableSet<File> recursiveLoad(@Nonnull File path) {
 		return recursiveLoad(path, any -> true);
 	}
 
-	public static final MutableSet<File> recursiveLoad(File path, @Nonnull Predicate<File> fileFilter) {
+	/**
+	 * 根据过滤器收集指定路径下全部文件, 如果过滤器为null, 默认收集全部文件
+	 * 
+	 * @param path
+	 * @param fileFilter
+	 * @return
+	 */
+	@Nonnull
+	public static final MutableSet<File> recursiveLoad(@Nonnull File path, Predicate<File> fileFilter) {
+		if (fileFilter == null)
+			fileFilter = any -> true;
 		MutableSet<File> files = MutableSets.newUnifiedSet();
 		recursiveLoad0(files, path, fileFilter);
 		return files;
@@ -28,7 +45,7 @@ public final class FileLoader {
 		if (path == null || fileFilter == null)
 			return;
 		File[] listFiles = path.listFiles();
-		if (listFiles != null && listFiles.length != 0)
+		if (listFiles != null && listFiles.length != 0) {
 			for (File file : listFiles)
 				if (file.isDirectory()) {
 					// 如果文件是一个目录, 递归执行
@@ -39,7 +56,7 @@ public final class FileLoader {
 				} else
 					// 否则忽略此文件
 					continue;
-		else
+		} else
 			return;
 	}
 

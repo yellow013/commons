@@ -21,7 +21,7 @@ import io.mercury.common.param.ParamType;
 
 public final class ImmutableParamMap<K extends ParamKey> {
 
-	private ImmutableMap<K, String> immutableMap;
+	private final ImmutableMap<K, String> immutableMap;
 
 	/**
 	 * 根据传入的Key获取Map中的相应字段
