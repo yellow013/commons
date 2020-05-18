@@ -84,7 +84,7 @@ public final class ImmutableParamMap<K extends ParamKey> {
 		if (key.paramType() != ParamType.INT)
 			throw new IllegalArgumentException(
 					"Key -> " + key + " ParamType is not [INT]. paramType==" + key.paramType());
-		return parseInt(nonNull(immutableMap.get(key.paramName()), key.paramName()));
+		return parseInt(nonNull(immutableMap.get(key), key.paramName()));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class ImmutableParamMap<K extends ParamKey> {
 		if (key.paramType() != ParamType.DOUBLE)
 			throw new IllegalArgumentException(
 					"Key -> " + key + " ParamType is not [DOUBLE], paramType==" + key.paramType());
-		return parseDouble(nonNull(immutableMap.get(key.paramName()), key.paramName()));
+		return parseDouble(nonNull(immutableMap.get(key), key.paramName()));
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class ImmutableParamMap<K extends ParamKey> {
 		if (key.paramType() != ParamType.STRING)
 			throw new IllegalArgumentException(
 					"Key -> " + key + " ParamType is not [STRING], paramType==" + key.paramType());
-		return nonNull(immutableMap.get(key.paramName()), key.paramName());
+		return nonNull(immutableMap.get(key), key.paramName());
 	}
 
 }
