@@ -10,16 +10,16 @@ import io.mercury.common.util.StringUtil;
 
 public class CommonLoggerFactory {
 
-	private static final String DefaultFolder = "default";
+//	private static final String DefaultFolder = "default";
 
 	private static final String DefaultFileName = "jruntime";
 
 	public static Logger getLogger(Class<?> clazz) {
-		if (!LoggerSetter.logFolderSetted()) {
-			String logFolder = System.getProperty(LoggerConst.LOG4J2_FOLDER);
-			if (StringUtil.isNullOrEmpty(logFolder))
-				LoggerSetter.logFolder(DefaultFolder);
-		}
+//		if (!LoggerSetter.logFolderSetted()) {
+//			String logFolder = System.getProperty(LoggerConst.LOG4J2_FOLDER);
+//			if (StringUtil.isNullOrEmpty(logFolder))
+//				LoggerSetter.logFolder(DefaultFolder);
+//		}
 		if (!LoggerSetter.logFilenameSetted()) {
 			String logFilename = System.getProperty(LoggerConst.LOG4J2_FILENAME);
 			if (StringUtil.isNullOrEmpty(logFilename))
@@ -46,7 +46,6 @@ public class CommonLoggerFactory {
 		log.info("this is info");
 		log.debug("this is debug");
 
-		System.out.println(System.getProperty(LoggerConst.LOG4J2_FOLDER));
 		System.out.println(LocalDateTime.now());
 
 		for (;;) {
