@@ -13,7 +13,7 @@ import io.mercury.common.character.Charsets;
 public final class StringUtil {
 
 	public static interface StringConst {
-		String NULL = "null";
+		String NULL_STR = "null";
 		String EMPTY = "";
 	}
 
@@ -22,7 +22,7 @@ public final class StringUtil {
 
 	@Nonnull
 	public static final String toString(@Nullable Object obj) {
-		return obj == null ? StringConst.NULL : obj.toString();
+		return obj == null ? StringConst.NULL_STR : obj.toString();
 	}
 
 	@Nonnull
@@ -70,7 +70,7 @@ public final class StringUtil {
 	 * 
 	 */
 	public static final String reflectionToString(Object obj) {
-		return obj == null ? StringConst.NULL
+		return obj == null ? StringConst.NULL_STR
 				: ToStringBuilder.reflectionToString(obj, ToStringStyle.SHORT_PREFIX_STYLE, false);
 	}
 
@@ -200,8 +200,32 @@ public final class StringUtil {
 
 	}
 
+	/**
+	 * 检查输入参数是否非数字
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static final boolean notDecimal(String str) {
 		return !isDecimal(str);
+	}
+
+	/**
+	 * 删除除字符串中的非数字
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static final String delNonNumeric(String str) {
+		if (isNullOrEmpty(str))
+			return StringConst.EMPTY;
+		StringBuilder builder = new StringBuilder(str.length());
+		for (int i = 0; i < str.length(); i++) {
+			char ch = str.charAt(i);
+			if ('0' <= ch && ch <= '9')
+				builder.append(ch);
+		}
+		return builder.toString();
 	}
 
 	/**
@@ -210,7 +234,7 @@ public final class StringUtil {
 	 * @param str
 	 * @return
 	 */
-	public static final String deleteSplitChar(String str) {
+	public static final String delSplitChar(String str) {
 		return isNullOrEmpty(str) ? StringConst.EMPTY
 				: str.replace(".", "").replace("-", "").replace("_", "").replace("/", "").replace("\\", "");
 	}
@@ -336,6 +360,8 @@ public final class StringUtil {
 		System.out.println(concatenateStr("A", "BB", "", null));
 		System.out.println(concatenateStr('%', "A", "BB", "", null));
 		System.out.println(concatenateStr(null, null));
+
+		System.out.println(delNonNumeric("fn909aje125f13de3132fde31dew"));
 
 	}
 

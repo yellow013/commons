@@ -42,6 +42,27 @@ public final class BitOperator {
 	}
 
 	/**
+	 * 将[short]转换为二进制输出, 高位补0
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static final String shortBinary(short s) {
+		String binaryStr = Integer.toBinaryString(s);
+		return highPosFill(Short.SIZE, Short.SIZE - binaryStr.length(), binaryStr);
+	}
+
+	/**
+	 * 将[short]转换为二进制输出并格式化, 高位补0
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static final String shortBinaryFormat(short s) {
+		return new StringBuilder(17).append(shortBinary(s)).insert(8, ' ').toString();
+	}
+
+	/**
 	 * 将[int]转换为二进制输出, 高位补0
 	 * 
 	 * @param i
