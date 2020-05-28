@@ -3,8 +3,6 @@ package io.mercury.common.util;
 import java.util.Collection;
 import java.util.Map;
 
-import io.mercury.common.annotation.lang.ThrowsRuntimeException;
-
 public final class Assertor {
 
 	private Assertor() {
@@ -18,7 +16,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static int greaterThan(int i, int min, String objName) throws IllegalArgumentException {
 		if (i > min)
 			return i;
@@ -33,7 +30,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static long greaterThan(long l, long min, String objName) throws IllegalArgumentException {
 		if (l > min)
 			return l;
@@ -48,7 +44,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static int lessThan(int i, int max, String objName) throws IllegalArgumentException {
 		if (i < max)
 			return i;
@@ -63,7 +58,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static long lessThan(long l, long max, String objName) throws IllegalArgumentException {
 		if (l < max)
 			return l;
@@ -79,7 +73,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static int withinRange(int i, int min, int max, String objName) throws IllegalArgumentException {
 		if (i >= min && i <= max)
 			return i;
@@ -95,7 +88,6 @@ public final class Assertor {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException(IllegalArgumentException.class)
 	public static long withinRange(long l, long min, long max, String objName) throws IllegalArgumentException {
 		if (l >= min && l <= max)
 			return l;
@@ -110,7 +102,6 @@ public final class Assertor {
 	 * @return
 	 * @throws NullPointerException
 	 */
-	@ThrowsRuntimeException(NullPointerException.class)
 	public static <T> T nonNull(T obj, String objName) throws NullPointerException {
 		if (obj == null)
 			throw new NullPointerException(objName + " can not be null");
@@ -140,7 +131,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static String nonEmpty(String str, String objName) throws NullPointerException, IllegalArgumentException {
 		if (str == null)
 			throw new NullPointerException(objName + " can not be null");
@@ -158,7 +148,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static <T extends Collection<?>> T nonEmpty(T collection, String objName)
 			throws NullPointerException, IllegalArgumentException {
 		if (collection == null)
@@ -177,7 +166,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static <T extends Map<?, ?>> T nonEmpty(T map, String objName)
 			throws NullPointerException, IllegalArgumentException {
 		if (map == null)
@@ -197,7 +185,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static <T> T[] requiredLength(T[] array, int minLength, String arrayName)
 			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
@@ -216,7 +203,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static byte[] requiredLength(byte[] array, int minLength, String arrayName)
 			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
@@ -235,7 +221,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static char[] requiredLength(char[] array, int minLength, String arrayName)
 			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
@@ -254,7 +239,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static int[] requiredLength(int[] array, int minLength, String arrayName)
 			throws NullPointerException, IllegalArgumentException {
 		if (array == null)
@@ -273,7 +257,6 @@ public final class Assertor {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	@ThrowsRuntimeException({ NullPointerException.class, IllegalArgumentException.class })
 	public static long[] requiredLength(long[] array, int requiredLength, String arrayName)
 			throws NullPointerException, IllegalArgumentException {
 		if (array == null)

@@ -34,7 +34,7 @@ public final class ImmutableParamMap<K extends ParamKey> {
 	public ImmutableParamMap(@Nonnull K[] keys, @Nonnull Map<?, ?> map)
 			throws NullPointerException, IllegalArgumentException {
 		requiredLength(keys, 1, "keys");
-		nonEmpty(map, "maps");
+		nonEmpty(map, "map");
 		MutableMap<K, String> mutableMap = MutableMaps.newUnifiedMap();
 		for (K key : keys) {
 			if (map.containsKey(key.paramName()))
@@ -55,12 +55,13 @@ public final class ImmutableParamMap<K extends ParamKey> {
 			throws NullPointerException, IllegalArgumentException {
 		requiredLength(keys, 1, "keys");
 		nonNull(properties, "properties");
-		MutableMap<K, String> mutableMap = MutableMaps.newUnifiedMap();
+		MutableMap<K, String> map = MutableMaps.newUnifiedMap();
 		for (K key : keys) {
-			if (properties.containsKey(key.paramName()))
-				mutableMap.put(key, properties.get(key.paramName()).toString());
+			if (properties.containsKey(key.paramName())) {
+				map.put(key, properties.get(key.paramName()).toString());
+			}
 		}
-		this.immutableMap = mutableMap.toImmutable();
+		this.immutableMap = map.toImmutable();
 	}
 
 	/**
