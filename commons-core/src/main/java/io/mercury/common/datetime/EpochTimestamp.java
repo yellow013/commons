@@ -10,7 +10,6 @@ import java.time.ZonedDateTime;
 public final class EpochTimestamp {
 
 	private long epochMillis;
-	private long epochMicros;
 	private Instant instant;
 	private ZonedDateTime dateTime;
 
@@ -18,8 +17,8 @@ public final class EpochTimestamp {
 		this.epochMillis = currentTimeMillis();
 	}
 
-	private void calculateEpochMicros() {
-		this.epochMicros = epochMillis * 1000;
+	public static EpochTimestamp now() {
+		return new EpochTimestamp();
 	}
 
 	private void newInstant() {
@@ -33,18 +32,8 @@ public final class EpochTimestamp {
 		return dateTime;
 	}
 
-	public static EpochTimestamp now() {
-		return new EpochTimestamp();
-	}
-
 	public long epochMillis() {
 		return epochMillis;
-	}
-
-	public long epochMicros() {
-		if (epochMicros == 0L)
-			calculateEpochMicros();
-		return epochMicros;
 	}
 
 	public Instant instant() {
@@ -55,41 +44,35 @@ public final class EpochTimestamp {
 
 	public ZonedDateTime dateTime() {
 		if (dateTime == null)
-			return updateDateTimeOf(TimeZone.SYS_DEFAULT_OFFSET);
+			return updateDateTimeOf(TimeZone.SYS_DEFAULT);
 		return dateTime;
 	}
 
 	private static final String str0 = "{\"epochMillis\" : ";
-	private static final String str1 = ", \"epochMicros\" : ";
-	private static final String str2 = ", \"instant\" : ";
-	private static final String str3 = ", \"dateTime\" : ";
-	private static final String str4 = "}";
+	private static final String str1 = ", \"instant\" : ";
+	private static final String str2 = ", \"dateTime\" : ";
+	private static final String str3 = "}";
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder(90);
 		builder.append(str0);
 		builder.append(epochMillis);
-		if (epochMicros != 0L) {
-			builder.append(str1);
-			builder.append(epochMicros);
-		}
 		if (instant != null) {
-			builder.append(str2);
+			builder.append(str1);
 			builder.append(toText(instant));
 		}
 		if (dateTime != null) {
-			builder.append(str3);
+			builder.append(str2);
 			builder.append(toText(dateTime));
 		}
-		builder.append(str4);
+		builder.append(str3);
 		return builder.toString();
 	}
 
 	public static void main(String[] args) {
 
 		EpochTimestamp timestamp = EpochTimestamp.now();
-		timestamp.epochMicros();
 		timestamp.instant();
 		timestamp.dateTime();
 		System.out.println(timestamp);
@@ -129,7 +112,6 @@ public final class EpochTimestamp {
 		EpochTimestamp now = EpochTimestamp.now();
 
 		System.out.println(now.epochMillis());
-		System.out.println(now.epochMicros());
 		System.out.println(now.instant().getEpochSecond() * 1000000 + now.instant().getNano() / 1000);
 		System.out.println(now.instant());
 		System.out.println(now.dateTime());

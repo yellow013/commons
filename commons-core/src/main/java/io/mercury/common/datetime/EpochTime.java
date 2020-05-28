@@ -1,7 +1,9 @@
 package io.mercury.common.datetime;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -17,6 +19,7 @@ import static io.mercury.common.datetime.TimeConst.MILLIS_PER_SECONDS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MICROS;
 import static io.mercury.common.datetime.TimeConst.NANOS_PER_MILLIS;
 import static io.mercury.common.datetime.TimeConst.SECONDS_PER_MINUTE;
+import static io.mercury.common.datetime.TimeZone.SYS_DEFAULT;
 import static io.mercury.common.datetime.TimeZone.SYS_DEFAULT_OFFSET;
 import static java.lang.System.currentTimeMillis;;
 
@@ -124,6 +127,22 @@ public final class EpochTime {
 		return datetime.toLocalDate().toEpochDay() * MICROS_PER_DAY
 				+ datetime.toLocalTime().toSecondOfDay() * MICROS_PER_SECONDS + datetime.getNano() / NANOS_PER_MICROS
 				- zoneOffset.getTotalSeconds() * MICROS_PER_SECONDS;
+	}
+
+	public static final ZonedDateTime ofEpochSeconds(long seconds) {
+		return ofEpochSeconds(seconds, SYS_DEFAULT);
+	}
+
+	public static final ZonedDateTime ofEpochSeconds(long seconds, ZoneId zoneId) {
+		return ZonedDateTime.ofInstant(Instant.ofEpochSecond(seconds), zoneId);
+	}
+
+	public static final ZonedDateTime ofEpochMillis(long millis) {
+		return ofEpochMillis(millis, SYS_DEFAULT);
+	}
+
+	public static final ZonedDateTime ofEpochMillis(long millis, ZoneId zoneId) {
+		return ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), zoneId);
 	}
 
 	public static void main(String[] args) {
