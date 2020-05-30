@@ -2,11 +2,11 @@ package io.mercury.common.param;
 
 public interface ParamKey  {
 
-	int paramId();
+	int id();
 
-	String paramName();
+	String key();
 
-	ParamType paramType();
+	ParamType type();
 
 
 }
