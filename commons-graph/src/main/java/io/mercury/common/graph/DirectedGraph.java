@@ -1,5 +1,7 @@
 package io.mercury.common.graph;
 
+import static io.mercury.common.graph.Edge.EdgeSupplier;
+
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.builder.GraphTypeBuilder;
@@ -10,10 +12,10 @@ import io.mercury.common.collections.MutableSets;
 
 public final class DirectedGraph<V> {
 
-	private final Graph<V, Edge> internalGraph;
+	private final Graph<V, Edge> graph;
 
-	private DirectedGraph(Class<V> vClass) {
-		this.internalGraph = GraphTypeBuilder.directed().vertexClass(vClass).edgeSupplier(Edge.Supplier).buildGraph();
+	private DirectedGraph(Class<V> vclass) {
+		this.graph = GraphTypeBuilder.directed().vertexClass(vclass).edgeSupplier(EdgeSupplier).buildGraph();
 	}
 
 	public static <V> DirectedGraph<V> buildOf(Class<V> vertexClass) {
@@ -22,43 +24,43 @@ public final class DirectedGraph<V> {
 
 	public DirectedGraph<V> addVertex(V vertex) {
 		if (vertex != null)
-			internalGraph.addVertex(vertex);
+			graph.addVertex(vertex);
 		return this;
 	}
 
 	public DirectedGraph<V> addEdge(V source, V target) {
-		internalGraph.addVertex(source);
-		internalGraph.addVertex(target);
-		internalGraph.addEdge(source, target);
+		graph.addVertex(source);
+		graph.addVertex(target);
+		graph.addEdge(source, target);
 		return this;
 	}
 
 	public boolean containsVertex(V v) {
-		return internalGraph.containsVertex(v);
+		return graph.containsVertex(v);
 	}
 
 	public boolean containsEdge(Edge e) {
-		return internalGraph.containsEdge(e);
+		return graph.containsEdge(e);
 	}
 
 	public boolean containsEdge(V source, V target) {
-		return internalGraph.containsEdge(source, target);
+		return graph.containsEdge(source, target);
 	}
 
 	public ImmutableSet<V> allVertex() {
-		return ImmutableSets.newSet(internalGraph.vertexSet());
+		return ImmutableSets.newSet(graph.vertexSet());
 	}
 
 	public ImmutableSet<Edge> allEdge() {
-		return ImmutableSets.newSet(internalGraph.edgeSet());
+		return ImmutableSets.newSet(graph.edgeSet());
 	}
 
 	public ImmutableSet<V> allChildVertex(V vertex) {
-		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(internalGraph, vertex)).toImmutable();
+		return MutableSets.newUnifiedSet(new BreadthFirstIterator<>(graph, vertex)).toImmutable();
 	}
 
 	public Graph<V, Edge> internalGraph() {
-		return internalGraph;
+		return graph;
 	}
 
 	public static void main(String[] args) {

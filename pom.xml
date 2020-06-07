@@ -10,9 +10,8 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<url>https://github.com/yellow013/commons.git</url>
-
 	<name>commons</name>
+	<url>https://github.com/yellow013/commons.git</url>
 
 	<modules>
 		<module>commons-core</module>
