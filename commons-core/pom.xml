@@ -29,6 +29,10 @@
 			<version>3.0.2</version>
 		</dependency>
 
+		<!-- The javax.inject API -->
+		<!-- <dependency> <groupId>javax.inject</groupId> <artifactId>javax.inject</artifactId> 
+			<version>1</version> </dependency> -->
+
 		<!-- The Apache Commons IO library contains utility classes, stream implementations, 
 			file filters, file comparators, endian transformation classes, and much more. -->
 		<dependency>
@@ -69,6 +73,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
+		
 		<!-- Log4j implemented over SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -76,6 +81,7 @@
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- JCL 1.2 implemented over SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -83,6 +89,7 @@
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- JUL to SLF4J bridge -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -90,6 +97,7 @@
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<!-- The Apache Log4j SLF4J API binding to Log4j 2 Core -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -111,7 +119,7 @@
 			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- EasyMock provides an easy way to create Mock Objects for interfaces 
 			and classes generating them on the fly -->
 		<dependency>
